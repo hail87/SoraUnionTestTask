@@ -22,8 +22,7 @@ public class DBtests {
         dbUtils.connectDB(new DBUser());
         String jsonContent = new DataUtils().getJsonContent(jsonFilename);
         dbUtils.insertJsonToStageOrder(jsonContent);
-        new ApiSteps().triggerOrderProcessingSandBox();
-
+        assertTrue(new ApiSteps().triggerOrderProcessingSandBox());
     }
 
 }

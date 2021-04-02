@@ -36,6 +36,10 @@ public class DBUtils {
         //LOGGER.info to implement
     }
 
+    public void closeConnection() throws SQLException {
+        connection.close();
+    }
+
     public int insertJsonToStageOrder(String jsonContent) throws SQLException {
         Statement statement = connection.createStatement();
         int createdId;

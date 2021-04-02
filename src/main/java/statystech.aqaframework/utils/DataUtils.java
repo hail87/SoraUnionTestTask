@@ -1,16 +1,16 @@
 package statystech.aqaframework.utils;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
-import com.google.gson.Gson;
-import org.apache.commons.lang3.StringUtils;
+import com.google.gson.*;
+import groovy.json.StringEscapeUtils;
 
 public class DataUtils {
 
-    public String getPropertyValue(String propertyFileName, String propertyName) throws IOException {
+    public String getPropertyValue(String propertyFileName, String propertyName) {
         FileInputStream fis;
         Properties prop = new Properties();
         try {
@@ -23,9 +23,13 @@ public class DataUtils {
     }
 
     public String getJsonContent(String jsonFilename) throws IOException {
-        Gson gson = new Gson();
-        Object object = gson.fromJson(new FileReader("src/main/resources/json/" + jsonFilename), Object.class);
-        return object.toString();
+        //Gson gson = new GsonBuilder().serializeNulls().create();
+//        Object object = gson.fromJson(new FileReader("src/main/resources/json/" + jsonFilename), Object.class);
+//        String output = gson.toJson(object).replaceAll("[^\\x00-\\x7F]",StringEscapeUtils.escapeJava("\\u00ae"));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
+        return reader.lines().collect(Collectors.joining());
     }
 
 }

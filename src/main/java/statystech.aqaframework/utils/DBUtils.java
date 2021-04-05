@@ -2,7 +2,7 @@ package statystech.aqaframework.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.DBUser;
+import statystech.aqaframework.common.ConnectionDB;
 
 import java.sql.*;
 
@@ -10,37 +10,11 @@ public class DBUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
 
-    private Connection connection = null;
+    //private Connection connection = new ConnectionDB();
 
-    public void connectDB(DBUser user) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        } catch (ClassNotFoundException e) {
-            logger.error("Can't get class. No driver found");
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-        //Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(user.getUrl(), user.getName(), user.getPassword());
-        } catch (SQLException e) {
-            logger.error("Can't get connection. Incorrect URL");
-            e.printStackTrace();
-        }
-        if (connection != null) {
-            logger.info("DB connected!");
-        }
-    }
-
-    public void closeConnection() throws SQLException {
-        connection.close();
-    }
 
     public int insertJsonToStageOrder(String jsonContent) throws SQLException {
-        Statement statement = connection.createStatement();
+        Statement statement = ConnectionDB.connection.createStatement();
         int createdId;
         statement.executeUpdate("INSERT INTO stageOrder " +
                         "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
@@ -57,11 +31,53 @@ public class DBUtils {
         return createdId;
     }
 
-    public void select() throws SQLException {
+    public ResultSet execute(String fullRequest) {
+        ResultSet rs = null;
+        try {
+            ConnectionDB.connection.createStatement().executeQuery(fullRequest);
+            logger.info("Query:\n" + fullRequest + "\nhas been executed");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
+        }
+        return rs;
     }
 
-    public boolean deleteRow(int stageOrderId) throws SQLException {
-        Statement statement = connection.createStatement();
-        return statement.execute("DELETE FROM stageOrder WHERE (`stageOrderID` = '" + stageOrderId + "'");
+    public String select(String tableName, int rowId, String columnName) throws SQLException {
+        String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + tableName + "ID = " + rowId;
+        ResultSet rs = ConnectionDB.connection.createStatement().executeQuery(query);
+        rs.next();
+        String result = rs.getString(columnName);
+        logger.info("!!!Query :\n" + query + "\n has been executed with result :\n" + result);
+        return result;
     }
+
+
+    public boolean deleteRow(int stageOrderId) {
+        boolean deleted = false;
+        try {
+            deleted = ConnectionDB.connection.createStatement().execute(
+                    "DELETE FROM stageOrder WHERE stageOrderID = '" + stageOrderId + "'");
+            logger.info("!!!Row with id [" + stageOrderId + "] has been deleted!!!");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            logger.error("!!!Row with id [" + stageOrderId + "] hasn't been deleted!!!");
+        }
+        return deleted;
+    }
+
+
+    public boolean closeConnection() {
+        boolean isClosed = false;
+        try {
+            ConnectionDB.connection.close();
+            isClosed = ConnectionDB.connection.isClosed();
+            if (isClosed)
+                logger.info("Connection is closed");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return isClosed;
+    }
+
 }

@@ -1,9 +1,11 @@
 statystech/aqaframework/DataObjects/DBUser.class
-statystech/aqaframework/steps/ApiSteps.class
-statystech/aqaframework/steps/DBsteps.class
 statystech/aqaframework/Utils/ApiRestUtils.class
+statystech/aqaframework/common/ConnectionDB.class
+statystech/aqaframework/steps/DBsteps/StageOrderDBSteps.class
 statystech/aqaframework/steps/CommonSteps.class
+statystech/aqaframework/steps/DBsteps/DBsteps.class
 statystech/aqaframework/Main/Main.class
 statystech/aqaframework/Utils/DBUtils.class
 statystech/aqaframework/Utils/DataUtils.class
 statystech/aqaframework/common/ANSIConsoleAppender.class
+statystech/aqaframework/steps/APIsteps/StageOrderApiSteps.class

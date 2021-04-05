@@ -33,7 +33,6 @@ public class DBUtils {
         if (connection != null) {
             logger.info("DB connected!");
         }
-        //LOGGER.info to implement
     }
 
     public void closeConnection() throws SQLException {
@@ -43,7 +42,9 @@ public class DBUtils {
     public int insertJsonToStageOrder(String jsonContent) throws SQLException {
         Statement statement = connection.createStatement();
         int createdId;
-        statement.executeUpdate("INSERT INTO stageOrder (orderData, status) Values ('" + jsonContent + "','N')",
+        statement.executeUpdate("INSERT INTO stageOrder " +
+                        "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
+                        "Values ('" + jsonContent + "','N','',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'')",
                 Statement.RETURN_GENERATED_KEYS);
         logger.info("SQL request was executed: " + jsonContent);
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {

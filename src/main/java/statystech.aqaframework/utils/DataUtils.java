@@ -23,13 +23,11 @@ public class DataUtils {
     }
 
     public String getJsonContent(String jsonFilename) throws IOException {
-        //Gson gson = new GsonBuilder().serializeNulls().create();
-//        Object object = gson.fromJson(new FileReader("src/main/resources/json/" + jsonFilename), Object.class);
-//        String output = gson.toJson(object).replaceAll("[^\\x00-\\x7F]",StringEscapeUtils.escapeJava("\\u00ae"));
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
-        return reader.lines().collect(Collectors.joining());
+        String jsonString = reader.lines().collect(Collectors.joining());
+        return jsonString.replace("\\", "\\\\");
     }
 
 }

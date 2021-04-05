@@ -1,7 +1,5 @@
 package statystech.aqaframework.utils;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +11,6 @@ public class ApiRestUtils {
     private static final Logger logger = LoggerFactory.getLogger(ApiRestUtils.class);
 
     public boolean sendGetRequest(String url) {
-        //RestAssured.baseURI = url;
         Response response = given()
                 .when()
                 .get(url)

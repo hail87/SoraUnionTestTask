@@ -26,8 +26,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="6e7c6ad5-4ea3-40c8-8ab6-78ff9f157b05">
-        <schema name="lwa_sandbox" object-types="view, constraint, dataset trigger, column, function, procedure, index, table" />
-        <schema name="mysql" object-types="function, table" />
+        <schema name="lwa_sandbox" object-types="table, view" />
       </connection>
     </loaded-nodes>
   </component>

@@ -8,7 +8,7 @@ import statystech.aqaframework.utils.DataUtils;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class DBsteps {
+public class CommonDbSteps {
 
     public int insertJsonToStageOrderTable(String jsonFilename) throws IOException, SQLException {
         DBUtils dbUtils = new DBUtils();

@@ -3,7 +3,9 @@ package statystech.aqaframework.steps.DBsteps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.utils.DBUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class StageOrderSteps extends DBUtils {
@@ -16,5 +18,12 @@ public class StageOrderSteps extends DBUtils {
         } else {
             return "Status at the Status column isn't equal to 'C'";
         }
+    }
+
+    public int insertJsonToStageOrderTable(String jsonFilename) throws IOException, SQLException {
+        DBUtils dbUtils = new DBUtils();
+        String jsonContent = new JsonUtils().getJsonContent(jsonFilename);
+        logger.info("Inserting json to the stageOrder table");
+        return dbUtils.insertJsonToStageOrder(jsonContent);
     }
 }

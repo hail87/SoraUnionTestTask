@@ -1,20 +1,20 @@
 package statystech.aqaframework.steps.DBsteps;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.DBUser;
 import statystech.aqaframework.common.ConnectionDB;
 import statystech.aqaframework.utils.DBUtils;
-import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class CommonDbSteps {
 
-    public int insertJsonToStageOrderTable(String jsonFilename) throws IOException, SQLException {
-        DBUtils dbUtils = new DBUtils();
-        String jsonContent = new DataUtils().getJsonContent(jsonFilename);
+    private static final Logger logger = LoggerFactory.getLogger(StageOrderSteps.class);
+
+    public void connectDB() throws IOException {
         new ConnectionDB().connectDB(new DBUser());
-        return dbUtils.insertJsonToStageOrder(jsonContent);
+        logger.info("Data Base connected!");
     }
 
     public void cleanAndFinish(int id) {

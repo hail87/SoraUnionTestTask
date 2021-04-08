@@ -43,6 +43,14 @@ public class DBUtils {
         return rs;
     }
 
+    public String executeAndReturnString(String fullRequest) throws SQLException {
+        ResultSet rs;
+        rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
+        logger.info("Query:\n" + fullRequest + "\nhas been executed");
+        rs.next();
+        return rs.getString(1);
+    }
+
     public String select(String tableName, int rowId, String columnName) throws SQLException {
         String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + tableName + "ID = " + rowId;
         ResultSet rs = execute(query);
@@ -58,8 +66,14 @@ public class DBUtils {
         return rs.getString(columnName);
     }
 
+    public String select(String tableName, int columnNumber) throws SQLException {
+        ResultSet rs = getLastRow(tableName);
+        rs.next();
+        return rs.getString(columnNumber);
+    }
+
     private ResultSet getLastRow(String tableName) {
-        return execute(String.format("SELECT * FROM %s ORDER by modifiedDate DESC LIMIT 1",tableName));
+        return execute(String.format("SELECT * FROM %s ORDER by createdDate DESC LIMIT 1", tableName));
     }
 
 

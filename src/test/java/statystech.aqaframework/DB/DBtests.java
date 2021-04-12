@@ -23,11 +23,11 @@ public class DBtests {
         //errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
 //        errorMessage.append(new StageOrderSteps().checkStatusColumn(id));
 //        errorMessage.append(new OrdersTableSteps().checkOrderID());
-//        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
+      //  errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
 //        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
 //        errorMessage.append(new ProductSteps().checkProduct());
-        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
-//        errorMessage.append();
+//        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
+        errorMessage.append(new OrderLineSteps().checkOrderLineTable());
 //        errorMessage.append();
 //        errorMessage.append();
 

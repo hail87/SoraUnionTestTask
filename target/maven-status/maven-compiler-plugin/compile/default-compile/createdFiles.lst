@@ -8,7 +8,9 @@ statystech/aqaframework/steps/CommonSteps.class
 statystech/aqaframework/Main/Main.class
 statystech/aqaframework/steps/DBsteps/UserTableSteps.class
 statystech/aqaframework/steps/DBsteps/OrdersTableSteps.class
+statystech/aqaframework/steps/DBsteps/OrderLineSteps.class
 statystech/aqaframework/TableObjects/ProductTable.class
+statystech/aqaframework/TableObjects/OrderLineTable.class
 statystech/aqaframework/TableObjects/OrdersTable.class
 statystech/aqaframework/DataObjects/DBUser.class
 statystech/aqaframework/steps/DBsteps/ShippingAddressSteps.class

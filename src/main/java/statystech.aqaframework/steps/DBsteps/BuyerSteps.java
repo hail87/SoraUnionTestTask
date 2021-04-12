@@ -29,6 +29,8 @@ public class BuyerSteps extends Steps {
         errorMessage.append(verifyExpectedResults(
                 buyerTable.getJsonAndTableValue(buyerID, "billing_address", "last_name")));
         errorMessage.append(checkAllSysBuyerID());
+        errorMessage.append(checkPhoneNumber());
+        errorMessage.append(checkPostalCode());
         errorMessage.append(checkRegion());
         return errorMessage.toString();
     }
@@ -42,6 +44,18 @@ public class BuyerSteps extends Steps {
     private String checkRegion() throws SQLException {
         String actualPhoneNumber = new BuyerTable().getColumnValue("region");
         String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("billing_address").get("state").toString().replace("\"", "");
+        return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
+    }
+
+    private String checkPhoneNumber() throws SQLException {
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValue("phoneNumber1");
+        String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
+        return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
+    }
+
+    private String checkPostalCode() throws SQLException {
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValue("postalCode");
+        String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("zip").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 

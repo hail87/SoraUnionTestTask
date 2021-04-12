@@ -15,13 +15,12 @@ public class ProductSteps extends Steps {
         int productID = productTable.getProductIDbyProductAllSysID(getProductDetailsValueFromJSON("product_id"));
         errorMessage.append(verifyExpectedResults(
                 productTable.getJsonAndTableValue(productID, "order_items", "product_name")));
-        errorMessage.append(verifyExpectedResults(
-                productTable.getJsonAndTableValue(productID, "order_items", "product_name")));
+//TODO: make a cycle for all product in json
         errorMessage.append(checkSKU());
         return errorMessage.toString();
     }
 
-    private String getProductDetailsValueFromJSON(String key){
+    public String getProductDetailsValueFromJSON(String key){
         return TestContext.JSON_OBJECT.getAsJsonArray("order_items").get(0).getAsJsonObject().get(key)
                 .toString().replace("\"", "");
     }

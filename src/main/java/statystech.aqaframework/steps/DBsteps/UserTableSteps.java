@@ -17,7 +17,9 @@ public class UserTableSteps {
         expectedAllSysUserID = expectedAllSysUserID.substring(1,expectedAllSysUserID.length() -1 );
         String actualAllSysUserID = new UserTable().getAllSysUserIDValue();
         if (actualAllSysUserID.equalsIgnoreCase(expectedAllSysUserID)) {
-            logger.info(new Object(){}.getClass().getEnclosingMethod().getName() + "() passed successfully\n");
+            logger.info(new Object(){}.getClass().getEnclosingMethod().getName() + "() passed successfully\n + " +
+                    "\" orders.orderAllSysID value \nActual: '" +
+                                       actualAllSysUserID + "'\nExpected: '" + expectedAllSysUserID + "'");
             return "";
         } else {
             logger.error(new Object(){}.getClass().getEnclosingMethod().getName() + "() not passed\n");

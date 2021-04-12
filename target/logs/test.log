@@ -3980,3 +3980,524 @@ has been executed
 12-04-2021 18:17:31 INFO  Steps:382 - jsonValue 'Florida' and tableValue 'Florida' are the same
 12-04-2021 18:17:32 INFO  DBUtils:382 - !!!Row with id [64] has been deleted!!!
 12-04-2021 18:17:32 INFO  DBUtils:382 - Connection is closed
+12-04-2021 18:22:06 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 18:22:06 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 18:22:06 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 18:22:06 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 18:22:06 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:22:06 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:22:06 INFO  DBUtils:382 - Query:
+select addressLine1 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:22:06 INFO  Steps:382 - jsonValue '140 S dixie Hwy' and tableValue '140 S dixie Hwy' are the same
+12-04-2021 18:22:06 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:22:06 INFO  DBUtils:382 - Query:
+select addressLine2 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:22:06 INFO  Steps:382 - jsonValue 'apt. 37' and tableValue 'apt. 37' are the same
+12-04-2021 18:22:06 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+select city from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:22:07 INFO  Steps:382 - jsonValue 'Hollywood' and tableValue 'Hollywood' are the same
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+select country from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:22:07 INFO  Steps:382 - jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+select addressType from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:22:07 INFO  Steps:382 - jsonValue 'BT' and tableValue 'BT' are the same
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+select firstName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:22:07 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:22:07 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+select lastName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:22:08 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:22:08 INFO  Steps:382 - jsonValue '771984' and tableValue '771984' are the same
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:22:08 INFO  Steps:382 - jsonValue '6472368232' and tableValue '6472368232' are the same
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:22:08 INFO  Steps:382 - jsonValue '33009' and tableValue '33009' are the same
+12-04-2021 18:22:08 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:22:09 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:22:09 INFO  Steps:382 - jsonValue 'Florida' and tableValue 'Florida' are the same
+12-04-2021 18:22:09 INFO  DBUtils:382 - !!!Row with id [65] has been deleted!!!
+12-04-2021 18:22:09 INFO  DBUtils:382 - Connection is closed
+12-04-2021 18:25:15 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 18:25:15 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 18:25:15 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 18:25:15 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 18:25:15 INFO  DBUtils:382 - Query:
+SELECT * FROM orders ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:25:15 INFO  DBUtils:382 - Query:
+select allSysUserID from user where userID = 11
+has been executed
+12-04-2021 18:25:15 INFO  UserTableSteps:382 - checkAllSysUserIDColumn() passed successfully
+
+12-04-2021 18:25:15 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:25:15 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+select addressLine1 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:25:16 INFO  Steps:382 - jsonValue '140 S dixie Hwy' and tableValue '140 S dixie Hwy' are the same
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+select addressLine2 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:25:16 INFO  Steps:382 - jsonValue 'apt. 37' and tableValue 'apt. 37' are the same
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+select city from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:25:16 INFO  Steps:382 - jsonValue 'Hollywood' and tableValue 'Hollywood' are the same
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+select country from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:25:16 INFO  Steps:382 - jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+12-04-2021 18:25:16 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+select addressType from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:25:17 INFO  Steps:382 - jsonValue 'BT' and tableValue 'BT' are the same
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+select firstName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:25:17 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+select lastName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:25:17 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:25:17 INFO  Steps:382 - jsonValue '771984' and tableValue '771984' are the same
+12-04-2021 18:25:17 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:25:18 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:25:18 INFO  Steps:382 - jsonValue '6472368232' and tableValue '6472368232' are the same
+12-04-2021 18:25:18 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:25:18 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:25:18 INFO  Steps:382 - jsonValue '33009' and tableValue '33009' are the same
+12-04-2021 18:25:18 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:25:18 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:25:18 INFO  Steps:382 - jsonValue 'Florida' and tableValue 'Florida' are the same
+12-04-2021 18:25:18 INFO  DBUtils:382 - !!!Row with id [66] has been deleted!!!
+12-04-2021 18:25:18 INFO  DBUtils:382 - Connection is closed
+12-04-2021 18:26:58 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 18:26:58 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 18:26:58 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 18:26:58 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 18:26:59 INFO  DBUtils:382 - Query:
+SELECT * FROM orders ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:26:59 INFO  DBUtils:382 - Query:
+select allSysUserID from user where userID = 11
+has been executed
+12-04-2021 18:26:59 INFO  UserTableSteps:382 - checkAllSysUserIDColumn() passed successfully
+ + " orders.orderAllSysID value \nActual: '" +
+                    actualAllSysUserID + "'\nExpected: '" + expectedAllSysUserID + "'";
+12-04-2021 18:26:59 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:26:59 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:26:59 INFO  DBUtils:382 - Query:
+select addressLine1 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:26:59 INFO  Steps:382 - jsonValue '140 S dixie Hwy' and tableValue '140 S dixie Hwy' are the same
+12-04-2021 18:26:59 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:26:59 INFO  DBUtils:382 - Query:
+select addressLine2 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:26:59 INFO  Steps:382 - jsonValue 'apt. 37' and tableValue 'apt. 37' are the same
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+select city from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:27:00 INFO  Steps:382 - jsonValue 'Hollywood' and tableValue 'Hollywood' are the same
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+select country from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:27:00 INFO  Steps:382 - jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+select addressType from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:27:00 INFO  Steps:382 - jsonValue 'BT' and tableValue 'BT' are the same
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:27:00 INFO  DBUtils:382 - Query:
+select firstName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:27:00 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+select lastName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:27:01 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:27:01 INFO  Steps:382 - jsonValue '771984' and tableValue '771984' are the same
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:27:01 INFO  Steps:382 - jsonValue '6472368232' and tableValue '6472368232' are the same
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:27:01 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:27:01 INFO  Steps:382 - jsonValue '33009' and tableValue '33009' are the same
+12-04-2021 18:27:02 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:27:02 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:27:02 INFO  Steps:382 - jsonValue 'Florida' and tableValue 'Florida' are the same
+12-04-2021 18:27:02 INFO  DBUtils:382 - !!!Row with id [67] has been deleted!!!
+12-04-2021 18:27:02 INFO  DBUtils:382 - Connection is closed
+12-04-2021 18:28:56 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 18:28:56 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 18:28:56 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 18:28:56 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+SELECT * FROM orders ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+select allSysUserID from user where userID = 11
+has been executed
+12-04-2021 18:28:57 INFO  UserTableSteps:382 - checkAllSysUserIDColumn() passed successfully
+ + " orders.orderAllSysID value 
+Actual: 'csrsite369'
+Expected: 'csrsite369'
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+select addressLine1 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:28:57 INFO  Steps:382 - jsonValue '140 S dixie Hwy' and tableValue '140 S dixie Hwy' are the same
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+select addressLine2 from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:28:57 INFO  Steps:382 - jsonValue 'apt. 37' and tableValue 'apt. 37' are the same
+12-04-2021 18:28:57 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+select city from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:28:58 INFO  Steps:382 - jsonValue 'Hollywood' and tableValue 'Hollywood' are the same
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+select country from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:28:58 INFO  Steps:382 - jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+select addressType from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:28:58 INFO  Steps:382 - jsonValue 'BT' and tableValue 'BT' are the same
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+select firstName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:28:58 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:28:58 INFO  DBUtils:382 - Query:
+show columns from buyer
+has been executed
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+select lastName from buyer where buyer.buyerID = 12
+has been executed
+12-04-2021 18:28:59 INFO  Steps:382 - jsonValue 'G****a' and tableValue 'G****a' are the same
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:28:59 INFO  Steps:382 - jsonValue '771984' and tableValue '771984' are the same
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:28:59 INFO  Steps:382 - jsonValue '6472368232' and tableValue '6472368232' are the same
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+SELECT * FROM shippingAddress ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+select * from shippingAddress where shippingAddressID = 15
+has been executed
+12-04-2021 18:28:59 INFO  Steps:382 - jsonValue '33009' and tableValue '33009' are the same
+12-04-2021 18:28:59 INFO  DBUtils:382 - Query:
+SELECT * FROM buyer ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 18:29:00 INFO  DBUtils:382 - Query:
+select * from buyer where buyerID = 12
+has been executed
+12-04-2021 18:29:00 INFO  Steps:382 - jsonValue 'Florida' and tableValue 'Florida' are the same
+12-04-2021 18:29:00 INFO  DBUtils:382 - !!!Row with id [68] has been deleted!!!
+12-04-2021 18:29:00 INFO  DBUtils:382 - Connection is closed
+12-04-2021 19:11:39 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:11:39 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:11:39 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:11:39 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:13:53 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:13:53 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:13:53 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:13:53 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:14:29 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:14:29 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:14:29 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:14:29 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:18:16 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:18:16 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:18:16 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:18:16 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:18:16 INFO  DBUtils:382 - Query:
+select * from orderLine where productName = "BOTOX® 100 Units"
+has been executed
+12-04-2021 19:18:16 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:18:16 INFO  DBUtils:382 - Query:
+select productName from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:18:16 INFO  Steps:382 - jsonValue 'BOTOX® 100 Units' and tableValue 'BOTOX® 100 Units' are the same
+12-04-2021 19:19:14 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:19:14 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:19:14 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:19:14 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:19:14 INFO  DBUtils:382 - Query:
+select * from orderLine where productName = "BOTOX® 100 Units"
+has been executed
+12-04-2021 19:19:14 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:19:14 INFO  DBUtils:382 - Query:
+select productName from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:19:14 INFO  Steps:382 - jsonValue 'BOTOX® 100 Units' and tableValue 'BOTOX® 100 Units' are the same
+12-04-2021 19:19:15 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:19:15 INFO  DBUtils:382 - Query:
+select sku from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:19:15 INFO  Steps:382 - jsonValue 'Botox 100IU1' and tableValue 'Botox 100IU1' are the same
+12-04-2021 19:19:15 INFO  DBUtils:382 - Query:
+SELECT * FROM orderLine ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 19:19:15 INFO  DBUtils:382 - Query:
+select * from orderLine where orderLineID = 23
+has been executed
+12-04-2021 19:21:05 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:21:05 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:21:05 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:21:05 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:21:05 INFO  DBUtils:382 - Query:
+select * from orderLine where productName = "BOTOX® 100 Units"
+has been executed
+12-04-2021 19:21:05 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:21:05 INFO  DBUtils:382 - Query:
+select productName from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:21:05 INFO  Steps:382 - jsonValue 'BOTOX® 100 Units' and tableValue 'BOTOX® 100 Units' are the same
+12-04-2021 19:21:05 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:21:06 INFO  DBUtils:382 - Query:
+select sku from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:21:06 INFO  Steps:382 - jsonValue 'Botox 100IU1' and tableValue 'Botox 100IU1' are the same
+12-04-2021 19:21:06 INFO  DBUtils:382 - Query:
+SELECT * FROM orderLine ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 19:21:06 INFO  DBUtils:382 - Query:
+select * from orderLine where orderLineID = 23
+has been executed
+12-04-2021 19:21:06 INFO  Steps:382 - jsonValue '399.00' and tableValue '399.00' are the same
+12-04-2021 19:21:06 INFO  DBUtils:382 - !!!Row with id [74] has been deleted!!!
+12-04-2021 19:21:06 INFO  DBUtils:382 - Connection is closed
+12-04-2021 19:25:58 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:25:58 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:25:58 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:25:58 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:25:58 INFO  DBUtils:382 - Query:
+select * from orderLine where productName = "BOTOX® 100 Units"
+has been executed
+12-04-2021 19:25:58 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:25:58 INFO  DBUtils:382 - Query:
+select productName from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:25:58 INFO  Steps:382 - jsonValue 'BOTOX® 100 Units' and tableValue 'BOTOX® 100 Units' are the same
+12-04-2021 19:25:58 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:25:59 INFO  DBUtils:382 - Query:
+select sku from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:25:59 INFO  Steps:382 - jsonValue 'Botox 100IU1' and tableValue 'Botox 100IU1' are the same
+12-04-2021 19:25:59 INFO  DBUtils:382 - Query:
+SELECT * FROM orderLine ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 19:25:59 INFO  DBUtils:382 - Query:
+select * from orderLine where orderLineID = 23
+has been executed
+12-04-2021 19:25:59 INFO  Steps:382 - jsonValue '399.00' and tableValue '399.00' are the same
+12-04-2021 19:25:59 INFO  DBUtils:382 - !!!Row with id [75] has been deleted!!!
+12-04-2021 19:25:59 INFO  DBUtils:382 - Connection is closed
+12-04-2021 19:28:04 INFO  ConnectionDB:382 - DB connected!
+12-04-2021 19:28:04 INFO  StageOrderSteps:382 - Data Base connected!
+12-04-2021 19:28:04 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+12-04-2021 19:28:04 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+12-04-2021 19:28:04 INFO  DBUtils:382 - Query:
+select * from orderLine where productName = "BOTOX® 100 Units"
+has been executed
+12-04-2021 19:28:04 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:28:04 INFO  DBUtils:382 - Query:
+select productName from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:28:04 INFO  Steps:382 - jsonValue 'BOTOX® 100 Units' and tableValue 'BOTOX® 100 Units' are the same
+12-04-2021 19:28:04 INFO  DBUtils:382 - Query:
+show columns from orderLine
+has been executed
+12-04-2021 19:28:04 INFO  DBUtils:382 - Query:
+select sku from orderLine where orderLine.orderLineID = 23
+has been executed
+12-04-2021 19:28:04 INFO  Steps:382 - jsonValue 'Botox 100IU1' and tableValue 'Botox 100IU1' are the same
+12-04-2021 19:28:05 INFO  DBUtils:382 - Query:
+SELECT * FROM orderLine ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 19:28:05 INFO  DBUtils:382 - Query:
+select * from orderLine where orderLineID = 23
+has been executed
+12-04-2021 19:28:05 INFO  Steps:382 - jsonValue '399.00' and tableValue '399.00' are the same
+12-04-2021 19:28:05 INFO  DBUtils:382 - Query:
+SELECT * FROM orderLine ORDER by createdDate DESC LIMIT 1
+has been executed
+12-04-2021 19:28:05 INFO  DBUtils:382 - Query:
+select * from orderLine where orderLineID = 23
+has been executed
+12-04-2021 19:28:05 INFO  Steps:382 - jsonValue '1' and tableValue '1' are the same
+12-04-2021 19:28:05 INFO  DBUtils:382 - !!!Row with id [76] has been deleted!!!
+12-04-2021 19:28:05 INFO  DBUtils:382 - Connection is closed

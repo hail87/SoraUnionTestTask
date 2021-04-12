@@ -2,9 +2,9 @@ package statystech.aqaframework.DB;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import statystech.aqaframework.steps.APIsteps.StageOrderApiSteps;
-import statystech.aqaframework.steps.DBsteps.*;
-import statystech.aqaframework.utils.DBUtils;
+import statystech.aqaframework.steps.DBsteps.CommonDbSteps;
+import statystech.aqaframework.steps.DBsteps.ShippingAddressSteps;
+import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,16 +26,17 @@ public class DBtests {
 //        errorMessage.append(new StageOrderSteps().checkStatusColumn(id));
 //        errorMessage.append(new OrdersTableSteps().checkOrderID());
 //        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
-        errorMessage.append(new ShippingAddressSteps().checkShippingAddress());
+        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
 //        errorMessage.append();
 //        errorMessage.append();
 //        errorMessage.append();
 //        errorMessage.append();
 //        errorMessage.append();
-        new DBUtils().closeConnection();
+
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        //dBsteps.cleanAndFinish();
+        dBsteps.cleanAndFinish(id);
+        //        new DBUtils().closeConnection();
     }
 
 }

@@ -4,7 +4,7 @@ import statystech.aqaframework.utils.DBUtils;
 
 import java.sql.SQLException;
 
-public class ordersTable extends TableObject {
+public class OrdersTable extends TableObject {
 
     private final String TABLE_NAME = "orders";
 

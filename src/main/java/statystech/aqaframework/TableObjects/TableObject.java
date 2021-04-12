@@ -12,8 +12,11 @@ import java.util.Map;
 
 public abstract class TableObject {
 
-    public String getPrimaryID() throws SQLException {
-        return new DBUtils().select(Util.getCallingClass().getName(), 1);
+    public int getPrimaryID() throws SQLException {
+        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
+        String tableName = fullTableName[fullTableName.length - 1];
+        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+        return Integer.parseInt(new DBUtils().select(tableName, 1));
     }
 
     public String getColumnValue(ResultSet resultSet, String columnName) throws SQLException {

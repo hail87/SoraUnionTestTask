@@ -1,17 +1,18 @@
 package statystech.aqaframework.steps.DBsteps;
 
-import statystech.aqaframework.TableObjects.ordersTable;
-import statystech.aqaframework.TableObjects.shippingAddressTable;
+import statystech.aqaframework.TableObjects.OrdersTable;
+import statystech.aqaframework.TableObjects.ShippingAddressTable;
+import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
 import java.sql.SQLException;
 
 public class ShippingAddressSteps extends Steps {
 
-    public String checkShippingAddress() throws SQLException {
-        shippingAddressTable shippingAddressTable = new shippingAddressTable();
+    public String checkShippingAddressTable() throws SQLException {
+        ShippingAddressTable shippingAddressTable = new ShippingAddressTable();
         StringBuilder errorMessage = new StringBuilder();
-        int shippingAddressID = new ordersTable().getShippingAddressIDValue();
+        int shippingAddressID = new OrdersTable().getShippingAddressIDValue();
         errorMessage.append(verifyExpectedResults(
                 shippingAddressTable.getJsonAndTableValue(shippingAddressID, "shipping_address", "address_line_1")));
         errorMessage.append(verifyExpectedResults(
@@ -22,7 +23,25 @@ public class ShippingAddressSteps extends Steps {
                 shippingAddressTable.getJsonAndTableValue(shippingAddressID, "shipping_address", "country")));
         errorMessage.append(verifyExpectedResults(
                 shippingAddressTable.getJsonAndTableValue(shippingAddressID, "shipping_address", "address_type")));
+        errorMessage.append(verifyExpectedResults(
+                shippingAddressTable.getJsonAndTableValue(shippingAddressID, "shipping_address", "first_name")));
+        errorMessage.append(verifyExpectedResults(
+                shippingAddressTable.getJsonAndTableValue(shippingAddressID, "shipping_address", "last_name")));
+        errorMessage.append(checkPhoneNumber());
+        errorMessage.append(checkPostalCode());
 
         return errorMessage.toString();
+    }
+
+    private String checkPhoneNumber() throws SQLException {
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValue("phoneNumber1");
+        String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
+        return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
+    }
+
+    private String checkPostalCode() throws SQLException {
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValue("postalCode");
+        String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("zip").toString().replace("\"", "");
+        return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 }

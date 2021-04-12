@@ -31,6 +31,7 @@ public class JsonUtils {
     }
 
     public void loadJsonObjectToTestContext(JsonObject jsonObject){
+
         TestContext.JSON_OBJECT = jsonObject;
     }
 

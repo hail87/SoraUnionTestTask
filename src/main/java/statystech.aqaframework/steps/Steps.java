@@ -23,4 +23,16 @@ public abstract class Steps {
         }
     }
 
+    public String verifyExpectedResults(String actualResult, String expectedResult) {
+        if (actualResult.equalsIgnoreCase(expectedResult)) {
+            logger.info(String.format("jsonValue '%s' and tableValue '%s' are the same", expectedResult, actualResult));
+            return "";
+        } else {
+            String message = "jsonValue and tableValue are NOT the same!\nActual: '"
+                    + actualResult + "'\nExpected: '" + expectedResult + "'";
+            logger.info(message);
+            return message;
+        }
+    }
+
 }

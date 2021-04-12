@@ -2,6 +2,7 @@ package statystech.aqaframework.DB;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import statystech.aqaframework.steps.APIsteps.StageOrderApiSteps;
 import statystech.aqaframework.steps.DBsteps.*;
 
 import java.io.IOException;
@@ -20,16 +21,16 @@ public class DBtests {
         CommonDbSteps dBsteps = new CommonDbSteps();
         dBsteps.connectDB();
         int id = stageOrderSteps.insertJsonToStageOrderTable(jsonFilename);
-        //errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
-//        errorMessage.append(new StageOrderSteps().checkStatusColumn(id));
-//        errorMessage.append(new OrdersTableSteps().checkOrderID());
-      //  errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
-//        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
-//        errorMessage.append(new ProductSteps().checkProduct());
-//        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
+        errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
+        errorMessage.append(new StageOrderSteps().checkStatusColumn(id));
+        errorMessage.append(new OrdersSteps().checkOrderID());
+        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
+        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
+        errorMessage.append(new ProductSteps().checkProduct());
+        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
         errorMessage.append(new OrderLineSteps().checkOrderLineTable());
-//        errorMessage.append();
-//        errorMessage.append();
+        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable()); //bug with encription found, the value at the DB is without unicode
+        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 

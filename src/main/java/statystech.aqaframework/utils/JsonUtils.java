@@ -6,7 +6,7 @@ import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.TestContext;
-import statystech.aqaframework.steps.DBsteps.OrdersTableSteps;
+import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class JsonUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrdersTableSteps.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrdersSteps.class);
 
     public JsonObject getJsonObject(String jsonFilename) {
         JsonObject jsonObject = new JsonObject();

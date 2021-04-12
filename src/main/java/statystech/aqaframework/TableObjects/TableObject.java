@@ -57,10 +57,30 @@ public abstract class TableObject {
         return Map.of("jsonValue", jsonValue, "tableValue", tableValue);
     }
 
+    public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1) throws SQLException {
+        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
+        String tableName = fullTableName[fullTableName.length - 1];
+        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+
+        String jsonValue = TestContext.JSON_OBJECT.get(jsonNodeKey1).
+                    toString().replace("\"", "");
+        String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey1);
+        columnName = Introspector.decapitalize(columnName);
+        String tableValue = new DBUtils().executeAndReturnString(String.format(
+                "select %s from %s where %s.%s = %d", columnName, tableName, tableName, getFirstColumnName(tableName), primaryID));
+        return Map.of("jsonValue", jsonValue, "tableValue", tableValue);
+    }
+
     private String getFirstColumnName(String tableName) throws SQLException {
         ResultSet rs = new DBUtils().execute("show columns from " + tableName);
         rs.next();
         return rs.getString(1);
+    }
+
+    protected ResultSet getProperRow(String tableName, String id) throws SQLException {
+        ResultSet rs = new DBUtils().execute(String.format("select * from %s where %sID = %d", tableName, id));
+        rs.next();
+        return rs;
     }
 
 }

@@ -7,9 +7,9 @@ import statystech.aqaframework.common.TestContext;
 
 import java.sql.SQLException;
 
-public class OrdersTableSteps {
+public class OrdersSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrdersTableSteps.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrdersSteps.class);
 
     public String checkOrderID() throws SQLException {
         String expectedOrderID = TestContext.JSON_OBJECT.get("order_id").toString();

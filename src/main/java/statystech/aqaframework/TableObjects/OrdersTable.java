@@ -19,4 +19,8 @@ public class OrdersTable extends TableObject {
     public int getShippingAddressIDValue() throws SQLException {
         return Integer.parseInt(new DBUtils().select(TABLE_NAME,  "shippingAddressID"));
     }
+
+    public int getShopperGroupIDValue() throws SQLException {
+        return Integer.parseInt(new DBUtils().select(TABLE_NAME,  "shopperGroupID"));
+    }
 }

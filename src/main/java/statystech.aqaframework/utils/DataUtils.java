@@ -24,15 +24,22 @@ public class DataUtils {
         return prop.getProperty(propertyName);
     }
 
-    public static String getValueFromJSON(String node, String key){
+    public static String getValueFromJSON(String node, String child) {
         String jsonValue = "";
         try {
-            jsonValue = TestContext.JSON_OBJECT.getAsJsonObject(node).get(key).
+            jsonValue = TestContext.JSON_OBJECT.getAsJsonObject(node).get(child).
                     toString().replace("\"", "");
         } catch (ClassCastException e) {
-            jsonValue = TestContext.JSON_OBJECT.getAsJsonArray(node).get(0).getAsJsonObject().get(key)
+            jsonValue = TestContext.JSON_OBJECT.getAsJsonArray(node).get(0).getAsJsonObject().get(child)
                     .toString().replace("\"", "");
         }
+        return jsonValue;
+    }
+
+    public static String getValueFromJSON(String key) {
+        String jsonValue = "";
+        jsonValue = TestContext.JSON_OBJECT.get(key).toString().replace("\"", "");
+
         return jsonValue;
     }
 

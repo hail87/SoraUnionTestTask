@@ -18,7 +18,7 @@ public abstract class Steps {
         } else {
             String message = "jsonValue and tableValue are NOT the same!\nActual: '"
                     + actualResult + "'\nExpected: '" + expectedResult + "'";
-            logger.info(message);
+            logger.error(message);
             return message;
         }
     }

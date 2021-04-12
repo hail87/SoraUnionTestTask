@@ -23,14 +23,14 @@ public class DBtests {
         int id = stageOrderSteps.insertJsonToStageOrderTable(jsonFilename);
         errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
         errorMessage.append(new StageOrderSteps().checkStatusColumn(id));
-        errorMessage.append(new OrdersSteps().checkOrderID());
-        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
-        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
-        errorMessage.append(new ProductSteps().checkProduct());
-        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
-        errorMessage.append(new OrderLineSteps().checkOrderLineTable());
-        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable()); //bug with encription found, the value at the DB is without unicode
-        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
+        errorMessage.append(new OrdersSteps().checkOrdersTable());
+//        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
+//        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
+//        errorMessage.append(new ProductSteps().checkProduct());
+//        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
+//        errorMessage.append(new OrderLineSteps().checkOrderLineTable());
+//        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable()); //bug with encription found, the value at the DB is without unicode
+//        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 

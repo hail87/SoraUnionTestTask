@@ -1,14 +1,13 @@
 package statystech.aqaframework.TableObjects;
 
-
 import statystech.aqaframework.utils.DBUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ShippingAddressTable extends TableObject {
+public class BuyerTable extends TableObject {
 
-    private final String TABLE_NAME = "shippingAddress";
+    private final String TABLE_NAME = "buyer";
 
     public String getColumnValue (String columnName) throws SQLException {
         return getLastRow(TABLE_NAME).getString(columnName);

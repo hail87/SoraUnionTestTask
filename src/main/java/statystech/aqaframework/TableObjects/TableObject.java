@@ -34,7 +34,15 @@ public abstract class TableObject {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];
         tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-        String jsonValue = TestContext.JSON_OBJECT.getAsJsonObject(jsonNodeKey1).get(jsonNodeKey2).toString().replace("\"", "");
+
+        String jsonValue = "";
+        try {
+            jsonValue = TestContext.JSON_OBJECT.getAsJsonObject(jsonNodeKey1).get(jsonNodeKey2).
+                    toString().replace("\"", "");
+        } catch (ClassCastException e) {
+            jsonValue = TestContext.JSON_OBJECT.getAsJsonArray(jsonNodeKey1).get(0).getAsJsonObject().get(jsonNodeKey2)
+                    .toString().replace("\"", "");
+        }
         String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey2);
         columnName = Introspector.decapitalize(columnName);
         String tableValue = new DBUtils().executeAndReturnString(String.format(

@@ -1,14 +1,14 @@
 package statystech.aqaframework.TableObjects;
 
-
+import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.utils.DBUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ShippingAddressTable extends TableObject {
+public class ProductTable extends TableObject{
 
-    private final String TABLE_NAME = "shippingAddress";
+    private final String TABLE_NAME = "product";
 
     public String getColumnValue (String columnName) throws SQLException {
         return getLastRow(TABLE_NAME).getString(columnName);
@@ -21,4 +21,10 @@ public class ShippingAddressTable extends TableObject {
         return rs;
     }
 
+    public int getProductIDbyProductAllSysID(String productAllSysID) throws SQLException {
+        return Integer.parseInt(
+                new DBUtils().executeAndReturnString(String.format(
+                        "select %sID from %s where %s = %s", TABLE_NAME, TABLE_NAME,"productAllSysID",productAllSysID))
+        );
+    }
 }

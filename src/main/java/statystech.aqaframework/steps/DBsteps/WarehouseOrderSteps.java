@@ -1,6 +1,5 @@
 package statystech.aqaframework.steps.DBsteps;
 
-import org.hamcrest.Condition;
 import statystech.aqaframework.TableObjects.WarehouseOrderTable;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DataUtils;
@@ -10,12 +9,9 @@ import java.sql.SQLException;
 public class WarehouseOrderSteps extends Steps {
 
     public String checkWarehouseOrderTable() throws SQLException {
-        WarehouseOrderTable WarehouseOrderTable = new WarehouseOrderTable();
         StringBuilder errorMessage = new StringBuilder();
-//        int orderLineID = WarehouseOrderTable.getPrimaryID();
-//        errorMessage.append(verifyExpectedResults(
-//                WarehouseOrderTable.getJsonAndTableValue(orderLineID, "order_items", "product_name")));
         errorMessage.append(checkComments());
+        errorMessage.append(checkQuantity());
         return errorMessage.toString();
     }
 

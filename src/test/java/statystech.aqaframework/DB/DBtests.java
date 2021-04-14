@@ -24,6 +24,7 @@ public class DBtests {
         errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
         errorMessage.append(new StageOrderSteps().checkStatusColumn(id));
         errorMessage.append(new OrdersSteps().checkOrdersTable());
+
 //        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
 //        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
 //        errorMessage.append(new ProductSteps().checkProduct());

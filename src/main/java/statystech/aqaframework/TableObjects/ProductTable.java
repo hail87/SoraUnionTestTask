@@ -1,6 +1,5 @@
 package statystech.aqaframework.TableObjects;
 
-import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.utils.DBUtils;
 
 import java.sql.ResultSet;

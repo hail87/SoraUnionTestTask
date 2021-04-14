@@ -31,10 +31,49 @@ public abstract class TableObject {
         return resultSet.getString(columnName);
     }
 
-    public String getTableName() {
+//    @Deprecated
+//    public String getTableName() {
+//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
+//        String tableName = fullTableName[fullTableName.length - 1];
+//        return Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+//    }
+
+    public String getColumnValue (String columnName) throws SQLException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];
-        return Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+        return getLastRow(tableName).getString(columnName);
+    }
+
+    public String getColumnValue (int primaryID, String columnName) throws SQLException {
+        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
+        String tableName = fullTableName[fullTableName.length - 1];
+        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+        return getProperRow(tableName, primaryID).getString(columnName);
+    }
+
+    protected ResultSet getLastRow(String tableName) throws SQLException {
+        ResultSet rs = new DBUtils().execute(String.format(
+                "select * from %s where %sID = %d", tableName, tableName, getPrimaryID()));
+        rs.next();
+        return rs;
+    }
+
+    protected ResultSet getProperRow(String tableName, int id) throws SQLException {
+        ResultSet rs = new DBUtils().execute(String.format(
+                "select * from %s where %sID = %d", tableName, tableName, id));
+        rs.next();
+        return rs;
+    }
+
+    public int getProductIDbyProductAllSysID(String productAllSysID) throws SQLException {
+        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
+        String tableName = fullTableName[fullTableName.length - 1];
+        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+        return Integer.parseInt(
+                new DBUtils().executeAndReturnString(String.format(
+                        "select %sID from %s where %s = %s", tableName, tableName,"productAllSysID", productAllSysID))
+        );
     }
 
     public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1, String jsonNodeKey2) throws SQLException {
@@ -75,12 +114,6 @@ public abstract class TableObject {
         ResultSet rs = new DBUtils().execute("show columns from " + tableName);
         rs.next();
         return rs.getString(1);
-    }
-
-    protected ResultSet getProperRow(String tableName, String id) throws SQLException {
-        ResultSet rs = new DBUtils().execute(String.format("select * from %s where %sID = %d", tableName, id));
-        rs.next();
-        return rs;
     }
 
 }

@@ -3,7 +3,6 @@ package statystech.aqaframework.steps.DBsteps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.OrdersTable;
-import statystech.aqaframework.TableObjects.OrdersTable;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DataUtils;
@@ -21,6 +20,8 @@ public class OrdersSteps extends Steps {
         errorMessage.append(verifyExpectedResults(
                 ordersTable.getJsonAndTableValue(orderLineID, "order_date")));
         errorMessage.append(checkOrderID());
+        errorMessage.append(checkCurrency());
+        errorMessage.append(checkCurrencyConversion());
         return errorMessage.toString();
     }
 
@@ -39,9 +40,15 @@ public class OrdersSteps extends Steps {
         }
     }
 
-//    private String checkComments() throws SQLException {
-//        String actualComments = new OrdersTable().getColumnValue("comments");
-//        String expectedComments = DataUtils.getValueFromJSON("shipping_notes");
-//        return verifyExpectedResults(actualComments, expectedComments);
-//    }
+    private String checkCurrency() throws SQLException {
+        String actualComments = new OrdersTable().getCurrencyValue();
+        String expectedComments = DataUtils.getValueFromJSON("order_currency");
+        return verifyExpectedResults(actualComments, expectedComments);
+    }
+
+    private String checkCurrencyConversion() throws SQLException {
+        String actualComments = new OrdersTable().getCurrencyConversionValue();
+        String expectedComments = DataUtils.getValueFromJSON("currency_conversion");
+        return verifyExpectedResults(actualComments, expectedComments);
+    }
 }

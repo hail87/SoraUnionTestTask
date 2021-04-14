@@ -40,8 +40,8 @@ public class DBtests {
 //        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
         JsonUtils.makeProductObjectsFromJson();
         for (Product product : TestContext.products) {
+            errorMessage.append(new ProductSteps().checkProduct(product));
             errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
-            errorMessage.append(new ProductSteps().checkProduct());
         }
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

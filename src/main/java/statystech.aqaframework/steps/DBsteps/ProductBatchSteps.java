@@ -11,6 +11,10 @@ import java.sql.SQLException;
 public class ProductBatchSteps extends Steps {
 
     public String checkBatchNumber(Product product) throws SQLException {
+
+        if (product.getProductID() == 0) {
+            return "Should run checkProduct() first!\n";
+        }
         ProductBatchTable productBatchTable = new ProductBatchTable();
         String actualPhoneNumber = productBatchTable.getColumnValue(
                 productBatchTable.getPrimaryID(

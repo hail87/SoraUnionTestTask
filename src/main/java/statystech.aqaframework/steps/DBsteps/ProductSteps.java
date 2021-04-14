@@ -5,20 +5,19 @@ import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
-import statystech.aqaframework.utils.JsonUtils;
 
 import java.sql.SQLException;
 
 public class ProductSteps extends Steps {
 
-    public String checkProduct() throws SQLException {
+    public String checkProduct(Product product) throws SQLException {
         ProductTable productTable = new ProductTable();
         StringBuilder errorMessage = new StringBuilder();
-        int productID = productTable.getProductIDbyProductAllSysID(getProductDetailsValueFromJSON("product_id"));
+        int productID = new ProductTable().getProductIDbyProductAllSysID(String.valueOf(product.getProductAllSysID()));
+        product.setProductID(productID);
         errorMessage.append(verifyExpectedResults(
                 productTable.getJsonAndTableValue(productID, "order_items", "product_name")));
-//TODO: make a cycle for all product in json
-        errorMessage.append(checkSKU());
+        errorMessage.append(checkSKU(product));
         return errorMessage.toString();
     }
 
@@ -27,9 +26,9 @@ public class ProductSteps extends Steps {
                 .toString().replace("\"", "");
     }
 
-    private String checkSKU() throws SQLException {
+    private String checkSKU(Product product) throws SQLException {
         String actualPhoneNumber = new ProductTable().getColumnValue("productSku");
-        String expectedPhoneNumber = getProductDetailsValueFromJSON("SKU");
+        String expectedPhoneNumber = product.getProductSKU();
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 

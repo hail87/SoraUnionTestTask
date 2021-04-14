@@ -91,8 +91,10 @@ public class JsonUtils {
             Product product = new Product();
             String productAllSysID = jsonObject.get("product_id").toString().replace("\"", "");;
             product.setProductAllSysID(Integer.parseInt(productAllSysID));
-            product.setProductID(new ProductTable().getProductIDbyProductAllSysID(productAllSysID));
             product.setProductName(jsonObject.get("product_name").toString().replace("\"", ""));
+            product.setProductSKU(jsonObject.get("SKU").toString().replace("\"", ""));
+            product.setProductItemPrice(jsonObject.get("product_item_price").toString().replace("\"", ""));
+            product.setProductQuantity(jsonObject.get("product_quantity").toString().replace("\"", ""));
             product.setBatchNumber(jsonObject.getAsJsonArray("ff_centers").get(0).getAsJsonObject()
                     .getAsJsonArray("batches").get(0)
                     .getAsJsonObject().get("number").toString().replace("\"", ""));

@@ -9,6 +9,9 @@ public class Product {
     int productID;
     int productAllSysID;
     String productName;
-    String productSku;
+    String productSKU;
     String batchNumber;
+    String productItemPrice;
+    String productQuantity;
+
 }

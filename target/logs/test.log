@@ -6753,3 +6753,228 @@ jsonValue 'C6518C3' and tableValue 'C6518C3' are the same
 
 14-04-2021 22:00:17 INFO  DBUtils:382 - !!!Row with id [99] has been deleted!!!
 14-04-2021 22:00:17 INFO  DBUtils:382 - Connection is closed
+14-04-2021 22:11:09 INFO  ConnectionDB:382 - DB connected!
+14-04-2021 22:11:09 INFO  StageOrderSteps:382 - Data Base connected!
+14-04-2021 22:11:09 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+14-04-2021 22:11:09 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+14-04-2021 22:11:09 INFO  ApiRestUtils:382 - Triggering order processing at the SandBox
+14-04-2021 22:11:11 DEBUG BasicClientConnectionManager:161 - Get connection for route {}->http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+14-04-2021 22:11:11 DEBUG DefaultClientConnectionOperator:177 - Connecting to 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+14-04-2021 22:11:11 DEBUG RequestAddCookies:123 - CookieSpec selected: ignoreCookies
+14-04-2021 22:11:11 DEBUG RequestAuthCache:77 - Auth cache not set in the context
+14-04-2021 22:11:11 DEBUG RequestTargetAuthentication:80 - Target auth state: UNCHALLENGED
+14-04-2021 22:11:11 DEBUG RequestProxyAuthentication:89 - Proxy auth state: UNCHALLENGED
+14-04-2021 22:11:11 DEBUG DefaultHttpClient:682 - Attempt 1 to execute request
+14-04-2021 22:11:11 DEBUG DefaultClientConnection:274 - Sending request: GET /start HTTP/1.1
+14-04-2021 22:11:11 DEBUG wire:73 -  >> "GET /start HTTP/1.1[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  >> "Accept: */*[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  >> "Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  >> "Connection: Keep-Alive[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  >> "User-Agent: Apache-HttpClient/4.5.3 (Java/16)[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  >> "Accept-Encoding: gzip,deflate[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  >> "[\r][\n]"
+14-04-2021 22:11:11 DEBUG headers:278 - >> GET /start HTTP/1.1
+14-04-2021 22:11:11 DEBUG headers:281 - >> Accept: */*
+14-04-2021 22:11:11 DEBUG headers:281 - >> Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com
+14-04-2021 22:11:11 DEBUG headers:281 - >> Connection: Keep-Alive
+14-04-2021 22:11:11 DEBUG headers:281 - >> User-Agent: Apache-HttpClient/4.5.3 (Java/16)
+14-04-2021 22:11:11 DEBUG headers:281 - >> Accept-Encoding: gzip,deflate
+14-04-2021 22:11:11 DEBUG wire:73 -  << "HTTP/1.1 200 [\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  << "Date: Wed, 14 Apr 2021 19:11:11 GMT[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  << "Content-Type: text/plain;charset=UTF-8[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  << "Content-Length: 24[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  << "Connection: keep-alive[\r][\n]"
+14-04-2021 22:11:11 DEBUG wire:73 -  << "[\r][\n]"
+14-04-2021 22:11:11 DEBUG DefaultClientConnection:259 - Receiving response: HTTP/1.1 200 
+14-04-2021 22:11:11 DEBUG headers:262 - << HTTP/1.1 200 
+14-04-2021 22:11:11 DEBUG headers:265 - << Date: Wed, 14 Apr 2021 19:11:11 GMT
+14-04-2021 22:11:11 DEBUG headers:265 - << Content-Type: text/plain;charset=UTF-8
+14-04-2021 22:11:11 DEBUG headers:265 - << Content-Length: 24
+14-04-2021 22:11:11 DEBUG headers:265 - << Connection: keep-alive
+14-04-2021 22:11:11 DEBUG DefaultHttpClient:509 - Connection can be kept alive indefinitely
+14-04-2021 22:11:11 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:545 - Parsing response as: text/plain;charset=UTF-8
+14-04-2021 22:11:11 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:548 - Parsed data to instance of: class org.apache.http.conn.EofSensorInputStream
+14-04-2021 22:11:11 INFO  ApiRestUtils:382 - Get request have been sent. Response status code: 200
+14-04-2021 22:11:11 INFO  ApiRestUtils:382 - Status code: 200
+14-04-2021 22:11:11 INFO  DBUtils:382 - Query:
+SELECT status FROM stageOrder WHERE stageOrderID = 100
+has been executed
+14-04-2021 22:11:11 INFO  DBUtils:382 - !!!Query :
+SELECT status FROM stageOrder WHERE stageOrderID = 100
+ has been executed with result :
+C
+14-04-2021 22:11:11 INFO  OrdersSteps:382 - JSON wasn't initiated yet, initiating ...
+14-04-2021 22:11:11 INFO  DBUtils:382 - Query:
+select * from productBatch where productID = "0"
+has been executed
+14-04-2021 22:12:20 INFO  ConnectionDB:382 - DB connected!
+14-04-2021 22:12:20 INFO  StageOrderSteps:382 - Data Base connected!
+14-04-2021 22:12:20 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+14-04-2021 22:12:21 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+14-04-2021 22:12:21 INFO  ApiRestUtils:382 - Triggering order processing at the SandBox
+14-04-2021 22:14:14 INFO  ConnectionDB:382 - DB connected!
+14-04-2021 22:14:14 INFO  StageOrderSteps:382 - Data Base connected!
+14-04-2021 22:14:14 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+14-04-2021 22:14:14 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+14-04-2021 22:14:14 INFO  ApiRestUtils:382 - Triggering order processing at the SandBox
+14-04-2021 22:14:15 DEBUG BasicClientConnectionManager:161 - Get connection for route {}->http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+14-04-2021 22:14:15 DEBUG DefaultClientConnectionOperator:177 - Connecting to 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+14-04-2021 22:14:15 DEBUG RequestAddCookies:123 - CookieSpec selected: ignoreCookies
+14-04-2021 22:14:15 DEBUG RequestAuthCache:77 - Auth cache not set in the context
+14-04-2021 22:14:15 DEBUG RequestTargetAuthentication:80 - Target auth state: UNCHALLENGED
+14-04-2021 22:14:15 DEBUG RequestProxyAuthentication:89 - Proxy auth state: UNCHALLENGED
+14-04-2021 22:14:15 DEBUG DefaultHttpClient:682 - Attempt 1 to execute request
+14-04-2021 22:14:15 DEBUG DefaultClientConnection:274 - Sending request: GET /start HTTP/1.1
+14-04-2021 22:14:15 DEBUG wire:73 -  >> "GET /start HTTP/1.1[\r][\n]"
+14-04-2021 22:14:15 DEBUG wire:73 -  >> "Accept: */*[\r][\n]"
+14-04-2021 22:14:15 DEBUG wire:73 -  >> "Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com[\r][\n]"
+14-04-2021 22:14:15 DEBUG wire:73 -  >> "Connection: Keep-Alive[\r][\n]"
+14-04-2021 22:14:15 DEBUG wire:73 -  >> "User-Agent: Apache-HttpClient/4.5.3 (Java/16)[\r][\n]"
+14-04-2021 22:14:15 DEBUG wire:73 -  >> "Accept-Encoding: gzip,deflate[\r][\n]"
+14-04-2021 22:14:15 DEBUG wire:73 -  >> "[\r][\n]"
+14-04-2021 22:14:15 DEBUG headers:278 - >> GET /start HTTP/1.1
+14-04-2021 22:14:15 DEBUG headers:281 - >> Accept: */*
+14-04-2021 22:14:15 DEBUG headers:281 - >> Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com
+14-04-2021 22:14:15 DEBUG headers:281 - >> Connection: Keep-Alive
+14-04-2021 22:14:15 DEBUG headers:281 - >> User-Agent: Apache-HttpClient/4.5.3 (Java/16)
+14-04-2021 22:14:15 DEBUG headers:281 - >> Accept-Encoding: gzip,deflate
+14-04-2021 22:14:16 DEBUG wire:73 -  << "HTTP/1.1 200 [\r][\n]"
+14-04-2021 22:14:16 DEBUG wire:73 -  << "Date: Wed, 14 Apr 2021 19:14:16 GMT[\r][\n]"
+14-04-2021 22:14:16 DEBUG wire:73 -  << "Content-Type: text/plain;charset=UTF-8[\r][\n]"
+14-04-2021 22:14:16 DEBUG wire:73 -  << "Content-Length: 24[\r][\n]"
+14-04-2021 22:14:16 DEBUG wire:73 -  << "Connection: keep-alive[\r][\n]"
+14-04-2021 22:14:16 DEBUG wire:73 -  << "[\r][\n]"
+14-04-2021 22:14:16 DEBUG DefaultClientConnection:259 - Receiving response: HTTP/1.1 200 
+14-04-2021 22:14:16 DEBUG headers:262 - << HTTP/1.1 200 
+14-04-2021 22:14:16 DEBUG headers:265 - << Date: Wed, 14 Apr 2021 19:14:16 GMT
+14-04-2021 22:14:16 DEBUG headers:265 - << Content-Type: text/plain;charset=UTF-8
+14-04-2021 22:14:16 DEBUG headers:265 - << Content-Length: 24
+14-04-2021 22:14:16 DEBUG headers:265 - << Connection: keep-alive
+14-04-2021 22:14:16 DEBUG DefaultHttpClient:509 - Connection can be kept alive indefinitely
+14-04-2021 22:14:16 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:545 - Parsing response as: text/plain;charset=UTF-8
+14-04-2021 22:14:16 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:548 - Parsed data to instance of: class org.apache.http.conn.EofSensorInputStream
+14-04-2021 22:14:16 INFO  ApiRestUtils:382 - Get request have been sent. Response status code: 200
+14-04-2021 22:14:16 INFO  ApiRestUtils:382 - Status code: 200
+14-04-2021 22:14:16 INFO  DBUtils:382 - Query:
+SELECT status FROM stageOrder WHERE stageOrderID = 102
+has been executed
+14-04-2021 22:14:16 INFO  DBUtils:382 - !!!Query :
+SELECT status FROM stageOrder WHERE stageOrderID = 102
+ has been executed with result :
+C
+14-04-2021 22:14:16 INFO  OrdersSteps:382 - JSON wasn't initiated yet, initiating ...
+14-04-2021 22:14:16 INFO  DBUtils:382 - Query:
+select productID from product where productAllSysID = 81455
+has been executed
+14-04-2021 22:14:16 INFO  DBUtils:382 - Query:
+show columns from product
+has been executed
+14-04-2021 22:14:16 INFO  DBUtils:382 - Query:
+select productName from product where product.productID = 7
+has been executed
+14-04-2021 22:14:16 INFO  Steps:382 - 
+jsonValue 'BOTOX® 100 Units' and tableValue 'BOTOX® 100 Units' are the same
+
+14-04-2021 22:14:16 INFO  DBUtils:382 - Query:
+SELECT * FROM product ORDER by createdDate DESC LIMIT 1
+has been executed
+14-04-2021 22:14:16 INFO  DBUtils:382 - Query:
+select * from product where productID = 7
+has been executed
+14-04-2021 22:14:16 INFO  Steps:382 - 
+jsonValue and tableValue are NOT the same!
+Actual: 'Botox 100IU1'
+Expected: 'null'
+
+14-04-2021 22:14:16 INFO  DBUtils:382 - Query:
+select * from productBatch where productID = "7"
+has been executed
+14-04-2021 22:14:17 INFO  DBUtils:382 - Query:
+select * from productBatch where productBatchID = 3
+has been executed
+14-04-2021 22:14:17 INFO  Steps:382 - 
+jsonValue 'C6518C3' and tableValue 'C6518C3' are the same
+
+14-04-2021 22:19:06 INFO  ConnectionDB:382 - DB connected!
+14-04-2021 22:19:06 INFO  StageOrderSteps:382 - Data Base connected!
+14-04-2021 22:19:06 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+14-04-2021 22:19:07 INFO  DBUtils:382 - SQL request was executed: {"order_id":"1000100","user_id":"d5d296491c9945206c9806960a629b4a","order_status":"Confirmed","replacement_order_id":"0","seller_id":"5bdb44bcb9997568282256c069a31f58","seller_username":"csrsite369","csr_assigned_id":"8e72d8dd4ed63a44fa762eddf22c11ff","csr_assigned_username":"csrukrh","billing_address":{"user_info_id":"771984","address_type":"BT","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hollywood","zip":"33021","address_line_1":"140 S dixie Hwy","address_line_2":"apt. 37","company":"","phone_1":"6472368232","phone_2":null},"shipping_address":{"user_info_id":"772746","address_type":"ST","title":"","first_name":"G****a","middle_name":"","last_name":"G****a","country":"UNITED STATES","state":"Florida","city":"Hallandale Beach","zip":"33009","address_line_1":"645 W hallandale beach Blvd","address_line_2":"#1901","company":"","phone_1":"6472368232","phone_2":null},"order_date":"2021-03-25","shipped_at":null,"delivered_at":null,"order_items":[{"order_item_id":"1803543","product_id":"81455","product_name":"BOTOX\\u00ae 100 Units","product_quantity":"1","product_item_price":"399.00","SKU":"Botox 100IU1","ff_centers":[{"ff_center_id":"161","ff_center_name":"Iberianium","assigned_qty":"1","batches":[{"qty":"1","number":"C6518C3","ff_center_id":"161"}]}]}],"website_name":"fillersupplies.com","shopper_group_name":"Filler Supplies Licensed","account_number":"408532","order_currency":"USD","currency_conversion":"1.00","shipping_notes":"Use UPS or Parcel Force as per customer, thank you!\\r\\nDo NOT use DHL!"}
+14-04-2021 22:19:07 INFO  ApiRestUtils:382 - Triggering order processing at the SandBox
+14-04-2021 22:19:08 DEBUG BasicClientConnectionManager:161 - Get connection for route {}->http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+14-04-2021 22:19:08 DEBUG DefaultClientConnectionOperator:177 - Connecting to 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+14-04-2021 22:19:08 DEBUG RequestAddCookies:123 - CookieSpec selected: ignoreCookies
+14-04-2021 22:19:08 DEBUG RequestAuthCache:77 - Auth cache not set in the context
+14-04-2021 22:19:08 DEBUG RequestTargetAuthentication:80 - Target auth state: UNCHALLENGED
+14-04-2021 22:19:08 DEBUG RequestProxyAuthentication:89 - Proxy auth state: UNCHALLENGED
+14-04-2021 22:19:08 DEBUG DefaultHttpClient:682 - Attempt 1 to execute request
+14-04-2021 22:19:08 DEBUG DefaultClientConnection:274 - Sending request: GET /start HTTP/1.1
+14-04-2021 22:19:08 DEBUG wire:73 -  >> "GET /start HTTP/1.1[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  >> "Accept: */*[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  >> "Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  >> "Connection: Keep-Alive[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  >> "User-Agent: Apache-HttpClient/4.5.3 (Java/16)[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  >> "Accept-Encoding: gzip,deflate[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  >> "[\r][\n]"
+14-04-2021 22:19:08 DEBUG headers:278 - >> GET /start HTTP/1.1
+14-04-2021 22:19:08 DEBUG headers:281 - >> Accept: */*
+14-04-2021 22:19:08 DEBUG headers:281 - >> Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com
+14-04-2021 22:19:08 DEBUG headers:281 - >> Connection: Keep-Alive
+14-04-2021 22:19:08 DEBUG headers:281 - >> User-Agent: Apache-HttpClient/4.5.3 (Java/16)
+14-04-2021 22:19:08 DEBUG headers:281 - >> Accept-Encoding: gzip,deflate
+14-04-2021 22:19:08 DEBUG wire:73 -  << "HTTP/1.1 200 [\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  << "Date: Wed, 14 Apr 2021 19:19:08 GMT[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  << "Content-Type: text/plain;charset=UTF-8[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  << "Content-Length: 24[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  << "Connection: keep-alive[\r][\n]"
+14-04-2021 22:19:08 DEBUG wire:73 -  << "[\r][\n]"
+14-04-2021 22:19:08 DEBUG DefaultClientConnection:259 - Receiving response: HTTP/1.1 200 
+14-04-2021 22:19:08 DEBUG headers:262 - << HTTP/1.1 200 
+14-04-2021 22:19:08 DEBUG headers:265 - << Date: Wed, 14 Apr 2021 19:19:08 GMT
+14-04-2021 22:19:08 DEBUG headers:265 - << Content-Type: text/plain;charset=UTF-8
+14-04-2021 22:19:08 DEBUG headers:265 - << Content-Length: 24
+14-04-2021 22:19:08 DEBUG headers:265 - << Connection: keep-alive
+14-04-2021 22:19:08 DEBUG DefaultHttpClient:509 - Connection can be kept alive indefinitely
+14-04-2021 22:19:08 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:545 - Parsing response as: text/plain;charset=UTF-8
+14-04-2021 22:19:08 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:548 - Parsed data to instance of: class org.apache.http.conn.EofSensorInputStream
+14-04-2021 22:19:08 INFO  ApiRestUtils:382 - Get request have been sent. Response status code: 200
+14-04-2021 22:19:08 INFO  ApiRestUtils:382 - Status code: 200
+14-04-2021 22:19:08 INFO  DBUtils:382 - Query:
+SELECT status FROM stageOrder WHERE stageOrderID = 103
+has been executed
+14-04-2021 22:19:08 INFO  DBUtils:382 - !!!Query :
+SELECT status FROM stageOrder WHERE stageOrderID = 103
+ has been executed with result :
+C
+14-04-2021 22:19:08 INFO  OrdersSteps:382 - JSON wasn't initiated yet, initiating ...
+14-04-2021 22:19:08 INFO  DBUtils:382 - Query:
+select productID from product where productAllSysID = 81455
+has been executed
+14-04-2021 22:19:09 INFO  DBUtils:382 - Query:
+show columns from product
+has been executed
+14-04-2021 22:19:09 INFO  DBUtils:382 - Query:
+select productName from product where product.productID = 7
+has been executed
+14-04-2021 22:19:09 INFO  Steps:382 - 
+jsonValue 'BOTOX® 100 Units' and tableValue 'BOTOX® 100 Units' are the same
+
+14-04-2021 22:19:09 INFO  DBUtils:382 - Query:
+SELECT * FROM product ORDER by createdDate DESC LIMIT 1
+has been executed
+14-04-2021 22:19:09 INFO  DBUtils:382 - Query:
+select * from product where productID = 7
+has been executed
+14-04-2021 22:19:09 INFO  Steps:382 - 
+jsonValue 'Botox 100IU1' and tableValue 'Botox 100IU1' are the same
+
+14-04-2021 22:19:09 INFO  DBUtils:382 - Query:
+select * from productBatch where productID = "7"
+has been executed
+14-04-2021 22:19:09 INFO  DBUtils:382 - Query:
+select * from productBatch where productBatchID = 3
+has been executed
+14-04-2021 22:19:09 INFO  Steps:382 - 
+jsonValue 'C6518C3' and tableValue 'C6518C3' are the same
+
+14-04-2021 22:19:09 INFO  DBUtils:382 - !!!Row with id [103] has been deleted!!!
+14-04-2021 22:19:09 INFO  DBUtils:382 - Connection is closed

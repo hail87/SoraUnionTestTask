@@ -1,13 +1,15 @@
 package statystech.aqaframework.TableObjects;
 
+
+
 import statystech.aqaframework.utils.DBUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BuyerTable extends TableObject {
+public class ProductBatchTable extends TableObject implements Table{
 
-    private final String TABLE_NAME = "buyer";
+    private final String TABLE_NAME = "shopperGroup";
 
     public String getColumnValue (String columnName) throws SQLException {
         return getLastRow(TABLE_NAME).getString(columnName);
@@ -19,5 +21,4 @@ public class BuyerTable extends TableObject {
         rs.next();
         return rs;
     }
-
 }

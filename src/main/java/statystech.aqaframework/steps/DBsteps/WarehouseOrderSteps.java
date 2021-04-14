@@ -1,8 +1,9 @@
 package statystech.aqaframework.steps.DBsteps;
 
+
 import statystech.aqaframework.TableObjects.WarehouseOrderTable;
 import statystech.aqaframework.steps.Steps;
-import statystech.aqaframework.utils.DataUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.sql.SQLException;
 
@@ -11,19 +12,12 @@ public class WarehouseOrderSteps extends Steps {
     public String checkWarehouseOrderTable() throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkComments());
-        errorMessage.append(checkQuantity());
         return errorMessage.toString();
     }
 
     private String checkComments() throws SQLException {
         String actualComments = new WarehouseOrderTable().getColumnValue("comments");
-        String expectedComments = DataUtils.getValueFromJSON("shipping_notes");
+        String expectedComments = JsonUtils.getValueFromJSON("shipping_notes");
         return verifyExpectedResults(actualComments, expectedComments);
-    }
-
-    private String checkQuantity() throws SQLException {
-        String actual = new WarehouseOrderTable().getColumnValue("quantity");
-        String expected = DataUtils.getValueFromJSON("order_items", "product_quantity");
-        return verifyExpectedResults(actual, expected);
     }
 }

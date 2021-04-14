@@ -13,11 +13,11 @@ public abstract class Steps {
         String expectedResult = actualAndExpected.get("jsonValue");
         String actualResult = actualAndExpected.get("tableValue");
         if (actualResult.equalsIgnoreCase(expectedResult)) {
-            logger.info(String.format("jsonValue '%s' and tableValue '%s' are the same", expectedResult, actualResult));
+            logger.info(String.format("\njsonValue '%s' and tableValue '%s' are the same\n", expectedResult, actualResult));
             return "";
         } else {
-            String message = "jsonValue and tableValue are NOT the same!\nActual: '"
-                    + actualResult + "'\nExpected: '" + expectedResult + "'";
+            String message = "\njsonValue and tableValue are NOT the same!\nActual: '"
+                    + actualResult + "'\nExpected: '" + expectedResult + "'\n";
             logger.error(message);
             return message;
         }
@@ -25,11 +25,11 @@ public abstract class Steps {
 
     public String verifyExpectedResults(String actualResult, String expectedResult) {
         if (actualResult.equalsIgnoreCase(expectedResult)) {
-            logger.info(String.format("jsonValue '%s' and tableValue '%s' are the same", expectedResult, actualResult));
+            logger.info(String.format("\njsonValue '%s' and tableValue '%s' are the same\n", expectedResult, actualResult));
             return "";
         } else {
-            String message = "jsonValue and tableValue are NOT the same!\nActual: '"
-                    + actualResult + "'\nExpected: '" + expectedResult + "'";
+            String message = "\njsonValue and tableValue are NOT the same!\nActual: '"
+                    + actualResult + "'\nExpected: '" + expectedResult + "'\n";
             logger.info(message);
             return message;
         }

@@ -1,7 +1,7 @@
 package statystech.aqaframework.steps.DBsteps;
 
+
 import statystech.aqaframework.TableObjects.BuyerTable;
-import statystech.aqaframework.TableObjects.OrdersTable;
 import statystech.aqaframework.TableObjects.ShippingAddressTable;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;

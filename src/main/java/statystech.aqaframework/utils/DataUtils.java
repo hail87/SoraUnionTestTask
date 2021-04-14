@@ -2,7 +2,6 @@ package statystech.aqaframework.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.common.TestContext;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,25 +21,6 @@ public class DataUtils {
             System.err.println("No property file found:" + propertyName);
         }
         return prop.getProperty(propertyName);
-    }
-
-    public static String getValueFromJSON(String node, String child) {
-        String jsonValue = "";
-        try {
-            jsonValue = TestContext.JSON_OBJECT.getAsJsonObject(node).get(child).
-                    toString().replace("\"", "");
-        } catch (ClassCastException e) {
-            jsonValue = TestContext.JSON_OBJECT.getAsJsonArray(node).get(0).getAsJsonObject().get(child)
-                    .toString().replace("\"", "");
-        }
-        return jsonValue;
-    }
-
-    public static String getValueFromJSON(String key) {
-        String jsonValue = "";
-        jsonValue = TestContext.JSON_OBJECT.get(key).toString().replace("\"", "");
-
-        return jsonValue;
     }
 
 }

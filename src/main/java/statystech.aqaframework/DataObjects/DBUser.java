@@ -1,8 +1,8 @@
 package statystech.aqaframework.DataObjects;
 
-import statystech.aqaframework.utils.DataUtils;
 import lombok.Getter;
 import lombok.Setter;
+import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
 

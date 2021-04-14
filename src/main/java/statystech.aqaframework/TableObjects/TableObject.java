@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-public abstract class TableObject {
+public abstract class TableObject implements Table{
 
     public int getPrimaryID() throws SQLException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");

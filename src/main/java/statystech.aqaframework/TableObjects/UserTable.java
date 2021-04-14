@@ -1,5 +1,6 @@
 package statystech.aqaframework.TableObjects;
 
+
 import statystech.aqaframework.utils.DBUtils;
 
 import java.sql.SQLException;

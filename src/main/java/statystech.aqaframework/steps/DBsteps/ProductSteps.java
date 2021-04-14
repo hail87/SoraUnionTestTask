@@ -1,9 +1,11 @@
 package statystech.aqaframework.steps.DBsteps;
 
+
+import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TableObjects.ProductTable;
-import statystech.aqaframework.TableObjects.ShippingAddressTable;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.sql.SQLException;
 
@@ -20,7 +22,7 @@ public class ProductSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String getProductDetailsValueFromJSON(String key){
+    public String getProductDetailsValueFromJSON(String key) {
         return TestContext.JSON_OBJECT.getAsJsonArray("order_items").get(0).getAsJsonObject().get(key)
                 .toString().replace("\"", "");
     }

@@ -1,13 +1,14 @@
 package statystech.aqaframework.TableObjects;
 
+
 import statystech.aqaframework.utils.DBUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderLineTable extends TableObject {
+public class BuyerTable extends TableObject {
 
-    private final String TABLE_NAME = "orderLine";
+    private final String TABLE_NAME = "buyer";
 
     public String getColumnValue (String columnName) throws SQLException {
         return getLastRow(TABLE_NAME).getString(columnName);
@@ -19,4 +20,5 @@ public class OrderLineTable extends TableObject {
         rs.next();
         return rs;
     }
+
 }

@@ -1,7 +1,7 @@
 package statystech.aqaframework.TableObjects;
 
 import statystech.aqaframework.utils.DBUtils;
-import statystech.aqaframework.utils.DataUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ public class OrdersTable extends TableObject {
     private final String TABLE_NAME = "orders";
 
     public String getOrderAllSysIDValue() {
-        return DataUtils.getValueFromJSON("order_id");
+        return JsonUtils.getValueFromJSON("order_id");
     }
 
     public int getUserIDValue() throws SQLException {

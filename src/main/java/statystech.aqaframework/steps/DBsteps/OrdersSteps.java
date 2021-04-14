@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.OrdersTable;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
-import statystech.aqaframework.utils.DataUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.sql.SQLException;
 
@@ -42,13 +42,13 @@ public class OrdersSteps extends Steps {
 
     private String checkCurrency() throws SQLException {
         String actualComments = new OrdersTable().getCurrencyValue();
-        String expectedComments = DataUtils.getValueFromJSON("order_currency");
+        String expectedComments = JsonUtils.getValueFromJSON("order_currency");
         return verifyExpectedResults(actualComments, expectedComments);
     }
 
     private String checkCurrencyConversion() throws SQLException {
         String actualComments = new OrdersTable().getCurrencyConversionValue();
-        String expectedComments = DataUtils.getValueFromJSON("currency_conversion");
+        String expectedComments = JsonUtils.getValueFromJSON("currency_conversion");
         return verifyExpectedResults(actualComments, expectedComments);
     }
 }

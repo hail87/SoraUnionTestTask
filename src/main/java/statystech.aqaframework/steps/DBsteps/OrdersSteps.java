@@ -48,7 +48,7 @@ public class OrdersSteps extends Steps {
 
     private String checkCurrencyConversion() throws SQLException {
         String actualComments = new OrdersTable().getCurrencyConversionValue();
-        String expectedComments = JsonUtils.getValueFromJSON("currency_conversion");
-        return verifyExpectedResults(actualComments, expectedComments);
+        Double expectedComments = Double.parseDouble(JsonUtils.getValueFromJSON("currency_conversion"));
+        return verifyExpectedResults(actualComments, expectedComments.toString());
     }
 }

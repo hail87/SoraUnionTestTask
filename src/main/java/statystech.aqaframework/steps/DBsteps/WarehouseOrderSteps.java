@@ -1,6 +1,7 @@
 package statystech.aqaframework.steps.DBsteps;
 
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import statystech.aqaframework.TableObjects.WarehouseOrderTable;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.JsonUtils;
@@ -17,7 +18,7 @@ public class WarehouseOrderSteps extends Steps {
 
     private String checkComments() throws SQLException {
         String actualComments = new WarehouseOrderTable().getColumnValue("comments");
-        String expectedComments = JsonUtils.getValueFromJSON("shipping_notes");
+        String expectedComments = StringEscapeUtils.unescapeJava(JsonUtils.getValueFromJSON("shipping_notes"));
         return verifyExpectedResults(actualComments, expectedComments);
     }
 }

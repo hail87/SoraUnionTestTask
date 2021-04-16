@@ -2,6 +2,7 @@ package statystech.aqaframework.TableObjects;
 
 import com.google.common.base.CaseFormat;
 import org.slf4j.helpers.Util;
+import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.utils.DBUtils;
 
@@ -23,20 +24,16 @@ public abstract class TableObject implements Table{
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];
         tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-        return Integer.parseInt(new DBUtils().executeAndReturnString(String.format("select * from %s where %s = \"%s\"", tableName, columnName, value)));
+        ResultSet resultSet = new DBUtils().execute(String.format(
+                "select * from %s where %s = \"%s\" ORDER by createdDate DESC LIMIT 1", tableName, columnName, value));
+        resultSet.next();
+        return Integer.parseInt(resultSet.getString(1));
     }
 
     public String getColumnValue(ResultSet resultSet, String columnName) throws SQLException {
         resultSet.next();
         return resultSet.getString(columnName);
     }
-
-//    @Deprecated
-//    public String getTableName() {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        return Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-//    }
 
     public String getColumnValue (String columnName) throws SQLException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
@@ -52,9 +49,19 @@ public abstract class TableObject implements Table{
         return getProperRow(tableName, primaryID).getString(columnName);
     }
 
+    public String getColumnValue (Product product, String columnName) throws SQLException {
+        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
+        String tableName = fullTableName[fullTableName.length - 1];
+        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+        ResultSet rs = new DBUtils().execute(String.format(
+                "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", tableName, product.getProductName()));
+        rs.next();
+        return rs.getString(columnName);
+    }
+
     protected ResultSet getLastRow(String tableName) throws SQLException {
         ResultSet rs = new DBUtils().execute(String.format(
-                "select * from %s where %sID = %d", tableName, tableName, getPrimaryID()));
+                "select * from %s where %sID = %d ORDER by createdDate DESC LIMIT 1", tableName, tableName, getPrimaryID()));
         rs.next();
         return rs;
     }
@@ -66,15 +73,15 @@ public abstract class TableObject implements Table{
         return rs;
     }
 
-    public int getProductIDbyProductAllSysID(String productAllSysID) throws SQLException {
-        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-        String tableName = fullTableName[fullTableName.length - 1];
-        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-        return Integer.parseInt(
-                new DBUtils().executeAndReturnString(String.format(
-                        "select %sID from %s where %s = %s", tableName, tableName,"productAllSysID", productAllSysID))
-        );
-    }
+//    public int getProductIDbyProductAllSysID(String productAllSysID) throws SQLException {
+//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
+//        String tableName = fullTableName[fullTableName.length - 1];
+//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
+//        return Integer.parseInt(
+//                new DBUtils().executeAndReturnString(String.format(
+//                        "select %sID from %s where %s = %s", tableName, tableName,"productAllSysID", productAllSysID))
+//        );
+//    }
 
     public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1, String jsonNodeKey2) throws SQLException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");

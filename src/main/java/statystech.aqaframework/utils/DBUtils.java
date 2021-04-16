@@ -35,7 +35,7 @@ public class DBUtils {
         ResultSet rs = null;
         try {
             rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
-            logger.info("Query:\n" + fullRequest + "\nhas been executed");
+            //logger.info("Query:\n" + fullRequest + "\nhas been executed");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
@@ -46,7 +46,7 @@ public class DBUtils {
     public String executeAndReturnString(String fullRequest) throws SQLException {
         ResultSet rs;
         rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
-        logger.info("Query:\n" + fullRequest + "\nhas been executed");
+        //logger.info("Query:\n" + fullRequest + "\nhas been executed");
         rs.next();
         return rs.getString(1);
     }

@@ -1,35 +1,43 @@
 package statystech.aqaframework.steps.DBsteps;
 
+import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TableObjects.OrderLineTable;
 import statystech.aqaframework.steps.Steps;
-import statystech.aqaframework.utils.JsonUtils;
 
 import java.sql.SQLException;
 
 public class OrderLineSteps extends Steps {
 
-    public String checkOrderLineTable() throws SQLException {
-        OrderLineTable orderLineTable = new OrderLineTable();
+    public String checkOrderLineTable(Product product) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
-        int orderLineID = orderLineTable.getPrimaryID("productName", new ProductSteps().getProductDetailsValueFromJSON("product_name"));
-        errorMessage.append(verifyExpectedResults(
-                orderLineTable.getJsonAndTableValue(orderLineID, "order_items", "product_name")));
-        errorMessage.append(verifyExpectedResults(
-                orderLineTable.getJsonAndTableValue(orderLineID, "order_items", "SKU")));
-        errorMessage.append(checkPrice());
-        errorMessage.append(checkQuantity());
+        errorMessage.append(checkName(product));
+        errorMessage.append(checkSKU(product));
+        errorMessage.append(checkPrice(product));
+        errorMessage.append(checkQuantity(product));
         return errorMessage.toString();
     }
 
-    private String checkPrice() throws SQLException {
-        String actualPhoneNumber = new OrderLineTable().getColumnValue("itemPrice");
-        String expectedPhoneNumber = JsonUtils.getValueFromJSON("order_items", "product_item_price");
-        return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
+    private String checkName(Product product) throws SQLException {
+        String actual = new OrderLineTable().getColumnValue(product, "productName");
+        String expected = product.getProductName();
+        return verifyExpectedResults(actual, expected);
     }
 
-    private String checkQuantity() throws SQLException {
-        String actualPhoneNumber = new OrderLineTable().getColumnValue("quantity");
-        String expectedPhoneNumber = JsonUtils.getValueFromJSON("order_items", "product_quantity");
-        return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
+    private String checkSKU(Product product) throws SQLException {
+        String actual = new OrderLineTable().getColumnValue(product, "sku");
+        String expected = product.getProductSKU();
+        return verifyExpectedResults(actual, expected);
+    }
+
+    private String checkPrice(Product product) throws SQLException {
+        String actual = new OrderLineTable().getColumnValue(product, "itemPrice");
+        String expected = product.getProductItemPrice();
+        return verifyExpectedResults(actual, expected);
+    }
+
+    private String checkQuantity(Product product) throws SQLException {
+        String actual = new OrderLineTable().getColumnValue(product,"quantity");
+        String expected = product.getProductQuantity();
+        return verifyExpectedResults(actual, expected);
     }
 }

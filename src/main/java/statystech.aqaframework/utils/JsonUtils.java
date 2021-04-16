@@ -102,7 +102,6 @@ public class JsonUtils {
                 TestContext.products.add(product);
             } catch (NullPointerException e){
                 logger.info("JSON wasn't initiated yet, initiating ...");
-                e.printStackTrace();
                 TestContext.products = new ArrayList<>();
                 TestContext.products.add(product);
             }

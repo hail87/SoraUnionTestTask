@@ -10715,3 +10715,706 @@ jsonValue '6' and tableValue '6' are the same
 
 16-04-2021 15:46:49 INFO  DBUtils:382 - !!!Row with id [130] has been deleted!!!
 16-04-2021 15:46:49 INFO  DBUtils:382 - Connection is closed
+16-04-2021 16:01:45 INFO  ConnectionDB:382 - DB connected!
+16-04-2021 16:01:45 INFO  StageOrderSteps:382 - Data Base connected!
+16-04-2021 16:01:45 ERROR OrdersSteps:382 - java.io.FileNotFoundException: src/main/resources/json/order1095793dataQuattro.json (No such file or directory)
+16-04-2021 16:02:22 INFO  ConnectionDB:382 - DB connected!
+16-04-2021 16:02:22 INFO  StageOrderSteps:382 - Data Base connected!
+16-04-2021 16:03:51 INFO  ConnectionDB:382 - DB connected!
+16-04-2021 16:03:51 INFO  StageOrderSteps:382 - Data Base connected!
+16-04-2021 16:03:51 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+16-04-2021 16:03:51 INFO  DBUtils:382 - SQL request was executed: {    "order_id": "1095793",    "user_id": "02420c5f47d3ac5a99ab1bcaeee0d10e",    "order_status": "Confirmed",    "replacement_order_id": "0",    "seller_id": "5bdb44bcb9997568282256c069a31f58",    "seller_username": "csrsite369",    "csr_assigned_id": "",    "csr_assigned_username": null,    "billing_address":    {        "user_info_id": "763606",        "address_type": "BT",        "title": "",        "first_name": "T****a",        "middle_name": "",        "last_name": "R****n",        "country": "UNITED STATES",        "state": "Florida",        "city": "Wesley Chapel",        "zip": "33544",        "address_line_1": "27810 Pleasure Ride Loop",        "address_line_2": "",        "company": "",        "phone_1": "6472368232",        "phone_2": null    },    "shipping_address":    {        "user_info_id": "763606",        "address_type": "BT",        "title": "",        "first_name": "T****a",        "middle_name": "",        "last_name": "R****n",        "country": "UNITED STATES",        "state": "Florida",        "city": "Wesley Chapel",        "zip": "33544",        "address_line_1": "27810 Pleasure Ride Loop",        "address_line_2": "",        "company": "",        "phone_1": "6472368232",        "phone_2": null    },    "order_date": "2021-04-16",    "shipped_at": null,    "delivered_at": null,    "order_items":    [        {            "order_item_id": "1789232",            "product_id": "82397",            "product_name": "BOCOUTURE\\u00ae 50U",            "product_quantity": "1",            "product_item_price": "189.00",            "SKU": "sku_1425932916_1",            "ff_centers":            [                {                    "ff_center_id": "152",                    "ff_center_name": "Germanium-32-Ge",                    "assigned_qty": "1",                    "batches":                    [                        {                            "qty": "1",                            "number": "921790",                            "ff_center_id": "152"                        }                    ]                }            ]        },        {            "order_item_id": "1789233",            "product_id": "88151",            "product_name": "RESTYLANE\\u00ae VOLYME 0.3% LIDOCAINE 1mL",            "product_quantity": "2",            "product_item_price": "89.00",            "SKU": "sku_1432158845_2",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "2",                    "batches":                    [                        {                            "qty": "2",                            "number": "17735-1",                            "ff_center_id": "161"                        }                    ]                }            ]        },        {            "order_item_id": "1789234",            "product_id": "89333",            "product_name": "SAYPHA\\u00ae FILLER with Lidocaine",            "product_quantity": "1",            "product_item_price": "59.00",            "SKU": "sku_1551393604_1",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "1",                    "batches":                    [                        {                            "qty": "1",                            "number": "105038",                            "ff_center_id": "161"                        }                    ]                }            ]        },        {            "order_item_id": "1789235",            "product_id": "89342",            "product_name": "SAYPHA\\u00ae RICH",            "product_quantity": "2",            "product_item_price": "36.00",            "SKU": "sku_1551394829_1",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "2",                    "batches":                    [                        {                            "qty": "2",                            "number": "(10)403108",                            "ff_center_id": "161"                        }                    ]                }            ]        }    ],    "website_name": "fillersupplies.com",    "shopper_group_name": "Filler Supplies Licensed",    "account_number": "402336",    "order_currency": "USD",    "currency_conversion": "1.00",    "shipping_notes": "Use DHL or FedEx plz as per customer, ty"}
+16-04-2021 16:03:51 INFO  ApiRestUtils:382 - Triggering order processing at the SandBox
+16-04-2021 16:03:52 DEBUG BasicClientConnectionManager:161 - Get connection for route {}->http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+16-04-2021 16:03:52 DEBUG DefaultClientConnectionOperator:177 - Connecting to 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+16-04-2021 16:03:53 DEBUG RequestAddCookies:123 - CookieSpec selected: ignoreCookies
+16-04-2021 16:03:53 DEBUG RequestAuthCache:77 - Auth cache not set in the context
+16-04-2021 16:03:53 DEBUG RequestTargetAuthentication:80 - Target auth state: UNCHALLENGED
+16-04-2021 16:03:53 DEBUG RequestProxyAuthentication:89 - Proxy auth state: UNCHALLENGED
+16-04-2021 16:03:53 DEBUG DefaultHttpClient:682 - Attempt 1 to execute request
+16-04-2021 16:03:53 DEBUG DefaultClientConnection:274 - Sending request: GET /start HTTP/1.1
+16-04-2021 16:03:53 DEBUG wire:73 -  >> "GET /start HTTP/1.1[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  >> "Accept: */*[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  >> "Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  >> "Connection: Keep-Alive[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  >> "User-Agent: Apache-HttpClient/4.5.3 (Java/16)[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  >> "Accept-Encoding: gzip,deflate[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  >> "[\r][\n]"
+16-04-2021 16:03:53 DEBUG headers:278 - >> GET /start HTTP/1.1
+16-04-2021 16:03:53 DEBUG headers:281 - >> Accept: */*
+16-04-2021 16:03:53 DEBUG headers:281 - >> Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com
+16-04-2021 16:03:53 DEBUG headers:281 - >> Connection: Keep-Alive
+16-04-2021 16:03:53 DEBUG headers:281 - >> User-Agent: Apache-HttpClient/4.5.3 (Java/16)
+16-04-2021 16:03:53 DEBUG headers:281 - >> Accept-Encoding: gzip,deflate
+16-04-2021 16:03:53 DEBUG wire:73 -  << "HTTP/1.1 200 [\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  << "Date: Fri, 16 Apr 2021 13:03:54 GMT[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  << "Content-Type: text/plain;charset=UTF-8[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  << "Content-Length: 24[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  << "Connection: keep-alive[\r][\n]"
+16-04-2021 16:03:53 DEBUG wire:73 -  << "[\r][\n]"
+16-04-2021 16:03:53 DEBUG DefaultClientConnection:259 - Receiving response: HTTP/1.1 200 
+16-04-2021 16:03:53 DEBUG headers:262 - << HTTP/1.1 200 
+16-04-2021 16:03:53 DEBUG headers:265 - << Date: Fri, 16 Apr 2021 13:03:54 GMT
+16-04-2021 16:03:53 DEBUG headers:265 - << Content-Type: text/plain;charset=UTF-8
+16-04-2021 16:03:53 DEBUG headers:265 - << Content-Length: 24
+16-04-2021 16:03:53 DEBUG headers:265 - << Connection: keep-alive
+16-04-2021 16:03:53 DEBUG DefaultHttpClient:509 - Connection can be kept alive indefinitely
+16-04-2021 16:03:54 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:545 - Parsing response as: text/plain;charset=UTF-8
+16-04-2021 16:03:54 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:548 - Parsed data to instance of: class org.apache.http.conn.EofSensorInputStream
+16-04-2021 16:03:54 INFO  ApiRestUtils:382 - Get request have been sent. Response status code: 200
+16-04-2021 16:03:54 INFO  ApiRestUtils:382 - Status code: 200
+16-04-2021 16:03:54 INFO  DBUtils:382 - !!!Query :
+SELECT status FROM stageOrder WHERE stageOrderID = 131
+ has been executed with result :
+C
+16-04-2021 16:03:54 INFO  Steps:382 - 
+jsonValue '2021-04-16' and tableValue '2021-04-16' are the same
+
+16-04-2021 16:03:54 INFO  OrdersSteps:382 - checkOrderID() passed successfully
+
+16-04-2021 16:03:54 INFO  Steps:382 - 
+jsonValue 'USD' and tableValue 'USD' are the same
+
+16-04-2021 16:03:54 INFO  Steps:382 - 
+jsonValue '1.0' and tableValue '1.0' are the same
+
+16-04-2021 16:03:55 INFO  UserTableSteps:382 - checkAllSysUserIDColumn() passed successfully
+ + " orders.orderAllSysID value 
+Actual: 'csrsite369'
+Expected: 'csrsite369'
+16-04-2021 16:03:55 INFO  Steps:382 - 
+jsonValue '27810 Pleasure Ride Loop' and tableValue '27810 Pleasure Ride Loop' are the same
+
+16-04-2021 16:03:55 INFO  Steps:382 - 
+jsonValue '' and tableValue '' are the same
+
+16-04-2021 16:03:55 INFO  Steps:382 - 
+jsonValue 'Wesley Chapel' and tableValue 'Wesley Chapel' are the same
+
+16-04-2021 16:03:56 INFO  Steps:382 - 
+jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+
+16-04-2021 16:03:56 INFO  Steps:382 - 
+jsonValue 'BT' and tableValue 'BT' are the same
+
+16-04-2021 16:03:56 INFO  Steps:382 - 
+jsonValue 'T****a' and tableValue 'T****a' are the same
+
+16-04-2021 16:03:56 INFO  Steps:382 - 
+jsonValue 'R****n' and tableValue 'R****n' are the same
+
+16-04-2021 16:03:57 INFO  Steps:382 - 
+jsonValue '6472368232' and tableValue '6472368232' are the same
+
+16-04-2021 16:03:57 INFO  Steps:382 - 
+jsonValue '33544' and tableValue '33544' are the same
+
+16-04-2021 16:03:57 INFO  Steps:382 - 
+jsonValue 'Florida' and tableValue 'Florida' are the same
+
+16-04-2021 16:03:58 INFO  Steps:382 - 
+jsonValue '27810 Pleasure Ride Loop' and tableValue '27810 Pleasure Ride Loop' are the same
+
+16-04-2021 16:03:58 INFO  Steps:382 - 
+jsonValue '' and tableValue '' are the same
+
+16-04-2021 16:03:58 INFO  Steps:382 - 
+jsonValue 'Wesley Chapel' and tableValue 'Wesley Chapel' are the same
+
+16-04-2021 16:03:58 INFO  Steps:382 - 
+jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+
+16-04-2021 16:03:59 INFO  Steps:382 - 
+jsonValue 'BT' and tableValue 'BT' are the same
+
+16-04-2021 16:03:59 INFO  Steps:382 - 
+jsonValue 'T****a' and tableValue 'T****a' are the same
+
+16-04-2021 16:03:59 INFO  Steps:382 - 
+jsonValue 'R****n' and tableValue 'R****n' are the same
+
+16-04-2021 16:03:59 INFO  Steps:382 - 
+jsonValue '763606' and tableValue '763606' are the same
+
+16-04-2021 16:04:00 INFO  Steps:382 - 
+jsonValue '6472368232' and tableValue '6472368232' are the same
+
+16-04-2021 16:04:00 INFO  Steps:382 - 
+jsonValue '33544' and tableValue '33544' are the same
+
+16-04-2021 16:04:00 INFO  Steps:382 - 
+jsonValue 'Florida' and tableValue 'Florida' are the same
+
+16-04-2021 16:04:00 INFO  Steps:382 - 
+jsonValue 'Use DHL or FedEx plz as per customer, ty' and tableValue 'Use DHL or FedEx plz as per customer, ty' are the same
+
+16-04-2021 16:04:01 INFO  Steps:382 - 
+jsonValue 'Filler Supplies Licensed' and tableValue 'Filler Supplies Licensed' are the same
+
+16-04-2021 16:04:01 INFO  OrdersSteps:382 - JSON wasn't initiated yet, initiating ...
+16-04-2021 16:04:01 INFO  Steps:382 - 
+jsonValue 'BOCOUTURE® 50U' and tableValue 'BOCOUTURE® 50U' are the same
+
+16-04-2021 16:04:01 INFO  Steps:382 - 
+jsonValue '82397' and tableValue '82397' are the same
+
+16-04-2021 16:04:01 INFO  Steps:382 - 
+jsonValue 'sku_1425932916_1' and tableValue 'sku_1425932916_1' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue '921790' and tableValue '921790' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue 'BOCOUTURE® 50U' and tableValue 'BOCOUTURE® 50U' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue 'sku_1425932916_1' and tableValue 'sku_1425932916_1' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue '189.00' and tableValue '189.00' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue '1' and tableValue '1' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' and tableValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue '88151' and tableValue '88151' are the same
+
+16-04-2021 16:04:02 INFO  Steps:382 - 
+jsonValue 'sku_1432158845_2' and tableValue 'sku_1432158845_2' are the same
+
+16-04-2021 16:04:03 INFO  Steps:382 - 
+jsonValue '17735-1' and tableValue '17735-1' are the same
+
+16-04-2021 16:04:04 INFO  Steps:382 - 
+jsonValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' and tableValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' are the same
+
+16-04-2021 16:04:04 INFO  Steps:382 - 
+jsonValue 'sku_1432158845_2' and tableValue 'sku_1432158845_2' are the same
+
+16-04-2021 16:04:04 INFO  Steps:382 - 
+jsonValue '89.00' and tableValue '89.00' are the same
+
+16-04-2021 16:04:04 INFO  Steps:382 - 
+jsonValue '2' and tableValue '2' are the same
+
+16-04-2021 16:04:04 INFO  Steps:382 - 
+jsonValue 'SAYPHA® FILLER with Lidocaine' and tableValue 'SAYPHA® FILLER with Lidocaine' are the same
+
+16-04-2021 16:04:04 INFO  Steps:382 - 
+jsonValue '89333' and tableValue '89333' are the same
+
+16-04-2021 16:04:04 INFO  Steps:382 - 
+jsonValue 'sku_1551393604_1' and tableValue 'sku_1551393604_1' are the same
+
+16-04-2021 16:04:05 INFO  Steps:382 - 
+jsonValue '105038' and tableValue '105038' are the same
+
+16-04-2021 16:04:05 INFO  Steps:382 - 
+jsonValue 'SAYPHA® FILLER with Lidocaine' and tableValue 'SAYPHA® FILLER with Lidocaine' are the same
+
+16-04-2021 16:04:05 INFO  Steps:382 - 
+jsonValue 'sku_1551393604_1' and tableValue 'sku_1551393604_1' are the same
+
+16-04-2021 16:04:05 INFO  Steps:382 - 
+jsonValue '59.00' and tableValue '59.00' are the same
+
+16-04-2021 16:04:05 INFO  Steps:382 - 
+jsonValue '1' and tableValue '1' are the same
+
+16-04-2021 16:04:06 INFO  Steps:382 - 
+jsonValue 'SAYPHA® RICH' and tableValue 'SAYPHA® RICH' are the same
+
+16-04-2021 16:04:06 INFO  Steps:382 - 
+jsonValue '89342' and tableValue '89342' are the same
+
+16-04-2021 16:04:06 INFO  Steps:382 - 
+jsonValue 'sku_1551394829_1' and tableValue 'sku_1551394829_1' are the same
+
+16-04-2021 16:04:06 INFO  Steps:382 - 
+jsonValue '(10)403108' and tableValue '(10)403108' are the same
+
+16-04-2021 16:04:06 INFO  Steps:382 - 
+jsonValue 'SAYPHA® RICH' and tableValue 'SAYPHA® RICH' are the same
+
+16-04-2021 16:04:06 INFO  Steps:382 - 
+jsonValue 'sku_1551394829_1' and tableValue 'sku_1551394829_1' are the same
+
+16-04-2021 16:04:07 INFO  Steps:382 - 
+jsonValue '36.00' and tableValue '36.00' are the same
+
+16-04-2021 16:04:07 INFO  Steps:382 - 
+jsonValue '2' and tableValue '2' are the same
+
+16-04-2021 16:04:07 INFO  DBUtils:382 - !!!Row with id [131] has been deleted!!!
+16-04-2021 16:04:07 INFO  DBUtils:382 - Connection is closed
+16-04-2021 16:22:25 INFO  ConnectionDB:382 - DB connected!
+16-04-2021 16:22:25 INFO  StageOrderSteps:382 - Data Base connected!
+16-04-2021 17:10:30 INFO  ConnectionDB:382 - DB connected!
+16-04-2021 17:10:30 INFO  StageOrderSteps:382 - Data Base connected!
+16-04-2021 17:10:30 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+16-04-2021 17:10:30 INFO  DBUtils:382 - SQL request was executed: {    "order_id": "1095793",    "user_id": "02420c5f47d3ac5a99ab1bcaeee0d10e",    "order_status": "Confirmed",    "replacement_order_id": "0",    "seller_id": "5bdb44bcb9997568282256c069a31f58",    "seller_username": "csrsite369",    "csr_assigned_id": "",    "csr_assigned_username": null,    "billing_address":    {        "user_info_id": "763606",        "address_type": "BT",        "title": "",        "first_name": "T****a",        "middle_name": "",        "last_name": "R****n",        "country": "UNITED STATES",        "state": "Florida",        "city": "Wesley Chapel",        "zip": "33544",        "address_line_1": "27810 Pleasure Ride Loop",        "address_line_2": "",        "company": "",        "phone_1": "6472368232",        "phone_2": null    },    "shipping_address":    {        "user_info_id": "763606",        "address_type": "BT",        "title": "",        "first_name": "T****a",        "middle_name": "",        "last_name": "R****n",        "country": "UNITED STATES",        "state": "Florida",        "city": "Wesley Chapel",        "zip": "33544",        "address_line_1": "27810 Pleasure Ride Loop",        "address_line_2": "",        "company": "",        "phone_1": "6472368232",        "phone_2": null    },    "order_date": "2021-04-16",    "shipped_at": null,    "delivered_at": null,    "order_items":    [        {            "order_item_id": "1789232",            "product_id": "82397",            "product_name": "BOCOUTURE\\u00ae 50U",            "product_quantity": "1",            "product_item_price": "189.00",            "SKU": "sku_1425932916_1",            "ff_centers":            [                {                    "ff_center_id": "152",                    "ff_center_name": "Germanium-32-Ge",                    "assigned_qty": "1",                    "batches":                    [                        {                            "qty": "1",                            "number": "921790",                            "ff_center_id": "152"                        }                    ]                }            ]        },        {            "order_item_id": "1789233",            "product_id": "88151",            "product_name": "RESTYLANE\\u00ae VOLYME 0.3% LIDOCAINE 1mL",            "product_quantity": "2",            "product_item_price": "89.00",            "SKU": "sku_1432158845_2",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "2",                    "batches":                    [                        {                            "qty": "2",                            "number": "17735-1",                            "ff_center_id": "161"                        }                    ]                }            ]        },        {            "order_item_id": "1789234",            "product_id": "89333",            "product_name": "SAYPHA\\u00ae FILLER with Lidocaine",            "product_quantity": "1",            "product_item_price": "59.00",            "SKU": "sku_1551393604_1",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "1",                    "batches":                    [                        {                            "qty": "1",                            "number": "105038",                            "ff_center_id": "161"                        }                    ]                }            ]        },        {            "order_item_id": "1789235",            "product_id": "89342",            "product_name": "SAYPHA\\u00ae RICH",            "product_quantity": "2",            "product_item_price": "36.00",            "SKU": "sku_1551394829_1",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "2",                    "batches":                    [                        {                            "qty": "2",                            "number": "(10)403108",                            "ff_center_id": "161"                        }                    ]                }            ]        }    ],    "website_name": "fillersupplies.com",    "shopper_group_name": "Filler Supplies Licensed",    "account_number": "402336",    "order_currency": "USD",    "currency_conversion": "1.00",    "shipping_notes": "Use DHL or FedEx plz as per customer, ty"}
+16-04-2021 17:10:31 INFO  ApiRestUtils:382 - Triggering order processing at the SandBox
+16-04-2021 17:10:32 DEBUG BasicClientConnectionManager:161 - Get connection for route {}->http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+16-04-2021 17:10:32 DEBUG DefaultClientConnectionOperator:177 - Connecting to 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+16-04-2021 17:10:32 DEBUG RequestAddCookies:123 - CookieSpec selected: ignoreCookies
+16-04-2021 17:10:32 DEBUG RequestAuthCache:77 - Auth cache not set in the context
+16-04-2021 17:10:32 DEBUG RequestTargetAuthentication:80 - Target auth state: UNCHALLENGED
+16-04-2021 17:10:32 DEBUG RequestProxyAuthentication:89 - Proxy auth state: UNCHALLENGED
+16-04-2021 17:10:32 DEBUG DefaultHttpClient:682 - Attempt 1 to execute request
+16-04-2021 17:10:32 DEBUG DefaultClientConnection:274 - Sending request: GET /start HTTP/1.1
+16-04-2021 17:10:32 DEBUG wire:73 -  >> "GET /start HTTP/1.1[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  >> "Accept: */*[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  >> "Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  >> "Connection: Keep-Alive[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  >> "User-Agent: Apache-HttpClient/4.5.3 (Java/16)[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  >> "Accept-Encoding: gzip,deflate[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  >> "[\r][\n]"
+16-04-2021 17:10:32 DEBUG headers:278 - >> GET /start HTTP/1.1
+16-04-2021 17:10:32 DEBUG headers:281 - >> Accept: */*
+16-04-2021 17:10:32 DEBUG headers:281 - >> Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com
+16-04-2021 17:10:32 DEBUG headers:281 - >> Connection: Keep-Alive
+16-04-2021 17:10:32 DEBUG headers:281 - >> User-Agent: Apache-HttpClient/4.5.3 (Java/16)
+16-04-2021 17:10:32 DEBUG headers:281 - >> Accept-Encoding: gzip,deflate
+16-04-2021 17:10:32 DEBUG wire:73 -  << "HTTP/1.1 200 [\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  << "Date: Fri, 16 Apr 2021 14:10:32 GMT[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  << "Content-Type: text/plain;charset=UTF-8[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  << "Content-Length: 24[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  << "Connection: keep-alive[\r][\n]"
+16-04-2021 17:10:32 DEBUG wire:73 -  << "[\r][\n]"
+16-04-2021 17:10:32 DEBUG DefaultClientConnection:259 - Receiving response: HTTP/1.1 200 
+16-04-2021 17:10:32 DEBUG headers:262 - << HTTP/1.1 200 
+16-04-2021 17:10:32 DEBUG headers:265 - << Date: Fri, 16 Apr 2021 14:10:32 GMT
+16-04-2021 17:10:32 DEBUG headers:265 - << Content-Type: text/plain;charset=UTF-8
+16-04-2021 17:10:32 DEBUG headers:265 - << Content-Length: 24
+16-04-2021 17:10:32 DEBUG headers:265 - << Connection: keep-alive
+16-04-2021 17:10:32 DEBUG DefaultHttpClient:509 - Connection can be kept alive indefinitely
+16-04-2021 17:10:32 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:545 - Parsing response as: text/plain;charset=UTF-8
+16-04-2021 17:10:32 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:548 - Parsed data to instance of: class org.apache.http.conn.EofSensorInputStream
+16-04-2021 17:10:32 INFO  ApiRestUtils:382 - Get request have been sent. Response status code: 200
+16-04-2021 17:10:32 INFO  ApiRestUtils:382 - Status code: 200
+16-04-2021 17:10:32 INFO  DBUtils:382 - !!!Query :
+SELECT status FROM stageOrder WHERE stageOrderID = 132
+ has been executed with result :
+C
+16-04-2021 17:10:33 INFO  Steps:382 - 
+jsonValue '2021-04-16' and tableValue '2021-04-16' are the same
+
+16-04-2021 17:10:33 INFO  OrdersSteps:382 - checkOrderID() passed successfully
+
+16-04-2021 17:10:33 INFO  Steps:382 - 
+jsonValue 'USD' and tableValue 'USD' are the same
+
+16-04-2021 17:10:33 INFO  Steps:382 - 
+jsonValue '1.0' and tableValue '1.0' are the same
+
+16-04-2021 17:10:33 INFO  UserTableSteps:382 - checkAllSysUserIDColumn() passed successfully
+ + " orders.orderAllSysID value 
+Actual: 'csrsite369'
+Expected: 'csrsite369'
+16-04-2021 17:10:34 INFO  Steps:382 - 
+jsonValue '27810 Pleasure Ride Loop' and tableValue '27810 Pleasure Ride Loop' are the same
+
+16-04-2021 17:10:34 INFO  Steps:382 - 
+jsonValue '' and tableValue '' are the same
+
+16-04-2021 17:10:34 INFO  Steps:382 - 
+jsonValue 'Wesley Chapel' and tableValue 'Wesley Chapel' are the same
+
+16-04-2021 17:10:35 INFO  Steps:382 - 
+jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+
+16-04-2021 17:10:35 INFO  Steps:382 - 
+jsonValue 'BT' and tableValue 'BT' are the same
+
+16-04-2021 17:10:35 INFO  Steps:382 - 
+jsonValue 'T****a' and tableValue 'T****a' are the same
+
+16-04-2021 17:10:35 INFO  Steps:382 - 
+jsonValue 'R****n' and tableValue 'R****n' are the same
+
+16-04-2021 17:10:35 INFO  Steps:382 - 
+jsonValue '6472368232' and tableValue '6472368232' are the same
+
+16-04-2021 17:10:36 INFO  Steps:382 - 
+jsonValue '33544' and tableValue '33544' are the same
+
+16-04-2021 17:10:36 INFO  Steps:382 - 
+jsonValue 'Florida' and tableValue 'Florida' are the same
+
+16-04-2021 17:10:36 INFO  Steps:382 - 
+jsonValue '27810 Pleasure Ride Loop' and tableValue '27810 Pleasure Ride Loop' are the same
+
+16-04-2021 17:10:37 INFO  Steps:382 - 
+jsonValue '' and tableValue '' are the same
+
+16-04-2021 17:10:37 INFO  Steps:382 - 
+jsonValue 'Wesley Chapel' and tableValue 'Wesley Chapel' are the same
+
+16-04-2021 17:10:37 INFO  Steps:382 - 
+jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+
+16-04-2021 17:10:37 INFO  Steps:382 - 
+jsonValue 'BT' and tableValue 'BT' are the same
+
+16-04-2021 17:10:38 INFO  Steps:382 - 
+jsonValue 'T****a' and tableValue 'T****a' are the same
+
+16-04-2021 17:10:38 INFO  Steps:382 - 
+jsonValue 'R****n' and tableValue 'R****n' are the same
+
+16-04-2021 17:10:38 INFO  Steps:382 - 
+jsonValue '763606' and tableValue '763606' are the same
+
+16-04-2021 17:10:38 INFO  Steps:382 - 
+jsonValue '6472368232' and tableValue '6472368232' are the same
+
+16-04-2021 17:10:39 INFO  Steps:382 - 
+jsonValue '33544' and tableValue '33544' are the same
+
+16-04-2021 17:10:39 INFO  Steps:382 - 
+jsonValue 'Florida' and tableValue 'Florida' are the same
+
+16-04-2021 17:10:39 INFO  Steps:382 - 
+jsonValue 'Use DHL or FedEx plz as per customer, ty' and tableValue 'Use DHL or FedEx plz as per customer, ty' are the same
+
+16-04-2021 17:10:39 INFO  Steps:382 - 
+jsonValue 'Filler Supplies Licensed' and tableValue 'Filler Supplies Licensed' are the same
+
+16-04-2021 17:10:39 INFO  OrdersSteps:382 - JSON wasn't initiated yet, initiating ...
+16-04-2021 17:10:40 INFO  Steps:382 - 
+jsonValue 'BOCOUTURE® 50U' and tableValue 'BOCOUTURE® 50U' are the same
+
+16-04-2021 17:10:40 INFO  Steps:382 - 
+jsonValue '82397' and tableValue '82397' are the same
+
+16-04-2021 17:10:40 INFO  Steps:382 - 
+jsonValue 'sku_1425932916_1' and tableValue 'sku_1425932916_1' are the same
+
+16-04-2021 17:10:40 INFO  Steps:382 - 
+jsonValue and tableValue are NOT the same!
+Actual: '921790'
+Expected: '1'
+
+16-04-2021 17:10:40 INFO  Steps:382 - 
+jsonValue 'BOCOUTURE® 50U' and tableValue 'BOCOUTURE® 50U' are the same
+
+16-04-2021 17:10:40 INFO  Steps:382 - 
+jsonValue 'sku_1425932916_1' and tableValue 'sku_1425932916_1' are the same
+
+16-04-2021 17:10:41 INFO  Steps:382 - 
+jsonValue '189.00' and tableValue '189.00' are the same
+
+16-04-2021 17:10:41 INFO  Steps:382 - 
+jsonValue '1' and tableValue '1' are the same
+
+16-04-2021 17:10:41 INFO  Steps:382 - 
+jsonValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' and tableValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' are the same
+
+16-04-2021 17:10:41 INFO  Steps:382 - 
+jsonValue '88151' and tableValue '88151' are the same
+
+16-04-2021 17:10:41 INFO  Steps:382 - 
+jsonValue 'sku_1432158845_2' and tableValue 'sku_1432158845_2' are the same
+
+16-04-2021 17:10:41 INFO  Steps:382 - 
+jsonValue and tableValue are NOT the same!
+Actual: '17735-1'
+Expected: '2'
+
+16-04-2021 17:10:42 INFO  Steps:382 - 
+jsonValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' and tableValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' are the same
+
+16-04-2021 17:10:42 INFO  Steps:382 - 
+jsonValue 'sku_1432158845_2' and tableValue 'sku_1432158845_2' are the same
+
+16-04-2021 17:10:42 INFO  Steps:382 - 
+jsonValue '89.00' and tableValue '89.00' are the same
+
+16-04-2021 17:10:42 INFO  Steps:382 - 
+jsonValue '2' and tableValue '2' are the same
+
+16-04-2021 17:10:42 INFO  Steps:382 - 
+jsonValue 'SAYPHA® FILLER with Lidocaine' and tableValue 'SAYPHA® FILLER with Lidocaine' are the same
+
+16-04-2021 17:10:42 INFO  Steps:382 - 
+jsonValue '89333' and tableValue '89333' are the same
+
+16-04-2021 17:10:42 INFO  Steps:382 - 
+jsonValue 'sku_1551393604_1' and tableValue 'sku_1551393604_1' are the same
+
+16-04-2021 17:10:43 INFO  Steps:382 - 
+jsonValue and tableValue are NOT the same!
+Actual: '105038'
+Expected: '1'
+
+16-04-2021 17:10:43 INFO  Steps:382 - 
+jsonValue 'SAYPHA® FILLER with Lidocaine' and tableValue 'SAYPHA® FILLER with Lidocaine' are the same
+
+16-04-2021 17:10:43 INFO  Steps:382 - 
+jsonValue 'sku_1551393604_1' and tableValue 'sku_1551393604_1' are the same
+
+16-04-2021 17:10:43 INFO  Steps:382 - 
+jsonValue '59.00' and tableValue '59.00' are the same
+
+16-04-2021 17:10:43 INFO  Steps:382 - 
+jsonValue '1' and tableValue '1' are the same
+
+16-04-2021 17:10:43 INFO  Steps:382 - 
+jsonValue 'SAYPHA® RICH' and tableValue 'SAYPHA® RICH' are the same
+
+16-04-2021 17:10:43 INFO  Steps:382 - 
+jsonValue '89342' and tableValue '89342' are the same
+
+16-04-2021 17:10:44 INFO  Steps:382 - 
+jsonValue 'sku_1551394829_1' and tableValue 'sku_1551394829_1' are the same
+
+16-04-2021 17:10:44 INFO  Steps:382 - 
+jsonValue and tableValue are NOT the same!
+Actual: '(10)403108'
+Expected: '2'
+
+16-04-2021 17:10:44 INFO  Steps:382 - 
+jsonValue 'SAYPHA® RICH' and tableValue 'SAYPHA® RICH' are the same
+
+16-04-2021 17:10:44 INFO  Steps:382 - 
+jsonValue 'sku_1551394829_1' and tableValue 'sku_1551394829_1' are the same
+
+16-04-2021 17:10:44 INFO  Steps:382 - 
+jsonValue '36.00' and tableValue '36.00' are the same
+
+16-04-2021 17:10:44 INFO  Steps:382 - 
+jsonValue '2' and tableValue '2' are the same
+
+16-04-2021 17:13:01 INFO  ConnectionDB:382 - DB connected!
+16-04-2021 17:13:01 INFO  StageOrderSteps:382 - Data Base connected!
+16-04-2021 17:13:01 INFO  StageOrderSteps:382 - Inserting json to the stageOrder table
+16-04-2021 17:13:01 INFO  DBUtils:382 - SQL request was executed: {    "order_id": "1095793",    "user_id": "02420c5f47d3ac5a99ab1bcaeee0d10e",    "order_status": "Confirmed",    "replacement_order_id": "0",    "seller_id": "5bdb44bcb9997568282256c069a31f58",    "seller_username": "csrsite369",    "csr_assigned_id": "",    "csr_assigned_username": null,    "billing_address":    {        "user_info_id": "763606",        "address_type": "BT",        "title": "",        "first_name": "T****a",        "middle_name": "",        "last_name": "R****n",        "country": "UNITED STATES",        "state": "Florida",        "city": "Wesley Chapel",        "zip": "33544",        "address_line_1": "27810 Pleasure Ride Loop",        "address_line_2": "",        "company": "",        "phone_1": "6472368232",        "phone_2": null    },    "shipping_address":    {        "user_info_id": "763606",        "address_type": "BT",        "title": "",        "first_name": "T****a",        "middle_name": "",        "last_name": "R****n",        "country": "UNITED STATES",        "state": "Florida",        "city": "Wesley Chapel",        "zip": "33544",        "address_line_1": "27810 Pleasure Ride Loop",        "address_line_2": "",        "company": "",        "phone_1": "6472368232",        "phone_2": null    },    "order_date": "2021-04-16",    "shipped_at": null,    "delivered_at": null,    "order_items":    [        {            "order_item_id": "1789232",            "product_id": "82397",            "product_name": "BOCOUTURE\\u00ae 50U",            "product_quantity": "1",            "product_item_price": "189.00",            "SKU": "sku_1425932916_1",            "ff_centers":            [                {                    "ff_center_id": "152",                    "ff_center_name": "Germanium-32-Ge",                    "assigned_qty": "1",                    "batches":                    [                        {                            "qty": "1",                            "number": "921790",                            "ff_center_id": "152"                        }                    ]                }            ]        },        {            "order_item_id": "1789233",            "product_id": "88151",            "product_name": "RESTYLANE\\u00ae VOLYME 0.3% LIDOCAINE 1mL",            "product_quantity": "2",            "product_item_price": "89.00",            "SKU": "sku_1432158845_2",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "2",                    "batches":                    [                        {                            "qty": "2",                            "number": "17735-1",                            "ff_center_id": "161"                        }                    ]                }            ]        },        {            "order_item_id": "1789234",            "product_id": "89333",            "product_name": "SAYPHA\\u00ae FILLER with Lidocaine",            "product_quantity": "1",            "product_item_price": "59.00",            "SKU": "sku_1551393604_1",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "1",                    "batches":                    [                        {                            "qty": "1",                            "number": "105038",                            "ff_center_id": "161"                        }                    ]                }            ]        },        {            "order_item_id": "1789235",            "product_id": "89342",            "product_name": "SAYPHA\\u00ae RICH",            "product_quantity": "2",            "product_item_price": "36.00",            "SKU": "sku_1551394829_1",            "ff_centers":            [                {                    "ff_center_id": "161",                    "ff_center_name": "Iberianium",                    "assigned_qty": "2",                    "batches":                    [                        {                            "qty": "2",                            "number": "(10)403108",                            "ff_center_id": "161"                        }                    ]                }            ]        }    ],    "website_name": "fillersupplies.com",    "shopper_group_name": "Filler Supplies Licensed",    "account_number": "402336",    "order_currency": "USD",    "currency_conversion": "1.00",    "shipping_notes": "Use DHL or FedEx plz as per customer, ty"}
+16-04-2021 17:13:01 INFO  ApiRestUtils:382 - Triggering order processing at the SandBox
+16-04-2021 17:13:02 DEBUG BasicClientConnectionManager:161 - Get connection for route {}->http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+16-04-2021 17:13:02 DEBUG DefaultClientConnectionOperator:177 - Connecting to 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com:80
+16-04-2021 17:13:02 DEBUG RequestAddCookies:123 - CookieSpec selected: ignoreCookies
+16-04-2021 17:13:02 DEBUG RequestAuthCache:77 - Auth cache not set in the context
+16-04-2021 17:13:02 DEBUG RequestTargetAuthentication:80 - Target auth state: UNCHALLENGED
+16-04-2021 17:13:02 DEBUG RequestProxyAuthentication:89 - Proxy auth state: UNCHALLENGED
+16-04-2021 17:13:02 DEBUG DefaultHttpClient:682 - Attempt 1 to execute request
+16-04-2021 17:13:02 DEBUG DefaultClientConnection:274 - Sending request: GET /start HTTP/1.1
+16-04-2021 17:13:02 DEBUG wire:73 -  >> "GET /start HTTP/1.1[\r][\n]"
+16-04-2021 17:13:02 DEBUG wire:73 -  >> "Accept: */*[\r][\n]"
+16-04-2021 17:13:02 DEBUG wire:73 -  >> "Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com[\r][\n]"
+16-04-2021 17:13:02 DEBUG wire:73 -  >> "Connection: Keep-Alive[\r][\n]"
+16-04-2021 17:13:02 DEBUG wire:73 -  >> "User-Agent: Apache-HttpClient/4.5.3 (Java/16)[\r][\n]"
+16-04-2021 17:13:02 DEBUG wire:73 -  >> "Accept-Encoding: gzip,deflate[\r][\n]"
+16-04-2021 17:13:02 DEBUG wire:73 -  >> "[\r][\n]"
+16-04-2021 17:13:02 DEBUG headers:278 - >> GET /start HTTP/1.1
+16-04-2021 17:13:02 DEBUG headers:281 - >> Accept: */*
+16-04-2021 17:13:02 DEBUG headers:281 - >> Host: 8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com
+16-04-2021 17:13:02 DEBUG headers:281 - >> Connection: Keep-Alive
+16-04-2021 17:13:02 DEBUG headers:281 - >> User-Agent: Apache-HttpClient/4.5.3 (Java/16)
+16-04-2021 17:13:02 DEBUG headers:281 - >> Accept-Encoding: gzip,deflate
+16-04-2021 17:13:03 DEBUG wire:73 -  << "HTTP/1.1 200 [\r][\n]"
+16-04-2021 17:13:03 DEBUG wire:73 -  << "Date: Fri, 16 Apr 2021 14:13:03 GMT[\r][\n]"
+16-04-2021 17:13:03 DEBUG wire:73 -  << "Content-Type: text/plain;charset=UTF-8[\r][\n]"
+16-04-2021 17:13:03 DEBUG wire:73 -  << "Content-Length: 24[\r][\n]"
+16-04-2021 17:13:03 DEBUG wire:73 -  << "Connection: keep-alive[\r][\n]"
+16-04-2021 17:13:03 DEBUG wire:73 -  << "[\r][\n]"
+16-04-2021 17:13:03 DEBUG DefaultClientConnection:259 - Receiving response: HTTP/1.1 200 
+16-04-2021 17:13:03 DEBUG headers:262 - << HTTP/1.1 200 
+16-04-2021 17:13:03 DEBUG headers:265 - << Date: Fri, 16 Apr 2021 14:13:03 GMT
+16-04-2021 17:13:03 DEBUG headers:265 - << Content-Type: text/plain;charset=UTF-8
+16-04-2021 17:13:03 DEBUG headers:265 - << Content-Length: 24
+16-04-2021 17:13:03 DEBUG headers:265 - << Connection: keep-alive
+16-04-2021 17:13:03 DEBUG DefaultHttpClient:509 - Connection can be kept alive indefinitely
+16-04-2021 17:13:03 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:545 - Parsing response as: text/plain;charset=UTF-8
+16-04-2021 17:13:03 DEBUG RequestSpecificationImpl$RestAssuredHttpBuilder:548 - Parsed data to instance of: class org.apache.http.conn.EofSensorInputStream
+16-04-2021 17:13:03 INFO  ApiRestUtils:382 - Get request have been sent. Response status code: 200
+16-04-2021 17:13:03 INFO  ApiRestUtils:382 - Status code: 200
+16-04-2021 17:13:03 INFO  DBUtils:382 - !!!Query :
+SELECT status FROM stageOrder WHERE stageOrderID = 133
+ has been executed with result :
+C
+16-04-2021 17:13:03 INFO  Steps:382 - 
+jsonValue '2021-04-16' and tableValue '2021-04-16' are the same
+
+16-04-2021 17:13:03 INFO  OrdersSteps:382 - checkOrderID() passed successfully
+
+16-04-2021 17:13:03 INFO  Steps:382 - 
+jsonValue 'USD' and tableValue 'USD' are the same
+
+16-04-2021 17:13:04 INFO  Steps:382 - 
+jsonValue '1.0' and tableValue '1.0' are the same
+
+16-04-2021 17:13:04 INFO  UserTableSteps:382 - checkAllSysUserIDColumn() passed successfully
+ + " orders.orderAllSysID value 
+Actual: 'csrsite369'
+Expected: 'csrsite369'
+16-04-2021 17:13:04 INFO  Steps:382 - 
+jsonValue '27810 Pleasure Ride Loop' and tableValue '27810 Pleasure Ride Loop' are the same
+
+16-04-2021 17:13:04 INFO  Steps:382 - 
+jsonValue '' and tableValue '' are the same
+
+16-04-2021 17:13:05 INFO  Steps:382 - 
+jsonValue 'Wesley Chapel' and tableValue 'Wesley Chapel' are the same
+
+16-04-2021 17:13:05 INFO  Steps:382 - 
+jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+
+16-04-2021 17:13:05 INFO  Steps:382 - 
+jsonValue 'BT' and tableValue 'BT' are the same
+
+16-04-2021 17:13:05 INFO  Steps:382 - 
+jsonValue 'T****a' and tableValue 'T****a' are the same
+
+16-04-2021 17:13:06 INFO  Steps:382 - 
+jsonValue 'R****n' and tableValue 'R****n' are the same
+
+16-04-2021 17:13:06 INFO  Steps:382 - 
+jsonValue '6472368232' and tableValue '6472368232' are the same
+
+16-04-2021 17:13:06 INFO  Steps:382 - 
+jsonValue '33544' and tableValue '33544' are the same
+
+16-04-2021 17:13:06 INFO  Steps:382 - 
+jsonValue 'Florida' and tableValue 'Florida' are the same
+
+16-04-2021 17:13:07 INFO  Steps:382 - 
+jsonValue '27810 Pleasure Ride Loop' and tableValue '27810 Pleasure Ride Loop' are the same
+
+16-04-2021 17:13:07 INFO  Steps:382 - 
+jsonValue '' and tableValue '' are the same
+
+16-04-2021 17:13:07 INFO  Steps:382 - 
+jsonValue 'Wesley Chapel' and tableValue 'Wesley Chapel' are the same
+
+16-04-2021 17:13:07 INFO  Steps:382 - 
+jsonValue 'UNITED STATES' and tableValue 'UNITED STATES' are the same
+
+16-04-2021 17:13:08 INFO  Steps:382 - 
+jsonValue 'BT' and tableValue 'BT' are the same
+
+16-04-2021 17:13:08 INFO  Steps:382 - 
+jsonValue 'T****a' and tableValue 'T****a' are the same
+
+16-04-2021 17:13:08 INFO  Steps:382 - 
+jsonValue 'R****n' and tableValue 'R****n' are the same
+
+16-04-2021 17:13:08 INFO  Steps:382 - 
+jsonValue '763606' and tableValue '763606' are the same
+
+16-04-2021 17:13:09 INFO  Steps:382 - 
+jsonValue '6472368232' and tableValue '6472368232' are the same
+
+16-04-2021 17:13:09 INFO  Steps:382 - 
+jsonValue '33544' and tableValue '33544' are the same
+
+16-04-2021 17:13:09 INFO  Steps:382 - 
+jsonValue 'Florida' and tableValue 'Florida' are the same
+
+16-04-2021 17:13:10 INFO  Steps:382 - 
+jsonValue 'Use DHL or FedEx plz as per customer, ty' and tableValue 'Use DHL or FedEx plz as per customer, ty' are the same
+
+16-04-2021 17:13:10 INFO  Steps:382 - 
+jsonValue 'Filler Supplies Licensed' and tableValue 'Filler Supplies Licensed' are the same
+
+16-04-2021 17:13:10 INFO  OrdersSteps:382 - JSON wasn't initiated yet, initiating ...
+16-04-2021 17:13:10 INFO  Steps:382 - 
+jsonValue 'BOCOUTURE® 50U' and tableValue 'BOCOUTURE® 50U' are the same
+
+16-04-2021 17:13:10 INFO  Steps:382 - 
+jsonValue '82397' and tableValue '82397' are the same
+
+16-04-2021 17:13:10 INFO  Steps:382 - 
+jsonValue 'sku_1425932916_1' and tableValue 'sku_1425932916_1' are the same
+
+16-04-2021 17:13:11 INFO  Steps:382 - 
+jsonValue '921790' and tableValue '921790' are the same
+
+16-04-2021 17:13:11 INFO  Steps:382 - 
+jsonValue 'BOCOUTURE® 50U' and tableValue 'BOCOUTURE® 50U' are the same
+
+16-04-2021 17:13:11 INFO  Steps:382 - 
+jsonValue 'sku_1425932916_1' and tableValue 'sku_1425932916_1' are the same
+
+16-04-2021 17:13:11 INFO  Steps:382 - 
+jsonValue '189.00' and tableValue '189.00' are the same
+
+16-04-2021 17:13:11 INFO  Steps:382 - 
+jsonValue '1' and tableValue '1' are the same
+
+16-04-2021 17:13:11 INFO  Steps:382 - 
+jsonValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' and tableValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' are the same
+
+16-04-2021 17:13:11 INFO  Steps:382 - 
+jsonValue '88151' and tableValue '88151' are the same
+
+16-04-2021 17:13:12 INFO  Steps:382 - 
+jsonValue 'sku_1432158845_2' and tableValue 'sku_1432158845_2' are the same
+
+16-04-2021 17:13:12 INFO  Steps:382 - 
+jsonValue '17735-1' and tableValue '17735-1' are the same
+
+16-04-2021 17:13:12 INFO  Steps:382 - 
+jsonValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' and tableValue 'RESTYLANE® VOLYME 0.3% LIDOCAINE 1mL' are the same
+
+16-04-2021 17:13:12 INFO  Steps:382 - 
+jsonValue 'sku_1432158845_2' and tableValue 'sku_1432158845_2' are the same
+
+16-04-2021 17:13:12 INFO  Steps:382 - 
+jsonValue '89.00' and tableValue '89.00' are the same
+
+16-04-2021 17:13:12 INFO  Steps:382 - 
+jsonValue '2' and tableValue '2' are the same
+
+16-04-2021 17:13:13 INFO  Steps:382 - 
+jsonValue 'SAYPHA® FILLER with Lidocaine' and tableValue 'SAYPHA® FILLER with Lidocaine' are the same
+
+16-04-2021 17:13:13 INFO  Steps:382 - 
+jsonValue '89333' and tableValue '89333' are the same
+
+16-04-2021 17:13:13 INFO  Steps:382 - 
+jsonValue 'sku_1551393604_1' and tableValue 'sku_1551393604_1' are the same
+
+16-04-2021 17:13:13 INFO  Steps:382 - 
+jsonValue '105038' and tableValue '105038' are the same
+
+16-04-2021 17:13:13 INFO  Steps:382 - 
+jsonValue 'SAYPHA® FILLER with Lidocaine' and tableValue 'SAYPHA® FILLER with Lidocaine' are the same
+
+16-04-2021 17:13:13 INFO  Steps:382 - 
+jsonValue 'sku_1551393604_1' and tableValue 'sku_1551393604_1' are the same
+
+16-04-2021 17:13:14 INFO  Steps:382 - 
+jsonValue '59.00' and tableValue '59.00' are the same
+
+16-04-2021 17:13:14 INFO  Steps:382 - 
+jsonValue '1' and tableValue '1' are the same
+
+16-04-2021 17:13:14 INFO  Steps:382 - 
+jsonValue 'SAYPHA® RICH' and tableValue 'SAYPHA® RICH' are the same
+
+16-04-2021 17:13:14 INFO  Steps:382 - 
+jsonValue '89342' and tableValue '89342' are the same
+
+16-04-2021 17:13:14 INFO  Steps:382 - 
+jsonValue 'sku_1551394829_1' and tableValue 'sku_1551394829_1' are the same
+
+16-04-2021 17:13:15 INFO  Steps:382 - 
+jsonValue '(10)403108' and tableValue '(10)403108' are the same
+
+16-04-2021 17:13:15 INFO  Steps:382 - 
+jsonValue 'SAYPHA® RICH' and tableValue 'SAYPHA® RICH' are the same
+
+16-04-2021 17:13:15 INFO  Steps:382 - 
+jsonValue 'sku_1551394829_1' and tableValue 'sku_1551394829_1' are the same
+
+16-04-2021 17:13:15 INFO  Steps:382 - 
+jsonValue '36.00' and tableValue '36.00' are the same
+
+16-04-2021 17:13:15 INFO  Steps:382 - 
+jsonValue '2' and tableValue '2' are the same
+
+16-04-2021 17:13:15 INFO  DBUtils:382 - !!!Row with id [133] has been deleted!!!
+16-04-2021 17:13:15 INFO  DBUtils:382 - Connection is closed

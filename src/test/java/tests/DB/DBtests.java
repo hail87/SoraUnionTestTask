@@ -28,7 +28,7 @@ public class DBtests {
 
 
     @ParameterizedTest
-    @ValueSource(strings = {"order1000100dataDouble.json"})
+    @ValueSource(strings = {"order1095793dataQuattro.json"})
     public void orderStatusCheck(String jsonFilename) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -41,7 +41,7 @@ public class DBtests {
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
         errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
-        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable()); //bug with encription found, the value at the DB is without unicode
+        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
         errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
         JsonUtils.makeProductObjectsFromJson();
         for (Product product : TestContext.products) {

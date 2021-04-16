@@ -7,7 +7,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.Batch;
 import statystech.aqaframework.DataObjects.Product;
+import statystech.aqaframework.DataObjects.Warehouse;
 import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
@@ -16,6 +18,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class JsonUtils {
@@ -52,6 +55,21 @@ public class JsonUtils {
         return jsonValue;
     }
 
+    public void loadJsonObjectToTestContext(JsonObject jsonObject){
+
+        TestContext.JSON_OBJECT = jsonObject;
+    }
+
+
+    public String getJsonContent(String jsonFilename) throws IOException {
+        loadJsonObjectToTestContext(getJsonObject(jsonFilename));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
+        String jsonString = reader.lines().collect(Collectors.joining());
+        return jsonString.replace("\\", "\\\\");
+    }
+
     public static JsonArray getProducts(){
         return TestContext.JSON_OBJECT.getAsJsonArray("order_items");
     }
@@ -70,22 +88,7 @@ public class JsonUtils {
         return jsonObject;
     }
 
-    public void loadJsonObjectToTestContext(JsonObject jsonObject){
-
-        TestContext.JSON_OBJECT = jsonObject;
-    }
-
-
-    public String getJsonContent(String jsonFilename) throws IOException {
-        loadJsonObjectToTestContext(getJsonObject(jsonFilename));
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
-        String jsonString = reader.lines().collect(Collectors.joining());
-        return jsonString.replace("\\", "\\\\");
-    }
-
-    public static void makeProductObjectsFromJson() throws SQLException {
+    public static void makeProductObjectsFromJson() {
         for(JsonElement jsonProduct : JsonUtils.getProducts()){
             JsonObject jsonObject = jsonProduct.getAsJsonObject();
             Product product = new Product();
@@ -95,9 +98,26 @@ public class JsonUtils {
             product.setProductSKU(jsonObject.get("SKU").toString().replace("\"", ""));
             product.setProductItemPrice(jsonObject.get("product_item_price").toString().replace("\"", ""));
             product.setProductQuantity(jsonObject.get("product_quantity").toString().replace("\"", ""));
-            product.setBatchNumber(jsonObject.getAsJsonArray("ff_centers").get(0).getAsJsonObject()
-                    .getAsJsonArray("batches").get(0)
-                    .getAsJsonObject().get("number").toString().replace("\"", ""));
+
+            JsonObject warehouseJSON = jsonObject.getAsJsonArray("ff_centers").get(0).getAsJsonObject();
+            Warehouse warehouse = new Warehouse();
+            warehouse.setId(Integer.parseInt(warehouseJSON.get("ff_center_id").toString().replace("\"", "")));
+            warehouse.setName(warehouseJSON.get("ff_center_name").toString().replace("\"", ""));
+            warehouse.setAssignedQuantity(Integer.parseInt(warehouseJSON.get("assigned_qty").toString().replace("\"", "")));
+
+            List<Batch> batches = new ArrayList<>();
+
+            for(JsonElement batchJSON : warehouseJSON.getAsJsonArray("batches")){
+                Batch batch = new Batch();
+                batch.setQuantity(Integer.parseInt(batchJSON.getAsJsonObject().get("qty").toString().replace("\"", "")));
+                batch.setNumber(batchJSON.getAsJsonObject().get("number").toString().replace("\"", ""));
+                batch.setWarehouseID(Integer.parseInt(batchJSON.getAsJsonObject().get("ff_center_id").toString().replace("\"", "")));
+                batches.add(batch);
+            }
+
+            warehouse.setBatches(batches);
+            product.setWarehouse(warehouse);
+
             try{
                 TestContext.products.add(product);
             } catch (NullPointerException e){

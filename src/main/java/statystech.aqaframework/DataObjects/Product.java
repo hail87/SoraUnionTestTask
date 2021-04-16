@@ -10,8 +10,7 @@ public class Product {
     int productAllSysID;
     String productName;
     String productSKU;
-    String batchNumber;
     String productItemPrice;
     String productQuantity;
-
+    Warehouse warehouse;
 }

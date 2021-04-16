@@ -16,11 +16,10 @@ public class ProductBatchSteps extends Steps {
             return "Should run checkProduct() first!\n";
         }
         ProductBatchTable productBatchTable = new ProductBatchTable();
-        String actualPhoneNumber = productBatchTable.getColumnValue(
+        String actual = productBatchTable.getColumnValue(
                 productBatchTable.getPrimaryID(
                         "productID", String.valueOf(product.getProductID())), "batchNumber");
-        String expectedPhoneNumber = product.getBatchNumber();
-                //JsonUtils.getValueFromJSON("order_items", "ff_centers", "batches", "number");
-        return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
+        String expected = product.getWarehouse().getBatches().get(0).getNumber();
+        return verifyExpectedResults(actual, expected);
     }
 }

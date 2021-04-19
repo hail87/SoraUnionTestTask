@@ -19,7 +19,7 @@ public class ProductBatchSteps extends Steps {
         String actual = productBatchTable.getColumnValue(
                 productBatchTable.getPrimaryID(
                         "productID", String.valueOf(product.getProductID())), "batchNumber");
-        String expected = product.getWarehouse().getBatches().get(0).getNumber();
+        String expected = product.getWarehouses().get(0).getBatches().get(0).getNumber();
         return verifyExpectedResults(actual, expected);
     }
 }

@@ -18,15 +18,17 @@ import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 import statystech.aqaframework.steps.DBsteps.UserTableSteps;
 import statystech.aqaframework.steps.DBsteps.WarehouseOrderSteps;
 import statystech.aqaframework.utils.JsonUtils;
+import tests.TestRails;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DBtests {
+public class DbTest {
 
 
+    @TestRails(id="1")
     @ParameterizedTest
     @ValueSource(strings = {"order1095793dataQuattro.json"})
     public void orderStatusCheck(String jsonFilename) throws IOException, SQLException {
@@ -36,7 +38,7 @@ public class DBtests {
         dBsteps.connectDB();
         int id = stageOrderSteps.insertJsonToStageOrderTable(jsonFilename);
         errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
-        errorMessage.append(new StageOrderSteps().checkStatusColumn(id));
+        assertTrue(new StageOrderSteps().checkStatusColumn(id).isEmpty(), errorMessage.toString());
         errorMessage.append(new OrdersSteps().checkOrdersTable());
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());

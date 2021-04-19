@@ -14,6 +14,7 @@
         <junit-platform.version>5.7.1</junit-platform.version>
         <log4j.version>2.14.1</log4j.version>
         <slf4j.version>2.0.0-alpha1</slf4j.version>
+        <tests.skip>true</tests.skip>
     </properties>
 
     <dependencyManagement>
@@ -25,12 +26,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>org.junit</groupId>-->
-            <!--                <artifactId>junit-bom</artifactId>-->
-            <!--                <version>5.7.1</version>-->
-            <!--                <type>pom</type>-->
-            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -63,11 +58,6 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>log4j</groupId>-->
-        <!--            <artifactId>log4j</artifactId>-->
-        <!--            <version>2.14.0</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -130,7 +120,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>3.0.0-M3</version>
                 <configuration>
                     <argLine>
                         --illegal-access=permit
@@ -142,9 +132,10 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
-                    <argLine>
-                        --illegal-access=permit
-                    </argLine>
+                    <skipTests>${tests.skip}</skipTests>
+                    <argLine>--illegal-access=permit</argLine>
+                    <parallel>methods</parallel>
+                    <threadCount>10</threadCount>
                 </configuration>
             </plugin>
             <plugin>

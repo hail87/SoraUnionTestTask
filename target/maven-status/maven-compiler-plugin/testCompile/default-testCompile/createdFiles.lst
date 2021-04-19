@@ -1,1 +1,2 @@
-tests/DB/DBtests.class
+tests/DB/DbTest.class
+tests/TestRails.class

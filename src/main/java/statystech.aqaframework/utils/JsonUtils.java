@@ -10,13 +10,11 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.Batch;
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.DataObjects.Warehouse;
-import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,24 +97,28 @@ public class JsonUtils {
             product.setProductItemPrice(jsonObject.get("product_item_price").toString().replace("\"", ""));
             product.setProductQuantity(jsonObject.get("product_quantity").toString().replace("\"", ""));
 
-            JsonObject warehouseJSON = jsonObject.getAsJsonArray("ff_centers").get(0).getAsJsonObject();
-            Warehouse warehouse = new Warehouse();
-            warehouse.setId(Integer.parseInt(warehouseJSON.get("ff_center_id").toString().replace("\"", "")));
-            warehouse.setName(warehouseJSON.get("ff_center_name").toString().replace("\"", ""));
-            warehouse.setAssignedQuantity(Integer.parseInt(warehouseJSON.get("assigned_qty").toString().replace("\"", "")));
+            List<Warehouse> warehouses = new ArrayList<>();
 
-            List<Batch> batches = new ArrayList<>();
+            for(JsonElement warehouseJSON : jsonObject.getAsJsonArray("ff_centers")) {
+                Warehouse warehouse = new Warehouse();
+                warehouse.setId(Integer.parseInt(warehouseJSON.getAsJsonObject().get("ff_center_id").toString().replace("\"", "")));
+                warehouse.setName(warehouseJSON.getAsJsonObject().get("ff_center_name").toString().replace("\"", ""));
+                warehouse.setAssignedQuantity(Integer.parseInt(warehouseJSON.getAsJsonObject().get("assigned_qty").toString().replace("\"", "")));
 
-            for(JsonElement batchJSON : warehouseJSON.getAsJsonArray("batches")){
-                Batch batch = new Batch();
-                batch.setQuantity(Integer.parseInt(batchJSON.getAsJsonObject().get("qty").toString().replace("\"", "")));
-                batch.setNumber(batchJSON.getAsJsonObject().get("number").toString().replace("\"", ""));
-                batch.setWarehouseID(Integer.parseInt(batchJSON.getAsJsonObject().get("ff_center_id").toString().replace("\"", "")));
-                batches.add(batch);
+                List<Batch> batches = new ArrayList<>();
+
+                for (JsonElement batchJSON : warehouseJSON.getAsJsonObject().getAsJsonArray("batches")) {
+                    Batch batch = new Batch();
+                    batch.setQuantity(Integer.parseInt(batchJSON.getAsJsonObject().get("qty").toString().replace("\"", "")));
+                    batch.setNumber(batchJSON.getAsJsonObject().get("number").toString().replace("\"", ""));
+                    batch.setWarehouseID(Integer.parseInt(batchJSON.getAsJsonObject().get("ff_center_id").toString().replace("\"", "")));
+                    batches.add(batch);
+                }
+
+                warehouse.setBatches(batches);
+                warehouses.add(warehouse);
             }
-
-            warehouse.setBatches(batches);
-            product.setWarehouse(warehouse);
+            product.setWarehouses(warehouses);
 
             try{
                 TestContext.products.add(product);

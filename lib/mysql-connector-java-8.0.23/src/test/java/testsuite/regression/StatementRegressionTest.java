@@ -149,7 +149,7 @@ import testsuite.BaseTestCase;
 import testsuite.UnreliableSocketFactory;
 
 /**
- * Regression tests for the Statement class
+ * Regression statystech.aqaframework.tests for the Statement class
  */
 public class StatementRegressionTest extends BaseTestCase {
     class PrepareThread extends Thread {
@@ -2213,7 +2213,7 @@ public class StatementRegressionTest extends BaseTestCase {
         try {
             createGGKTables();
 
-            // Do the tests
+            // Do the statystech.aqaframework.tests
             for (int i = 0; i < tests.length; i++) {
                 doGGKTestStatement(tests[i], true);
             }
@@ -2229,7 +2229,7 @@ public class StatementRegressionTest extends BaseTestCase {
         try {
             createGGKTables();
 
-            // Do the tests
+            // Do the statystech.aqaframework.tests
             for (int i = 0; i < tests.length; i++) {
                 doGGKTestStatement(tests[i], false);
             }
@@ -2245,7 +2245,7 @@ public class StatementRegressionTest extends BaseTestCase {
         try {
             createGGKTables();
 
-            // Do the tests
+            // Do the statystech.aqaframework.tests
             for (int i = 0; i < tests.length; i++) {
                 doGGKTestPreparedStatement(tests[i], true);
             }
@@ -2261,7 +2261,7 @@ public class StatementRegressionTest extends BaseTestCase {
         try {
             createGGKTables();
 
-            // Do the tests
+            // Do the statystech.aqaframework.tests
             for (int i = 0; i < tests.length; i++) {
                 doGGKTestPreparedStatement(tests[i], false);
             }
@@ -6692,7 +6692,7 @@ public class StatementRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Executes a set of queries using a Statement (newly created) and tests if the results count is the expected.
+     * Executes a set of queries using a Statement (newly created) and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param testConn
      * @param queries
@@ -6709,7 +6709,7 @@ public class StatementRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Executes a set of queries using a Statement and tests if the results count is the expected.
+     * Executes a set of queries using a Statement and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param testStmt
      * @param queries
@@ -6726,7 +6726,7 @@ public class StatementRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Executes one query using a Statement and tests if the results count is the expected.
+     * Executes one query using a Statement and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param testStmt
      * @param query
@@ -6782,7 +6782,7 @@ public class StatementRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Executes a set of queries using newly created PreparedStatements and tests if the results count is the expected.
+     * Executes a set of queries using newly created PreparedStatements and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param testConn
      * @param queries
@@ -6799,7 +6799,7 @@ public class StatementRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Executes a set of queries using the given PreparedStatements and tests if the results count is the expected.
+     * Executes a set of queries using the given PreparedStatements and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param testPStmt
      * @param queries
@@ -6816,7 +6816,7 @@ public class StatementRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Executes one query using a newly created PreparedStatement, setting its maxRows limit, and tests if the results count is the expected.
+     * Executes one query using a newly created PreparedStatement, setting its maxRows limit, and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param testConn
      * @param query
@@ -6836,7 +6836,7 @@ public class StatementRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Executes one query using a PreparedStatement and tests if the results count is the expected.
+     * Executes one query using a PreparedStatement and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param testPStmt
      * @param query
@@ -6860,7 +6860,7 @@ public class StatementRegressionTest extends BaseTestCase {
 
     /**
      * Executes a query containing the clause LIMIT with a Statement and a PreparedStatement, using a combination of Connection properties, maxRows value and
-     * limit clause value, and tests if the results count is the expected.
+     * limit clause value, and statystech.aqaframework.tests if the results count is the expected.
      * 
      * @param connProps
      * @param maxRows
@@ -9268,7 +9268,7 @@ public class StatementRegressionTest extends BaseTestCase {
      * When using 'rewriteBatchedStatements=true' we rewrite several batched statements into one single query by extending its VALUES clause. Although INSERT
      * REPLACE have the same syntax, this wasn't happening for REPLACE statements.
      * 
-     * This tests the number of queries actually sent to server when rewriteBatchedStatements is used and not by using a QueryInterceptor. The test is
+     * This statystech.aqaframework.tests the number of queries actually sent to server when rewriteBatchedStatements is used and not by using a QueryInterceptor. The test is
      * repeated for server side prepared statements. Without the fix, this test fails while checking the number of expected REPLACE queries.
      * 
      * @throws Exception

@@ -208,7 +208,7 @@ import testsuite.BufferingLogger;
 import testsuite.UnreliableSocketFactory;
 
 /**
- * Regression tests for Connections
+ * Regression statystech.aqaframework.tests for Connections
  */
 public class ConnectionRegressionTest extends BaseTestCase {
     @Test
@@ -4593,7 +4593,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
         }
         props.remove(PropertyKey.cacheServerConfiguration.getKeyName());
 
-        // Error messages may also be received after the handshake but before connection initialization is complete. This tests the interpretation of
+        // Error messages may also be received after the handshake but before connection initialization is complete. This statystech.aqaframework.tests the interpretation of
         // errors thrown during this time window using a SatementInterceptor that throws an Exception while setting the session variables.
         // Start by getting the Latin1 version of the error to compare later.
         String latin1ErrorMsg = "";
@@ -6122,7 +6122,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
     }
 
     /**
-     * Internal method for tests to get a replication connection with a
+     * Internal method for statystech.aqaframework.tests to get a replication connection with a
      * single source host to the test URL.
      * 
      * @param sourceHost
@@ -7897,8 +7897,8 @@ public class ConnectionRegressionTest extends BaseTestCase {
      * {@code singleSynchWorkerMonitor} in the {@link TestBug21934573ExceptionInterceptor} the same way as in {@code ErrorReportingExceptionInterceptor}. The
      * way to reproduce it and observe the deadlock happening is by setting the connection property {@code __useReplConnGroupLocks__} to {@code False}.
      * 
-     * WARNING! If this test fails there is no guarantee that the JVM will remain stable and won't affect any other tests. It is imperative that this test
-     * passes to ensure other tests results.
+     * WARNING! If this test fails there is no guarantee that the JVM will remain stable and won't affect any other statystech.aqaframework.tests. It is imperative that this test
+     * passes to ensure other statystech.aqaframework.tests results.
      * 
      * @throws Exception
      */

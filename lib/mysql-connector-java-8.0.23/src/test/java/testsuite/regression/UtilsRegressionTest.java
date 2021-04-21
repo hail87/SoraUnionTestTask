@@ -51,7 +51,7 @@ import com.mysql.cj.util.TimeUtil;
 import testsuite.BaseTestCase;
 
 /**
- * Regression tests for utility classes.
+ * Regression statystech.aqaframework.tests for utility classes.
  */
 public class UtilsRegressionTest extends BaseTestCase {
     /**

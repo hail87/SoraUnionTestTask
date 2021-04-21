@@ -80,7 +80,7 @@ public class CollectionFindTest extends BaseCollectionTestCase {
     //        try {
     //            super.teardownCollectionTest();
     //        } catch (Exception ex) {
-    //            // expected-to-fail tests may destroy the connection, don't penalize them here
+    //            // expected-to-fail statystech.aqaframework.tests may destroy the connection, don't penalize them here
     //            System.err.println("Exception during teardown:");
     //            ex.printStackTrace();
     //        }

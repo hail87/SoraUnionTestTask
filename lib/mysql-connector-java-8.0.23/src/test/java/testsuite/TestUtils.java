@@ -40,7 +40,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * Utility functions to use in tests.
+ * Utility functions to use in statystech.aqaframework.tests.
  */
 
 public class TestUtils {

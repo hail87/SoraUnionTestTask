@@ -3219,7 +3219,7 @@ public class StatementsTest extends BaseTestCase {
     }
 
     /**
-     * Helper method for *SetObject* tests.
+     * Helper method for *SetObject* statystech.aqaframework.tests.
      * Insert data into the given PreparedStatement, or any of its subclasses, with the following structure:
      * 1 - `id` INT
      * 2 - `d` DATE (or any kind of *CHAR)
@@ -3326,7 +3326,7 @@ public class StatementsTest extends BaseTestCase {
     }
 
     /**
-     * Helper method for *SetObject* tests.
+     * Helper method for *SetObject* statystech.aqaframework.tests.
      * Validate the test data contained in the given ResultSet with following structure:
      * 1 - `id` INT
      * 2 - `d` DATE (or any kind of *CHAR)
@@ -3384,7 +3384,7 @@ public class StatementsTest extends BaseTestCase {
     }
 
     /**
-     * Helper method for *SetObject* tests.
+     * Helper method for *SetObject* statystech.aqaframework.tests.
      * Insert data into the given PreparedStatement, or any of its subclasses, with the following structure:
      * 1 - `id` INT
      * 2 - `ot1` VARCHAR
@@ -3425,7 +3425,7 @@ public class StatementsTest extends BaseTestCase {
     }
 
     /**
-     * Helper method for *SetObject* tests.
+     * Helper method for *SetObject* statystech.aqaframework.tests.
      * Validate the test data contained in the given ResultSet with following structure:
      * 1 - `id` INT
      * 2 - `ot1` VARCHAR
@@ -3475,7 +3475,7 @@ public class StatementsTest extends BaseTestCase {
     }
 
     /**
-     * Helper method for *SetObject* tests.
+     * Helper method for *SetObject* statystech.aqaframework.tests.
      * Check unsupported types behavior for the given PreparedStatement with a single placeholder. If this is a CallableStatement then the placeholder must
      * coincide with a parameter named `param`.
      * 

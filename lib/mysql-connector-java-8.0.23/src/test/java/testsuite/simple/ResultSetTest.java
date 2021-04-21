@@ -273,7 +273,7 @@ public class ResultSetTest extends BaseTestCase {
     }
 
     /**
-     * Date and time retrieval tests with and without ssps.
+     * Date and time retrieval statystech.aqaframework.tests with and without ssps.
      * 
      * @throws Exception
      */

@@ -1143,7 +1143,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             assertTlsVersion(testSession, "TLSv1.2");
             testSession.close();
 
-            // TS.FR.1_5. Repeat the tests TS.FR.1_1 and TS.FR.1_2 using a ClientFactory instead of a SessionFactory.
+            // TS.FR.1_5. Repeat the statystech.aqaframework.tests TS.FR.1_1 and TS.FR.1_2 using a ClientFactory instead of a SessionFactory.
             Client cli = cf.getClient(this.opensslTlsFreeBaseUrl + makeParam(PropertyKey.xdevapiTlsVersions, "TLSv1"), "{\"pooling\": {\"enabled\": true}}");
             testSession = cli.getSession();
             assertSecureSession(testSession);
@@ -1261,7 +1261,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                         return null;
                     });
 
-            // TS.FR.4_9. Repeat the tests TS.FR.4_1 to TS.FR.4_4 using a ClientFactory instead of a SessionFactory.
+            // TS.FR.4_9. Repeat the statystech.aqaframework.tests TS.FR.4_1 to TS.FR.4_4 using a ClientFactory instead of a SessionFactory.
             cli = cf.getClient(this.opensslTlsFreeBaseUrl + makeParam(PropertyKey.xdevapiTlsCiphersuites, "TLS_DHE_RSA_WITH_AES_128_CBC_SHA"),
                     "{\"pooling\": {\"enabled\": true}}");
             testSession = cli.getSession();
@@ -1342,7 +1342,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
             assertSessionStatusEquals(testSession, "mysqlx_ssl_cipher", "DHE-RSA-AES128-SHA");
             testSession.close();
 
-            // TS.FR.5_7. Repeat the tests TS.FR.5_1 to TS.FR.5_3 using a ClientFactory instead of a SessionFactory.
+            // TS.FR.5_7. Repeat the statystech.aqaframework.tests TS.FR.5_1 to TS.FR.5_3 using a ClientFactory instead of a SessionFactory.
             cli = cf.getClient(this.opensslTlsFreeBaseUrl, "{\"pooling\": {\"enabled\": true}}");
             testSession = cli.getSession();
             assertSecureSession(testSession);
@@ -1410,7 +1410,7 @@ public class SecureSessionTest extends DevApiBaseTestCase {
                     "Option '" + PropertyKey.xdevapiTlsCiphersuites.getKeyName() + "' can not be specified when SSL connections are disabled.",
                     () -> this.fact.getSession(propsOpenSSL));
 
-            // TS.FR.6_7. Repeat the tests TS.FR.6_1 to TS.FR.6_3 using a ClientFactory instead of a SessionFactory.
+            // TS.FR.6_7. Repeat the statystech.aqaframework.tests TS.FR.6_1 to TS.FR.6_3 using a ClientFactory instead of a SessionFactory.
             assertThrows(WrongArgumentException.class,
                     "Option '" + PropertyKey.xdevapiTlsVersions.getKeyName() + "' can not be specified when SSL connections are disabled.", () -> {
                         Client cli1 = cf.getClient(this.opensslTlsFreeBaseUrl + xdevapiSSLMode + makeParam(PropertyKey.xdevapiTlsVersions, "TLSv1.2"),

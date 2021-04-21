@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 import com.mysql.cj.exceptions.WrongArgumentException;
 
 /**
- * DbDoc tests.
+ * DbDoc statystech.aqaframework.tests.
  */
 public class JsonDocTest {
 

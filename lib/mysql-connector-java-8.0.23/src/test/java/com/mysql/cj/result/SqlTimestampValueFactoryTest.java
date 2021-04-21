@@ -55,7 +55,7 @@ import com.mysql.cj.protocol.InternalTimestamp;
 /**
  * Tests for JDBC {@link java.sql.Timestamp} creation.
  * <p/>
- * Note: Timestamp.toString() is not locale-specific and is appropriate for use in these tests.
+ * Note: Timestamp.toString() is not locale-specific and is appropriate for use in these statystech.aqaframework.tests.
  */
 public class SqlTimestampValueFactoryTest extends CommonAsserts {
     PropertySet pset = new DefaultPropertySet();

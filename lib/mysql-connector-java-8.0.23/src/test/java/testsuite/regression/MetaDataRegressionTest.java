@@ -82,7 +82,7 @@ import testsuite.BaseQueryInterceptor;
 import testsuite.BaseTestCase;
 
 /**
- * Regression tests for DatabaseMetaData
+ * Regression statystech.aqaframework.tests for DatabaseMetaData
  */
 public class MetaDataRegressionTest extends BaseTestCase {
     @Test
@@ -3359,7 +3359,7 @@ public class MetaDataRegressionTest extends BaseTestCase {
 
         if (failedTests.length() > 0) {
             boolean pedantic = ((MysqlConnection) conn1).getPropertySet().getBooleanProperty(PropertyKey.pedantic).getValue();
-            throw new Exception("Failed tests for catalog " + quotedDbName + " and table " + quotedTableName + " ("
+            throw new Exception("Failed statystech.aqaframework.tests for catalog " + quotedDbName + " and table " + quotedTableName + " ("
                     + (pedantic ? "pedantic mode" : "non-pedantic mode") + "):\n" + failedTests.toString());
         }
     }

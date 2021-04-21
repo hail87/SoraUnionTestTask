@@ -79,7 +79,7 @@ public class Ipv6SupportTest extends DevApiBaseTestCase {
     @Test
     public void testIpv6SupportInSession() {
         assumeTrue(this.isSetForXTests,
-                "Not set to run X tests. Set the url to the X server using the property " + PropertyDefinitions.SYSP_testsuite_url_mysqlx);
+                "Not set to run X statystech.aqaframework.tests. Set the url to the X server using the property " + PropertyDefinitions.SYSP_testsuite_url_mysqlx);
         assumeTrue(mysqlVersionMeetsMinimum(ServerVersion.parseVersion("5.7.17")), "Server version 5.7.17 or higher is required.");
 
         // Although per specification IPv6 addresses must be enclosed by square brackets, we actually support them directly.

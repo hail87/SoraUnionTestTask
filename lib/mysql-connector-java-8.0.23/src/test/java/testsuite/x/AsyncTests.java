@@ -30,7 +30,7 @@
 package testsuite.x;
 
 /**
- * Marker for async tests.
+ * Marker for async statystech.aqaframework.tests.
  */
 public interface AsyncTests {
 }

@@ -79,7 +79,7 @@ import com.mysql.cj.util.Util;
  * Base class for all test cases. Creates connections, statements, etc. and closes them.
  */
 public abstract class BaseTestCase {
-    // next variables disable some tests
+    // next variables disable some statystech.aqaframework.tests
     protected boolean DISABLED_testBug15121 = true; // TODO needs to be fixed on server
     protected boolean DISABLED_testBug7033 = true; // TODO disabled for unknown reason
     protected boolean DISABLED_testBug2654 = true; // TODO check if it's still a server-level bug
@@ -127,20 +127,20 @@ public abstract class BaseTestCase {
     protected final String dbName;
 
     /**
-     * PreparedStatement to be used in tests, not initialized. Cleaned up in
+     * PreparedStatement to be used in statystech.aqaframework.tests, not initialized. Cleaned up in
      * tearDown().
      */
     protected PreparedStatement pstmt = null;
 
     /**
-     * ResultSet to be used in tests, not initialized. Cleaned up in tearDown().
+     * ResultSet to be used in statystech.aqaframework.tests, not initialized. Cleaned up in tearDown().
      */
     protected ResultSet rs = null;
 
     protected ResultSet sha256Rs = null;
 
     /**
-     * Statement to be used in tests, initialized in setUp(). Cleaned up in
+     * Statement to be used in statystech.aqaframework.tests, initialized in setUp(). Cleaned up in
      * tearDown().
      */
     protected Statement stmt = null;
@@ -406,7 +406,7 @@ public abstract class BaseTestCase {
 
     /**
      * Returns the per-instance counter (for messages when multi-threading
-     * stress tests)
+     * stress statystech.aqaframework.tests)
      * 
      * @return int the instance number
      */
@@ -475,7 +475,7 @@ public abstract class BaseTestCase {
     }
 
     /**
-     * Some tests build connections strings for internal usage but, in order for them to work, they may require some connection properties set in the main test
+     * Some statystech.aqaframework.tests build connections strings for internal usage but, in order for them to work, they may require some connection properties set in the main test
      * suite URL. For example 'connectionTimeZone' is one of those properties.
      * 
      * @param props
@@ -631,7 +631,7 @@ public abstract class BaseTestCase {
 
     /**
      * Checks whether a certain system property is defined, in order to
-     * run/not-run certain tests
+     * run/not-run certain statystech.aqaframework.tests
      * 
      * @param propName
      *            the property name to check for
@@ -649,7 +649,7 @@ public abstract class BaseTestCase {
     }
 
     /**
-     * Creates resources used by all tests.
+     * Creates resources used by all statystech.aqaframework.tests.
      * 
      * @param testInfo
      * 

@@ -1,2 +1,5 @@
-tests/DB/DbTest.class
-tests/TestRails.class
+statystech/aqaframework/tests/TestRail/TestRailReportExtension$TestRailStatus.class
+statystech/aqaframework/tests/DB/DbTest.class
+statystech/aqaframework/tests/TestRail/TestRailReportExtension.class
+statystech/aqaframework/tests/TestRail/TestRailID.class
+statystech/aqaframework/tests/TestRail/TestRailReportExtension$CloseableOnlyOnceResource.class

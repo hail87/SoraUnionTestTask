@@ -49,11 +49,11 @@ import com.mysql.cj.xdevapi.UpdateResultBuilder;
 import testsuite.x.internal.InternalXBaseTestCase;
 
 /**
- * Utilities for Dev API tests.
+ * Utilities for Dev API statystech.aqaframework.tests.
  */
 public class DevApiBaseTestCase extends InternalXBaseTestCase {
     /**
-     * Session for use in tests.
+     * Session for use in statystech.aqaframework.tests.
      */
     Session session;
     Schema schema;

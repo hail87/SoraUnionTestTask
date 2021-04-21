@@ -653,7 +653,7 @@ public class XProtocol extends AbstractProtocol<XMessage> implements Protocol<XM
     }
 
     /**
-     * Used only in tests
+     * Used only in statystech.aqaframework.tests
      * 
      * @return true if there are result rows
      */
@@ -666,7 +666,7 @@ public class XProtocol extends AbstractProtocol<XMessage> implements Protocol<XM
     }
 
     /**
-     * Used only in tests
+     * Used only in statystech.aqaframework.tests
      */
     public void drainRows() {
         try {

@@ -68,7 +68,7 @@ import com.mysql.cj.util.StringUtils;
 import testsuite.BaseTestCase;
 
 /**
- * Regression tests for syntax
+ * Regression statystech.aqaframework.tests for syntax
  */
 public class SyntaxRegressionTest extends BaseTestCase {
     /**
@@ -705,7 +705,7 @@ public class SyntaxRegressionTest extends BaseTestCase {
                     f.deleteOnExit();
                 } else if (!exceptionCaugth) {
                     fail("File " + datadir + File.separator + dbname + File.separator + "loadtestExplicitPartitions.txt cannot be deleted."
-                            + "You should run server and tests on the same filesystem.");
+                            + "You should run server and statystech.aqaframework.tests on the same filesystem.");
                 }
             }
         }

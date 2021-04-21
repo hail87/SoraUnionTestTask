@@ -44,8 +44,8 @@ Testing Connector/J
 ===================
 
 Connector/J 8.0 ships with an extensive test suite that can be run simply by providing a MySQL JDBC URL in the variable 'com.mysql.cj.testsuite.url' and by
-calling the target "test". If nothing more is set, these tests run with the JVM referred in the variable 'com.mysql.cj.build.jdk'.
-Alternatively, all tests can be run with a distinct JVM, provided that it is pointed out in the variable 'com.mysql.cj.testsuite.jvm'.
+calling the target "test". If nothing more is set, these statystech.aqaframework.tests run with the JVM referred in the variable 'com.mysql.cj.build.jdk'.
+Alternatively, all statystech.aqaframework.tests can be run with a distinct JVM, provided that it is pointed out in the variable 'com.mysql.cj.testsuite.jvm'.
 Running only one test set is possible by setting the variable 'com.mysql.cj.testsuite.test.class' with the class' fully qualified name. If also a comma
 separated list of test names is provided in the variable 'com.mysql.cj.testsuite.test.methods', then only these will be executed.
 
@@ -58,7 +58,7 @@ Coverage and instrumentation
 This file ships with target "test-coverage" for collecting coverage results and "report-coverage" for creating the HTML coverage report.
 The JaCoCo library needed to run these targets can be found at https://github.com/jacoco/jacoco, its JARs should be placed
 into ${com.mysql.cj.extra.libs}/jacoco directory.
-The "test-coverage" target enables tests execution-time JaCoCo instrumentation, runs tests collecting coverage info into result file
+The "test-coverage" target enables statystech.aqaframework.tests execution-time JaCoCo instrumentation, runs statystech.aqaframework.tests collecting coverage info into result file
 which path is set as ${com.mysql.cj.coverage.result.dir}/${com.mysql.cj.coverage.result.name}.
 The "report-coverage" target first merges coverage result files which are placed in 'com.mysql.cj.coverage.result.dir' directory and
 their comma-delimited names are passed via 'com.mysql.cj.coverage.merge.files' property. Merge result file path is passed
@@ -99,9 +99,9 @@ com.mysql.cj.extra.libs=&lt;full_path_to_connector-j-jardeps&gt;
 # - Mandatory.
 com.mysql.cj.build.jdk=&lt;full_path_to_jdk1.8&gt;
 
-# Single JVM/MySQL tests:
+# Single JVM/MySQL statystech.aqaframework.tests:
 # - Must point to JDK or JRE home directory.
-# - If not provided, JDBC tests are run with 'com.mysql.cj.build.jdk'.
+# - If not provided, JDBC statystech.aqaframework.tests are run with 'com.mysql.cj.build.jdk'.
 # - Optional.
 com.mysql.cj.testsuite.jvm=&lt;full_path_to_a_jdk_or_jre&gt;
 # - URL to the test database.
@@ -182,12 +182,12 @@ com.mysql.cj.testsuite.build.dir - root directory for building testsuite, defaul
 com.mysql.cj.testsuite.junit.results - where to put junit reports, default '${com.mysql.cj.testsuite.junit.results}'
 com.mysql.cj.testsuite.jvm - run testsuite under this one JVM, default '${com.mysql.cj.testsuite.jvm}'
 com.mysql.cj.testsuite.url - connection string to the main test server, default _unset_
-com.mysql.cj.testsuite.url.openssl - connection string to the test server compiled with OpenSSL, used in sha256 tests, default _unset_
+com.mysql.cj.testsuite.url.openssl - connection string to the test server compiled with OpenSSL, used in sha256 statystech.aqaframework.tests, default _unset_
 com.mysql.cj.testsuite.mysqlx.url - connection string to the test server with xplugin, default _unset_
 com.mysql.cj.testsuite.mysqlx.url.openssl - connection string to the test server compiled with OpenSSL and enabled xplugin, default _unset_
 com.mysql.cj.testsuite.test.class - testcase class name to run, default _unset_
 com.mysql.cj.testsuite.test.methods - a comma separated list of test names existing in class defined by 'com.mysql.cj.testsuite.test.class', default _unset_
-com.mysql.cj.testsuite.unavailable.host - a host:port pair used for tests checking socket connection timeout
+com.mysql.cj.testsuite.unavailable.host - a host:port pair used for statystech.aqaframework.tests checking socket connection timeout
 
 See also com.mysql.cj.conf.PropertyDefinitions.SYSP_* variables for other test options.
 
@@ -266,13 +266,13 @@ See also com.mysql.cj.conf.PropertyDefinitions.SYSP_* variables for other test o
     <!-- Location of third-party libraries we don't distribute and extra source files. -->
     <property name="com.mysql.cj.extra.libs" value="lib" />
 
-    <!-- JVM used to execute the tests. -->
+    <!-- JVM used to execute the statystech.aqaframework.tests. -->
     <property name="com.mysql.cj.testsuite.jvm" value="${com.mysql.cj.build.jdk}" />
 
     <!-- Include the prebuilt docs into packages. -->
     <property name="com.mysql.cj.dist.dir.prebuilt.docs" value="/tmp/connectorj/docs/prebuilt" />
 
-    <!-- This propertyset is used to forward tests setup configurations as system variables to JUnit tasks. -->
+    <!-- This propertyset is used to forward statystech.aqaframework.tests setup configurations as system variables to JUnit tasks. -->
     <propertyset id="junit.system.properties">
         <propertyref prefix="com.mysql.cj.testsuite." />
     </propertyset>
@@ -379,7 +379,7 @@ See also com.mysql.cj.conf.PropertyDefinitions.SYSP_* variables for other test o
     </target>
 
 
-    <!-- Check provided JVM for running tests. -->
+    <!-- Check provided JVM for running statystech.aqaframework.tests. -->
     <target name="-testsuite-jvm-check">
         <property name="com.mysql.cj.testsuite.jvm.java" value="${com.mysql.cj.testsuite.jvm}/bin/java" />
 
@@ -1244,9 +1244,9 @@ See also com.mysql.cj.conf.PropertyDefinitions.SYSP_* variables for other test o
     <!-- ******************* -->
 
 
-    <!-- Run the full test suite, single test set or named tests against one JVM and one server config. -->
+    <!-- Run the full test suite, single test set or named statystech.aqaframework.tests against one JVM and one server config. -->
     <target name="test"
-            description="Runs the full test suite, single test set (variable 'com.mysql.cj.testsuite.test.class') or named tests (variables 'com.mysql.cj.testsuite.test.class' and 'com.mysql.cj.testsuite.test.methods') against one JVM and one server config."
+            description="Runs the full test suite, single test set (variable 'com.mysql.cj.testsuite.test.class') or named statystech.aqaframework.tests (variables 'com.mysql.cj.testsuite.test.class' and 'com.mysql.cj.testsuite.test.methods') against one JVM and one server config."
             depends="-testsuite-jvm-check, compile-testsuite">
 
         <mkdir dir="${com.mysql.cj.testsuite.junit.results}/report" />
@@ -1261,7 +1261,7 @@ See also com.mysql.cj.conf.PropertyDefinitions.SYSP_* variables for other test o
 
         <local name="com.mysql.cj.testsuite.message.test.mode" />
         <condition property="com.mysql.cj.testsuite.message.test.mode"
-                   value="Running JDBC unit tests against '${com.mysql.cj.testsuite.url}' with jvm '${com.mysql.cj.testsuite.jvm.java}'">
+                   value="Running JDBC unit statystech.aqaframework.tests against '${com.mysql.cj.testsuite.url}' with jvm '${com.mysql.cj.testsuite.jvm.java}'">
             <not>
                 <isset property="com.mysql.cj.testsuite.test.class" />
             </not>
@@ -1362,7 +1362,7 @@ See also com.mysql.cj.conf.PropertyDefinitions.SYSP_* variables for other test o
     <!-- ********************************* -->
 
 
-    <target name="test-coverage" description="Runs tests collecting coverage results." depends="-set-test-coverage-detaults, test" />
+    <target name="test-coverage" description="Runs statystech.aqaframework.tests collecting coverage results." depends="-set-test-coverage-detaults, test" />
 
 
     <target name="-set-test-coverage-detaults">

@@ -74,16 +74,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
     }
 
     public static Properties loadProperties() {
-        //String env = Optional.ofNullable(System.getProperty("env")).orElse("localhost");
-//        Properties properties = new Properties();
-        //InputStream is = ClassLoader.class.getResourceAsStream("/" + env + "test_rail_config.properties");
-//        InputStream is = ClassLoader.class.getResourceAsStream("src/main/resources/test_rail_config.properties");
-//        try {
-//            properties.load(is);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        return new DataUtils().getProperty("test_rail_config.properties");
+        return DataUtils.getProperty("test_rail_config.properties");
     }
 
     private void addResult(ExtensionContext extensionContext, TestRailStatus status) {

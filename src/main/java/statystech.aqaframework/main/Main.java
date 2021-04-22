@@ -1,11 +1,9 @@
 package statystech.aqaframework.main;
 
-//import utils.Utils;
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
-//        String nodeValue = Utils.getNodeValueFromXml("https://beacon.nist.gov/rest/record/last", "outputValue");
-//        Utils.printCharOccurrences(nodeValue);
+    public static void main(String[] args) throws IOException {
     }
 }

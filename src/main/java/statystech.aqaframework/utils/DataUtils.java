@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ public class DataUtils {
         return prop.getProperty(propertyName);
     }
 
-    public Properties getProperty(String propertyFileName) {
+    public static Properties getProperty(String propertyFileName) {
         FileInputStream fis;
         Properties prop = new Properties();
         try {
@@ -41,6 +42,18 @@ public class DataUtils {
     public static String getCurrentTimestamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return sdf.format(timestamp);
+    }
+
+    public static void updateTestRailPropertyParameter(String parameter, String value) throws IOException {
+        updatePropertyParameter("test_rail_config.properties", parameter, value);
+    }
+
+    public static void updatePropertyParameter(String propertyFileName, String parameter, String value) throws IOException {
+        Properties props = getProperty(propertyFileName);
+        FileOutputStream out = new FileOutputStream(propertyFileName);
+        props.setProperty(parameter, value);
+        props.store(out, null);
+        out.close();
     }
 
 }

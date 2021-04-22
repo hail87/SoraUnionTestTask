@@ -8,6 +8,8 @@ import com.codepine.api.testrail.model.Run;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
@@ -18,6 +20,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
+
+    private static final Logger logger = LoggerFactory.getLogger(TestRailReportExtension.class);
 
     private enum TestRailStatus {
         PASSED(1),
@@ -103,8 +107,8 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         int runID = 0;
         try {
             runID = Integer.parseInt(DataUtils.getTestRailPropertyValue("testrail_runId"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (NumberFormatException | IOException e) {
+            logger.info("No runID set, new Test Run will be added");
         }
 //        final Integer planId = 1111; // Test plan reflects current version which is tested
 //        final Integer milestone = 666; // Milestone is set per each project and should reflect release version(e.g. 1.0, 666)
@@ -126,15 +130,6 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
                                             .map(Result::getCaseId).collect(Collectors.toCollection(CopyOnWriteArrayList::new)))
                     ).execute();
             runID = run.getId();
-        } else {
-            run = testRail.runs()
-                    .update(
-                            new Run().setName("AQA framework report [" + DataUtils.getCurrentTimestamp() + "]")
-                                    .setIncludeAll(true)
-                                    .setSuiteId(testSuiteId)
-                                    .setCaseIds(results.stream()
-                                            .map(Result::getCaseId).collect(Collectors.toCollection(CopyOnWriteArrayList::new)))
-                    ).execute();
         }
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
         testRail.results().addForCases(runID, results, customResultFields).execute();

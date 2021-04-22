@@ -15,7 +15,7 @@ public class DataUtils {
     private static final Logger logger = LoggerFactory.getLogger(DataUtils.class);
     private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 
-    public String getPropertyValue(String propertyFileName, String propertyName) {
+    public static String getPropertyValue(String propertyFileName, String propertyName) {
         FileInputStream fis;
         Properties prop = new Properties();
         try {
@@ -46,6 +46,10 @@ public class DataUtils {
 
     public static void updateTestRailPropertyParameter(String parameter, String value) throws IOException {
         updatePropertyParameter("test_rail_config.properties", parameter, value);
+    }
+
+    public static String getTestRailPropertyValue(String parameter) throws IOException {
+        return getPropertyValue("test_rail_config.properties", parameter);
     }
 
     public static void updatePropertyParameter(String propertyFileName, String parameter, String value) throws IOException {

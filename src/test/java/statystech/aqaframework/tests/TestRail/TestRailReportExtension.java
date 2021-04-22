@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import statystech.aqaframework.utils.DataUtils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -99,27 +100,45 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         final String pwd = properties.getProperty("testrail_pwd").trim();
         final String projectId = properties.getProperty("testrail_projectId").trim();
         final Integer testSuiteId = Integer.parseInt(properties.getProperty("testrail_testSuiteId").trim());; // Suite ID should be unique per project
+        int runID = 0;
+        try {
+            runID = Integer.parseInt(DataUtils.getTestRailPropertyValue("testrail_runId"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 //        final Integer planId = 1111; // Test plan reflects current version which is tested
 //        final Integer milestone = 666; // Milestone is set per each project and should reflect release version(e.g. 1.0, 666)
 //        final String browserName = "browserName";
 //        final String description = "Test Run description. It can contain links to build or some other useful information";
 //        final String name = "Test run name";
-
         TestRail testRail = TestRail.builder(url, userId, pwd).build();
         Project project = testRail.projects().get(Integer.parseInt(projectId)).execute();
-        Run run = testRail.runs()
-                .add(project.getId(),
-                        new Run().setName("AQA framework report [" + DataUtils.getCurrentTimestamp() + "]")
-                                .setIncludeAll(false)
-                                .setSuiteId(testSuiteId)
+        Run run;
+        if (runID == 0) {
+            run = testRail.runs()
+                    .add(project.getId(),
+                            new Run().setName("AQA framework report [" + DataUtils.getCurrentTimestamp() + "]")
+                                    .setIncludeAll(false)
+                                    .setSuiteId(testSuiteId)
 //                                .setMilestoneId(milestone)
 //                                .setPlanId(planId)
-                                .setCaseIds(results.stream()
-                                        .map(Result::getCaseId).collect(Collectors.toCollection(CopyOnWriteArrayList::new)))
-                ).execute();
+                                    .setCaseIds(results.stream()
+                                            .map(Result::getCaseId).collect(Collectors.toCollection(CopyOnWriteArrayList::new)))
+                    ).execute();
+            runID = run.getId();
+        } else {
+            run = testRail.runs()
+                    .update(
+                            new Run().setName("AQA framework report [" + DataUtils.getCurrentTimestamp() + "]")
+                                    .setIncludeAll(true)
+                                    .setSuiteId(testSuiteId)
+                                    .setCaseIds(results.stream()
+                                            .map(Result::getCaseId).collect(Collectors.toCollection(CopyOnWriteArrayList::new)))
+                    ).execute();
+        }
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
-        testRail.results().addForCases(run.getId(), results, customResultFields).execute();
-        testRail.runs().close(run.getId()).execute();
+        testRail.results().addForCases(runID, results, customResultFields).execute();
+        testRail.runs().close(runID).execute();
     }
 
     private static class CloseableOnlyOnceResource implements ExtensionContext.Store.CloseableResource {

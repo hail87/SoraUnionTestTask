@@ -36,7 +36,6 @@ public class DbTest {
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
         errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
-        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
         errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
         JsonUtils.makeProductObjectsFromJson();
         for (Product product : TestContext.products) {
@@ -44,6 +43,8 @@ public class DbTest {
             errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
             errorMessage.append(new OrderLineSteps().checkOrderLineTable(product));
         }
+        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
+
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         dBsteps.cleanAndFinish(id);
     }

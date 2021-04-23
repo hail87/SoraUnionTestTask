@@ -2,6 +2,7 @@ package statystech.aqaframework.steps.DBsteps;
 
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TableObjects.OrderLineTable;
+import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ public class OrderLineSteps extends Steps {
         errorMessage.append(checkSKU(product));
         errorMessage.append(checkPrice(product));
         errorMessage.append(checkQuantity(product));
+        setWarehouseOrderID(product);
         return errorMessage.toString();
     }
 
@@ -39,5 +41,9 @@ public class OrderLineSteps extends Steps {
         String actual = new OrderLineTable().getColumnValue(product,"quantity");
         String expected = product.getProductQuantity();
         return verifyExpectedResults(actual, expected);
+    }
+
+    private void setWarehouseOrderID(Product product) throws SQLException {
+        TestContext.warehouseOrderID = Integer.parseInt(new OrderLineTable().getColumnValue(product,"warehouseOrderID"));
     }
 }

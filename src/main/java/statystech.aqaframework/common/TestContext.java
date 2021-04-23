@@ -11,4 +11,5 @@ public class TestContext {
     public static List<Product> products;
     public static String orderAllSysID;
     public static int allSysBuyerID;
+    public static int warehouseOrderID;
 }

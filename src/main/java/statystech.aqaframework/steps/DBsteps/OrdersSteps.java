@@ -32,6 +32,7 @@ public class OrdersSteps extends Steps {
         String actualOrderID = new OrdersTable().getOrderAllSysIDValue();
         if (actualOrderID.equalsIgnoreCase(expectedOrderID)) {
             logger.info(new Object(){}.getClass().getEnclosingMethod().getName() + "() passed successfully\n");
+            TestContext.orderAllSysID = actualOrderID;
             return "";
         } else {
             logger.error(new Object(){}.getClass().getEnclosingMethod().getName() + "() not passed\n");

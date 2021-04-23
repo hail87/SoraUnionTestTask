@@ -9,4 +9,6 @@ public class TestContext {
 
     public static JsonObject JSON_OBJECT;
     public static List<Product> products;
+    public static String orderAllSysID;
+    public static int allSysBuyerID;
 }

@@ -1,5 +1,6 @@
 package statystech.aqaframework.TableObjects;
 
+import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -19,7 +20,8 @@ public class OrdersTable extends TableObject {
     }
 
     public int getShippingAddressIDValue() throws SQLException {
-        return Integer.parseInt(new DBUtils().select(TABLE_NAME, "shippingAddressID"));
+        return Integer.parseInt(new DBUtils().executeAndReturnString(String.format(
+                "select %s from %s where orderAllSysID = '%s'","shippingAddressID",TABLE_NAME, TestContext.orderAllSysID)));
     }
 
     public String getCurrencyValue() throws SQLException {

@@ -28,27 +28,26 @@ public class ShippingAddressSteps extends Steps {
                 shippingAddressTable.getJsonAndTableValue(shippingAddressID, "shipping_address", "first_name")));
         errorMessage.append(verifyExpectedResults(
                 shippingAddressTable.getJsonAndTableValue(shippingAddressID, "shipping_address", "last_name")));
-        errorMessage.append(checkPhoneNumber());
-        errorMessage.append(checkPostalCode());
-        errorMessage.append(checkRegion());
-
+        errorMessage.append(checkPhoneNumber(shippingAddressID));
+        errorMessage.append(checkPostalCode(shippingAddressID));
+        errorMessage.append(checkRegion(shippingAddressID));
         return errorMessage.toString();
     }
 
-    private String checkPhoneNumber() throws SQLException {
-        String actualPhoneNumber = new ShippingAddressTable().getColumnValue("phoneNumber1");
+    private String checkPhoneNumber(int shippingAddressID) throws SQLException {
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValue(shippingAddressID,"phoneNumber1");
         String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 
-    private String checkPostalCode() throws SQLException {
-        String actualPhoneNumber = new ShippingAddressTable().getColumnValue("postalCode");
+    private String checkPostalCode(int shippingAddressID) throws SQLException {
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValue(shippingAddressID,"postalCode");
         String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("zip").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 
-    private String checkRegion() throws SQLException {
-        String actualPhoneNumber = new BuyerTable().getColumnValue("region");
+    private String checkRegion(int shippingAddressID) throws SQLException {
+        String actualPhoneNumber = new BuyerTable().getColumnValue(shippingAddressID,"region");
         String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("state").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }

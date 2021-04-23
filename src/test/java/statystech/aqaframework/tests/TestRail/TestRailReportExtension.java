@@ -108,7 +108,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         try {
             runID = Integer.parseInt(DataUtils.getTestRailPropertyValue("testrail_runId"));
         } catch (NumberFormatException | IOException e) {
-            logger.info("No runID set, new Test Run will be added");
+            logger.info("No runID set, new Test Run will be created");
         }
 //        final Integer planId = 1111; // Test plan reflects current version which is tested
 //        final Integer milestone = 666; // Milestone is set per each project and should reflect release version(e.g. 1.0, 666)

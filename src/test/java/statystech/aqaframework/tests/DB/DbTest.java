@@ -44,22 +44,20 @@ public class DbTest {
             errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
             errorMessage.append(new OrderLineSteps().checkOrderLineTable(product));
         }
-
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
         dBsteps.cleanAndFinish(id);
     }
 
-    @Test
-    @TestRailID(id="1")
-    public void testCanary(){
-        assertTrue(true);
-    }
-
-    @Test
-    @TestRailID(id="2")
-    public void test2(){
-        assertTrue(true);
-    }
+//    @Test
+//    @TestRailID(id="1")
+//    public void testCanary(){
+//        assertTrue(true);
+//    }
+//
+//    @Test
+//    @TestRailID(id="2")
+//    public void test2(){
+//        assertTrue(true);
+//    }
 
 }

@@ -16,8 +16,8 @@ public abstract class Steps {
             logger.info(String.format("\njsonValue '%s' and tableValue '%s' are the same\n", expectedResult, actualResult));
             return "";
         } else {
-            String message = "\njsonValue and tableValue are NOT the same!\nActual: '"
-                    + actualResult + "'\nExpected: '" + expectedResult + "'\n";
+            String message = "\njsonValue and tableValue are NOT the same!\nActual (DB): '"
+                    + actualResult + "'\nExpected (JSON): '" + expectedResult + "'\n";
             logger.error(message);
             return message;
         }
@@ -28,8 +28,8 @@ public abstract class Steps {
             logger.info(String.format("\njsonValue '%s' and tableValue '%s' are the same\n", expectedResult, actualResult));
             return "";
         } else {
-            String message = "\njsonValue and tableValue are NOT the same!\nActual: '"
-                    + actualResult + "'\nExpected: '" + expectedResult + "'\n";
+            String message = "\njsonValue and tableValue are NOT the same!\nActual (DB): '"
+                    + actualResult + "'\nExpected (JSON): '" + expectedResult + "'\n";
             logger.info(message);
             return message;
         }

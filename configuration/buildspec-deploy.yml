@@ -1,0 +1,23 @@
+version: 0.1
+
+phases:
+  install:
+    commands:
+      - echo Entering install phase...
+      - echo Installing app dependencies...
+      # - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/kubectl
+      - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x ./kubectl
+      # - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      # - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      # - source ~/.bashrc
+  pre_build:
+    commands:
+      - echo Pre-build started on `date`
+      - echo Logging in to Amazon EKS...
+      - aws eks --region us-east-1 update-kubeconfig --name eks-lwa-dev
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Rollout restart to pull the latest image to cluster
+      - ./kubectl rollout restart deployment/deployment-aqa -n lwa-sandbox

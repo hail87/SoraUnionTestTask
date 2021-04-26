@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class TestSuiteID {
+public class TestSuiteMapper {
 
     Map<String, Class<?>> classMap = new HashMap<>();
 
-    public TestSuiteID(){
+    public TestSuiteMapper(){
         classMap.put("1", DbTest.class);
     }
 

@@ -16,22 +16,19 @@ public class ConnectionDB {
 
     private DBUser user = null;
 
-    public Connection getCurrentConnection()
-    {
-        if(connection != null)
-        {
+    public Connection getCurrentConnection() throws SQLException {
+        if (connection != null) {
             return connection;
-        }
-        else
-        {
+        } else {
             connectDB(this.user);
             return connection;
         }
     }
 
-    public void connectDB(DBUser user) {
+    public void connectDB(DBUser user) throws SQLException {
 
-        if (connection!=null){
+        if (connection != null && !connection.isClosed()) {
+            logger.info("DB connection already exist, no new connection won't be created!");
             return;
         }
 

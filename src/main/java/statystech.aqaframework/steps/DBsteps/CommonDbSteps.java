@@ -7,12 +7,13 @@ import statystech.aqaframework.common.ConnectionDB;
 import statystech.aqaframework.utils.DBUtils;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class CommonDbSteps {
 
     private static final Logger logger = LoggerFactory.getLogger(StageOrderSteps.class);
 
-    public void connectDB() throws IOException {
+    public void connectDB() throws IOException, SQLException {
         new ConnectionDB().connectDB(new DBUser());
         logger.info("Data Base connected!");
     }

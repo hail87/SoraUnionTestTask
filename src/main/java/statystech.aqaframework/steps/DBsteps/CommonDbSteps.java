@@ -17,9 +17,7 @@ public class CommonDbSteps {
         logger.info("Data Base connected!");
     }
 
-    public void cleanAndFinish(int id) {
-        DBUtils dbUtils = new DBUtils();
-        dbUtils.deleteRow(id);
-        dbUtils.closeConnection();
+    public void closeConnection() {
+        new DBUtils().closeConnection();
     }
 }

@@ -21,7 +21,12 @@ import java.util.stream.Collectors;
 
 public class JsonUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrdersSteps.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
+
+    public static Product getJsonProductWithName(String productName) {
+        return TestContext.products.stream()
+                .filter(p -> p.getProductName().equalsIgnoreCase(productName)).findFirst().orElse(null);
+    }
 
     public static String getValueFromJSON(String node1, String node2, String node3, String key) {
         String jsonValue = "";
@@ -54,12 +59,12 @@ public class JsonUtils {
     }
 
     public void loadJsonObjectToTestContext(JsonObject jsonObject){
-
         TestContext.JSON_OBJECT = jsonObject;
+        makeProductObjectsFromJson();
     }
 
 
-    public String getJsonContent(String jsonFilename) throws IOException {
+    public String getJsonContentAndLoadToContext(String jsonFilename) throws IOException {
         loadJsonObjectToTestContext(getJsonObject(jsonFilename));
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(

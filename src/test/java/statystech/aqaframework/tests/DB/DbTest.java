@@ -1,9 +1,10 @@
 package statystech.aqaframework.tests.DB;
 
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.common.TestContext;
@@ -24,12 +25,12 @@ public class DbTest {
     @TestRailID(id="1")
     @ParameterizedTest
     @ValueSource(strings = {"order1000100data.json"})
-    public void orderStatusCheck(String jsonFilename) throws IOException, SQLException {
+    public void newOrderProcessing(String jsonFilename) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
         CommonDbSteps dBsteps = new CommonDbSteps();
         dBsteps.connectDB();
-        int id = stageOrderSteps.insertJsonToStageOrderTable(jsonFilename);
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToStageOrderTableAndContext(jsonFilename);
         errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
         assertTrue(new StageOrderSteps().checkStatusColumn(id).isEmpty(), errorMessage.toString());
         errorMessage.append(new OrdersSteps().checkOrdersTable());
@@ -37,16 +38,46 @@ public class DbTest {
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
         errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
         errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
-        JsonUtils.makeProductObjectsFromJson();
         for (Product product : TestContext.products) {
             errorMessage.append(new ProductSteps().checkProduct(product));
             errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
-            errorMessage.append(new OrderLineSteps().checkOrderLineTable(product));
+            errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(product));
         }
         errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        dBsteps.cleanAndFinish(id);
+        stageOrderSteps.deleteRow(id);
+        //TODO: delete all new rows
+        dBsteps.closeConnection();
+    }
+
+    @TestRailID(id="2")
+    @ParameterizedTest
+    @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
+    public void orderUpdate(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        CommonDbSteps dBsteps = new CommonDbSteps();
+        dBsteps.connectDB();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int idNew = stageOrderSteps.insertJsonToStageOrderTableAndContext(newOrderJson);
+        errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
+        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+        OrderLineSteps orderLineSteps = new OrderLineSteps();
+
+        Product product1 = JsonUtils.getJsonProductWithName("REVOFIL AQUASHINE BTX");
+        errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
+
+        int idUpdate = stageOrderSteps.insertJsonToStageOrderTableAndContext(updateOrderJson);
+        Product product2 = JsonUtils.getJsonProductWithName(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
+        errorMessage.append(orderLineSteps.checkProductIsAbsent(product2));
+        errorMessage.append(new StageOrderApiSteps().triggerOrderProcessingSandBox());
+        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+
+        errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
+
+        stageOrderSteps.deleteRow(idNew);
+        stageOrderSteps.deleteRow(idUpdate);
+        dBsteps.closeConnection();
     }
 
 //    @Test

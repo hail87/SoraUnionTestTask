@@ -1,0 +1,104 @@
+{
+    "order_id": "4190168",
+    "user_id": "970e2678cd5ff991ab8cbfb842f2eac5",
+    "order_status": "Confirmed",
+    "replacement_order_id": "1075867",
+    "seller_id": "",
+    "seller_username": "",
+    "billing_address":
+    {
+        "user_info_id": "764491",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "Cory",
+        "middle_name": "",
+        "last_name": "Feldman",
+        "country": "UNITED STATES",
+        "state": "Ohio",
+        "city": "Huntington",
+        "zip": "21743",
+        "address_line_1": "48 Shortacre Dr.",
+        "address_line_2": "",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "shipping_address":
+    {
+        "user_info_id": "764491",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "Cory",
+        "middle_name": "",
+        "last_name": "Feldman",
+        "country": "UNITED STATES",
+        "state": "Ohio",
+        "city": "Huntington",
+        "zip": "21743",
+        "address_line_1": "48 Shortacre Dr.",
+        "address_line_2": "",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "order_date": "2021-04-19",
+    "shipped_at": null,
+    "delivered_at": null,
+    "order_items":
+    [
+        {
+            "order_item_id": "1757040",
+            "product_id": "88748",
+            "product_name": "REVOFIL AQUASHINE BTX",
+            "product_quantity": "7",
+            "product_item_price": "56.00",
+            "SKU": "sku_1509398072_1",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "41",
+                    "ff_center_name": "Nitrogen-7-N",
+                    "assigned_qty": "7",
+                    "batches":
+                    [
+                        {
+                            "qty": "7",
+                            "number": "RAB-19-02",
+                            "ff_center_id": "41"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "order_item_id": "1763558",
+            "product_id": "88761",
+            "product_name": "EYLEA\u00ae 40mg/1ml Non-English",
+            "product_quantity": "5",
+            "product_item_price": "1369.00",
+            "SKU": "sku_1512426276_1",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "41",
+                    "ff_center_name": "Nitrogen-7-N",
+                    "assigned_qty": "5",
+                    "batches":
+                    [
+                        {
+                            "qty": "5",
+                            "number": "RAS-19-02",
+                            "ff_center_id": "41"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "website_name": "medi-wholesale.net",
+    "shopper_group_name": "Medi-Wholesale Licensed",
+    "account_number": "403007",
+    "order_currency": "USD",
+    "currency_conversion": "1.00",
+    "shipping_notes": ""
+}

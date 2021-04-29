@@ -10,7 +10,7 @@ public class WarehouseOrderTable extends TableObject {
 
     private final String TABLE_NAME = "warehouseOrder";
 
-    public String getColumnValue(String columnName) throws SQLException {
+    public String getLastRowColumnValue(String columnName) throws SQLException {
         return getLastRow(TABLE_NAME).getString(columnName);
     }
 

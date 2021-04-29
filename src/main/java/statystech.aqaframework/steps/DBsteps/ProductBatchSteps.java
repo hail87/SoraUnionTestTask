@@ -16,7 +16,7 @@ public class ProductBatchSteps extends Steps {
             return "Should run checkProduct() first!\n";
         }
         ProductBatchTable productBatchTable = new ProductBatchTable();
-        String actual = productBatchTable.getColumnValue(
+        String actual = productBatchTable.getColumnValueByPrimaryID(
                 productBatchTable.getPrimaryID(
                         "productID", String.valueOf(product.getProductID())), "batchNumber");
         String expected = product.getWarehouses().get(0).getBatches().get(0).getNumber();

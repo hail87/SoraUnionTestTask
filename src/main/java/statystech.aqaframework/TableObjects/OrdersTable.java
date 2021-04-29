@@ -25,11 +25,11 @@ public class OrdersTable extends TableObject {
     }
 
     public String getCurrencyValue() throws SQLException {
-        return getColumnValue(Integer.parseInt(getOrderAllSysIDValue()), "currency");
+        return getColumnValueByPrimaryID(Integer.parseInt(getOrderAllSysIDValue()), "currency");
     }
 
     public String getCurrencyConversionValue() throws SQLException {
-        return getColumnValue(Integer.parseInt(getOrderAllSysIDValue()), "conversionUSD");
+        return getColumnValueByPrimaryID(Integer.parseInt(getOrderAllSysIDValue()), "conversionUSD");
     }
 
     public int getShopperGroupIDValue() throws SQLException {

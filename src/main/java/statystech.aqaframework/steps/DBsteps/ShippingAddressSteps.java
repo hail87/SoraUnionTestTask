@@ -35,19 +35,19 @@ public class ShippingAddressSteps extends Steps {
     }
 
     private String checkPhoneNumber(int shippingAddressID) throws SQLException {
-        String actualPhoneNumber = new ShippingAddressTable().getColumnValue(shippingAddressID,"phoneNumber1");
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValueByPrimaryID(shippingAddressID,"phoneNumber1");
         String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 
     private String checkPostalCode(int shippingAddressID) throws SQLException {
-        String actualPhoneNumber = new ShippingAddressTable().getColumnValue(shippingAddressID,"postalCode");
+        String actualPhoneNumber = new ShippingAddressTable().getColumnValueByPrimaryID(shippingAddressID,"postalCode");
         String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("zip").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 
     private String checkRegion(int shippingAddressID) throws SQLException {
-        String actualPhoneNumber = new BuyerTable().getColumnValue(shippingAddressID,"region");
+        String actualPhoneNumber = new BuyerTable().getColumnValueByPrimaryID(shippingAddressID,"region");
         String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("state").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }

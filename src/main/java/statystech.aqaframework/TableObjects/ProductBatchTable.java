@@ -7,11 +7,11 @@ import statystech.aqaframework.utils.DBUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductBatchTable extends TableObject implements Table{
+public class ProductBatchTable extends TableObject{
 
     private final String TABLE_NAME = "shopperGroup";
 
-    public String getColumnValue (String columnName) throws SQLException {
+    public String getLastRowColumnValue(String columnName) throws SQLException {
         return getLastRow(TABLE_NAME).getString(columnName);
     }
 

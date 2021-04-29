@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
 
     private static final Logger logger = LoggerFactory.getLogger(TestRailReportExtension.class);
+    static boolean isTestRailAnnotationPresent = false;
 
     private enum TestRailStatus {
         PASSED(1),
@@ -83,8 +84,9 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
     }
 
     private void addResult(ExtensionContext extensionContext, TestRailStatus status) {
-        if (extensionContext.getElement().isPresent() && extensionContext.getElement()
-                .get().isAnnotationPresent(TestRailID.class)) {
+        isTestRailAnnotationPresent = extensionContext.getElement().isPresent() && extensionContext.getElement()
+                .get().isAnnotationPresent(TestRailID.class);
+        if (isTestRailAnnotationPresent) {
             TestRailID element = extensionContext.getElement().get().getAnnotation(TestRailID.class);
             Result result = new Result().setTestId(Integer.parseInt(element.id()))
                     .setStatusId(status.getId())
@@ -140,8 +142,9 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         @Override
         public void close() {
             //After all tests run hook.
-            //Any additional desired action goes here
-            reportResults();
+            if(isTestRailAnnotationPresent) {
+                reportResults();
+            }
         }
     }
 }

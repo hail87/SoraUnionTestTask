@@ -10,9 +10,6 @@ public class DBUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
 
-    //private Connection connection = new ConnectionDB();
-
-
     public int insertJsonToStageOrder(String jsonContent) throws SQLException {
         Statement statement = ConnectionDB.connection.createStatement();
         int createdId;
@@ -35,7 +32,6 @@ public class DBUtils {
         ResultSet rs = null;
         try {
             rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
-            //logger.info("Query:\n" + fullRequest + "\nhas been executed");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
@@ -46,7 +42,6 @@ public class DBUtils {
     public String executeAndReturnString(String fullRequest) throws SQLException {
         ResultSet rs;
         rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
-        //logger.info("Query:\n" + fullRequest + "\nhas been executed");
         rs.next();
         return rs.getString(1);
     }
@@ -75,21 +70,6 @@ public class DBUtils {
     private ResultSet getLastRow(String tableName) {
         return execute(String.format("SELECT * FROM %s ORDER by createdDate DESC LIMIT 1", tableName));
     }
-
-
-    public boolean deleteRow(int stageOrderId) {
-        boolean deleted = false;
-        try {
-            deleted = ConnectionDB.connection.createStatement().execute(
-                    "DELETE FROM stageOrder WHERE stageOrderID = '" + stageOrderId + "'");
-            logger.info("!!!Row with id [" + stageOrderId + "] has been deleted!!!");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            logger.error("!!!Row with id [" + stageOrderId + "] hasn't been deleted!!!");
-        }
-        return deleted;
-    }
-
 
     public boolean closeConnection() {
         boolean isClosed = false;

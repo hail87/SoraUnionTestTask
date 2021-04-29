@@ -2,6 +2,7 @@ package statystech.aqaframework.steps.DBsteps;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.TableObjects.StageOrderTable;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -20,10 +21,14 @@ public class StageOrderSteps extends DBUtils {
         }
     }
 
-    public int insertJsonToStageOrderTable(String jsonFilename) throws IOException, SQLException {
+    public int insertJsonToStageOrderTableAndContext(String jsonFilename) throws IOException, SQLException {
         DBUtils dbUtils = new DBUtils();
-        String jsonContent = new JsonUtils().getJsonContent(jsonFilename);
+        String jsonContent = new JsonUtils().getJsonContentAndLoadToContext(jsonFilename);
         logger.info("Inserting json to the stageOrder table");
         return dbUtils.insertJsonToStageOrder(jsonContent);
+    }
+
+    public boolean deleteRow(int stageOrderId) {
+        return new StageOrderTable().deleteRow(stageOrderId);
     }
 }

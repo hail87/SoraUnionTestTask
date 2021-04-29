@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class WarehouseOrderSteps extends Steps {
 
-    public String checkWarehouseOrderTable() throws SQLException {
+    public String checkWarehouseOrderTable() {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkComments());
         return errorMessage.toString();
@@ -20,7 +20,7 @@ public class WarehouseOrderSteps extends Steps {
     private String checkComments() {
         String actualComments = "";
         try {
-            actualComments = new WarehouseOrderTable().getColumnValue(TestContext.warehouseOrderID, "comments");
+            actualComments = new WarehouseOrderTable().getColumnValueByPrimaryID(TestContext.warehouseOrderID, "comments");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

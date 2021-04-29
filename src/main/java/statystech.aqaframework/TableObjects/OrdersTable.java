@@ -16,12 +16,13 @@ public class OrdersTable extends TableObject {
     }
 
     public int getUserIDValue() throws SQLException {
-        return Integer.parseInt(new DBUtils().select(TABLE_NAME, "userID"));
+        return Integer.parseInt(new DBUtils().executeAndReturnString(String.format(
+                "select %s from %s where orderAllSysID = '%s'", "userID", TABLE_NAME, TestContext.orderAllSysID)));
     }
 
     public int getShippingAddressIDValue() throws SQLException {
         return Integer.parseInt(new DBUtils().executeAndReturnString(String.format(
-                "select %s from %s where orderAllSysID = '%s'","shippingAddressID",TABLE_NAME, TestContext.orderAllSysID)));
+                "select %s from %s where orderAllSysID = '%s'", "shippingAddressID", TABLE_NAME, TestContext.orderAllSysID)));
     }
 
     public String getCurrencyValue() throws SQLException {
@@ -33,7 +34,8 @@ public class OrdersTable extends TableObject {
     }
 
     public int getShopperGroupIDValue() throws SQLException {
-        return Integer.parseInt(new DBUtils().select(TABLE_NAME, "shopperGroupID"));
+        return Integer.parseInt(new DBUtils().executeAndReturnString(String.format(
+                        "select %s from %s where orderAllSysID = '%s'", "shopperGroupID", TABLE_NAME, TestContext.orderAllSysID)));
     }
 
     public int getPrimaryID() throws SQLException {

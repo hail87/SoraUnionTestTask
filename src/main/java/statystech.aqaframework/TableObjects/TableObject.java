@@ -134,7 +134,7 @@ public abstract class TableObject {
         String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey1);
         columnName = Introspector.decapitalize(columnName);
         String tableValue = new DBUtils().executeAndReturnString(String.format(
-                "select %s from %s where %s.%s = %d", columnName, tableName, tableName, getFirstColumnName(tableName), primaryID));
+                "select %s from %s where %s = %d", columnName, tableName, getFirstColumnName(tableName), primaryID));
         return Map.of("jsonValue", jsonValue, "tableValue", tableValue);
     }
 

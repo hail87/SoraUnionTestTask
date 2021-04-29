@@ -1,0 +1,38 @@
+version: 0.1
+
+env:
+    secrets-manager:
+        DOCKER_USERNAME: /CodeBuild/dockerhub:username
+        DOCKER_PASSWORD: /CodeBuild/dockerhub:password
+        
+phases:
+    install:
+        commands:
+            - echo Entering install phase...
+            - echo Nothing to do now
+    pre_build:
+        commands:
+            #- echo Pre-build started on `date`
+            #- echo Trying to assemble the source...
+            #- gradle assemble
+            #- echo Building the source...
+            #- echo Additional data
+            #- echo CODEBUILD_SOURCE_VERSION=$CODEBUILD_SOURCE_VERSION
+            #- echo COMMIT_ID=$COMMIT_ID
+            #- gradle build
+            - echo login into Docker
+            - echo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            - echo Building the Docker image...
+            - echo docker build -t "aqa:${COMMIT_ID# }" .
+            - docker build -t "aqa:${COMMIT_ID# }" .
+            - echo Tagging the docker image...
+            - docker tag "aqa:${COMMIT_ID# }" "326726142239.dkr.ecr.ca-central-1.amazonaws.com/aqa:${COMMIT_ID# }"
+            - docker tag "aqa:${COMMIT_ID# }" "326726142239.dkr.ecr.ca-central-1.amazonaws.com/aqa:latest"
+    build:
+        commands:
+            - echo Build started on `date`
+            - echo Logging in to Amazon ECR...
+            - aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 326726142239.dkr.ecr.ca-central-1.amazonaws.com
+            - echo Pushing the Docker image...
+            - docker push 326726142239.dkr.ecr.ca-central-1.amazonaws.com/aqa

@@ -1,5 +1,6 @@
 package statystech.aqaframework.DataObjects;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,10 @@ import lombok.Setter;
 @Getter
 public class Batch {
 
-    int quantity;
-    String number;
-    int warehouseID;
+    @SerializedName("qty")
+    private int quantity;
+    @SerializedName("number")
+    private String number;
+    @SerializedName("ff_center_id")
+    private int warehouseID;
 }

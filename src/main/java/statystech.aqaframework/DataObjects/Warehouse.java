@@ -1,5 +1,7 @@
 package statystech.aqaframework.DataObjects;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +11,12 @@ import java.util.List;
 @Getter
 public class Warehouse {
 
-    int id;
-    String name;
-    int assignedQuantity;
-    List<Batch> batches;
+    @SerializedName("ff_center_id")
+    private int id;
+    @SerializedName("ff_center_name")
+    private String name;
+    @SerializedName("assigned_qty")
+    private int assignedQuantity;
+    @Expose
+    private List<Batch> batches;
 }

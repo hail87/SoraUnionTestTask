@@ -1,10 +1,7 @@
 package statystech.aqaframework.utils;
 
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.Batch;
@@ -92,39 +89,8 @@ public class JsonUtils {
     }
 
     public static void makeProductObjectsFromJson() {
-        for(JsonElement jsonProduct : JsonUtils.getProducts()){
-            JsonObject jsonObject = jsonProduct.getAsJsonObject();
-            Product product = new Product();
-            String productAllSysID = jsonObject.get("product_id").toString().replace("\"", "");;
-            product.setProductAllSysID(Integer.parseInt(productAllSysID));
-            product.setProductName(jsonObject.get("product_name").toString().replace("\"", ""));
-            product.setProductSKU(jsonObject.get("SKU").toString().replace("\"", ""));
-            product.setProductItemPrice(jsonObject.get("product_item_price").toString().replace("\"", ""));
-            product.setProductQuantity(jsonObject.get("product_quantity").toString().replace("\"", ""));
-
-            List<Warehouse> warehouses = new ArrayList<>();
-
-            for(JsonElement warehouseJSON : jsonObject.getAsJsonArray("ff_centers")) {
-                Warehouse warehouse = new Warehouse();
-                warehouse.setId(Integer.parseInt(warehouseJSON.getAsJsonObject().get("ff_center_id").toString().replace("\"", "")));
-                warehouse.setName(warehouseJSON.getAsJsonObject().get("ff_center_name").toString().replace("\"", ""));
-                warehouse.setAssignedQuantity(Integer.parseInt(warehouseJSON.getAsJsonObject().get("assigned_qty").toString().replace("\"", "")));
-
-                List<Batch> batches = new ArrayList<>();
-
-                for (JsonElement batchJSON : warehouseJSON.getAsJsonObject().getAsJsonArray("batches")) {
-                    Batch batch = new Batch();
-                    batch.setQuantity(Integer.parseInt(batchJSON.getAsJsonObject().get("qty").toString().replace("\"", "")));
-                    batch.setNumber(batchJSON.getAsJsonObject().get("number").toString().replace("\"", ""));
-                    batch.setWarehouseID(Integer.parseInt(batchJSON.getAsJsonObject().get("ff_center_id").toString().replace("\"", "")));
-                    batches.add(batch);
-                }
-
-                warehouse.setBatches(batches);
-                warehouses.add(warehouse);
-            }
-            product.setWarehouses(warehouses);
-
+        for(JsonElement jsonProduct : getProducts()){
+            Product product = new Gson().fromJson(jsonProduct, Product.class);
             try{
                 TestContext.products.add(product);
             } catch (NullPointerException e){

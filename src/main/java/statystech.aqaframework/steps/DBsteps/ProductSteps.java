@@ -19,25 +19,25 @@ public class ProductSteps extends Steps {
     }
 
     private String checkName(Product product) throws SQLException {
-        String actual = new ProductTable().getColumnValueByProductName(product, "productName");
+        String actual = new ProductTable().getColumnValueByProductName(product.getProductName(), "productName");
         String expected = product.getProductName();
         return verifyExpectedResults(actual, expected);
     }
 
     private String checkProductAllSysID(Product product) throws SQLException {
-        String actual = new ProductTable().getColumnValueByProductName(product, "productAllSysID");
+        String actual = new ProductTable().getColumnValueByProductName(product.getProductName(), "productAllSysID");
         String expected = String.valueOf(product.getProductAllSysID());
         return verifyExpectedResults(actual, expected);
     }
 
     private String checkSKU(Product product) throws SQLException {
-        String actual = new ProductTable().getColumnValueByProductName(product, "productSku");
+        String actual = new ProductTable().getColumnValueByProductName(product.getProductName(), "productSku");
         String expected = product.getProductSKU();
         return verifyExpectedResults(actual, expected);
     }
 
     private void setProductID(Product product) throws SQLException {
-        int productID = Integer.parseInt(new ProductTable().getColumnValueByProductName(product, "productID"));
+        int productID = Integer.parseInt(new ProductTable().getColumnValueByProductName(product.getProductName(), "productID"));
         product.setProductID(productID);
     }
 

@@ -13,10 +13,10 @@ public class OrderLineSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderLineSteps.class);
 
-    public String checkProductIsAbsent(Product product) {
+    public String checkProductIsAbsent(String productName) {
         try {
-            checkName(product);
-            return String.format("Product with name '%s' have been found, but shouldn't", product.getProductName());
+            checkName(productName);
+            return String.format("Product with name '%s' have been found, but shouldn't", productName);
         } catch (SQLException throwables) {
             return "";
         }
@@ -47,35 +47,41 @@ public class OrderLineSteps extends Steps {
     }
 
     private String checkName(Product product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product, "productName");
+        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "productName");
         String expected = product.getProductName();
         return verifyExpectedResults(actual, expected);
     }
 
+    private String checkName(String productName) throws SQLException {
+        String actual = new OrderLineTable().getColumnValueByProductName(productName, "productName");
+        return verifyExpectedResults(actual, productName);
+    }
+
     private String checkSKU(Product product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product, "sku");
+        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "sku");
         String expected = product.getProductSKU();
         return verifyExpectedResults(actual, expected);
     }
 
     private String checkPrice(Product product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product, "itemPrice");
+        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "itemPrice");
         String expected = product.getProductItemPrice();
         return verifyExpectedResults(actual, expected);
     }
 
     private String checkQuantity(Product product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product, "quantity");
+        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "quantity");
         String expected = product.getProductQuantity();
         return verifyExpectedResults(actual, expected);
     }
 
     private String checkWarehouseOrderID(Product product) throws SQLException {
-        if (TestContext.warehouseOrders.get(0) != 0) {
+        if (TestContext.warehouseOrders != null) {
             String expected = String.valueOf(TestContext.warehouseOrders);
-            String actual = new OrderLineTable().getColumnValueByProductName(product, "warehouseOrderID");
+            String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {
+            logger.warn("There is no warehouseOrderID set at the TestContext yet");
             return "There is no warehouseOrderID set at the TestContext yet";
         }
     }

@@ -39,7 +39,7 @@ public class DBUtils {
         return rs;
     }
 
-    public String executeAndReturnString(String fullRequest) throws SQLException {
+    public static String executeAndReturnString(String fullRequest) throws SQLException {
         ResultSet rs;
         rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
         rs.next();

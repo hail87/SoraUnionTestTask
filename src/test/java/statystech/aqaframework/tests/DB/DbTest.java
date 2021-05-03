@@ -47,6 +47,7 @@ public class DbTest {
         stageOrderSteps.deleteRow(id);
         //TODO: delete all new rows
         dBsteps.closeConnection();
+        TestContext.cleanContext();
     }
 
     @TestRailID(id="422")
@@ -72,6 +73,7 @@ public class DbTest {
         stageOrderSteps.deleteRow(idNew);
         stageOrderSteps.deleteRow(idUpdate);
         dBsteps.closeConnection();
+        TestContext.cleanContext();
     }
 
     @TestRailID(id="3523")
@@ -100,6 +102,7 @@ public class DbTest {
         stageOrderSteps.deleteRow(idNew);
         stageOrderSteps.deleteRow(idUpdate);
         dBsteps.closeConnection();
+        TestContext.cleanContext();
     }
 
     @TestRailID(id="2")
@@ -116,17 +119,20 @@ public class DbTest {
 
         Product product1 = JsonUtils.getJsonProductWithName("REVOFIL AQUASHINE BTX");
         errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
-        Product product2 = JsonUtils.getJsonProductWithName(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
-        errorMessage.append(orderLineSteps.checkProductIsAbsent(product2));
+
+        errorMessage.append(orderLineSteps.checkProductIsAbsent("EYLEA\\u00ae 40mg/1ml Non-English"));
 
         int idUpdate = stageOrderSteps.insertJsonToStageOrderTableAndContext(updateOrderJson);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
 
+        Product product2 = JsonUtils.getJsonProductWithName(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
+        new WarehouseOrderSteps().setWarehouseOrders();
         errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
 
         stageOrderSteps.deleteRow(idNew);
         stageOrderSteps.deleteRow(idUpdate);
         dBsteps.closeConnection();
+        TestContext.cleanContext();
     }
 
 

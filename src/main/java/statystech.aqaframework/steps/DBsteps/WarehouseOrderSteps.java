@@ -17,10 +17,10 @@ public class WarehouseOrderSteps extends Steps {
 
     @SneakyThrows
     public WarehouseOrderSteps() {
-        setWarehouseOrder();
+        setWarehouseOrders();
     }
 
-    public String checkWarehouseOrderTable() {
+    public String checkWarehouseOrderTable() throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkWarehouseOrderStatusesIsActive());
         errorMessage.append(checkComments());
@@ -36,12 +36,12 @@ public class WarehouseOrderSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkWarehouseOrderStatusesIsActive() {
+    public String checkWarehouseOrderStatusesIsActive() throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         for (Map.Entry<Integer, Integer> entry : TestContext.warehouseOrders.entrySet()) {
             if (!new WarehouseOrderTable().checkWarehouseOrderStatus(entry.getKey()))
                 errorMessage.append(String.format(
-                        "warehouse order's status with ID %d isn't '1', what means that warehouseOrder is not active", entry.getKey()));
+                        "warehouse order's status with ID %d isn't '1', what means that warehouseOrder is not active\n", entry.getKey()));
         }
         return errorMessage.toString();
     }
@@ -52,11 +52,11 @@ public class WarehouseOrderSteps extends Steps {
         return checkWarehouseOrderIsNotActive(warehouseOrderID);
     }
 
-    private String checkWarehouseOrderIsNotActive(int warehouseOrderID) {
+    private String checkWarehouseOrderIsNotActive(int warehouseOrderID) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         if (new WarehouseOrderTable().checkWarehouseOrderStatus(warehouseOrderID))
             errorMessage.append(String.format(
-                    "warehouse order's status with ID %d isn't '0', what means that warehouseOrder is active, but shouldn't", warehouseOrderID));
+                    "warehouse order's status with ID %d isn't '0', what means that warehouseOrder is active, but shouldn't\n", warehouseOrderID));
         return errorMessage.toString();
     }
 
@@ -75,7 +75,7 @@ public class WarehouseOrderSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public void setWarehouseOrder() throws SQLException {
+    public void setWarehouseOrders() throws SQLException {
         ResultSet lines = new WarehouseOrderTable().getOrderLines(TestContext.orderID);
         if (TestContext.warehouseOrders == null) {
             TestContext.warehouseOrders = new LinkedHashMap<>();

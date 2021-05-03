@@ -47,12 +47,12 @@ public abstract class TableObject {
         return getProperRow(tableName, primaryID).getString(columnName);
     }
 
-    public String getColumnValueByProductName(Product product, String columnName) throws SQLException {
+    public String getColumnValueByProductName(String productName, String columnName) throws SQLException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];
         tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-        ResultSet rs = new DBUtils().execute(String.format(
-                "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", tableName, product.getProductName()));
+        ResultSet rs = DBUtils.execute(String.format(
+                "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", tableName, productName));
         rs.next();
         return rs.getString(columnName);
     }

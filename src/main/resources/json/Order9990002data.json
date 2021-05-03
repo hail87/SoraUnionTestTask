@@ -1,0 +1,106 @@
+{
+    "order_id": "9990002",
+    "user_id": "032d45bc1837a71056d1e8e3c420282d",
+    "order_status": "Confirmed",
+    "replacement_order_id": "0",
+    "seller_id": "9807556e3dcf9158949b9b3d4a32b8eb",
+    "seller_username": "ph-sales7",
+    "csr_assigned_id": "45bfa74c6be4a5dc7ec30d1c9c7e759f",
+    "csr_assigned_username": "csraldwen-P-PH",
+    "billing_address":
+    {
+        "user_info_id": "768886",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "r****l",
+        "middle_name": "",
+        "last_name": "s****r",
+        "country": "UNITED STATES",
+        "state": "New York",
+        "city": "new york",
+        "zip": "10021",
+        "address_line_1": "**** e. 73rd street",
+        "address_line_2": "Unit Cf",
+        "company": "R****a",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "shipping_address":
+    {
+        "user_info_id": "768886",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "r****l",
+        "middle_name": "",
+        "last_name": "s****r",
+        "country": "UNITED STATES",
+        "state": "New York",
+        "city": "new york",
+        "zip": "10021",
+        "address_line_1": "**** e. 73rd street",
+        "address_line_2": "Unit Cf",
+        "company": "R****a",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "order_date": "2021-04-28",
+    "shipped_at": null,
+    "delivered_at": null,
+    "order_items":
+    [
+        {
+            "order_item_id": "1810757",
+            "product_id": "88255",
+            "product_name": "BOCOUTURE\u00ae 100 Units (Xeomin)",
+            "product_quantity": "2",
+            "product_item_price": "359.00",
+            "SKU": "sku_1488312452_1",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "176",
+                    "ff_center_name": "Bulgarium",
+                    "assigned_qty": "2",
+                    "batches":
+                    [
+                        {
+                            "qty": "2",
+                            "number": "031387",
+                            "ff_center_id": "176"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "order_item_id": "1810758",
+            "product_id": "81871",
+            "product_name": "JUVEDERM\u00ae VOLUMA\u2122 With Lidocaine",
+            "product_quantity": "1",
+            "product_item_price": "359.00",
+            "SKU": "JUVEDERM\u00ae VOLUMA with Lidocaine (2x1ml)",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "165",
+                    "ff_center_name": "Iberianium 2.0",
+                    "assigned_qty": "1",
+                    "batches":
+                    [
+                        {
+                            "qty": "1",
+                            "number": "VB20B00478",
+                            "ff_center_id": "165"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "website_name": "medicalsparx.com",
+    "shopper_group_name": "MedSpaRX Licensed",
+    "account_number": "406258",
+    "order_currency": "USD",
+    "currency_conversion": "1.00",
+    "shipping_notes": ""
+}

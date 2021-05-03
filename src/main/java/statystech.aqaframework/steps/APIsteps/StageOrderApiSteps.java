@@ -6,14 +6,12 @@ import statystech.aqaframework.utils.ApiRestUtils;
 
 public class StageOrderApiSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiRestUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(StageOrderApiSteps.class);
 
-    public String triggerOrderProcessingSandBox() {
-        String errorMessage = "";
+    public void triggerOrderProcessingSandBox() {
         logger.info("Triggering order processing at the SandBox");
         if (!new ApiRestUtils().sendGetRequest(
                 "http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com/start"))
-            errorMessage = "Response code != 200";
-        return errorMessage;
+            logger.error("Response code != 200");
     }
 }

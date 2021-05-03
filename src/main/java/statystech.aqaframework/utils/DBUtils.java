@@ -28,7 +28,7 @@ public class DBUtils {
         return createdId;
     }
 
-    public ResultSet execute(String fullRequest) {
+    public static ResultSet execute(String fullRequest) {
         ResultSet rs = null;
         try {
             rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);

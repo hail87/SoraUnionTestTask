@@ -15,9 +15,19 @@ public class WarehouseOrderTable extends TableObject {
     }
 
     protected ResultSet getLastRow(String tableName) throws SQLException {
-        ResultSet rs = new DBUtils().execute(String.format(
+        ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", tableName, TABLE_NAME, getPrimaryID()));
         rs.next();
         return rs;
+    }
+
+    public ResultSet getOrderLines(int orderID){
+        return DBUtils.execute(String.format("select * from %s where orderID='%d'", TABLE_NAME, orderID));
+    }
+
+    public boolean checkWarehouseOrderStatus(int warehouseOrderId){
+        return "1".equalsIgnoreCase(
+                String.valueOf(DBUtils.execute(String.format(
+                        "select warehouseOrderStatusID from %s where warehouseOrderID='%d'", TABLE_NAME, warehouseOrderId))));
     }
 }

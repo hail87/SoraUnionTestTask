@@ -19,15 +19,14 @@ public class OrdersSteps extends Steps {
         int orderLineID = ordersTable.getPrimaryID();
         errorMessage.append(verifyExpectedResults(
                 ordersTable.getJsonAndTableValue(orderLineID, "order_date")));
-        errorMessage.append(checkOrderID());
+        errorMessage.append(checkOrderAllSysID());
         errorMessage.append(checkCurrency());
         errorMessage.append(checkCurrencyConversion());
         return errorMessage.toString();
     }
 
-    public String checkOrderID() throws SQLException {
+    public String checkOrderAllSysID() {
         String expectedOrderID = TestContext.JSON_OBJECT.get("order_id").toString();
-        //Remove ["] symbol at the beginning and end of the String.
         expectedOrderID = expectedOrderID.substring(1,expectedOrderID.length() -1 );
         String actualOrderID = new OrdersTable().getOrderAllSysIDValue();
         if (actualOrderID.equalsIgnoreCase(expectedOrderID)) {
@@ -51,5 +50,9 @@ public class OrdersSteps extends Steps {
         String actualComments = new OrdersTable().getCurrencyConversionValue();
         Double expectedComments = Double.parseDouble(JsonUtils.getValueFromJSON("currency_conversion"));
         return verifyExpectedResults(actualComments, expectedComments.toString());
+    }
+
+    public void setOrderID() throws SQLException {
+        TestContext.orderID = new OrdersTable().getPrimaryID();
     }
 }

@@ -4,16 +4,13 @@ package statystech.aqaframework.utils;
 import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.Batch;
+import statystech.aqaframework.DataObjects.Order;
 import statystech.aqaframework.DataObjects.Product;
-import statystech.aqaframework.DataObjects.Warehouse;
 import statystech.aqaframework.common.TestContext;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class JsonUtils {
@@ -55,12 +52,6 @@ public class JsonUtils {
         return jsonValue;
     }
 
-    public void loadJsonObjectToTestContext(JsonObject jsonObject){
-        TestContext.JSON_OBJECT = jsonObject;
-        makeProductObjectsFromJson();
-    }
-
-
     public String getJsonContentAndLoadToContext(String jsonFilename) throws IOException {
         loadJsonObjectToTestContext(getJsonObject(jsonFilename));
         BufferedReader reader = new BufferedReader(
@@ -88,7 +79,13 @@ public class JsonUtils {
         return jsonObject;
     }
 
-    public static void makeProductObjectsFromJson() {
+    public void loadJsonObjectToTestContext(JsonObject jsonObject){
+        TestContext.JSON_OBJECT = jsonObject;
+        makeObjectsFromJsonAndLoadToContext();
+    }
+
+    public static void makeObjectsFromJsonAndLoadToContext() {
+        TestContext.order = new Gson().fromJson(TestContext.JSON_OBJECT, Order.class);
         for(JsonElement jsonProduct : getProducts()){
             Product product = new Gson().fromJson(jsonProduct, Product.class);
             try{

@@ -28,7 +28,7 @@ public class OrderLineSteps extends Steps {
         errorMessage.append(checkSKU(product));
         errorMessage.append(checkPrice(product));
         errorMessage.append(checkQuantity(product));
-        setWarehouseOrderID(product);
+        //addWarehouseOrderID(product);
         return errorMessage.toString();
     }
 
@@ -71,8 +71,8 @@ public class OrderLineSteps extends Steps {
     }
 
     private String checkWarehouseOrderID(Product product) throws SQLException {
-        if (TestContext.warehouseOrderID != 0) {
-            String expected = String.valueOf(TestContext.warehouseOrderID);
+        if (TestContext.warehouseOrders.get(0) != 0) {
+            String expected = String.valueOf(TestContext.warehouseOrders);
             String actual = new OrderLineTable().getColumnValueByProductName(product, "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {
@@ -80,7 +80,9 @@ public class OrderLineSteps extends Steps {
         }
     }
 
-    private void setWarehouseOrderID(Product product) throws SQLException {
-        TestContext.warehouseOrderID = Integer.parseInt(new OrderLineTable().getColumnValueByProductName(product, "warehouseOrderID"));
-    }
+//    private void addWarehouseOrderID(Product product) throws SQLException {
+//        int warehouseOrderID = Integer.parseInt(new OrderLineTable().getColumnValueByProductName(product, "warehouseOrderID"));
+//        if(!TestContext.warehouseOrder.contains(warehouseOrderID))
+//        TestContext.warehouseOrder.add(warehouseOrderID);
+//    }
 }

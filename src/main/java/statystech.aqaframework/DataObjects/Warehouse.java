@@ -15,6 +15,7 @@ public class Warehouse {
     private int id;
     @SerializedName("ff_center_name")
     private String name;
+    private int warehouseID;
     @SerializedName("assigned_qty")
     private int assignedQuantity;
     @Expose

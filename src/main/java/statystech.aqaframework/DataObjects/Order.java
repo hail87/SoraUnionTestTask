@@ -4,10 +4,14 @@ package statystech.aqaframework.DataObjects;
 import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class OrderJSON {
+public class Order {
 
     @SerializedName("account_number")
     private String accountNumber;

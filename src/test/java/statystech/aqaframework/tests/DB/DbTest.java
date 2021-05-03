@@ -62,13 +62,40 @@ public class DbTest {
 
         new OrdersSteps().setOrderID();
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
-        warehouseOrderSteps.setWarehouseOrder();
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
 
         int idUpdate = stageOrderSteps.insertJsonToStageOrderTableAndContext(updateOrderJson);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Bulgarium"));
+
+        stageOrderSteps.deleteRow(idNew);
+        stageOrderSteps.deleteRow(idUpdate);
+        dBsteps.closeConnection();
+    }
+
+    @TestRailID(id="3523")
+    @ParameterizedTest
+    @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
+    public void cancelOrder(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        CommonDbSteps dBsteps = new CommonDbSteps();
+        dBsteps.connectDB();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int idNew = stageOrderSteps.insertJsonToStageOrderTableAndContext(newOrderJson);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkOrdersTable());
+
+        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderStatusesIsActive());
+
+        int idUpdate = stageOrderSteps.insertJsonToStageOrderTableAndContext(updateOrderJson);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nickel-28-Ni"));
+        errorMessage.append(ordersSteps.checkOrderIsCancelled());
 
         stageOrderSteps.deleteRow(idNew);
         stageOrderSteps.deleteRow(idUpdate);

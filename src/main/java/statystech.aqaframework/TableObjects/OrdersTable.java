@@ -20,6 +20,15 @@ public class OrdersTable extends TableObject {
                 "select %s from %s where orderAllSysID = '%s'", "userID", TABLE_NAME, TestContext.orderAllSysID)));
     }
 
+    public String getOrderStatusName() throws SQLException {
+        return getProperRow(TABLE_NAME, Integer.parseInt(TestContext.order.getOrderId())).getString("orderStatusName");
+    }
+
+
+    public String getOrderStatusID() throws SQLException {
+        return getProperRow(TABLE_NAME, Integer.parseInt(TestContext.order.getOrderId())).getString("orderStatusID");
+    }
+
     public int getShippingAddressIDValue() throws SQLException {
         return Integer.parseInt(new DBUtils().executeAndReturnString(String.format(
                 "select %s from %s where orderAllSysID = '%s'", "shippingAddressID", TABLE_NAME, TestContext.orderAllSysID)));
@@ -45,7 +54,7 @@ public class OrdersTable extends TableObject {
 
     @Override
     protected ResultSet getProperRow(String tableName, int orderAllSysID) throws SQLException {
-        ResultSet rs = new DBUtils().execute(String.format(
+        ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where orderAllSysID = \"%d\"", tableName, orderAllSysID));
         rs.next();
         return rs;

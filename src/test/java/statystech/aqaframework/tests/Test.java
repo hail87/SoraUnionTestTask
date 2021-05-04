@@ -2,8 +2,10 @@ package statystech.aqaframework.tests;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.tests.TestRail.TestRailID;
 
 import java.util.HashSet;
 
@@ -15,17 +17,13 @@ public abstract class Test {
     }
 
     @BeforeEach
-    public void setTestContext(){
-        String methodName=null;
-        StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-        for (int i = 0; i < stacktrace.length; i++) {
-            if(stacktrace[i].getMethodName().equals("method")) {
-                methodName = stacktrace[i+1].getMethodName();
-                break;
-            }
+    public void setTestContext(TestInfo testInfo){
+        int testRailID = testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id();
+        if (testRailID != 0) {
+            TestContext testContext = new TestContext(testRailID);
+            Context.context.add(testContext);
+        } else {
+            throw new NullPointerException("testRailID not found");
         }
-        //Can be replaced with TestRailID value instead of testMethodName, but it need m ore performance
-        TestContext testContext = new TestContext(methodName);
-        Context.context.add(testContext);
     }
 }

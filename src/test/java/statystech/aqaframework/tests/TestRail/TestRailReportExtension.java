@@ -88,9 +88,9 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
                 .get().isAnnotationPresent(TestRailID.class);
         if (isTestRailAnnotationPresent) {
             TestRailID element = extensionContext.getElement().get().getAnnotation(TestRailID.class);
-            Result result = new Result().setTestId(Integer.parseInt(element.id()))
+            Result result = new Result().setTestId(element.id())
                     .setStatusId(status.getId())
-                    .setCaseId(Integer.valueOf(element.id()));
+                    .setCaseId(element.id());
             addResult(result);
         }
     }

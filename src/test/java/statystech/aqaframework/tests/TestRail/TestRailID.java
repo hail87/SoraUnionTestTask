@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 
 public @interface TestRailID {
 
-    String id() default "none";
+    int id() default 0;
 
 }

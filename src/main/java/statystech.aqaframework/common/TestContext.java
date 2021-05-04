@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.helpers.Util;
 import statystech.aqaframework.DataObjects.Order;
 import statystech.aqaframework.DataObjects.Product;
 
@@ -15,13 +14,13 @@ import java.util.List;
 
 public class TestContext {
 
-    public TestContext(String testName){
-        setId(testName + "Context");
+    public TestContext(int testID){
+        setId(testID);
     }
 
     @Getter
     @Setter
-    private String id;
+    private int id;
 
     public static JsonObject JSON_OBJECT;
     public static Order order;
@@ -43,5 +42,24 @@ public class TestContext {
         allSysBuyerID = 0;
         orderID = 0;
         warehouseOrders = new LinkedHashMap<>();
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || object.getClass() != getClass()) {
+            return false;
+        }
+
+        TestContext testContext = (TestContext) object;
+        return this.id == testContext.id;
     }
 }

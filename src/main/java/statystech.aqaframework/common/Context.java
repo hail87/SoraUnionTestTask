@@ -11,8 +11,8 @@ public class Context {
 
     public static Set<TestContext> context;
 
-    public static TestContext getTestContext(String testMethodName){
-        return context.stream().filter(tc -> tc.getId().equalsIgnoreCase(testMethodName)).findFirst().orElse(null);
+    public static TestContext getTestContext(int testID){
+        return context.stream().filter(tc -> tc.getId()==testID).findFirst().orElse(null);
     }
 
 }

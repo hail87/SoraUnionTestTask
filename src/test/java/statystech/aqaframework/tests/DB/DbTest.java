@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(TestRailReportExtension.class)
 public class DbTest extends Test {
 
-    @TestRailID(id="1")
+    @TestRailID(id=1)
     @ParameterizedTest
     @ValueSource(strings = {"order1000100data.json"})
     public void newOrderProcessing(String jsonFilename) throws IOException, SQLException {
@@ -51,7 +51,7 @@ public class DbTest extends Test {
         TestContext.cleanContext();
     }
 
-    @TestRailID(id="3537")
+    @TestRailID(id=3537)
     @ParameterizedTest
     @ValueSource(strings = {"Products.json"})
     public void addProducts(String jsonFilename) throws IOException, SQLException {
@@ -81,7 +81,7 @@ public class DbTest extends Test {
         TestContext.cleanContext();
     }
 
-    @TestRailID(id="422")
+    @TestRailID(id=422)
     @ParameterizedTest
     @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
     public void productRemovedFromAnOrder(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
@@ -107,7 +107,7 @@ public class DbTest extends Test {
         TestContext.cleanContext();
     }
 
-    @TestRailID(id="3523")
+    @TestRailID(id=3523)
     @ParameterizedTest
     @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
     public void cancelOrder(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
@@ -136,7 +136,7 @@ public class DbTest extends Test {
         TestContext.cleanContext();
     }
 
-    @TestRailID(id="2")
+    @TestRailID(id=2)
     @ParameterizedTest
     @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
     public void orderUpdate(String newOrderJson, String updateOrderJson) throws IOException, SQLException {

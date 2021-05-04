@@ -2,6 +2,7 @@ package statystech.aqaframework.tests.DB;
 
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -51,32 +52,32 @@ public class DbTest extends Test {
         TestContext.cleanContext();
     }
 
-    @TestRailID(id=3537)
+    @TestRailID(id=2)
     @ParameterizedTest
-    @ValueSource(strings = {"Products.json"})
-    public void addProducts(String jsonFilename) throws IOException, SQLException {
+    @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
+    public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         CommonDbSteps dBsteps = new CommonDbSteps();
         dBsteps.connectDB();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToStageOrderTableAndContext(jsonFilename);
-        assertTrue(new StageOrderSteps().checkStatusColumn(id).isEmpty(), errorMessage.toString());
+        int idNew = stageOrderSteps.insertJsonToStageOrderTableAndContext(newOrderJson);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+        OrderLineSteps orderLineSteps = new OrderLineSteps();
 
-        errorMessage.append(new OrdersSteps().checkOrdersTable());
-        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
-        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
-        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
-        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
-        for (Product product : TestContext.products) {
-            errorMessage.append(new ProductSteps().checkProduct(product));
-            errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
-            errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(product));
-        }
-        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
+        Product product1 = JsonUtils.getJsonProductWithName("REVOFIL AQUASHINE BTX");
+        errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
 
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        stageOrderSteps.deleteRow(id);
-        //TODO: delete all new rows
+        errorMessage.append(orderLineSteps.checkProductIsAbsent("EYLEA\\u00ae 40mg/1ml Non-English"));
+
+        int idUpdate = stageOrderSteps.insertJsonToStageOrderTableAndContext(updateOrderJson);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+
+        Product product2 = JsonUtils.getJsonProductWithName(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
+        new WarehouseOrderSteps().setWarehouseOrders();
+        errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
+
+        stageOrderSteps.deleteRow(idNew);
+        stageOrderSteps.deleteRow(idUpdate);
         dBsteps.closeConnection();
         TestContext.cleanContext();
     }
@@ -84,7 +85,7 @@ public class DbTest extends Test {
     @TestRailID(id=422)
     @ParameterizedTest
     @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
-    public void productRemovedFromAnOrder(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
+    public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         CommonDbSteps dBsteps = new CommonDbSteps();
         dBsteps.connectDB();
@@ -136,10 +137,42 @@ public class DbTest extends Test {
         TestContext.cleanContext();
     }
 
-    @TestRailID(id=2)
+    @Disabled("Disabled until done")
+    @TestRailID(id=3537)
     @ParameterizedTest
-    @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
-    public void orderUpdate(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
+    @ValueSource(strings = {"Products.json"})
+    public void addProducts(String jsonFilename) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        CommonDbSteps dBsteps = new CommonDbSteps();
+        dBsteps.connectDB();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToStageOrderTableAndContext(jsonFilename);
+        assertTrue(new StageOrderSteps().checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
+//        errorMessage.append(new OrdersSteps().checkOrdersTable());
+//        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
+//        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
+//        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
+//        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
+//        for (Product product : TestContext.products) {
+//            errorMessage.append(new ProductSteps().checkProduct(product));
+//            errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
+//            errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(product));
+//        }
+//        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        stageOrderSteps.deleteRow(id);
+        //TODO: delete all new rows
+        dBsteps.closeConnection();
+        TestContext.cleanContext();
+    }
+
+    @Disabled("Disabled until done")
+    @TestRailID(id=3930)
+    @ParameterizedTest
+    @CsvSource({"Products.json, ProductsUpdate.json"})
+    public void updateProducts(String newOrderJson, String updateOrderJson) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         CommonDbSteps dBsteps = new CommonDbSteps();
         dBsteps.connectDB();
@@ -165,19 +198,5 @@ public class DbTest extends Test {
         dBsteps.closeConnection();
         TestContext.cleanContext();
     }
-
-
-
-//    @Test
-//    @TestRailID(id="1")
-//    public void testCanary(){
-//        assertTrue(true);
-//    }
-//
-//    @Test
-//    @TestRailID(id="2")
-//    public void test2(){
-//        assertTrue(true);
-//    }
 
 }

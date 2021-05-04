@@ -1,15 +1,19 @@
 package statystech.aqaframework.common;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 public class Context {
 
-    public static Set<TestContext> context;
+    private static Set<TestContext> context;
+
+    public static void initialize(){
+        context = new HashSet<>();
+    }
+
+    public static void addTestContext(TestContext testContext){
+        context.add(testContext);
+    }
 
     public static TestContext getTestContext(int testID){
         return context.stream().filter(tc -> tc.getId()==testID).findFirst().orElse(null);

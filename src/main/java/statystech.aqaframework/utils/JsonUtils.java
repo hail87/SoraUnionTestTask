@@ -66,17 +66,17 @@ public class JsonUtils {
     }
 
     public JsonObject getJsonObject(String jsonFilename) {
-        JsonElement jsonObject = new JsonArray();
+        JsonObject jsonObject = new JsonObject();
 
         try {
             JsonParser parser = new JsonParser();
             JsonElement jsonElement = parser.parse(new FileReader("src/main/resources/json/" + jsonFilename));
-            jsonObject = jsonElement.getAsJsonArray();
+            jsonObject = jsonElement.getAsJsonObject();
         } catch (FileNotFoundException e) {
             logger.error(e.toString());
         }
 
-        return jsonObject.getAsJsonObject();
+        return jsonObject;
     }
 
     public void loadJsonObjectToTestContext(JsonObject jsonObject){

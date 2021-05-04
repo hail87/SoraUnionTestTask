@@ -7,13 +7,11 @@ import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 
-import java.util.HashSet;
-
 public abstract class Test {
 
     @BeforeAll
     static void createContext(){
-        Context.context = new HashSet<>();
+        Context.initialize();
     }
 
     @BeforeEach
@@ -21,7 +19,7 @@ public abstract class Test {
         int testRailID = testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id();
         if (testRailID != 0) {
             TestContext testContext = new TestContext(testRailID);
-            Context.context.add(testContext);
+            Context.addTestContext(testContext);
         } else {
             throw new NullPointerException("testRailID not found");
         }

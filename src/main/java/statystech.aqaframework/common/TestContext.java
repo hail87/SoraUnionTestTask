@@ -2,6 +2,9 @@ package statystech.aqaframework.common;
 
 import com.google.gson.JsonObject;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.slf4j.helpers.Util;
 import statystech.aqaframework.DataObjects.Order;
 import statystech.aqaframework.DataObjects.Product;
 
@@ -11,6 +14,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class TestContext {
+
+    public TestContext(String testName){
+        setId(testName + "Context");
+    }
+
+    @Getter
+    @Setter
+    private String id;
 
     public static JsonObject JSON_OBJECT;
     public static Order order;

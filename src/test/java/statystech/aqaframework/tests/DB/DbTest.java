@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.DBsteps.*;
+import statystech.aqaframework.tests.Test;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.JsonUtils;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(TestRailReportExtension.class)
-public class DbTest {
+public class DbTest extends Test {
 
     @TestRailID(id="1")
     @ParameterizedTest
@@ -31,6 +32,36 @@ public class DbTest {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToStageOrderTableAndContext(jsonFilename);
         assertTrue(new StageOrderSteps().checkStatusColumn(id).isEmpty(), errorMessage.toString());
+        errorMessage.append(new OrdersSteps().checkOrdersTable());
+        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
+        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
+        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
+        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
+        for (Product product : TestContext.products) {
+            errorMessage.append(new ProductSteps().checkProduct(product));
+            errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
+            errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(product));
+        }
+        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        stageOrderSteps.deleteRow(id);
+        //TODO: delete all new rows
+        dBsteps.closeConnection();
+        TestContext.cleanContext();
+    }
+
+    @TestRailID(id="3537")
+    @ParameterizedTest
+    @ValueSource(strings = {"Products.json"})
+    public void addProducts(String jsonFilename) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        CommonDbSteps dBsteps = new CommonDbSteps();
+        dBsteps.connectDB();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToStageOrderTableAndContext(jsonFilename);
+        assertTrue(new StageOrderSteps().checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
         errorMessage.append(new OrdersSteps().checkOrdersTable());
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());

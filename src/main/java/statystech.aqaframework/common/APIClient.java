@@ -45,7 +45,7 @@
 //        return AddRunDto.builder()
 //                .suiteId(suiteId)
 //                .name(Generator.generateTestRunName(releaseName))
-//                .description("This test run was created automatically by autotests via TestRail API")
+//                .description("This test run was created automatically by autotests via statystech.aqaframework.TestRail API")
 //                .build();
 //    }
 //
@@ -248,7 +248,7 @@
 ////			if (istream == null)
 ////			{
 ////				throw new APIException(
-////					"TestRail API return HTTP " + status +
+////					"statystech.aqaframework.TestRail API return HTTP " + status +
 ////					" (No additional error message received)"
 ////				);
 ////			}
@@ -310,7 +310,7 @@
 ////
 ////		// Check for any occurred errors and add additional details to
 ////		// the exception message, if any (e.g. the error message returned
-////		// by TestRail).
+////		// by statystech.aqaframework.TestRail).
 ////		if (status != 200)
 ////		{
 ////			String error = "No additional error message received";
@@ -324,7 +324,7 @@
 ////			}
 ////
 ////			throw new APIException(
-////				"TestRail API returned HTTP " + status +
+////				"statystech.aqaframework.TestRail API returned HTTP " + status +
 ////				"(" + error + ")"
 ////			);
 ////		}

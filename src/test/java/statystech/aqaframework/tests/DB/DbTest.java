@@ -4,13 +4,15 @@ package statystech.aqaframework.tests.DB;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.DataObjects.Product;
+import statystech.aqaframework.TestRail.TestRailSteps;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.DBsteps.*;
-import statystech.aqaframework.tests.Test;
+import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.JsonUtils;
@@ -21,7 +23,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(TestRailReportExtension.class)
-public class DbTest extends Test {
+public class DbTest extends TestClass {
 
     @TestRailID(id=1)
     @ParameterizedTest
@@ -197,6 +199,11 @@ public class DbTest extends Test {
         stageOrderSteps.deleteRow(idUpdate);
         dBsteps.closeConnection();
         TestContext.cleanContext();
+    }
+
+    @Test
+    public void closeTestRailOpenRuns(){
+        new TestRailSteps().closeAllOpenTestRuns();
     }
 
 }

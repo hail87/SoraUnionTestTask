@@ -3,11 +3,16 @@ package statystech.aqaframework.tests;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
+import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 
-public abstract class Test {
+public abstract class TestClass {
+
+    private static final Logger logger = LoggerFactory.getLogger(TestClass.class);
 
     @BeforeAll
     static void createContext(){
@@ -16,12 +21,17 @@ public abstract class Test {
 
     @BeforeEach
     public void setTestContext(TestInfo testInfo){
-        int testRailID = testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id();
+        int testRailID = 0;
+        boolean isTestRailAnnotationPresent = testInfo.getTestMethod().isPresent()
+                && testInfo.getTestMethod().get().isAnnotationPresent(TestRailID.class);
+        if (isTestRailAnnotationPresent) {
+             testRailID = testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id();
+        }
         if (testRailID != 0) {
             TestContext testContext = new TestContext(testRailID);
             Context.addTestContext(testContext);
         } else {
-            throw new NullPointerException("testRailID not found");
+            logger.warn("testRailID not found");
         }
     }
 }

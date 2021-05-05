@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import statystech.aqaframework.DataObjects.Order;
 import statystech.aqaframework.DataObjects.Product;
+import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
 
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class TestContext {
     public static JsonObject JSON_OBJECT;
     public static Order order;
     public static List<Product> products;
+    @Setter
+    @Getter
+    private List<ProductDto> productDtoList;
     public static String orderAllSysID;
     public static int allSysBuyerID; //orderID in JSON
     public static int orderID; //orderID in DB

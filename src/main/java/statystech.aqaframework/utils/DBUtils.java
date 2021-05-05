@@ -28,6 +28,24 @@ public class DBUtils {
         return createdId;
     }
 
+    public int insertJsonToStageProduct(String jsonContent) throws SQLException {
+        Statement statement = ConnectionDB.connection.createStatement();
+        int createdId;
+        statement.executeUpdate("INSERT INTO stageProduct " +
+                        "(productData, status, createdDate, createdBy, modifiedDate, modifiedBy, processingComment) " +
+                        "Values ('" + jsonContent + "','N',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'','')",
+                Statement.RETURN_GENERATED_KEYS);
+        logger.info("SQL request was executed: " + jsonContent);
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                createdId = (int) generatedKeys.getLong(1);
+            } else {
+                throw new SQLException("Creating failed, no ID obtained.");
+            }
+        }
+        return createdId;
+    }
+
     public static ResultSet execute(String fullRequest) {
         ResultSet rs = null;
         try {

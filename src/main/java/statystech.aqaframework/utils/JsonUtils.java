@@ -1,16 +1,26 @@
 package statystech.aqaframework.utils;
 
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.google.gson.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.Order;
 import statystech.aqaframework.DataObjects.Product;
+import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
+import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class JsonUtils {
@@ -52,13 +62,25 @@ public class JsonUtils {
         return jsonValue;
     }
 
-    public String getJsonContentAndLoadToContext(String jsonFilename) throws IOException {
-        loadJsonObjectToTestContext(getJsonObject(jsonFilename));
+    public String loadObjectToContextAndGetString(String jsonFilename, int testRailID) throws IOException {
+        loadJsonObjectToTestContext(getJsonObject(jsonFilename), testRailID);
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
         String jsonString = reader.lines().collect(Collectors.joining());
         return jsonString.replace("\\", "\\\\");
+    }
+
+    public String getProductJsonObjectsAndLoadToContext(String jsonFilename, int testRailID) throws IOException {
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
+        String jsonString = IOUtils.toString(reader);
+        reader.close();
+        ObjectMapper mapper = new ObjectMapper();
+        List<ProductDto> products = mapper.readValue(jsonString, List.class);
+        Context.getTestContext(testRailID).setProductDtoList(products);
+        return jsonString;
     }
 
     public static JsonArray getProducts(){
@@ -79,8 +101,12 @@ public class JsonUtils {
         return jsonObject;
     }
 
-    public void loadJsonObjectToTestContext(JsonObject jsonObject){
-        TestContext.JSON_OBJECT = jsonObject;
+
+
+
+
+    public void loadJsonObjectToTestContext(JsonObject jsonObject, int testRailID){
+        Context.getTestContext(testRailID).JSON_OBJECT = jsonObject;
         makeObjectsFromJsonAndLoadToContext();
     }
 

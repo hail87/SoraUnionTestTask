@@ -27,7 +27,6 @@ public class TestRailAPI {
     public List<Run> getAllOpenTestRuns(){
         int projectID = Integer.parseInt(DataUtils.getProperty("test_rail_config.properties").getProperty("testrail_projectId"));
         return testRailConnection.runs().list(projectID).isCompleted(false).execute();
-        //new ApiRestUtils().sendGetRequest("https://statystechqa.testrail.io/index.php?/api/v2/get_runs/" + projectID);
     }
 
     public boolean closeOpenTestRun(int runID){

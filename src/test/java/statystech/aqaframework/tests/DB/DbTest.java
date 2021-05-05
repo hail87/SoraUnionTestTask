@@ -142,7 +142,7 @@ public class DbTest extends TestClass {
     @Disabled("Disabled until done")
     @TestRailID(id=3537)
     @ParameterizedTest
-    @ValueSource(strings = {"Products.json"})
+    @ValueSource(strings = {"ProductsSample.json"})
     public void addProducts(String jsonFilename) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         CommonDbSteps dBsteps = new CommonDbSteps();

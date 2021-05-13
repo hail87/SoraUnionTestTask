@@ -1,6 +1,7 @@
 package statystech.aqaframework.steps.DBsteps;
 
 
+import statystech.aqaframework.DataObjects.Jackson.OrderItem;
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TableObjects.ProductBatchTable;
 import statystech.aqaframework.steps.Steps;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 
 public class ProductBatchSteps extends Steps {
 
-    public String checkBatchNumber(Product product) throws SQLException {
+    public String checkBatchNumber(OrderItem product) throws SQLException {
 
         if (product.getProductID() == 0) {
             return "Should run checkProduct() first!\n";

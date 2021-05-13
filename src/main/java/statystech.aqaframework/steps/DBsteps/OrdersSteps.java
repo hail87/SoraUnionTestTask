@@ -1,8 +1,10 @@
 package statystech.aqaframework.steps.DBsteps;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.OrdersTable;
+import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.JsonUtils;
@@ -17,18 +19,21 @@ public class OrdersSteps extends Steps {
         setOrderID();
     }
 
-    public String checkOrdersTable() throws SQLException {
-        OrdersTable ordersTable = new OrdersTable();
+    public String checkOrdersTable() throws SQLException, JsonProcessingException {
         StringBuilder errorMessage = new StringBuilder();
-        int orderLineID = ordersTable.getPrimaryID();
-        errorMessage.append(verifyExpectedResults(
-                ordersTable.getJsonAndTableValue(orderLineID, "order_date")));
+        errorMessage.append(checkOrderDate());
         errorMessage.append(checkOrderAllSysID());
         errorMessage.append(checkCurrency());
         errorMessage.append(checkCurrencyConversion());
         errorMessage.append(checkOrderStatusID("1"));
         errorMessage.append(checkOrderStatusName("Confirmed"));
         return errorMessage.toString();
+    }
+
+    public String checkOrderDate() throws SQLException {
+        OrdersTable ordersTable = new OrdersTable();
+        int orderLineID = ordersTable.getPrimaryID();
+        return verifyExpectedResults(ordersTable.getJsonAndTableValue(orderLineID, "order_date"));
     }
 
     public String checkOrderIsCancelled() throws SQLException {
@@ -40,18 +45,18 @@ public class OrdersSteps extends Steps {
         return verifyExpectedResults(actual, expectedStatus);
     }
 
-    private String checkOrderStatusID(String expected) throws SQLException {
+    private String checkOrderStatusID(String expected) throws SQLException, JsonProcessingException {
         String actual = new OrdersTable().getOrderStatusID();
         return verifyExpectedResults(actual, expected);
     }
 
     public String checkOrderAllSysID() {
-        String expectedOrderID = TestContext.JSON_OBJECT.get("order_id").toString();
+        String expectedOrderID = Context.getTestContext().getJsonObject().get("order_id").toString();
         expectedOrderID = expectedOrderID.substring(1,expectedOrderID.length() -1 );
         String actualOrderID = new OrdersTable().getOrderAllSysIDValue();
         if (actualOrderID.equalsIgnoreCase(expectedOrderID)) {
             logger.info(new Object(){}.getClass().getEnclosingMethod().getName() + "() passed successfully\n");
-            TestContext.orderAllSysID = actualOrderID;
+            Context.getTestContext().setOrderAllSysID(actualOrderID);
             return "";
         } else {
             logger.error(new Object(){}.getClass().getEnclosingMethod().getName() + "() not passed\n");
@@ -73,6 +78,6 @@ public class OrdersSteps extends Steps {
     }
 
     public void setOrderID() throws SQLException {
-        TestContext.orderID = new OrdersTable().getPrimaryID();
+        Context.getTestContext().setOrderID(new OrdersTable().getPrimaryID());
     }
 }

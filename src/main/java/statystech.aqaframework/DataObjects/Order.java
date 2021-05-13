@@ -2,18 +2,36 @@
 package statystech.aqaframework.DataObjects;
 
 import java.util.List;
-import javax.annotation.Generated;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.annotations.SerializedName;
+import statystech.aqaframework.DataObjects.ProductJson.ProductDeserializer;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
+import lombok.ToString;
 
+
+
+@ToString
 @Getter
 @Setter
-@Generated("net.hexar.json2pojo")
-@SuppressWarnings("unused")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
     @SerializedName("account_number")
+    @JsonProperty()
     private String accountNumber;
     @SerializedName("billing_address")
     private BillingAddress billingAddress;

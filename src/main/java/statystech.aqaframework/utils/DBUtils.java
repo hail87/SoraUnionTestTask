@@ -69,7 +69,7 @@ public class DBUtils {
         ResultSet rs = execute(query);
         rs.next();
         String result = rs.getString(columnName);
-        logger.info("!!!Query :\n" + query + "\n has been executed with result :\n" + result);
+        logger.info("\n!!!Query :\n" + query + "\n has been executed with result : " + result);
         return result;
     }
 
@@ -79,13 +79,13 @@ public class DBUtils {
         return rs.getString(columnName);
     }
 
-    public String select(String tableName, int columnNumber) throws SQLException {
+    public static String select(String tableName, int columnNumber) throws SQLException {
         ResultSet rs = getLastRow(tableName);
         rs.next();
         return rs.getString(columnNumber);
     }
 
-    private ResultSet getLastRow(String tableName) {
+    private static ResultSet getLastRow(String tableName) {
         return execute(String.format("SELECT * FROM %s ORDER by createdDate DESC LIMIT 1", tableName));
     }
 

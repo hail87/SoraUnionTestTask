@@ -1,31 +1,38 @@
 package statystech.aqaframework.common;
 
-import com.google.gson.JsonObject;
-import statystech.aqaframework.DataObjects.Order;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.Set;
 
 public class Context {
 
-    private static Set<TestContext> context;
+    private static Set<TestContext> suiteContext;
 
     public static void initialize(){
-        context = new HashSet<>();
+        suiteContext = new HashSet<>();
     }
 
     public static void addTestContext(TestContext testContext){
-        context.add(testContext);
+        suiteContext.add(testContext);
     }
 
-    public static TestContext getTestContext(int testID){
-        return context.stream().filter(tc -> tc.getId()==testID).findFirst().orElse(null);
+    public static TestContext getTestContext(String testMethodName){
+        return suiteContext.stream().filter(tc -> tc.getTestMethodName()==testMethodName).findFirst().orElse(null);
+    }
+
+    public static TestContext getTestContext(int testMethodNumber){
+        String testMethodName = Thread.currentThread().getStackTrace()[testMethodNumber].getMethodName();
+        return Context.getTestContext(testMethodName);
+    }
+
+    public static TestContext getTestContext(){
+        String testMethodName = Arrays.stream(
+                Thread.currentThread().getStackTrace()).filter(m -> m.getFileName().contains("Test")).findFirst().get().getMethodName();
+        return Context.getTestContext(testMethodName);
     }
 
     public static void cleanContext(){
-        context = new HashSet<>();
+        suiteContext = new HashSet<>();
     }
 
 }

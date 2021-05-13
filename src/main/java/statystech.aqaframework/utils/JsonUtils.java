@@ -27,64 +27,72 @@ public class JsonUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
-    public static Product getJsonProductWithName(String productName) {
-        return TestContext.products.stream()
-                .filter(p -> p.getProductName().equalsIgnoreCase(productName)).findFirst().orElse(null);
-    }
-
-    public static String getValueFromJSON(String node1, String node2, String node3, String key) {
-        String jsonValue = "";
-        try {
-            jsonValue = TestContext.JSON_OBJECT.getAsJsonObject(node1).getAsJsonObject(node2).getAsJsonObject(node3)
-                    .get(key).toString().replace("\"", "");
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
-        return jsonValue;
-    }
-
-    public static String getValueFromJSON(String node, String child) {
-        String jsonValue = "";
-        try {
-            jsonValue = TestContext.JSON_OBJECT.getAsJsonObject(node).get(child).
-                    toString().replace("\"", "");
-        } catch (ClassCastException e) {
-            jsonValue = TestContext.JSON_OBJECT.getAsJsonArray(node).get(0).getAsJsonObject().get(child)
-                    .toString().replace("\"", "");
-        }
-        return jsonValue;
-    }
+//    public static Product getJsonProductWithName(String productName) {
+//        return TestContext.products.stream()
+//                .filter(p -> p.getProductName().equalsIgnoreCase(productName)).findFirst().orElse(null);
+//    }
+//
+//    public static String getValueFromJSON(String node1, String node2, String node3, String key) {
+//        String jsonValue = "";
+//        try {
+//            jsonValue = Context.getTestContext().getJsonObject().getAsJsonObject(node1).getAsJsonObject(node2).getAsJsonObject(node3)
+//                    .get(key).toString().replace("\"", "");
+//        } catch (ClassCastException e) {
+//            e.printStackTrace();
+//        }
+//        return jsonValue;
+//    }
+//
+//    public static String getValueFromJSON(String node, String child) {
+//        String jsonValue = "";
+//        try {
+//            jsonValue = Context.getTestContext().getJsonObject().getAsJsonObject(node).get(child).
+//                    toString().replace("\"", "");
+//        } catch (ClassCastException e) {
+//            jsonValue = Context.getTestContext().getJsonObject().getAsJsonArray(node).get(0).getAsJsonObject().get(child)
+//                    .toString().replace("\"", "");
+//        }
+//        return jsonValue;
+//    }
 
     public static String getValueFromJSON(String key) {
         String jsonValue = "";
-        jsonValue = TestContext.JSON_OBJECT.get(key).toString().replace("\"", "");
-
+        //String testMethodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        jsonValue = Context.getTestContext().getJsonObject().get(key).toString().replace("\"", "");
         return jsonValue;
     }
 
-    public String loadObjectToContextAndGetString(String jsonFilename, int testRailID) throws IOException {
-        loadJsonObjectToTestContext(getJsonObject(jsonFilename), testRailID);
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
-        String jsonString = reader.lines().collect(Collectors.joining());
-        return jsonString.replace("\\", "\\\\");
+    public String loadObjectToContextAndGetString(String jsonFilename, String testMethodName) throws IOException {
+        loadJsonObjectToTestContext(getJsonObject(jsonFilename), testMethodName);
+        String jsonString = getStringFromJson(jsonFilename);
+        Context.getTestContext(testMethodName).setJsonString(jsonString);
+//        BufferedReader reader = new BufferedReader(
+//                new InputStreamReader(
+//                        new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
+//        String jsonString = reader.lines().collect(Collectors.joining());
+        return jsonString;//.replace("\\", "\\\\");
     }
 
-    public String getProductJsonObjectsAndLoadToContext(String jsonFilename, int testRailID) throws IOException {
+    public String getProductJsonObjectsAndLoadToContext(String jsonFilename, String testMethodName) throws IOException {
+        String jsonString = getStringFromJson(jsonFilename);
+        ObjectMapper mapper = new ObjectMapper();
+        List<ProductDto> products = mapper.readValue(jsonString, List.class);
+        Context.getTestContext(testMethodName).setProductDtoList(products);
+        return jsonString;
+    }
+
+    public String getStringFromJson(String jsonFilename) throws IOException {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
         String jsonString = IOUtils.toString(reader);
         reader.close();
-        ObjectMapper mapper = new ObjectMapper();
-        List<ProductDto> products = mapper.readValue(jsonString, List.class);
-        Context.getTestContext(testRailID).setProductDtoList(products);
-        return jsonString;
+        return jsonString.replace("\\", "\\\\");
     }
 
     public static JsonArray getProducts(){
-        return TestContext.JSON_OBJECT.getAsJsonArray("order_items");
+        String testMethodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        return Context.getTestContext(testMethodName).getJsonObject().getAsJsonArray("order_items");
     }
 
     public JsonObject getJsonObject(String jsonFilename) {
@@ -101,27 +109,10 @@ public class JsonUtils {
         return jsonObject;
     }
 
-
-
-
-
-    public void loadJsonObjectToTestContext(JsonObject jsonObject, int testRailID){
-        Context.getTestContext(testRailID).JSON_OBJECT = jsonObject;
-        makeObjectsFromJsonAndLoadToContext();
+    public void loadJsonObjectToTestContext(JsonObject jsonObject, String testMethodName){
+        TestContext testContext = new TestContext(testMethodName);
+        Context.getTestContext().setJsonObject(jsonObject);
+        Context.addTestContext(testContext);
+        //makeObjectsFromJsonAndLoadToContext();
     }
-
-    public static void makeObjectsFromJsonAndLoadToContext() {
-        TestContext.order = new Gson().fromJson(TestContext.JSON_OBJECT, Order.class);
-        for(JsonElement jsonProduct : getProducts()){
-            Product product = new Gson().fromJson(jsonProduct, Product.class);
-            try{
-                TestContext.products.add(product);
-            } catch (NullPointerException e){
-                logger.info("JSON wasn't initiated yet, initiating ...");
-                TestContext.products = new ArrayList<>();
-                TestContext.products.add(product);
-            }
-        }
-    }
-
 }

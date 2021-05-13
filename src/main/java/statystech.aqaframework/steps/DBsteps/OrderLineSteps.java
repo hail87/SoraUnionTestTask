@@ -2,8 +2,10 @@ package statystech.aqaframework.steps.DBsteps;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.Jackson.OrderItem;
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TableObjects.OrderLineTable;
+import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
@@ -15,14 +17,15 @@ public class OrderLineSteps extends Steps {
 
     public String checkProductIsAbsent(String productName) {
         try {
-            checkName(productName);
-            return String.format("Product with name '%s' have been found, but shouldn't", productName);
+            if(checkName(productName).isEmpty()) {
+                return String.format("Product with name '%s' have been found, but shouldn't", productName);
+            } else return "";
         } catch (SQLException throwables) {
             return "";
         }
     }
 
-    public String checkOrderLineTableAndSetWarehouseOrderID(Product product) throws SQLException {
+    public String checkOrderLineTableAndSetWarehouseOrderID(OrderItem product) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkName(product));
         errorMessage.append(checkSKU(product));
@@ -32,7 +35,7 @@ public class OrderLineSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkOrderLineTableWithWarehouseOrderID(Product product) throws SQLException {
+    public String checkOrderLineTableWithWarehouseOrderID(OrderItem product) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         String isProductWithWarehouseOrderIDExist = checkWarehouseOrderID(product);
         if (isProductWithWarehouseOrderIDExist.isEmpty()) {
@@ -46,7 +49,7 @@ public class OrderLineSteps extends Steps {
         }
     }
 
-    private String checkName(Product product) throws SQLException {
+    private String checkName(OrderItem product) throws SQLException {
         String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "productName");
         String expected = product.getProductName();
         return verifyExpectedResults(actual, expected);
@@ -57,27 +60,29 @@ public class OrderLineSteps extends Steps {
         return verifyExpectedResults(actual, productName);
     }
 
-    private String checkSKU(Product product) throws SQLException {
+    private String checkSKU(OrderItem product) throws SQLException {
         String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "sku");
-        String expected = product.getProductSKU();
+        String expected = product.getSKU();
         return verifyExpectedResults(actual, expected);
     }
 
-    private String checkPrice(Product product) throws SQLException {
+    private String checkPrice(OrderItem product) throws SQLException {
         String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "itemPrice");
         String expected = product.getProductItemPrice();
         return verifyExpectedResults(actual, expected);
     }
 
-    private String checkQuantity(Product product) throws SQLException {
+    private String checkQuantity(OrderItem product) throws SQLException {
         String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "quantity");
         String expected = product.getProductQuantity();
         return verifyExpectedResults(actual, expected);
     }
 
-    private String checkWarehouseOrderID(Product product) throws SQLException {
-        if (TestContext.warehouseOrders != null) {
-            String expected = String.valueOf(TestContext.warehouseOrders);
+    private String checkWarehouseOrderID(OrderItem product) throws SQLException {
+
+
+        if (Context.getTestContext().getWarehouseOrders() != null) {
+            String expected = String.valueOf(Context.getTestContext().getLastWarehouseOrderID());
             String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {

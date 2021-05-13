@@ -1,5 +1,6 @@
 package statystech.aqaframework.steps.DBsteps;
 
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.StageOrderTable;
@@ -30,9 +31,9 @@ public class StageOrderSteps extends Steps {
         }
     }
 
-    public int insertJsonToTableAndContext(String jsonFilename, int testRailID) throws IOException, SQLException {
+    public int insertJsonToTableAndContext(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         DBUtils dbUtils = new DBUtils();
-        String jsonContent = new JsonUtils().loadObjectToContextAndGetString(jsonFilename, testRailID);
+        String jsonContent = new JsonUtils().loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());
         logger.info("Inserting json to the stageOrder table");
         int id = dbUtils.insertJsonToStageOrder(jsonContent);
         new StageOrderSteps().triggerProcessingSandBox();

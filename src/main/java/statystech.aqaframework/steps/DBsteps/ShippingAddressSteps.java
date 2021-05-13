@@ -3,6 +3,7 @@ package statystech.aqaframework.steps.DBsteps;
 import statystech.aqaframework.TableObjects.BuyerTable;
 import statystech.aqaframework.TableObjects.OrdersTable;
 import statystech.aqaframework.TableObjects.ShippingAddressTable;
+import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
@@ -36,19 +37,19 @@ public class ShippingAddressSteps extends Steps {
 
     private String checkPhoneNumber(int shippingAddressID) throws SQLException {
         String actualPhoneNumber = new ShippingAddressTable().getColumnValueByPrimaryID(shippingAddressID,"phoneNumber1");
-        String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
+        String expectedPhoneNumber = Context.getTestContext().getJsonObject().getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 
     private String checkPostalCode(int shippingAddressID) throws SQLException {
         String actualPhoneNumber = new ShippingAddressTable().getColumnValueByPrimaryID(shippingAddressID,"postalCode");
-        String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("zip").toString().replace("\"", "");
+        String expectedPhoneNumber = Context.getTestContext().getJsonObject().getAsJsonObject("shipping_address").get("zip").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 
     private String checkRegion(int shippingAddressID) throws SQLException {
         String actualPhoneNumber = new BuyerTable().getColumnValueByPrimaryID(shippingAddressID,"region");
-        String expectedPhoneNumber = TestContext.JSON_OBJECT.getAsJsonObject("shipping_address").get("state").toString().replace("\"", "");
+        String expectedPhoneNumber = Context.getTestContext().getJsonObject().getAsJsonObject("shipping_address").get("state").toString().replace("\"", "");
         return verifyExpectedResults(actualPhoneNumber, expectedPhoneNumber);
     }
 }

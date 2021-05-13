@@ -2,6 +2,7 @@ package statystech.aqaframework.steps;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.Util;
 
 import java.util.Map;
 
@@ -12,25 +13,29 @@ public abstract class Steps {
     public String verifyExpectedResults(Map<String, String> actualAndExpected) {
         String expectedResult = actualAndExpected.get("jsonValue");
         String actualResult = actualAndExpected.get("tableValue");
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String callingMethod = stackTraceElements[2].getMethodName();
+        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
         if (actualResult.equalsIgnoreCase(expectedResult)) {
-            logger.info(String.format("\njsonValue '%s' and tableValue '%s' are the same\n", expectedResult, actualResult));
+            logger.info(String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are the same\n", callingClass, callingMethod, expectedResult, actualResult));
             return "";
         } else {
-            String message = "\njsonValue and tableValue are NOT the same!\nActual (DB): '"
-                    + actualResult + "'\nExpected (JSON): '" + expectedResult + "'\n";
+            String message = String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
             logger.error(message);
             return message;
         }
     }
 
     public String verifyExpectedResults(String actualResult, String expectedResult) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String callingMethod = stackTraceElements[2].getMethodName();
+        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
         if (actualResult.equalsIgnoreCase(expectedResult)) {
-            logger.info(String.format("\njsonValue '%s' and tableValue '%s' are the same\n", expectedResult, actualResult));
+            logger.info(String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are the same\n", callingClass, callingMethod, expectedResult, actualResult));
             return "";
         } else {
-            String message = "\njsonValue and tableValue are NOT the same!\nActual (DB): '"
-                    + actualResult + "'\nExpected (JSON): '" + expectedResult + "'\n";
-            logger.info(message);
+            String message = String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
+            logger.error(message);
             return message;
         }
     }

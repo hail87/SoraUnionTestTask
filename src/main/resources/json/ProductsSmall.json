@@ -62,7 +62,7 @@
 					},
 					{
 						"id": "314242",
-						"qty": "100",
+						"qty": "0",
 						"number": "2019/003",
 						"exp_date": "2022-09-28",
 						"ff_center_name": "Nitrogen-7-N"
@@ -499,7 +499,7 @@
 					},
 					{
 						"id": "317125",
-						"qty": "9",
+						"qty": "18",
 						"number": "M270502011C",
 						"exp_date": "2022-11-18",
 						"ff_center_name": "Polonium-210-Po"

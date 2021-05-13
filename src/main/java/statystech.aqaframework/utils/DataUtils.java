@@ -2,6 +2,7 @@ package statystech.aqaframework.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.common.TestContext;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -59,5 +60,4 @@ public class DataUtils {
         props.store(out, null);
         out.close();
     }
-
 }

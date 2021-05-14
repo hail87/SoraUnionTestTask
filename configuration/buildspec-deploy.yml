@@ -19,5 +19,9 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - echo Rollout restart to pull the latest image to cluster
-      - ./kubectl rollout restart deployment/deployment-aqa -n lwa-sandbox
+      - echo aqa-job deployment
+      - ./kubectl delete job aqa-job -n lwa-sandbox
+      - aws s3 cp s3://aqa-sandbox/aqa-job.yml ./
+      - pwd
+      - ls -l
+      - ./kubectl apply -f aqa-job.yml

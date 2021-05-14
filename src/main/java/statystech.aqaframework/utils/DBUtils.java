@@ -3,15 +3,18 @@ package statystech.aqaframework.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.ConnectionDB;
+import org.apache.ibatis.jdbc.ScriptRunner;
+import statystech.aqaframework.common.Context;
 
+import java.io.*;
 import java.sql.*;
 
 public class DBUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
 
-    public int insertJsonToStageOrder(String jsonContent) throws SQLException {
-        Statement statement = ConnectionDB.connection.createStatement();
+    public int insertJsonToStageOrder(String jsonContent) throws SQLException, IOException {
+        Statement statement = Context.getTestContext().getConnection().createStatement();
         int createdId;
         statement.executeUpdate("INSERT INTO stageOrder " +
                         "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
@@ -28,8 +31,8 @@ public class DBUtils {
         return createdId;
     }
 
-    public int insertJsonToStageProduct(String jsonContent) throws SQLException {
-        Statement statement = ConnectionDB.connection.createStatement();
+    public int insertJsonToStageProduct(String jsonContent) throws SQLException, IOException {
+        Statement statement = Context.getTestContext().getConnection().createStatement();
         int createdId;
         statement.executeUpdate("INSERT INTO stageProduct " +
                         "(productData, status, createdDate, createdBy, modifiedDate, modifiedBy, processingComment) " +
@@ -49,17 +52,17 @@ public class DBUtils {
     public static ResultSet execute(String fullRequest) {
         ResultSet rs = null;
         try {
-            rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
-        } catch (SQLException throwables) {
+            rs = Context.getTestContext().getConnection().createStatement().executeQuery(fullRequest);
+        } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
             logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
         }
         return rs;
     }
 
-    public static String executeAndReturnString(String fullRequest) throws SQLException {
+    public static String executeAndReturnString(String fullRequest) throws SQLException, IOException {
         ResultSet rs;
-        rs = ConnectionDB.connection.createStatement().executeQuery(fullRequest);
+        rs = Context.getTestContext().getConnection().createStatement().executeQuery(fullRequest);
         rs.next();
         return rs.getString(1);
     }
@@ -89,11 +92,12 @@ public class DBUtils {
         return execute(String.format("SELECT * FROM %s ORDER by createdDate DESC LIMIT 1", tableName));
     }
 
-    public boolean closeConnection() {
+    public boolean closeConnection() throws SQLException, IOException {
         boolean isClosed = false;
+        Connection connection = Context.getTestContext().getConnection();
         try {
-            ConnectionDB.connection.close();
-            isClosed = ConnectionDB.connection.isClosed();
+            connection.close();
+            isClosed = connection.isClosed();
             if (isClosed)
                 logger.info("Connection is closed");
         } catch (SQLException throwables) {
@@ -102,4 +106,11 @@ public class DBUtils {
         return isClosed;
     }
 
+    public static void cleanDB(String scriptName) throws IOException, SQLException {
+        Connection connection = new ConnectionDB().getCurrentConnection();
+        ScriptRunner sr = new ScriptRunner(connection);
+        Reader reader = new BufferedReader(new FileReader("src/main/resources/SQL/" + scriptName));
+        sr.runScript(reader);
+        connection.close();
+    }
 }

@@ -1,6 +1,7 @@
 package statystech.aqaframework.steps.DBsteps;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringEscapeUtils;
 import statystech.aqaframework.TableObjects.WarehouseOrderTable;
@@ -9,6 +10,7 @@ import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -21,7 +23,7 @@ public class WarehouseOrderSteps extends Steps {
         setWarehouseOrders();
     }
 
-    public String checkWarehouseOrderTable() throws SQLException {
+    public String checkWarehouseOrderTable() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkWarehouseOrderStatusesIsActive());
         errorMessage.append(checkComments());
@@ -37,7 +39,7 @@ public class WarehouseOrderSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkWarehouseOrderStatusesIsActive() throws SQLException {
+    public String checkWarehouseOrderStatusesIsActive() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         for (Map.Entry<Integer, Integer> entry : Context.getTestContext().getWarehouseOrders().entrySet()) {
             if (!new WarehouseOrderTable().checkWarehouseOrderStatus(entry.getKey()))
@@ -47,13 +49,13 @@ public class WarehouseOrderSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkWarehouseOrderIsNotActive(String warehouseName) throws SQLException {
+    public String checkWarehouseOrderIsNotActive(String warehouseName) throws SQLException, IOException {
         int wareHouseId = new WarehouseTable().getWarehouseId(warehouseName);
         int warehouseOrderID = Context.getTestContext().getWarehouseOrders().entrySet().stream().filter(p -> p.getValue().equals(wareHouseId)).findFirst().orElse(null).getKey();
         return checkWarehouseOrderIsNotActive(warehouseOrderID);
     }
 
-    private String checkWarehouseOrderIsNotActive(int warehouseOrderID) throws SQLException {
+    private String checkWarehouseOrderIsNotActive(int warehouseOrderID) throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         if (new WarehouseOrderTable().checkWarehouseOrderStatus(warehouseOrderID))
             errorMessage.append(String.format(
@@ -61,7 +63,7 @@ public class WarehouseOrderSteps extends Steps {
         return errorMessage.toString();
     }
 
-    private String checkComments() {
+    private String checkComments() throws JsonProcessingException {
         StringBuilder errorMessage = new StringBuilder();
         String expectedComments = StringEscapeUtils.unescapeJava(Context.getTestContext().getOrder().getShippingNotes());
         String actualComments = "";
@@ -77,12 +79,20 @@ public class WarehouseOrderSteps extends Steps {
     }
 
     public void setWarehouseOrders() throws SQLException {
-        ResultSet lines = new WarehouseOrderTable().getOrderLines(Context.getTestContext().getOrderID());
-        if (Context.getTestContext().getWarehouseOrders() == null) {
-            Context.getTestContext().setWarehouseOrders(new LinkedHashMap<>());
+        TestContext testContext = Context.getTestContext();
+        ResultSet lines = new WarehouseOrderTable().getOrderLines(testContext.getOrderID());
+        if (testContext.getWarehouseOrders() == null) {
+            testContext.setWarehouseOrders(new LinkedHashMap<>());
         }
         while (lines.next()) {
-            Context.getTestContext().getWarehouseOrders().put(lines.getInt(1), lines.getInt(10));
+            LinkedHashMap<Integer, Integer> warehouseOrders = testContext.getWarehouseOrders();
+            warehouseOrders.put(lines.getInt(1), lines.getInt(10));
+            testContext.setWarehouseOrders(warehouseOrders);
         }
+        Context.updateTestContext(testContext);
+    }
+
+    public int getWarehouseId(int warehouseOrderId) throws SQLException {
+        return Integer.parseInt(new WarehouseOrderTable().getColumnValueByPrimaryID(warehouseOrderId, "warehouseID"));
     }
 }

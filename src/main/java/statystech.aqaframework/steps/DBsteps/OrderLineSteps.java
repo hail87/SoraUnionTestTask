@@ -1,5 +1,6 @@
 package statystech.aqaframework.steps.DBsteps;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
@@ -10,6 +11,8 @@ import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class OrderLineSteps extends Steps {
 
@@ -31,7 +34,7 @@ public class OrderLineSteps extends Steps {
         errorMessage.append(checkSKU(product));
         errorMessage.append(checkPrice(product));
         errorMessage.append(checkQuantity(product));
-        //addWarehouseOrderID(product);
+        addWarehouseOrderID(product);
         return errorMessage.toString();
     }
 
@@ -50,7 +53,7 @@ public class OrderLineSteps extends Steps {
     }
 
     private String checkName(OrderItem product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "productName");
+        String actual = new OrderLineTable().getColumnValueByProductName(StringEscapeUtils.unescapeJava(product.getProductName()), "productName");
         String expected = product.getProductName();
         return verifyExpectedResults(actual, expected);
     }
@@ -79,11 +82,9 @@ public class OrderLineSteps extends Steps {
     }
 
     private String checkWarehouseOrderID(OrderItem product) throws SQLException {
-
-
         if (Context.getTestContext().getWarehouseOrders() != null) {
             String expected = String.valueOf(Context.getTestContext().getLastWarehouseOrderID());
-            String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID");
+            String actual = new OrderLineTable().getColumnValueByProductName(StringEscapeUtils.unescapeJava(product.getProductName()), "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {
             logger.warn("There is no warehouseOrderID set at the TestContext yet");
@@ -91,9 +92,10 @@ public class OrderLineSteps extends Steps {
         }
     }
 
-//    private void addWarehouseOrderID(Product product) throws SQLException {
-//        int warehouseOrderID = Integer.parseInt(new OrderLineTable().getColumnValueByProductName(product, "warehouseOrderID"));
-//        if(!TestContext.warehouseOrder.contains(warehouseOrderID))
-//        TestContext.warehouseOrder.add(warehouseOrderID);
-//    }
+    private void addWarehouseOrderID(OrderItem product) throws SQLException {
+        TestContext testContext = Context.getTestContext();
+        int warehouseOrderID = Integer.parseInt(new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID"));
+        testContext.addWarehouseOrders(warehouseOrderID, new WarehouseOrderSteps().getWarehouseId(warehouseOrderID));
+        Context.updateTestContext(testContext);
+    }
 }

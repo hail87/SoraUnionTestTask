@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TestRail.TestRailSteps;
+import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
@@ -32,8 +33,6 @@ public class DbTest extends TestClass {
     @ValueSource(strings = {"order1000100data.json"})
     public void newOrderProcessing(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
-        CommonDbSteps dBsteps = new CommonDbSteps();
-        dBsteps.connectDB();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
@@ -52,35 +51,32 @@ public class DbTest extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         stageOrderSteps.deleteRow(id);
         //TODO: delete all new rows
-        dBsteps.closeConnection();
     }
 
-//    @TestRailID(id=2)
-//    @ParameterizedTest
-//    @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
-//    public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        CommonDbSteps dBsteps = new CommonDbSteps();
-//        dBsteps.connectDB();
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, getTestRailID(testInfo));
-//        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
-//        OrderLineSteps orderLineSteps = new OrderLineSteps();
-//        Product product1 = JsonUtils.getJsonProductWithName("REVOFIL AQUASHINE BTX");
-//        errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
-//        errorMessage.append(orderLineSteps.checkProductIsAbsent("EYLEA\\u00ae 40mg/1ml Non-English"));
-//        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, getTestRailID(testInfo));
-//        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
-//
-//        Product product2 = JsonUtils.getJsonProductWithName(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
-//        new WarehouseOrderSteps().setWarehouseOrders();
-//        errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//        stageOrderSteps.deleteRow(idNew);
-//        stageOrderSteps.deleteRow(idUpdate);
-//        dBsteps.closeConnection();
-//        TestContext.cleanContext();
-//    }
+ //   @TestRailID(id=2)
+    @ParameterizedTest
+    @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
+    public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+        OrderLineSteps orderLineSteps = new OrderLineSteps();
+        new OrdersSteps();
+        OrderItem product1 = Context.getTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
+        errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
+
+        errorMessage.append(orderLineSteps.checkProductIsAbsent(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English")));
+        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, testInfo);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+
+        OrderItem product2 = Context.getTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
+        new WarehouseOrderSteps().setWarehouseOrders();
+        errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        stageOrderSteps.deleteRow(idNew);
+        stageOrderSteps.deleteRow(idUpdate);
+    }
 //
 //    @TestRailID(id=422)
 //    @ParameterizedTest

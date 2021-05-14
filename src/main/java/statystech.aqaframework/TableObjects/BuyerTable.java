@@ -7,6 +7,7 @@ import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.utils.DBUtils;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -16,7 +17,7 @@ public class BuyerTable extends TableObject {
 
     private final String TABLE_NAME = "buyer";
 
-    protected ResultSet getLastRow(String tableName) throws SQLException {
+    protected ResultSet getLastRow(String tableName) throws SQLException, IOException {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", tableName, TABLE_NAME, getPrimaryID()));
         rs.next();
@@ -31,7 +32,7 @@ public class BuyerTable extends TableObject {
         try {
             return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
                     "select %s from %s where allSysBuyerID = '%d'",TABLE_NAME+"ID",TABLE_NAME, allSysByuerID)));
-        } catch (SQLException throwables) {
+        } catch (SQLException | IOException throwables) {
             logger.error("!!! There is no line with specified allSysBuyerID exist: " + allSysByuerID + "\nTEST EXIT !!!");
             throw new SQLException();
         }

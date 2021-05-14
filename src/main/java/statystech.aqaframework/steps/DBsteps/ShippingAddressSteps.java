@@ -7,11 +7,12 @@ import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class ShippingAddressSteps extends Steps {
 
-    public String checkShippingAddressTable() throws SQLException {
+    public String checkShippingAddressTable() throws SQLException, IOException {
         ShippingAddressTable shippingAddressTable = new ShippingAddressTable();
         StringBuilder errorMessage = new StringBuilder();
         int shippingAddressID = new OrdersTable().getShippingAddressIDValue();

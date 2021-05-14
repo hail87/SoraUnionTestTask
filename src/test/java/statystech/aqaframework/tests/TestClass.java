@@ -1,5 +1,6 @@
 package statystech.aqaframework.tests;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
@@ -8,20 +9,34 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
+import statystech.aqaframework.utils.DBUtils;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public abstract class TestClass {
 
     private static final Logger logger = LoggerFactory.getLogger(TestClass.class);
 
     @BeforeAll
-    static void createContext() {
+    static void createContext() throws IOException, SQLException {
+        DBUtils.cleanDB("clean_all_lwa_test_data.sql");
         Context.initialize();
     }
 
     @BeforeEach
-    public void setTestContext(TestInfo testInfo) {
+    public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
         TestContext testContext = new TestContext(testInfo.getTestMethod().get().getName());
+        testContext.getConnection();
         Context.addTestContext(testContext);
+    }
+
+    @AfterEach
+    public void cleanTestDataAndCloseConnection(TestInfo testInfo) throws SQLException, IOException, InterruptedException {
+        TestContext testContext = Context.getTestContext(testInfo);
+        testContext.closeConnection();
+        Thread.sleep(500);
+        Context.deleteTestContext(testContext);
     }
 
     public TestContext getTestContext(TestInfo testInfo) {

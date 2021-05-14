@@ -9,17 +9,18 @@ import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.JsonUtils;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class OrdersSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(OrdersSteps.class);
 
-    public OrdersSteps() throws SQLException {
+    public OrdersSteps() throws SQLException, IOException {
         setOrderID();
     }
 
-    public String checkOrdersTable() throws SQLException, JsonProcessingException {
+    public String checkOrdersTable() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkOrderDate());
         errorMessage.append(checkOrderAllSysID());
@@ -30,17 +31,17 @@ public class OrdersSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkOrderDate() throws SQLException {
+    public String checkOrderDate() throws SQLException, IOException {
         OrdersTable ordersTable = new OrdersTable();
         int orderLineID = ordersTable.getPrimaryID();
         return verifyExpectedResults(ordersTable.getJsonAndTableValue(orderLineID, "order_date"));
     }
 
-    public String checkOrderIsCancelled() throws SQLException {
+    public String checkOrderIsCancelled() throws SQLException, JsonProcessingException {
         return checkOrderStatusName("Cancelled");
     }
 
-    private String checkOrderStatusName(String expectedStatus) throws SQLException {
+    private String checkOrderStatusName(String expectedStatus) throws SQLException, JsonProcessingException {
         String actual = new OrdersTable().getOrderStatusName();
         return verifyExpectedResults(actual, expectedStatus);
     }
@@ -77,7 +78,9 @@ public class OrdersSteps extends Steps {
         return verifyExpectedResults(actual, expected.toString());
     }
 
-    public void setOrderID() throws SQLException {
-        Context.getTestContext().setOrderID(new OrdersTable().getPrimaryID());
+    public void setOrderID() throws SQLException, IOException {
+        TestContext testContext = Context.getTestContext();
+        testContext.setOrderID(new OrdersTable().getPrimaryID());
+        Context.updateTestContext(testContext);
     }
 }

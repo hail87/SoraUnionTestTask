@@ -32,10 +32,9 @@ public class StageOrderSteps extends Steps {
     }
 
     public int insertJsonToTableAndContext(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-        DBUtils dbUtils = new DBUtils();
-        String jsonContent = new JsonUtils().loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());
+        String jsonContent = JsonUtils.loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());
         logger.info("Inserting json to the stageOrder table");
-        int id = dbUtils.insertJsonToStageOrder(jsonContent);
+        int id = new DBUtils().insertJsonToStageOrder(jsonContent);
         new StageOrderSteps().triggerProcessingSandBox();
         return id;
     }

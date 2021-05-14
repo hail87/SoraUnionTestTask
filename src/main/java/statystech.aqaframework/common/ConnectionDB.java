@@ -1,9 +1,13 @@
 package statystech.aqaframework.common;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.DBUser;
+import statystech.aqaframework.utils.DBUtils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,17 +16,32 @@ public class ConnectionDB {
 
     private static final Logger logger = LoggerFactory.getLogger(ConnectionDB.class);
 
-    public static Connection connection = null;
+    @Setter
+    @Getter
+    private Connection connection = null;
 
     private DBUser user = null;
 
-    public Connection getCurrentConnection() throws SQLException {
-        if (connection != null) {
-            return connection;
-        } else {
-            connectDB(this.user);
-            return connection;
+    public void connectDB() throws IOException, SQLException {
+        connectDB(new DBUser());
+        logger.info("Data Base connected!");
+    }
+
+    public void closeConnection() {
+        try {
+            new DBUtils().closeConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public Connection getCurrentConnection() throws SQLException, IOException {
+        if (connection == null || connection.isClosed()) {
+            connectDB();
+        }
+        return connection;
     }
 
     public void connectDB(DBUser user) throws SQLException {
@@ -53,5 +72,9 @@ public class ConnectionDB {
         if (connection != null) {
             logger.info("DB connected!");
         }
+    }
+
+    public boolean isClosed() throws SQLException {
+        return connection.isClosed();
     }
 }

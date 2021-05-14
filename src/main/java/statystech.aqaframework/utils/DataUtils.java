@@ -50,7 +50,7 @@ public class DataUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
         cal.setTime(ts);
-        cal.add(Calendar.HOUR,+4);
+        cal.add(Calendar.HOUR,-4);
         return sdf.format(cal.getTime());
     }
 

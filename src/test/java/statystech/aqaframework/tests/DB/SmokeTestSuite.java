@@ -26,9 +26,9 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(TestRailReportExtension.class)
-public class DbTest extends TestClass {
+public class SmokeTestSuite extends TestClass {
 
- //   @TestRailID(id=1)
+    @TestRailID(id=1)
     @ParameterizedTest
     @ValueSource(strings = {"order1000100data.json"})
     public void newOrderProcessing(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
@@ -47,13 +47,10 @@ public class DbTest extends TestClass {
             errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(item));
         }
         errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
-
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        stageOrderSteps.deleteRow(id);
-        //TODO: delete all new rows
     }
 
- //   @TestRailID(id=2)
+    @TestRailID(id=2)
     @ParameterizedTest
     @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
     public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
@@ -77,61 +74,53 @@ public class DbTest extends TestClass {
         stageOrderSteps.deleteRow(idNew);
         stageOrderSteps.deleteRow(idUpdate);
     }
-//
-//    @TestRailID(id=422)
-//    @ParameterizedTest
-//    @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
-//    public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        CommonDbSteps dBsteps = new CommonDbSteps();
-//        dBsteps.connectDB();
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, getTestRailID(testInfo));
-//        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
-//
-//        new OrdersSteps().setOrderID();
-//        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
-//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
-//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
-//
-//        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, getTestRailID(testInfo));
-//        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
-//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Bulgarium"));
-//
-//        stageOrderSteps.deleteRow(idNew);
-//        stageOrderSteps.deleteRow(idUpdate);
-//        dBsteps.closeConnection();
-//        TestContext.cleanContext();
-//    }
-//
-//    @TestRailID(id=3523)
-//    @ParameterizedTest
-//    @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
-//    public void cancelOrder(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        CommonDbSteps dBsteps = new CommonDbSteps();
-//        dBsteps.connectDB();
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, getTestRailID(testInfo));
-//        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
-//
-//        OrdersSteps ordersSteps = new OrdersSteps();
-//        errorMessage.append(ordersSteps.checkOrdersTable());
-//
-//        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
-//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderStatusesIsActive());
-//
-//        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, getTestRailID(testInfo));
-//        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
-//
-//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nickel-28-Ni"));
-//        errorMessage.append(ordersSteps.checkOrderIsCancelled());
-//
-//        stageOrderSteps.deleteRow(idNew);
-//        stageOrderSteps.deleteRow(idUpdate);
-//        dBsteps.closeConnection();
-//        TestContext.cleanContext();
-//    }
+
+    @TestRailID(id=422)
+    @ParameterizedTest
+    @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
+    public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+
+        new OrdersSteps().setOrderID();
+        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
+
+        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, testInfo);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Bulgarium"));
+
+        stageOrderSteps.deleteRow(idNew);
+        stageOrderSteps.deleteRow(idUpdate);
+    }
+
+    @TestRailID(id=3523)
+    @ParameterizedTest
+    @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
+    public void cancelOrder(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkOrdersTable());
+
+        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderStatusesIsActive());
+
+        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, testInfo);
+        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nickel-28-Ni"));
+        errorMessage.append(ordersSteps.checkOrderIsCancelled());
+
+        stageOrderSteps.deleteRow(idNew);
+        stageOrderSteps.deleteRow(idUpdate);
+    }
 //
 //    @Disabled("Disabled until done")
 //    //@TestRailID(id=3537)

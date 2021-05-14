@@ -32,6 +32,9 @@ public class OrderItem {
 	@JsonProperty("product_quantity")
 	private String productQuantity;
 
+	@JsonProperty("batches")
+	private String batches;
+
 	@Override
  	public String toString(){
 		return 

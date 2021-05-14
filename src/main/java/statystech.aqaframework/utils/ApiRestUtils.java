@@ -34,8 +34,6 @@ public class ApiRestUtils {
         logger.info("Status code: " + response.statusCode());
         if (response.statusCode() == 200){
             response.getBody();
-        } else {
-
         }
     }
 }

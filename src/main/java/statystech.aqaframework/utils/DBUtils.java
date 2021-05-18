@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.ConnectionDB;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import statystech.aqaframework.common.Context;
+import statystech.aqaframework.common.Path;
 
 import java.io.*;
 import java.sql.*;
@@ -109,7 +110,7 @@ public class DBUtils {
     public static void cleanDB(String scriptName) throws IOException, SQLException {
         Connection connection = new ConnectionDB().getCurrentConnection();
         ScriptRunner sr = new ScriptRunner(connection);
-        Reader reader = new BufferedReader(new FileReader("src/main/resources/SQL/" + scriptName));
+        Reader reader = new BufferedReader(new FileReader(Path.SQL_SCRIPTS_PATH.getPath() + scriptName));
         sr.runScript(reader);
         connection.close();
     }

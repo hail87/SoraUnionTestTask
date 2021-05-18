@@ -3,6 +3,7 @@ package statystech.aqaframework.utils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.common.Path;
 import statystech.aqaframework.common.TestContext;
 
 import java.io.FileInputStream;
@@ -25,7 +26,7 @@ public class DataUtils {
         FileInputStream fis;
         Properties prop = new Properties();
         try {
-            fis = new FileInputStream("src/main/resources/" + propertyFileName);
+            fis = new FileInputStream(Path.RESOURCES_PATH.getPath() + propertyFileName);
             prop.load(fis);
         } catch (IOException e) {
             System.err.println("No property file found:" + propertyFileName);
@@ -37,7 +38,7 @@ public class DataUtils {
         FileInputStream fis;
         Properties prop = new Properties();
         try {
-            fis = new FileInputStream("src/main/resources/" + propertyFileName);
+            fis = new FileInputStream(Path.RESOURCES_PATH.getPath() + propertyFileName);
             prop.load(fis);
         } catch (IOException e) {
             System.err.println("No property file found:" + propertyFileName);

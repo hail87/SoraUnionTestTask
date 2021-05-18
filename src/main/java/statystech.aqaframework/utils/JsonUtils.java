@@ -17,6 +17,7 @@ import statystech.aqaframework.DataObjects.Order;
 import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
 import statystech.aqaframework.common.Context;
+import statystech.aqaframework.common.Path;
 import statystech.aqaframework.common.TestContext;
 
 import java.io.*;
@@ -83,7 +84,7 @@ public class JsonUtils {
     public static String getStringFromJson(String jsonFilename) throws IOException {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
-                        new FileInputStream("src/main/resources/json/" + jsonFilename), StandardCharsets.UTF_8));
+                        new FileInputStream(Path.JSON_PATH.getPath() + jsonFilename), StandardCharsets.UTF_8));
         String jsonString = IOUtils.toString(reader);
         reader.close();
         return jsonString.replace("\\", "\\\\");
@@ -98,7 +99,7 @@ public class JsonUtils {
 
         try {
             JsonParser parser = new JsonParser();
-            JsonElement jsonElement = parser.parse(new FileReader("src/main/resources/json/" + jsonFilename));
+            JsonElement jsonElement = parser.parse(new FileReader(Path.JSON_PATH.getPath() + jsonFilename));
             jsonObject = jsonElement.getAsJsonObject();
         } catch (FileNotFoundException e) {
             logger.error(e.toString());

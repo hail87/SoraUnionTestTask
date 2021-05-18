@@ -14,6 +14,7 @@ public class TestRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(TestRunner.class);
 
+    //@Test
     public void testRunner() throws IOException {
         String runID = System.getProperty("runID");
         String suiteID = System.getProperty("suiteID");

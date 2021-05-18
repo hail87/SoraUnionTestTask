@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(TestRailReportExtension.class)
-public class SmokeTestSuite extends TestClass {
+public class LwaTestSuite extends TestClass {
 
     @TestRailID(id=1)
     @ParameterizedTest

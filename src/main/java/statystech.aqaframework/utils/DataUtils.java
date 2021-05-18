@@ -19,8 +19,6 @@ import java.util.TimeZone;
 public class DataUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(DataUtils.class);
-    Calendar nowGMT = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-    Calendar nowGMTPlus4 = Calendar.getInstance(TimeZone.getTimeZone("GMT+4"));
 
     public static String getPropertyValue(String propertyFileName, String propertyName) {
         FileInputStream fis;

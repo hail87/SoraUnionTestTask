@@ -1,6 +1,6 @@
 package statystech.aqaframework.tests.TestRail;
 
-import statystech.aqaframework.tests.DB.SmokeTestSuite;
+import statystech.aqaframework.tests.DB.LwaTestSuite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ public class TestSuiteMapper {
     Map<String, Class<?>> classMap = new HashMap<>();
 
     public TestSuiteMapper(){
-        classMap.put("1", SmokeTestSuite.class);
+        classMap.put("1", LwaTestSuite.class);
     }
 
     public Class<?> getTestClass(String id){

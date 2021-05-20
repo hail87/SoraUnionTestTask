@@ -1,4 +1,4 @@
-package statystech.aqaframework.TestRail;
+package statystech.aqaframework.steps.TestRail;
 
 import com.codepine.api.testrail.TestRailException;
 import com.codepine.api.testrail.model.Run;

@@ -1,5 +1,5 @@
 ///**
-// * statystech.aqaframework.TestRail API binding for Java (API v2, available since statystech.aqaframework.TestRail 3.0)
+// * statystech.aqaframework.steps.TestRail API binding for Java (API v2, available since statystech.aqaframework.steps.TestRail 3.0)
 // *
 // * Learn more:
 // *

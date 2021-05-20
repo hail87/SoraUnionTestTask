@@ -5,14 +5,17 @@ import com.codepine.api.testrail.model.Project;
 import com.codepine.api.testrail.model.Result;
 import com.codepine.api.testrail.model.ResultField;
 import com.codepine.api.testrail.model.Run;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.common.Path;
 import statystech.aqaframework.utils.DataUtils;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -135,7 +138,35 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         }
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
         testRail.results().addForCases(runID, results, customResultFields).execute();
+        addLogsToTestRun(runID);
+        logger.info("Closing test run #" + runID);
         testRail.runs().close(runID).execute();
+    }
+
+    private static void addLogsToTestRun(int runID){
+        String url = Path.TEST_RAIL.getPath() + "index.php?/api/v2/add_attachment_to_run/" + runID;
+        Properties properties = DataUtils.getProperty("test_rail_config.properties");
+        final String userId = properties.getProperty("testrail_userId").trim();
+        final String pwd = properties.getProperty("testrail_pwd").trim();
+        logger.info("[Uploading log file] Sending post to:" + url);
+        LogManager.shutdown(); //Delete to show full logs until very end, but proper log file uploading to the testRail won't be guaranteed
+        String[] CMD_ARRAY = {"curl", "-H", "Content-Type: multipart/form-data", "-u", userId + ":" + pwd, "-F", "attachment=@target/logs/test.log", url};
+        ProcessBuilder processBuilder = new ProcessBuilder(CMD_ARRAY);
+        Process process = null;
+        try {
+            process = processBuilder.start();
+            process.waitFor();
+            logger.info(IOUtils.toString(process.getInputStream()));
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            try {
+                logger.error(IOUtils.toString(process.getErrorStream()));
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        logger.info("\nPost request with logs has been sent. \nResponse status code: " + process.exitValue() + "\nBody :\n" + process.info().toString());
+        process.destroy();
     }
 
     private static class CloseableOnlyOnceResource implements ExtensionContext.Store.CloseableResource {

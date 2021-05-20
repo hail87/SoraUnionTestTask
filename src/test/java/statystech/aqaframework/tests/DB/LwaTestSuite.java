@@ -3,22 +3,19 @@ package statystech.aqaframework.tests.DB;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
-import statystech.aqaframework.DataObjects.Product;
-import statystech.aqaframework.TestRail.TestRailSteps;
 import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.DBsteps.*;
+import statystech.aqaframework.steps.TestRail.TestRailSteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
-import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -95,6 +92,8 @@ public class LwaTestSuite extends TestClass {
 
         stageOrderSteps.deleteRow(idNew);
         stageOrderSteps.deleteRow(idUpdate);
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
     @TestRailID(id=3523)
@@ -120,16 +119,16 @@ public class LwaTestSuite extends TestClass {
 
         stageOrderSteps.deleteRow(idNew);
         stageOrderSteps.deleteRow(idUpdate);
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
-//
+
 //    @Disabled("Disabled until done")
 //    //@TestRailID(id=3537)
 //    @ParameterizedTest
 //    @ValueSource(strings = {"ProductsSmall.json"})
 //    public void addProductsTest(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
 //        StringBuilder errorMessage = new StringBuilder();
-//        CommonDbSteps dBsteps = new CommonDbSteps();
-//        dBsteps.connectDB();
 //        StageProductSteps stageProductSteps = new StageProductSteps();
 //        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
 //        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
@@ -147,9 +146,6 @@ public class LwaTestSuite extends TestClass {
 ////        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
 //
 //        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//        stageProductSteps.deleteRow(id);
-//        //TODO: delete all new rows
-//        dBsteps.closeConnection();
 //    }
 
 //    @Disabled("Disabled until done")

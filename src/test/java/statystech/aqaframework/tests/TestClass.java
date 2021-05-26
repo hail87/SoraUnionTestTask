@@ -20,7 +20,7 @@ public abstract class TestClass {
 
     @BeforeAll
     static void createContext() throws IOException, SQLException {
-        DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+        //DBUtils.cleanDB("clean_all_lwa_test_data.sql");
         Context.initialize();
     }
 

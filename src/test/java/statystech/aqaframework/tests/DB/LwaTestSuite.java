@@ -1,21 +1,22 @@
 package statystech.aqaframework.tests.DB;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
+import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
+import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.common.Context;
 import statystech.aqaframework.steps.DBsteps.*;
-import statystech.aqaframework.steps.TestRail.TestRailSteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(TestRailReportExtension.class)
 public class LwaTestSuite extends TestClass {
 
-    @TestRailID(id=1)
+    @TestRailID(id = 1)
     @ParameterizedTest
     @ValueSource(strings = {"order1000100data.json"})
     public void newOrderProcessing(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
@@ -47,7 +48,7 @@ public class LwaTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id=2)
+    @TestRailID(id = 2)
     @ParameterizedTest
     @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
     public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
@@ -72,7 +73,7 @@ public class LwaTestSuite extends TestClass {
         stageOrderSteps.deleteRow(idUpdate);
     }
 
-    @TestRailID(id=422)
+    @TestRailID(id = 422)
     @ParameterizedTest
     @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
     public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
@@ -96,7 +97,7 @@ public class LwaTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id=3523)
+    @TestRailID(id = 3523)
     @ParameterizedTest
     @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
     public void cancelOrder(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
@@ -123,32 +124,39 @@ public class LwaTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-//    @Disabled("Disabled until done")
-//    //@TestRailID(id=3537)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"ProductsSmall.json"})
-//    public void addProductsTest(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        StageProductSteps stageProductSteps = new StageProductSteps();
-//        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
-//        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//
-////        errorMessage.append(new OrdersSteps().checkOrdersTable());
-////        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
-////        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
-////        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
-////        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
-////        for (Product product : TestContext.products) {
-////            errorMessage.append(new ProductSteps().checkProduct(product));
-////            errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
-////            errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(product));
-////        }
-////        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
-//
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
+    //@TestRailID(id=3537)
+    @ParameterizedTest
+    @CsvSource({"p2.json"})
+    public void addProductTest(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageProductSteps stageProductSteps = new StageProductSteps();
+        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+        new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
+        ProductSteps productSteps = new ProductSteps();
+        for (ItemsItem item : Context.getTestContext().getProduct().getItems()) {
+            errorMessage.append(productSteps.checkProduct(item));
+            if (item.getJsonNodeBatches() != null) {
+                item.evaluateBatch(new ObjectMapper());
+                for (BatchesItem batch : item.getBatches())
+                    errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));
+            }
+        }
+//        errorMessage.append(new OrdersSteps().checkOrdersTable());
+//        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
+//        errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
+//        errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
+//        errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
+//        for (Product product : TestContext.products) {
+//            errorMessage.append(new ProductSteps().checkProduct(product));
+//            errorMessage.append(new ProductBatchSteps().checkBatchNumber(product));
+//            errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(product));
+//        }
+//        errorMessage.append(new WarehouseOrderSteps().checkWarehouseOrderTable());
 
-//    @Disabled("Disabled until done")
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
 //    @TestRailID(id=3930)
 //    @ParameterizedTest
 //    @CsvSource({"Products.json, ProductsUpdate.json"})

@@ -1,20 +1,14 @@
 package statystech.aqaframework.utils;
 
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import com.google.gson.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
-import statystech.aqaframework.DataObjects.Order;
-import statystech.aqaframework.DataObjects.Product;
+import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
 import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.Path;
@@ -22,9 +16,7 @@ import statystech.aqaframework.common.TestContext;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JsonUtils {
 
@@ -73,11 +65,19 @@ public class JsonUtils {
         return jsonString;
     }
 
-    public String getProductJsonObjectsAndLoadToContext(String jsonFilename, String testMethodName) throws IOException {
+    public String getProductsJsonObjectsAndLoadToContext(String jsonFilename, String testMethodName) throws IOException {
         String jsonString = getStringFromJson(jsonFilename);
         ObjectMapper mapper = new ObjectMapper();
-        List<ProductDto> products = mapper.readValue(jsonString, List.class);
-        Context.getTestContext(testMethodName).setProductDtoList(products);
+        List<Product> products = mapper.readValue(jsonString, List.class);
+        Context.getTestContext(testMethodName).setProductJsonList(products);
+        return jsonString;
+    }
+
+    public String getProductJsonObjectAndLoadToContext(String jsonFilename, String testMethodName) throws IOException {
+        String jsonString = getStringFromJson(jsonFilename);
+        ObjectMapper mapper = new ObjectMapper();
+        Product product = mapper.readValue(jsonString, Product.class);
+        Context.getTestContext(testMethodName).setProduct(product);
         return jsonString;
     }
 

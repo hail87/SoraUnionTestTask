@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import statystech.aqaframework.DataObjects.Jackson.Order;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
+import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
 import statystech.aqaframework.utils.DataUtils;
 
@@ -32,7 +33,8 @@ public class TestContext {
     private JsonObject jsonObject;
     private String jsonString;
     private Order order;
-    private List<ProductDto> productDtoList;
+    private List<Product> productJsonList;
+    private Product product;
     private String orderAllSysID;
     private int allSysBuyerID; //orderID in JSON
     private int orderID; //orderID in DB
@@ -85,8 +87,8 @@ public class TestContext {
 
     public void makeProductsDtoFromJson() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        List<ProductDto> products = mapper.readValue(jsonString, List.class);
-        setProductDtoList(products);
+        List<Product> products = mapper.readValue(jsonString, List.class);
+        setProductJsonList(products);
     }
 
     public Connection getConnection() throws SQLException, IOException {

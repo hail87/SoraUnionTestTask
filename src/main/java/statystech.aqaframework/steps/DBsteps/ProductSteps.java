@@ -3,8 +3,6 @@ package statystech.aqaframework.steps.DBsteps;
 
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
-import statystech.aqaframework.DataObjects.ProductJson.Product;
-import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
 import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DataUtils;
@@ -27,6 +25,7 @@ public class ProductSteps extends Steps {
         errorMessage.append(checkName(DataUtils.convertUnicodeToAscii(product.getProductNameEng())));
         errorMessage.append(checkProductAllSysID(product));
         errorMessage.append(checkSKU(product));
+        setProductID(product);
         return errorMessage.toString();
     }
 
@@ -70,6 +69,16 @@ public class ProductSteps extends Steps {
         try {
             productID = Integer.parseInt(new ProductTable().getColumnValueByProductName(product.getProductName(), "productID"));
             product.setProductID(productID);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    private void setProductID(ItemsItem item) {
+        String productID;
+        try {
+            productID = new ProductTable().getColumnValueByProductName(item.getProductNameEng(), "productID");
+            item.setProductIdFromDB(productID);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

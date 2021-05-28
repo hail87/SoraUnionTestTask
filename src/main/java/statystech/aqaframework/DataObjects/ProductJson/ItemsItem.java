@@ -18,6 +18,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemsItem{
 
+	private String productIdFromDB; //productID from product Table
+
+	private String warehouseIDFromDB;
+
 	@JsonProperty("product_height")
 	private String productHeight;
 
@@ -116,4 +120,5 @@ public class ItemsItem{
 			",product_name_eng = '" + productNameEng + '\'' + 
 			"}";
 		}
+
 }

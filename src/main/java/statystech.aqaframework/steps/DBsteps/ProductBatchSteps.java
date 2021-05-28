@@ -28,7 +28,7 @@ public class ProductBatchSteps extends Steps {
                             "productID", String.valueOf(product.getProductID())), "batchNumber");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            return "\ncheckBatchNumber: There is no " + product.getProductName() + " at the Product table.";
+            return "\ncheckBatchNumber: There is no " + product.getProductName() + " at the productBatch table.";
         }
         String expected = product.getWarehouses().get(0).getBatches().get(0).getNumber();
         return verifyExpectedResults(actual, expected);
@@ -40,7 +40,7 @@ public class ProductBatchSteps extends Steps {
             actual = DBUtils.executeAndReturnString(String.format("select batchNumber from productBatch where allSysBatchID = '%s'", batch.getId()));
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
-            return "\ncheckBatchNumber: There is no " + batch.getId() + " allSysBatchID found at the Product table.";
+            return "\ncheckBatchNumber: There is no " + batch.getId() + " allSysBatchID found at the productBatch table.";
         }
         String expected = batch.getNumber();
         return verifyExpectedResults(actual, expected);

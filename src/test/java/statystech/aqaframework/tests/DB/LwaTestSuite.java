@@ -133,14 +133,14 @@ public class LwaTestSuite extends TestClass {
         int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
         assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
         new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
-        ProductSteps productSteps = new ProductSteps();
         for (ItemsItem item : Context.getTestContext().getProduct().getItems()) {
-            errorMessage.append(productSteps.checkProduct(item));
+            errorMessage.append(new ProductSteps().checkProduct(item));
             if (item.getJsonNodeBatches() != null) {
                 item.evaluateBatch(new ObjectMapper());
                 for (BatchesItem batch : item.getBatches())
                     errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));
             }
+            new ProductDescriptionSteps().checkProductDescription(item);
         }
 //        errorMessage.append(new OrdersSteps().checkOrdersTable());
 //        errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());

@@ -1,6 +1,8 @@
 package statystech.aqaframework.steps.DBsteps;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.TableObjects.ProductTable;
@@ -10,6 +12,8 @@ import statystech.aqaframework.utils.DataUtils;
 import java.sql.SQLException;
 
 public class ProductSteps extends Steps {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductSteps.class);
 
     public String checkProduct(OrderItem product) {
         StringBuilder errorMessage = new StringBuilder();
@@ -25,6 +29,7 @@ public class ProductSteps extends Steps {
         errorMessage.append(checkName(DataUtils.convertUnicodeToAscii(product.getProductNameEng())));
         errorMessage.append(checkProductAllSysID(product));
         errorMessage.append(checkSKU(product));
+        errorMessage.append(checkProductUnavailable(product));
         setProductID(product);
         return errorMessage.toString();
     }
@@ -105,6 +110,18 @@ public class ProductSteps extends Steps {
             return "checkSKU: There is no " + product.getProductNameEng() + "at the Product table found";
         }
         String expected = product.getProductSku();
+        return verifyExpectedResults(actual, expected);
+    }
+
+    public String checkProductUnavailable(ItemsItem item){
+        String expected = item.getProductUnavailable().equalsIgnoreCase("Y") ? "1" : "0";
+        String actual = null;
+        try {
+            actual = new ProductTable().getColumnValueByProductName(DataUtils.convertUnicodeToAscii(item.getProductNameEng()), "productUnavailable");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return "[checkProductUnavailable]: There is no " + item.getProductNameEng() + "at the Product table found";
+        }
         return verifyExpectedResults(actual, expected);
     }
 

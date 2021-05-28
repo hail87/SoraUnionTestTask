@@ -16,6 +16,8 @@ public class BatchesItem{
 	@JsonProperty("id")
 	private Integer id;
 
+	private String productBatchID;
+
 	@JsonProperty("qty")
 	private Integer quantity;
 

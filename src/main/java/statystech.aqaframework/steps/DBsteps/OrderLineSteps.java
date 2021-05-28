@@ -4,15 +4,12 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.Jackson.OrderItem;
-import statystech.aqaframework.DataObjects.Product;
 import statystech.aqaframework.TableObjects.OrderLineTable;
 import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.Steps;
 
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class OrderLineSteps extends Steps {
 

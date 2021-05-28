@@ -1,13 +1,11 @@
 package statystech.aqaframework.tests;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context;
 import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.steps.TestRail.TestRailSteps;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
 
@@ -20,7 +18,7 @@ public abstract class TestClass {
 
     @BeforeAll
     static void createContext() throws IOException, SQLException {
-        //DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+        DBUtils.cleanDB("clean_all_lwa_test_data.sql");
         Context.initialize();
     }
 
@@ -56,4 +54,9 @@ public abstract class TestClass {
         }
         return testRailID;
     }
+
+//    @Test
+//    public void closeTestRailOpenRuns() {
+//        new TestRailSteps().closeAllOpenTestRuns();
+//    }
 }

@@ -12,7 +12,6 @@ import statystech.aqaframework.DataObjects.Jackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
 import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -125,7 +124,7 @@ public class LwaTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 3537)
+    //@TestRailID(id = 3537)
     @ParameterizedTest
     @CsvSource({"p2.json"})
     public void addProductTest(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
@@ -137,17 +136,15 @@ public class LwaTestSuite extends TestClass {
 
         for (ItemsItem item : Context.getTestContext().getProduct().getItems()) {
             errorMessage.append(new ProductSteps().checkProduct(item));
-            if (item.getJsonNodeBatches() != null) {
-                item.evaluateBatch(new ObjectMapper());
-                for (BatchesItem batch : item.getBatches())
-                    errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));
-            }
+            for (BatchesItem batch : item.getBatches())
+                errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));
             errorMessage.append(new ProductDescriptionSteps().checkProductDescription(item));
+            errorMessage.append(new WarehouseInventorySteps().checkWarehouseInventory(item));
         }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id=3930)
+    //@TestRailID(id=3930)
     @ParameterizedTest
     @CsvSource({"ProductsSmallSingleN.json, ProductsSmallUpdateSingle.json"})
     public void updateProduct(String productJson, String updateProductJson, TestInfo testInfo) throws IOException, SQLException {

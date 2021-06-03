@@ -18,6 +18,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemsItem{
 
+	public ItemsItem() {
+		if (jsonNodeBatches != null) {
+			evaluateBatch(new ObjectMapper());
+		}
+	}
+
 	private String productIdFromDB; //productID from product Table
 
 	private String warehouseIDFromDB;
@@ -67,13 +73,21 @@ public class ItemsItem{
 	@JsonIgnore
 	private List<BatchesItem> batches;
 
+	public List<BatchesItem> getBatches(){
+		evaluateBatch(new ObjectMapper());
+		return batches;
+	}
+
 	@SneakyThrows
 	public void evaluateBatch(ObjectMapper mapper) {
-		if (jsonNodeBatches.isArray()) {
-			batches = Arrays.asList(mapper.treeToValue(jsonNodeBatches, BatchesItem[].class));
+		if (batches != null){
 			return;
+		} else if (jsonNodeBatches != null && jsonNodeBatches.isArray()) {
+			batches = Arrays.asList(mapper.treeToValue(jsonNodeBatches, BatchesItem[].class));
 		}
-		batches = Collections.emptyList();
+//		else {
+//			batches = Collections.emptyList();
+//		}
 	}
 
 	@JsonProperty("product_publish")

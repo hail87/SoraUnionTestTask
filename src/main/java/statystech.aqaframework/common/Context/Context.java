@@ -1,4 +1,4 @@
-package statystech.aqaframework.common;
+package statystech.aqaframework.common.Context;
 
 import org.junit.jupiter.api.TestInfo;
 
@@ -18,18 +18,28 @@ public class Context {
         suiteContext.add(testContext);
     }
 
-    public static TestContext getTestContext(String testMethodName){
-        return suiteContext.stream().filter(tc -> tc.getTestMethodName()==testMethodName).findFirst().orElse(null);
+    @SuppressWarnings("unchecked")
+    public static <T extends TestContext> T getTestContext(String testMethodName, Class<T> type){
+        return type.cast(suiteContext.stream().filter(tc -> tc.getTestMethodName().equals(testMethodName)).findFirst().orElse(null));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends TestContext> T getTestContext(TestInfo testInfo, Class<T> type){
+        return (T) getTestContext(testInfo.getTestMethod().get().getName(), type);
     }
 
     public static TestContext getTestContext(TestInfo testInfo){
         return getTestContext(testInfo.getTestMethod().get().getName());
     }
 
-    public static TestContext getTestContext(){
+    public static <T extends TestContext> T getTestContext(Class<T> type){
         String testMethodName = Arrays.stream(
                 Thread.currentThread().getStackTrace()).filter(m -> m.getFileName().contains("Test")).findFirst().get().getMethodName();
-        return Context.getTestContext(testMethodName);
+        return Context.getTestContext(testMethodName, type);
+    }
+
+    public static TestContext getTestContext(String testMethodName){
+        return suiteContext.stream().filter(tc -> tc.getTestMethodName().equals(testMethodName)).findFirst().orElse(null);
     }
 
     public static void updateTestContext(TestContext testContext){

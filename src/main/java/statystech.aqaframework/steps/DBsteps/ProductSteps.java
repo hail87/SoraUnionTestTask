@@ -3,7 +3,7 @@ package statystech.aqaframework.steps.DBsteps;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.Jackson.OrderItem;
+import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.steps.Steps;

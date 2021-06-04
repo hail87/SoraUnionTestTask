@@ -3,8 +3,8 @@ package statystech.aqaframework.TableObjects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.DBUtils;
 
 import java.io.IOException;
@@ -25,10 +25,10 @@ public class BuyerTable extends TableObject {
     }
 
     public int getBuyerID() throws SQLException {
-        TestContext testContext = Context.getTestContext();
-        int allSysByuerID = Integer.parseInt(testContext.getJsonObject()
+        LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
+        int allSysByuerID = Integer.parseInt(lwaTestContext.getJsonObject()
                 .getAsJsonObject("billing_address").get("user_info_id").toString().replace("\"", ""));
-        testContext.setAllSysBuyerID(allSysByuerID);
+        lwaTestContext.setAllSysBuyerID(allSysByuerID);
         try {
             return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
                     "select %s from %s where allSysBuyerID = '%d'",TABLE_NAME+"ID",TABLE_NAME, allSysByuerID)));

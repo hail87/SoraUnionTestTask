@@ -1,4 +1,4 @@
-package statystech.aqaframework.common;
+package statystech.aqaframework.common.Context;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,10 +6,10 @@ import com.google.gson.JsonObject;
 
 import lombok.Getter;
 import lombok.Setter;
-import statystech.aqaframework.DataObjects.Jackson.Order;
-import statystech.aqaframework.DataObjects.Jackson.OrderItem;
+import statystech.aqaframework.DataObjects.OrderJackson.Order;
+import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
-import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
+import statystech.aqaframework.common.ConnectionDB;
 import statystech.aqaframework.utils.DataUtils;
 
 
@@ -21,9 +21,9 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TestContext {
+public class LwaTestContext implements TestContext{
 
-    public TestContext(String testMethodName) {
+    public LwaTestContext(String testMethodName) {
         setTestMethodName(testMethodName);
     }
 
@@ -53,16 +53,6 @@ public class TestContext {
         if (!isAlreadyThere)
             this.warehouseOrders.put(warehouseOrderID, warehouseID);
     }
-
-//    public void cleanContext(){
-//        jsonObject = new JsonObject();
-//        order = new Order();
-//        products = new ArrayList<>();
-//        orderAllSysID = "";
-//        allSysBuyerID = 0;
-//        orderID = 0;
-//        warehouseOrders = new LinkedHashMap<>();
-//    }
 
     public void makeOrderFromJson() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -119,7 +109,11 @@ public class TestContext {
             return false;
         }
 
-        TestContext testContext = (TestContext) object;
-        return this.testMethodName.equalsIgnoreCase(testContext.testMethodName);
+        LwaTestContext lwaTestContext = (LwaTestContext) object;
+        return this.testMethodName.equalsIgnoreCase(lwaTestContext.testMethodName);
+    }
+
+    public <T extends TestContext> T getImplementation() {
+        return (T) this;
     }
 }

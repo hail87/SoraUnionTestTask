@@ -6,8 +6,8 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringEscapeUtils;
 import statystech.aqaframework.TableObjects.WarehouseOrderTable;
 import statystech.aqaframework.TableObjects.WarehouseTable;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 
 import java.io.IOException;
@@ -32,16 +32,16 @@ public class WarehouseOrderSteps extends Steps {
 
     public String checkWarehouseOrderQuantity(int warehouseOrderQuantity) {
         StringBuilder errorMessage = new StringBuilder();
-        if (Context.getTestContext().getWarehouseOrders().size() != warehouseOrderQuantity) {
+        if (Context.getTestContext(LwaTestContext.class).getWarehouseOrders().size() != warehouseOrderQuantity) {
             errorMessage.append(String.format(
-                    "There is no %d but %d warehouseOrders detected", warehouseOrderQuantity, Context.getTestContext().getWarehouseOrders().size()));
+                    "There is no %d but %d warehouseOrders detected", warehouseOrderQuantity, Context.getTestContext(LwaTestContext.class).getWarehouseOrders().size()));
         }
         return errorMessage.toString();
     }
 
     public String checkWarehouseOrderStatusesIsActive() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
-        for (Map.Entry<Integer, Integer> entry : Context.getTestContext().getWarehouseOrders().entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : Context.getTestContext(LwaTestContext.class).getWarehouseOrders().entrySet()) {
             if (!new WarehouseOrderTable().checkWarehouseOrderStatus(entry.getKey()))
                 errorMessage.append(String.format(
                         "warehouse order's status with ID %d isn't '1', what means that warehouseOrder is not active\n", entry.getKey()));
@@ -51,7 +51,7 @@ public class WarehouseOrderSteps extends Steps {
 
     public String checkWarehouseOrderIsNotActive(String warehouseName) throws SQLException, IOException {
         int wareHouseId = new WarehouseTable().getWarehouseId(warehouseName);
-        int warehouseOrderID = Context.getTestContext().getWarehouseOrders().entrySet().stream().filter(p -> p.getValue().equals(wareHouseId)).findFirst().orElse(null).getKey();
+        int warehouseOrderID = Context.getTestContext(LwaTestContext.class).getWarehouseOrders().entrySet().stream().filter(p -> p.getValue().equals(wareHouseId)).findFirst().orElse(null).getKey();
         return checkWarehouseOrderIsNotActive(warehouseOrderID);
     }
 
@@ -65,9 +65,9 @@ public class WarehouseOrderSteps extends Steps {
 
     private String checkComments() throws JsonProcessingException {
         StringBuilder errorMessage = new StringBuilder();
-        String expectedComments = StringEscapeUtils.unescapeJava(Context.getTestContext().getOrder().getShippingNotes());
+        String expectedComments = StringEscapeUtils.unescapeJava(Context.getTestContext(LwaTestContext.class).getOrder().getShippingNotes());
         String actualComments = "";
-        for (Map.Entry<Integer, Integer> entry : Context.getTestContext().getWarehouseOrders().entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : Context.getTestContext(LwaTestContext.class).getWarehouseOrders().entrySet()) {
             try {
                 actualComments = new WarehouseOrderTable().getColumnValueByPrimaryID(entry.getKey(), "comments");
                 return verifyExpectedResults(actualComments, expectedComments);
@@ -79,17 +79,17 @@ public class WarehouseOrderSteps extends Steps {
     }
 
     public void setWarehouseOrders() throws SQLException {
-        TestContext testContext = Context.getTestContext();
-        ResultSet lines = new WarehouseOrderTable().getOrderLines(testContext.getOrderID());
-        if (testContext.getWarehouseOrders() == null) {
-            testContext.setWarehouseOrders(new LinkedHashMap<>());
+        LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
+        ResultSet lines = new WarehouseOrderTable().getOrderLines(lwaTestContext.getOrderID());
+        if (lwaTestContext.getWarehouseOrders() == null) {
+            lwaTestContext.setWarehouseOrders(new LinkedHashMap<>());
         }
         while (lines.next()) {
-            LinkedHashMap<Integer, Integer> warehouseOrders = testContext.getWarehouseOrders();
+            LinkedHashMap<Integer, Integer> warehouseOrders = lwaTestContext.getWarehouseOrders();
             warehouseOrders.put(lines.getInt(1), lines.getInt(10));
-            testContext.setWarehouseOrders(warehouseOrders);
+            lwaTestContext.setWarehouseOrders(warehouseOrders);
         }
-        Context.updateTestContext(testContext);
+        Context.updateTestContext(lwaTestContext);
     }
 
     public int getWarehouseId(int warehouseOrderId) throws SQLException {

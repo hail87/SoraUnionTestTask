@@ -1,4 +1,4 @@
-package statystech.aqaframework.DataObjects.Jackson;
+package statystech.aqaframework.DataObjects.OrderJackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

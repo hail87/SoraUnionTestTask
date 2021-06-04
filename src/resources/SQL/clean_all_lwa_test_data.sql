@@ -52,7 +52,7 @@ delete from lwa_sandbox.productBatch
 where productBatchID > 0;
 
 delete from lwa_sandbox.product
-where productID > 0;
+where productID != 2295 and productID > 0;
 
 delete from lwa_sandbox.notification
 where notificationID > 0;

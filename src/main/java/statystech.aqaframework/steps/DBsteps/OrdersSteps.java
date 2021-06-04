@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.OrdersTable;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -52,12 +52,12 @@ public class OrdersSteps extends Steps {
     }
 
     public String checkOrderAllSysID() {
-        String expectedOrderID = Context.getTestContext().getJsonObject().get("order_id").toString();
+        String expectedOrderID = Context.getTestContext(LwaTestContext.class).getJsonObject().get("order_id").toString();
         expectedOrderID = expectedOrderID.substring(1,expectedOrderID.length() -1 );
         String actualOrderID = new OrdersTable().getOrderAllSysIDValue();
         if (actualOrderID.equalsIgnoreCase(expectedOrderID)) {
             logger.info(new Object(){}.getClass().getEnclosingMethod().getName() + "() passed successfully\n");
-            Context.getTestContext().setOrderAllSysID(actualOrderID);
+            Context.getTestContext(LwaTestContext.class).setOrderAllSysID(actualOrderID);
             return "";
         } else {
             logger.error(new Object(){}.getClass().getEnclosingMethod().getName() + "() not passed\n");
@@ -79,8 +79,8 @@ public class OrdersSteps extends Steps {
     }
 
     public void setOrderID() throws SQLException, IOException {
-        TestContext testContext = Context.getTestContext();
-        testContext.setOrderID(new OrdersTable().getPrimaryID());
-        Context.updateTestContext(testContext);
+        LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
+        lwaTestContext.setOrderID(new OrdersTable().getPrimaryID());
+        Context.updateTestContext(lwaTestContext);
     }
 }

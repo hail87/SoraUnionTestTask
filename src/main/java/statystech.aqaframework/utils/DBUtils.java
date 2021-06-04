@@ -4,7 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.ConnectionDB;
 import org.apache.ibatis.jdbc.ScriptRunner;
-import statystech.aqaframework.common.Context;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Path;
 
 import java.io.*;
@@ -15,7 +16,7 @@ public class DBUtils {
     private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
 
     public int insertJsonToStageOrder(String jsonContent) throws SQLException, IOException {
-        Statement statement = Context.getTestContext().getConnection().createStatement();
+        Statement statement = Context.getTestContext(LwaTestContext.class).getConnection().createStatement();
         int createdId;
         statement.executeUpdate("INSERT INTO stageOrder " +
                         "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
@@ -33,7 +34,7 @@ public class DBUtils {
     }
 
     public int insertJsonToStageProduct(String jsonContent) throws SQLException, IOException {
-        Statement statement = Context.getTestContext().getConnection().createStatement();
+        Statement statement = Context.getTestContext(LwaTestContext.class).getConnection().createStatement();
         int createdId;
         statement.executeUpdate("INSERT INTO stageProduct " +
                         "(productData, status, createdDate, createdBy, modifiedDate, modifiedBy, processingComment) " +
@@ -53,7 +54,7 @@ public class DBUtils {
     public static ResultSet execute(String fullRequest) {
         ResultSet rs = null;
         try {
-            rs = Context.getTestContext().getConnection().createStatement().executeQuery(fullRequest);
+            rs = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().executeQuery(fullRequest);
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
             logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
@@ -63,7 +64,7 @@ public class DBUtils {
 
     public static String executeAndReturnString(String fullRequest) throws SQLException, IOException {
         ResultSet rs;
-        rs = Context.getTestContext().getConnection().createStatement().executeQuery(fullRequest);
+        rs = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().executeQuery(fullRequest);
         rs.next();
         return rs.getString(1);
     }
@@ -95,7 +96,7 @@ public class DBUtils {
 
     public boolean closeConnection() throws SQLException, IOException {
         boolean isClosed = false;
-        Connection connection = Context.getTestContext().getConnection();
+        Connection connection = Context.getTestContext(LwaTestContext.class).getConnection();
         try {
             connection.close();
             isClosed = connection.isClosed();

@@ -1,4 +1,4 @@
-package statystech.aqaframework.DataObjects.Jackson;
+package statystech.aqaframework.DataObjects.OrderJackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ShippingAddress{
+public class BillingAddress{
 
 	@JsonProperty("zip")
 	private String zip;
@@ -56,7 +56,7 @@ public class ShippingAddress{
 	@Override
  	public String toString(){
 		return 
-			"ShippingAddress{" + 
+			"BillingAddress{" + 
 			"zip = '" + zip + '\'' + 
 			",phone_2 = '" + phone2 + '\'' + 
 			",country = '" + country + '\'' + 

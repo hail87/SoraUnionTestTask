@@ -3,10 +3,10 @@ package statystech.aqaframework.steps.DBsteps;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.Jackson.OrderItem;
+import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.TableObjects.OrderLineTable;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 
 import java.sql.SQLException;
@@ -79,8 +79,8 @@ public class OrderLineSteps extends Steps {
     }
 
     private String checkWarehouseOrderID(OrderItem product) throws SQLException {
-        if (Context.getTestContext().getWarehouseOrders() != null) {
-            String expected = String.valueOf(Context.getTestContext().getLastWarehouseOrderID());
+        if (Context.getTestContext(LwaTestContext.class).getWarehouseOrders() != null) {
+            String expected = String.valueOf(Context.getTestContext(LwaTestContext.class).getLastWarehouseOrderID());
             String actual = new OrderLineTable().getColumnValueByProductName(StringEscapeUtils.unescapeJava(product.getProductName()), "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {
@@ -90,9 +90,9 @@ public class OrderLineSteps extends Steps {
     }
 
     private void addWarehouseOrderID(OrderItem product) throws SQLException {
-        TestContext testContext = Context.getTestContext();
+        LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
         int warehouseOrderID = Integer.parseInt(new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID"));
-        testContext.addWarehouseOrders(warehouseOrderID, new WarehouseOrderSteps().getWarehouseId(warehouseOrderID));
-        Context.updateTestContext(testContext);
+        lwaTestContext.addWarehouseOrders(warehouseOrderID, new WarehouseOrderSteps().getWarehouseId(warehouseOrderID));
+        Context.updateTestContext(lwaTestContext);
     }
 }

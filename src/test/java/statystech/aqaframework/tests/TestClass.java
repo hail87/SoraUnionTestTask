@@ -3,9 +3,8 @@ package statystech.aqaframework.tests;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
-import statystech.aqaframework.steps.TestRail.TestRailSteps;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
 
@@ -24,21 +23,21 @@ public abstract class TestClass {
 
     @BeforeEach
     public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
-        TestContext testContext = new TestContext(testInfo.getTestMethod().get().getName());
-        testContext.getConnection();
-        Context.addTestContext(testContext);
+        LwaTestContext lwaTestContext = new LwaTestContext(testInfo.getTestMethod().get().getName());
+        lwaTestContext.getConnection();
+        Context.addTestContext(lwaTestContext);
     }
 
     @AfterEach
     public void cleanTestDataAndCloseConnection(TestInfo testInfo) throws SQLException, IOException, InterruptedException {
-        TestContext testContext = Context.getTestContext(testInfo);
-        testContext.closeConnection();
+        LwaTestContext lwaTestContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        lwaTestContext.closeConnection();
         Thread.sleep(500);
-        Context.deleteTestContext(testContext);
+        Context.deleteTestContext(lwaTestContext);
     }
 
-    public TestContext getTestContext(TestInfo testInfo) {
-        return Context.getTestContext(testInfo.getTestMethod().get().getName());
+    public LwaTestContext getLwaTestContext(TestInfo testInfo) {
+        return Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
     }
 
     public int getTestRailID(TestInfo testInfo) {

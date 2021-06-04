@@ -1,4 +1,4 @@
-package statystech.aqaframework.DataObjects.Jackson;
+package statystech.aqaframework.DataObjects.OrderJackson;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;

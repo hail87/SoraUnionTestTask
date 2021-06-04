@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Path;
-import statystech.aqaframework.common.TestContext;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,9 +11,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
-import java.util.TimeZone;
 
 public class DataUtils {
 

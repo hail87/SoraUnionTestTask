@@ -1,8 +1,8 @@
 package statystech.aqaframework.TableObjects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -20,25 +20,25 @@ public class OrdersTable extends TableObject {
 
     public int getUserIDValue() throws SQLException, IOException {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
-                "select %s from %s where orderAllSysID = '%s'", "userID", TABLE_NAME, Context.getTestContext().getOrderAllSysID())));
+                "select %s from %s where orderAllSysID = '%s'", "userID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }
 
     public String getOrderStatusName() throws SQLException, JsonProcessingException {
-        return getProperRow(TABLE_NAME, Integer.parseInt(Context.getTestContext().getOrder().getOrderId())).getString("orderStatusName");
+        return getProperRow(TABLE_NAME, Integer.parseInt(Context.getTestContext(LwaTestContext.class).getOrder().getOrderId())).getString("orderStatusName");
     }
 
 
     public String getOrderStatusID() throws SQLException, JsonProcessingException {
-        TestContext testContext = Context.getTestContext();
-        if(testContext.getOrder() == null){
-            testContext.makeOrderFromJson();
+        LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
+        if(lwaTestContext.getOrder() == null){
+            lwaTestContext.makeOrderFromJson();
         }
-        return getProperRow(TABLE_NAME, Integer.parseInt(testContext.getOrder().getOrderId())).getString("orderStatusID");
+        return getProperRow(TABLE_NAME, Integer.parseInt(lwaTestContext.getOrder().getOrderId())).getString("orderStatusID");
     }
 
     public int getShippingAddressIDValue() throws SQLException, IOException {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
-                "select %s from %s where orderAllSysID = '%s'", "shippingAddressID", TABLE_NAME, Context.getTestContext().getOrderAllSysID())));
+                "select %s from %s where orderAllSysID = '%s'", "shippingAddressID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }
 
     public String getCurrencyValue() throws SQLException {
@@ -51,7 +51,7 @@ public class OrdersTable extends TableObject {
 
     public int getShopperGroupIDValue() throws SQLException, IOException {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
-                        "select %s from %s where orderAllSysID = '%s'", "shopperGroupID", TABLE_NAME, Context.getTestContext().getOrderAllSysID())));
+                        "select %s from %s where orderAllSysID = '%s'", "shopperGroupID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }
 
     public int getPrimaryID() throws SQLException, IOException {

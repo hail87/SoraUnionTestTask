@@ -7,12 +7,11 @@ import com.google.gson.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.Jackson.OrderItem;
+import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
-import statystech.aqaframework.DataObjects.ProductJson.ProductDto;
-import statystech.aqaframework.common.Context;
+import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Path;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.LwaTestContext;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,14 +22,14 @@ public class JsonUtils {
     private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
     public static OrderItem getJsonProductWithName(String productName) throws JsonProcessingException {
-        return Context.getTestContext().getOrder().getOrderItems().stream()
+        return Context.getTestContext(LwaTestContext.class).getOrder().getOrderItems().stream()
                 .filter(p -> p.getProductName().equalsIgnoreCase(productName)).findFirst().orElse(null);
     }
 
     public static String getValueFromJSON(String node1, String node2, String node3, String key) {
         String jsonValue = "";
         try {
-            jsonValue = Context.getTestContext().getJsonObject().getAsJsonObject(node1).getAsJsonObject(node2).getAsJsonObject(node3)
+            jsonValue = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonObject(node1).getAsJsonObject(node2).getAsJsonObject(node3)
                     .get(key).toString().replace("\"", "");
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -41,10 +40,10 @@ public class JsonUtils {
     public static String getValueFromJSON(String node, String child) {
         String jsonValue = "";
         try {
-            jsonValue = Context.getTestContext().getJsonObject().getAsJsonObject(node).get(child).
+            jsonValue = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonObject(node).get(child).
                     toString().replace("\"", "");
         } catch (ClassCastException e) {
-            jsonValue = Context.getTestContext().getJsonObject().getAsJsonArray(node).get(0).getAsJsonObject().get(child)
+            jsonValue = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonArray(node).get(0).getAsJsonObject().get(child)
                     .toString().replace("\"", "");
         }
         return jsonValue;
@@ -52,16 +51,16 @@ public class JsonUtils {
 
     public static String getValueFromJSON(String key) {
         String jsonValue = "";
-        jsonValue = Context.getTestContext().getJsonObject().get(key).toString().replace("\"", "");
+        jsonValue = Context.getTestContext(LwaTestContext.class).getJsonObject().get(key).toString().replace("\"", "");
         return jsonValue;
     }
 
     public static String loadObjectToContextAndGetString(String jsonFilename, String testMethodName) throws IOException {
         loadJsonObjectToTestContext(getJsonObject(jsonFilename), testMethodName);
         String jsonString = getStringFromJson(jsonFilename);
-        TestContext testContext = Context.getTestContext(testMethodName);
-        testContext.setJsonString(jsonString);
-        testContext.makeOrderFromJson();
+        LwaTestContext lwaTestContext = Context.getTestContext(testMethodName, LwaTestContext.class);
+        lwaTestContext.setJsonString(jsonString);
+        lwaTestContext.makeOrderFromJson();
         return jsonString;
     }
 
@@ -69,7 +68,7 @@ public class JsonUtils {
         String jsonString = getStringFromJson(jsonFilename);
         ObjectMapper mapper = new ObjectMapper();
         List<Product> products = mapper.readValue(jsonString, List.class);
-        Context.getTestContext(testMethodName).setProductJsonList(products);
+        Context.getTestContext(testMethodName, LwaTestContext.class).setProductJsonList(products);
         return jsonString;
     }
 
@@ -77,7 +76,7 @@ public class JsonUtils {
         String jsonString = getStringFromJson(jsonFilename);
         ObjectMapper mapper = new ObjectMapper();
         Product product = mapper.readValue(jsonString, Product.class);
-        Context.getTestContext(testMethodName).setProduct(product);
+        Context.getTestContext(testMethodName, LwaTestContext.class).setProduct(product);
         return jsonString;
     }
 
@@ -91,7 +90,7 @@ public class JsonUtils {
     }
 
     public static JsonArray getProducts(){
-        return Context.getTestContext().getJsonObject().getAsJsonArray("order_items");
+        return Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonArray("order_items");
     }
 
     public static JsonObject getJsonObject(String jsonFilename) {
@@ -109,8 +108,8 @@ public class JsonUtils {
     }
 
     public static void loadJsonObjectToTestContext(JsonObject jsonObject, String testMethodName){
-        TestContext testContext = new TestContext(testMethodName);
-        Context.getTestContext().setJsonObject(jsonObject);
-        Context.addTestContext(testContext);
+        LwaTestContext lwaTestContext = new LwaTestContext(testMethodName);
+        Context.getTestContext(LwaTestContext.class).setJsonObject(jsonObject);
+        Context.addTestContext(lwaTestContext);
     }
 }

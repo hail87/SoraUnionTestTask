@@ -1,22 +1,19 @@
 package statystech.aqaframework.tests.DB;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import statystech.aqaframework.DataObjects.Jackson.OrderItem;
-import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
-import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
-import statystech.aqaframework.common.Context;
+import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
-import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,7 +36,7 @@ public class LwaTestSuite extends TestClass {
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
         errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
         errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
-        for (OrderItem item : getTestContext(testInfo).getOrder().getOrderItems()) {
+        for (OrderItem item : getLwaTestContext(testInfo).getOrder().getOrderItems()) {
             errorMessage.append(new ProductSteps().checkProduct(item));
             errorMessage.append(new ProductBatchSteps().checkBatchNumber(item));
             errorMessage.append(new OrderLineSteps().checkOrderLineTableAndSetWarehouseOrderID(item));
@@ -57,15 +54,15 @@ public class LwaTestSuite extends TestClass {
         int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         OrderLineSteps orderLineSteps = new OrderLineSteps();
-        new OrdersSteps();
-        OrderItem product1 = Context.getTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
+        new OrdersSteps();;
+        OrderItem product1 = getLwaTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
         errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
 
         errorMessage.append(orderLineSteps.checkProductIsAbsent(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English")));
         int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
 
-        OrderItem product2 = Context.getTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
+        OrderItem product2 = getLwaTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
         new WarehouseOrderSteps().setWarehouseOrders();
         errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
@@ -134,7 +131,7 @@ public class LwaTestSuite extends TestClass {
 //        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 //        new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
 //
-//        for (ItemsItem item : Context.getTestContext().getProduct().getItems()) {
+//        for (ItemsItem item : Context.getTestContext(LwaTestContext.class).getProduct().getItems()) {
 //            errorMessage.append(new ProductSteps().checkProduct(item));
 //            for (BatchesItem batch : item.getBatches())
 //                errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));

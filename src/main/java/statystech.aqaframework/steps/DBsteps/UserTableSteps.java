@@ -3,8 +3,8 @@ package statystech.aqaframework.steps.DBsteps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.UserTable;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ public class UserTableSteps {
     private static final Logger logger = LoggerFactory.getLogger(UserTableSteps.class);
 
     public String checkAllSysUserIDColumn() throws SQLException {
-        String expectedAllSysUserID = Context.getTestContext().getJsonObject().get("seller_username").toString();
+        String expectedAllSysUserID = Context.getTestContext(LwaTestContext.class).getJsonObject().get("seller_username").toString();
         //Remove ["] symbol at the beginning and end of the String.
         expectedAllSysUserID = expectedAllSysUserID.substring(1,expectedAllSysUserID.length() -1 );
         String actualAllSysUserID = null;

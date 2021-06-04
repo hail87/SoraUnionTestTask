@@ -4,9 +4,8 @@ import com.google.common.base.CaseFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.Util;
-import statystech.aqaframework.common.ConnectionDB;
-import statystech.aqaframework.common.Context;
-import statystech.aqaframework.common.TestContext;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.DBUtils;
 
 import java.beans.Introspector;
@@ -91,7 +90,7 @@ public abstract class TableObject {
         String tableName = fullTableName[fullTableName.length - 1];
         tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         try {
-            deleted = Context.getTestContext().getConnection().createStatement().execute(
+            deleted = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().execute(
                     "DELETE FROM " + tableName + " WHERE stageOrderID = '" + primaryID + "'");
             logger.info("!!!Row with id [" + primaryID + "] has been deleted!!!");
         } catch (SQLException | IOException throwables) {
@@ -115,13 +114,13 @@ public abstract class TableObject {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];
         tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-        TestContext testContext = Context.getTestContext(Thread.currentThread().getStackTrace()[3].getMethodName());
+        LwaTestContext lwaTestContext = Context.getTestContext(Thread.currentThread().getStackTrace()[3].getMethodName(), LwaTestContext.class);
         String jsonValue = "";
         try {
-            jsonValue = testContext.getJsonObject().getAsJsonObject(jsonNodeKey1).get(jsonNodeKey2).
+            jsonValue = lwaTestContext.getJsonObject().getAsJsonObject(jsonNodeKey1).get(jsonNodeKey2).
                     toString().replace("\"", "");
         } catch (ClassCastException e) {
-            jsonValue = testContext.getJsonObject().getAsJsonArray(jsonNodeKey1).get(0).getAsJsonObject().get(jsonNodeKey2)
+            jsonValue = lwaTestContext.getJsonObject().getAsJsonArray(jsonNodeKey1).get(0).getAsJsonObject().get(jsonNodeKey2)
                     .toString().replace("\"", "");
         }
         String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey2);
@@ -140,7 +139,7 @@ public abstract class TableObject {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];
         tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-        String jsonValue = Context.getTestContext().getJsonObject().get(jsonNodeKey1).
+        String jsonValue = Context.getTestContext(LwaTestContext.class).getJsonObject().get(jsonNodeKey1).
                 toString().replace("\"", "");
         String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey1);
         columnName = Introspector.decapitalize(columnName);

@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
+import statystech.aqaframework.common.Context.OmsTestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
 
@@ -21,13 +22,6 @@ public abstract class TestClass {
         Context.initialize();
     }
 
-    @BeforeEach
-    public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
-        LwaTestContext lwaTestContext = new LwaTestContext(testInfo.getTestMethod().get().getName());
-        lwaTestContext.getConnection();
-        Context.addTestContext(lwaTestContext);
-    }
-
     @AfterEach
     public void cleanTestDataAndCloseConnection(TestInfo testInfo) throws SQLException, IOException, InterruptedException {
         LwaTestContext lwaTestContext = Context.getTestContext(testInfo, LwaTestContext.class);
@@ -38,6 +32,10 @@ public abstract class TestClass {
 
     public LwaTestContext getLwaTestContext(TestInfo testInfo) {
         return Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
+    }
+
+    public OmsTestContext getOmsTestContext(TestInfo testInfo) {
+        return Context.getTestContext(testInfo.getTestMethod().get().getName(), OmsTestContext.class);
     }
 
     public int getTestRailID(TestInfo testInfo) {

@@ -21,7 +21,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class LwaTestContext implements TestContext{
+public class LwaTestContext extends TestContext{
 
     public LwaTestContext(String testMethodName) {
         setTestMethodName(testMethodName);
@@ -81,14 +81,6 @@ public class LwaTestContext implements TestContext{
         setProductJsonList(products);
     }
 
-    public Connection getConnection() throws SQLException, IOException {
-        if (connectionDB == null) {
-            connectionDB = new ConnectionDB();
-            connectionDB.connectDB();
-        }
-        return connectionDB.getCurrentConnection();
-    }
-
     public void closeConnection() throws SQLException, IOException {
         if (connectionDB != null)
             connectionDB.getCurrentConnection().close();
@@ -111,9 +103,5 @@ public class LwaTestContext implements TestContext{
 
         LwaTestContext lwaTestContext = (LwaTestContext) object;
         return this.testMethodName.equalsIgnoreCase(lwaTestContext.testMethodName);
-    }
-
-    public <T extends TestContext> T getImplementation() {
-        return (T) this;
     }
 }

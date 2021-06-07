@@ -38,7 +38,6 @@ where shippingAddressID > 0;
 delete from lwa_sandbox.shopperGroup
 where shopperGroupID > 0;
 
-
 delete from lwa_sandbox.warehouseBatchInventory
 where warehouseBatchInventoryID > 0;
 
@@ -52,7 +51,7 @@ delete from lwa_sandbox.productBatch
 where productBatchID > 0;
 
 delete from lwa_sandbox.product
-where productID != 2295 and productID > 0;
+where productID NOT in (2295, 2391) and productID > 0;
 
 delete from lwa_sandbox.notification
 where notificationID > 0;

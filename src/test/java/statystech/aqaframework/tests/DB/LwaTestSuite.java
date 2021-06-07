@@ -2,6 +2,7 @@ package statystech.aqaframework.tests.DB;
 
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(TestRailReportExtension.class)
 public class LwaTestSuite extends TestClass {
+
+    @BeforeEach
+    public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
+        LwaTestContext lwaTestContext = new LwaTestContext(testInfo.getTestMethod().get().getName());
+        lwaTestContext.getConnection();
+        Context.addTestContext(lwaTestContext);
+    }
 
     @TestRailID(id = 1)
     @ParameterizedTest

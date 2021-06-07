@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.common.Path;
 import statystech.aqaframework.common.Context.LwaTestContext;
 
@@ -108,8 +109,8 @@ public class JsonUtils {
     }
 
     public static void loadJsonObjectToTestContext(JsonObject jsonObject, String testMethodName){
-        LwaTestContext lwaTestContext = new LwaTestContext(testMethodName);
-        Context.getTestContext(LwaTestContext.class).setJsonObject(jsonObject);
-        Context.addTestContext(lwaTestContext);
+        TestContext testContext = Context.getTestContext(testMethodName, LwaTestContext.class);
+        testContext.setJsonObject(jsonObject);
+        Context.updateTestContext(testContext);
     }
 }

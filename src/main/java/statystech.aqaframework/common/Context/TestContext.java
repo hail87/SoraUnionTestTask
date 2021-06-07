@@ -25,4 +25,9 @@ public abstract class TestContext {
         }
         return connectionDB.getCurrentConnection();
     }
+
+    public void closeConnection() throws SQLException, IOException {
+        if (connectionDB != null)
+            connectionDB.getCurrentConnection().close();
+    }
 }

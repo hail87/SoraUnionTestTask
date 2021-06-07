@@ -81,11 +81,6 @@ public class LwaTestContext extends TestContext{
         setProductJsonList(products);
     }
 
-    public void closeConnection() throws SQLException, IOException {
-        if (connectionDB != null)
-            connectionDB.getCurrentConnection().close();
-    }
-
     @Override
     public int hashCode() {
         return getTestMethodName().hashCode();

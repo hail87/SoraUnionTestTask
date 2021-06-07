@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.OmsTestContext;
+import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
 
@@ -24,10 +25,10 @@ public abstract class TestClass {
 
     @AfterEach
     public void cleanTestDataAndCloseConnection(TestInfo testInfo) throws SQLException, IOException, InterruptedException {
-        LwaTestContext lwaTestContext = Context.getTestContext(testInfo, LwaTestContext.class);
-        lwaTestContext.closeConnection();
+        TestContext testContext = Context.getTestContext(testInfo);
+        testContext.closeConnection();
         Thread.sleep(500);
-        Context.deleteTestContext(lwaTestContext);
+        Context.deleteTestContext(testContext);
     }
 
     public LwaTestContext getLwaTestContext(TestInfo testInfo) {

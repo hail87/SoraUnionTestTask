@@ -2,6 +2,7 @@ package statystech.aqaframework.common.Context;
 
 import lombok.Getter;
 import lombok.Setter;
+import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.common.ConnectionDB;
 
 @Setter
@@ -16,8 +17,10 @@ public class OmsTestContext extends TestContext{
 
     private String testMethodName;
 
-    private String orderId;
-    private String buyerAccountId;
+    private int orderId;
+    private int buyerAccountId;
     private String orderStatusCd;
+
+    private Response response;
 
 }

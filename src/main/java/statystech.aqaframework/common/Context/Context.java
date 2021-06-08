@@ -42,6 +42,12 @@ public class Context {
         return suiteContext.stream().filter(tc -> tc.getTestMethodName().equals(testMethodName)).findFirst().orElse(null);
     }
 
+    public static TestContext getTestContext(){
+        String testMethodName = Arrays.stream(
+                Thread.currentThread().getStackTrace()).filter(m -> m.getFileName().contains("Test")).findFirst().get().getMethodName();
+        return suiteContext.stream().filter(tc -> tc.getTestMethodName().equals(testMethodName)).findFirst().orElse(null);
+    }
+
     public static void updateTestContext(TestContext testContext){
         TestContext oldTestContext = getTestContext(testContext.getTestMethodName());
         suiteContext.remove(oldTestContext);

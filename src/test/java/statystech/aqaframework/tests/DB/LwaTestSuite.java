@@ -46,6 +46,7 @@ public class LwaTestSuite extends TestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+        new OrdersSteps().setOrderID();
         errorMessage.append(new OrdersSteps().checkOrdersTable());
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
@@ -69,7 +70,7 @@ public class LwaTestSuite extends TestClass {
         int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         OrderLineSteps orderLineSteps = new OrderLineSteps();
-        new OrdersSteps();;
+        new OrdersSteps().setOrderID();
         OrderItem product1 = getLwaTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
         errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
 
@@ -119,6 +120,7 @@ public class LwaTestSuite extends TestClass {
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
 
         OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderID();
         errorMessage.append(ordersSteps.checkOrdersTable());
 
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();

@@ -42,9 +42,9 @@ public class ApiRestUtils {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, jsonContent);
         Request request = new Request.Builder()
-                .url("https://tihrphkst3.execute-api.us-east-1.amazonaws.com/test/api/v1/websites/orders")
+                .url("https://tihrphkst3.execute-api.us-east-1.amazonaws.com/dev/api/v1/websites/orders")
                 .method("POST", body)
-                .addHeader("X-API-Key", "ADPF569tmjFugCsfy0sm6mhJigFc2mF3TCw89s24")
+                .addHeader("X-API-Key", "rfyA0vcW2aQZHJBFXlKI4HUDuDeBJctxfBBaTW60")
                 .addHeader("Content-Type", "application/json")
                 .build();
         okhttp3.Response response = client.newCall(request).execute();

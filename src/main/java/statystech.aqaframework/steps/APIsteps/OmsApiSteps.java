@@ -2,30 +2,32 @@ package statystech.aqaframework.steps.APIsteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.TestInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OmsDto.Response;
-import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.Context.Context;
-import statystech.aqaframework.common.Context.OmsTestContext;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.ApiRestUtils;
-import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
-import java.util.List;
 
 public class OmsApiSteps {
 
+    private static final Logger logger = LoggerFactory.getLogger(OmsApiSteps.class);
+
     public String sendPostRequestAndSaveResponseToContext(String jsonFileName, TestInfo testInfo) throws IOException {
-        OmsTestContext omsTestContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), OmsTestContext.class);
+        LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
         String responseString = new ApiRestUtils().submitWebsiteOrder(jsonFileName);
-        if (responseString.isEmpty()){
+        logger.info("Response from API:\n" + responseString);
+        if (responseString.isEmpty()) {
             return "\nResponse body is empty!\n";
         } else {
             ObjectMapper mapper = new ObjectMapper();
             Response response = mapper.readValue(responseString, Response.class);
-            omsTestContext.setOrderId(response.getOrderId());
-            omsTestContext.setBuyerAccountId(response.getBuyerAccountId());
-            omsTestContext.setOrderStatusCd(response.getOrderStatusCd());
-            omsTestContext.setResponse(response);
+            testContext.setApiOrderId(response.getOrderId());
+            testContext.setApiBuyerAccountId(response.getBuyerAccountId());
+            testContext.setApiOrderStatusCd(response.getOrderStatusCd());
+            testContext.setResponse(response);
             return "";
         }
     }

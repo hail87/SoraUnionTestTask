@@ -8,8 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.OmsTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
+import statystech.aqaframework.steps.DBsteps.AccountAddressSteps;
+import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -26,35 +29,40 @@ import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 @ExtendWith(TestRailReportExtension.class)
 public class OmsTestSuite extends TestClass {
 
-    @BeforeEach
-    public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
-        OmsTestContext omsTestContext = new OmsTestContext(testInfo.getTestMethod().get().getName());
-        omsTestContext.getConnection();
-        Context.addTestContext(omsTestContext);
-    }
-
-    @TestRailID(id = 7743)
-    @ParameterizedTest
-    @ValueSource(strings = {"submitOrder-newBuyer.json"})
-    public void submitOrderNoBuyerAccountId(String jsonFilename, TestInfo testInfo) throws IOException {
-        StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
-
     @BeforeAll
-    static void clearTestResults(){
+    static void clearTestResults() {
         TestRailReportExtension.setResults(null);
         TestRailReportExtension.setResults(new CopyOnWriteArrayList<>());
     }
 
     @AfterAll
-    public static void setSuiteID(){
+    public static void setSuiteID() {
         Properties properties = loadProperties();
         properties.setProperty("testrail_testSuiteId", "2170");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
             TestRailReportExtension.reportResults();
         }
+    }
+
+    @BeforeEach
+    public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
+        LwaTestContext lwaTestContext = new LwaTestContext(testInfo.getTestMethod().get().getName());
+        lwaTestContext.getConnection();
+        Context.addTestContext(lwaTestContext);
+    }
+
+    @TestRailID(id = 7743)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-newBuyer.json"})
+    public void submitOrderNoBuyerAccountId(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
+        errorMessage.append(new AccountAddressSteps().checkAddressID(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

@@ -1,6 +1,7 @@
 package statystech.aqaframework.TableObjects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.SneakyThrows;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.DBUtils;
@@ -30,7 +31,7 @@ public class OrdersTable extends TableObject {
 
     public String getOrderStatusID() throws SQLException, JsonProcessingException {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
-        if(lwaTestContext.getOrder() == null){
+        if (lwaTestContext.getOrder() == null) {
             lwaTestContext.makeOrderFromJson();
         }
         return getProperRow(TABLE_NAME, Integer.parseInt(lwaTestContext.getOrder().getOrderId())).getString("orderStatusID");
@@ -51,7 +52,7 @@ public class OrdersTable extends TableObject {
 
     public int getShopperGroupIDValue() throws SQLException, IOException {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
-                        "select %s from %s where orderAllSysID = '%s'", "shopperGroupID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
+                "select %s from %s where orderAllSysID = '%s'", "shopperGroupID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }
 
     public int getPrimaryID() throws SQLException, IOException {
@@ -59,11 +60,23 @@ public class OrdersTable extends TableObject {
                 "select orderID from %s where orderAllSysID = \"" + getOrderAllSysIDValue() + "\"", TABLE_NAME)));
     }
 
+    public int getBuyerAccountId(int primaryId) throws SQLException, IOException {
+        return Integer.parseInt(DBUtils.executeAndReturnString("select buyerAccountID from orders where orderID = '" + primaryId + "'"));
+    }
+
+    public int getOMSShippingAddressID(int primaryId) throws SQLException, IOException {
+        return Integer.parseInt(DBUtils.executeAndReturnString("select OMSShippingAddressID from orders where orderID = '" + primaryId + "'"));
+    }
+
     @Override
-    protected ResultSet getProperRow(String tableName, int orderAllSysID) throws SQLException {
+    protected ResultSet getProperRow(String tableName, int orderAllSysID) {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where orderAllSysID = \"%d\"", tableName, orderAllSysID));
-        rs.next();
+        try {
+            rs.next();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return rs;
     }
 }

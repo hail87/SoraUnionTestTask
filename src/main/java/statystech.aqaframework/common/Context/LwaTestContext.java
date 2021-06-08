@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import lombok.Getter;
 import lombok.Setter;
+import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.DataObjects.OrderJackson.Order;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
@@ -39,6 +40,12 @@ public class LwaTestContext extends TestContext{
     private int allSysBuyerID; //orderID in JSON
     private int orderID; //orderID in DB
     private LinkedHashMap<Integer, Integer> warehouseOrders; //[warehouseOrderID, warehouseID]
+    private int omsShippingAddressID;
+
+    private int apiOrderId;
+    private int apiBuyerAccountId;
+    private String apiOrderStatusCd;
+    private Response response;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {

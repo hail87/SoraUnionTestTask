@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.OrdersTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
+import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -16,9 +17,7 @@ public class OrdersSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(OrdersSteps.class);
 
-    public OrdersSteps() throws SQLException, IOException {
-        setOrderID();
-    }
+    OrdersTable ordersTable = new OrdersTable();
 
     public String checkOrdersTable() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
@@ -31,8 +30,40 @@ public class OrdersSteps extends Steps {
         return errorMessage.toString();
     }
 
+    public String checkApiResponse(LwaTestContext lwaTestContext){
+        return checkBuyerAccountId(lwaTestContext.getApiOrderId(), lwaTestContext.getApiBuyerAccountId());
+    }
+
+    public void setOMSShippingAddressIDToContext(LwaTestContext lwaTestContext) throws SQLException, IOException {
+        lwaTestContext.setOmsShippingAddressID(ordersTable.getOMSShippingAddressID(lwaTestContext.getApiOrderId()));
+        Context.updateTestContext(lwaTestContext);
+    }
+
+    private String checkBuyerAccountId(int orderId, int buyerAccountID){
+        try {
+            int dbBuyerAccountID= ordersTable.getBuyerAccountId(orderId);
+            if(buyerAccountID == dbBuyerAccountID) {
+                return "";
+            } else {
+                return String.format("buyerAccountID '%d' is different from dbBuyerAccountID '%d'", buyerAccountID, dbBuyerAccountID);
+            }
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+            return "There is no line with orderID: '" + orderId + "'";
+        }
+    }
+
+    private String checkOrder(int orderId){
+        try {
+            ordersTable.getPrimaryID("orderID", String.valueOf(orderId));
+            return "";
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return "There is no line with orderID: '" + orderId + "'";
+        }
+    }
+
     public String checkOrderDate() throws SQLException, IOException {
-        OrdersTable ordersTable = new OrdersTable();
         int orderLineID = ordersTable.getPrimaryID();
         return verifyExpectedResults(ordersTable.getJsonAndTableValue(orderLineID, "order_date"));
     }
@@ -42,12 +73,12 @@ public class OrdersSteps extends Steps {
     }
 
     private String checkOrderStatusName(String expectedStatus) throws SQLException, JsonProcessingException {
-        String actual = new OrdersTable().getOrderStatusName();
+        String actual = ordersTable.getOrderStatusName();
         return verifyExpectedResults(actual, expectedStatus);
     }
 
     private String checkOrderStatusID(String expected) throws SQLException, JsonProcessingException {
-        String actual = new OrdersTable().getOrderStatusID();
+        String actual = ordersTable.getOrderStatusID();
         return verifyExpectedResults(actual, expected);
     }
 
@@ -67,20 +98,20 @@ public class OrdersSteps extends Steps {
     }
 
     private String checkCurrency() throws SQLException {
-        String actual = new OrdersTable().getCurrencyValue();
+        String actual = ordersTable.getCurrencyValue();
         String expected = JsonUtils.getValueFromJSON("order_currency");
         return verifyExpectedResults(actual, expected);
     }
 
     private String checkCurrencyConversion() throws SQLException {
-        String actual = new OrdersTable().getCurrencyConversionValue();
+        String actual = ordersTable.getCurrencyConversionValue();
         Double expected = Double.parseDouble(JsonUtils.getValueFromJSON("currency_conversion"));
         return verifyExpectedResults(actual, expected.toString());
     }
 
     public void setOrderID() throws SQLException, IOException {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
-        lwaTestContext.setOrderID(new OrdersTable().getPrimaryID());
+        lwaTestContext.setOrderID(ordersTable.getPrimaryID());
         Context.updateTestContext(lwaTestContext);
     }
 }

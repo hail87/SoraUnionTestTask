@@ -23,6 +23,12 @@ where preselectedBoxID > 0;
 delete FROM lwa_sandbox.warehouseOrder
 where warehouseOrderID > 0;
 
+delete FROM lwa_sandbox.orderExceptionHistory
+where orderExceptionHistoryID > 0;
+
+delete FROM lwa_sandbox.orderItem
+where orderItemID > 0;
+
 delete FROM lwa_sandbox.orders
 where orderID > 0;
 

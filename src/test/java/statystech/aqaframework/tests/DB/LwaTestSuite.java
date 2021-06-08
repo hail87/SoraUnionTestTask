@@ -1,25 +1,32 @@
 package statystech.aqaframework.tests.DB;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
+import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
+import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
+import statystech.aqaframework.utils.DataUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
 public class LwaTestSuite extends TestClass {
@@ -129,51 +136,67 @@ public class LwaTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-//    //@TestRailID(id = 3537)
-//    @ParameterizedTest
-//    @CsvSource({"p2.json"})
-//    public void addProductTest(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        StageProductSteps stageProductSteps = new StageProductSteps();
-//        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
-//        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//        new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
-//
-//        for (ItemsItem item : Context.getTestContext(LwaTestContext.class).getProduct().getItems()) {
-//            errorMessage.append(new ProductSteps().checkProduct(item));
-//            for (BatchesItem batch : item.getBatches())
-//                errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));
-//            errorMessage.append(new ProductDescriptionSteps().checkProductDescription(item));
-//            errorMessage.append(new WarehouseInventorySteps().checkWarehouseInventory(item));
-//        }
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
-//
-//    //@TestRailID(id=3930)
-//    @ParameterizedTest
-//    @CsvSource({"ProductsSmallSingleN.json, ProductsSmallUpdateSingle.json"})
-//    public void updateProduct(String productJson, String updateProductJson, TestInfo testInfo) throws IOException, SQLException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        StageProductSteps stageProductSteps = new StageProductSteps();
-//
-//        int id = stageProductSteps.insertJsonToTableAndContext(productJson, testInfo);
-//        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//
-//        id = stageProductSteps.insertJsonToTableAndContext(updateProductJson, testInfo);
-//        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//        new JsonUtils().getProductJsonObjectAndLoadToContext(updateProductJson, testInfo.getTestMethod().get().getName());
-//
-//        ProductBatchSteps productBatchSteps = new ProductBatchSteps();
-//        ItemsItem item = Context.getTestContext(testInfo).getProduct().getItems().get(0);
-//        if (item.getJsonNodeBatches() != null) {
-//            item.evaluateBatch(new ObjectMapper());
-//            errorMessage.append(productBatchSteps.setProductBatchID(item));
-//        }
-//        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("994840"));
-//        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("995582"));
-//        errorMessage.append(new WarehouseBatchInventorySteps().checkFreeStock(item));
-//        errorMessage.append(new ProductSteps().checkProductUnavailable(item));
-//
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 3537)
+    @ParameterizedTest
+    @CsvSource({"p2.json"})
+    public void addProductTest(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageProductSteps stageProductSteps = new StageProductSteps();
+        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+        new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
+
+        for (ItemsItem item : getLwaTestContext(testInfo).getProduct().getItems()) {
+            errorMessage.append(new ProductSteps().checkProduct(item));
+            for (BatchesItem batch : item.getBatches())
+                errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));
+            errorMessage.append(new ProductDescriptionSteps().checkProductDescription(item));
+            errorMessage.append(new WarehouseInventorySteps().checkWarehouseInventory(item));
+        }
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id=3930)
+    @ParameterizedTest
+    @CsvSource({"ProductsSmallSingleN.json, ProductsSmallUpdateSingle.json"})
+    public void updateProduct(String productJson, String updateProductJson, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageProductSteps stageProductSteps = new StageProductSteps();
+
+        int id = stageProductSteps.insertJsonToTableAndContext(productJson, testInfo);
+        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
+        id = stageProductSteps.insertJsonToTableAndContext(updateProductJson, testInfo);
+        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+        new JsonUtils().getProductJsonObjectAndLoadToContext(updateProductJson, testInfo.getTestMethod().get().getName());
+
+        ProductBatchSteps productBatchSteps = new ProductBatchSteps();
+        ItemsItem item = getLwaTestContext(testInfo).getProduct().getItems().get(0);
+        if (item.getJsonNodeBatches() != null) {
+            item.evaluateBatch(new ObjectMapper());
+            errorMessage.append(productBatchSteps.setProductBatchID(item));
+        }
+        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("994840"));
+        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("995582"));
+        errorMessage.append(new WarehouseBatchInventorySteps().checkFreeStock(item));
+        errorMessage.append(new ProductSteps().checkProductUnavailable(item));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @BeforeAll
+    static void clearTestResults(){
+        TestRailReportExtension.setResults(null);
+        TestRailReportExtension.setResults(new CopyOnWriteArrayList<>());
+    }
+
+    @AfterAll
+    public static void setSuiteID(){
+        Properties properties = loadProperties();
+        properties.setProperty("testrail_testSuiteId", "1");
+        DataUtils.saveTestRailProperty(properties);
+        if(TestRailReportExtension.isTestRailAnnotationPresent) {
+            TestRailReportExtension.reportResults();
+        }
+    }
 }

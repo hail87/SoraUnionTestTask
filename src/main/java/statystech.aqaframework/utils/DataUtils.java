@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Path;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,6 +37,21 @@ public class DataUtils {
             System.err.println("No property file found:" + propertyFileName);
         }
         return prop;
+    }
+
+    public static void saveProperty(Properties p, File file) {
+        try {
+            FileOutputStream fr = new FileOutputStream(file);
+            p.store(fr, "Properties");
+            fr.close();
+            System.out.println("After saving properties: " + p);
+        } catch (IOException e) {
+            System.err.println("No property file found:" + file);
+        }
+    }
+
+    public static void saveTestRailProperty(Properties p) {
+        saveProperty(p, new File(Path.RESOURCES_PATH.getPath() + "test_rail_config.properties"));
     }
 
     public static String getCurrentTimestamp() {

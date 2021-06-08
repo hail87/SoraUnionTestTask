@@ -5,8 +5,11 @@ import com.codepine.api.testrail.model.Project;
 import com.codepine.api.testrail.model.Result;
 import com.codepine.api.testrail.model.ResultField;
 import com.codepine.api.testrail.model.Run;
+import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
@@ -16,6 +19,7 @@ import statystech.aqaframework.common.Path;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -25,7 +29,7 @@ import java.util.stream.Collectors;
 public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
 
     private static final Logger logger = LoggerFactory.getLogger(TestRailReportExtension.class);
-    static boolean isTestRailAnnotationPresent = false;
+    public static boolean isTestRailAnnotationPresent = false;
 
     private enum TestRailStatus {
         PASSED(1),
@@ -48,6 +52,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
 
     private static boolean started = false;
     private static final String TESTRAIL_REPORT = "TEST_RAIL";
+    @Setter
     private static List<Result> results = new CopyOnWriteArrayList<>();
 
     @Override
@@ -64,7 +69,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
 
     @Override
     public void testDisabled(ExtensionContext extensionContext, Optional<String> optional) {
-        addResult(extensionContext, TestRailStatus.UNTESTED);
+        addResult(extensionContext, TestRailStatus.DISABLED);
     }
 
     @Override
@@ -119,7 +124,6 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
 //        final Integer milestone = 666; // Milestone is set per each project and should reflect release version(e.g. 1.0, 666)
 //        final String browserName = "browserName";
 //        final String description = "Test Run description. It can contain links to build or some other useful information";
-//        final String name = "Test run name";
         TestRail testRail = TestRail.builder(url, userId, pwd).build();
         Project project = testRail.projects().get(Integer.parseInt(projectId)).execute();
         Run run;
@@ -169,13 +173,13 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         process.destroy();
     }
 
-    private static class CloseableOnlyOnceResource implements ExtensionContext.Store.CloseableResource {
+    public static class CloseableOnlyOnceResource implements ExtensionContext.Store.CloseableResource {
         @Override
         public void close() {
             //After all tests run hook.
-            if(isTestRailAnnotationPresent) {
-                reportResults();
-            }
+//            if(isTestRailAnnotationPresent) {
+//                reportResults();
+//            }
         }
     }
 }

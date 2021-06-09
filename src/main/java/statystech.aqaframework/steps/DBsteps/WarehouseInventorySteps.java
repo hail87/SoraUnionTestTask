@@ -21,11 +21,9 @@ public class WarehouseInventorySteps extends Steps {
         if (item.getBatches() != null) {
             for (BatchesItem batch : item.getBatches()) {
                 int warehouseID = new WarehouseTable().getWarehouseId(batch.getCenterName());
-                try {DBUtils.executeAndReturnString(String.format(
-                            "select * from warehouseInventory where productID = '%s' and warehouseID = '%d'",
-                            item.getProductIdFromDB(), warehouseID));
-                } catch (IOException throwables) {
-                    throwables.printStackTrace();
+                if (DBUtils.executeAndReturnString(String.format(
+                        "select * from warehouseInventory where productID = '%s' and warehouseID = '%d'",
+                        item.getProductIdFromDB(), warehouseID)).isEmpty()) {
                     errorMessage.append(String.format("There is no line at the warehouseInventory table with productID = '%s' and warehouseID = '%d'",
                             item.getProductIdFromDB(), warehouseID));
                 }

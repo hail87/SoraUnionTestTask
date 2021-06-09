@@ -10,7 +10,6 @@ import statystech.aqaframework.TableObjects.ProductBatchTable;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 
@@ -38,31 +37,22 @@ public class ProductBatchSteps extends Steps {
     }
 
     public String checkBatchNumber(BatchesItem batch) {
-        String actual = null;
-        try {
-            actual = DBUtils.executeAndReturnString(String.format("select batchNumber from productBatch where allSysBatchID = '%s'", batch.getId()));
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-            return "\ncheckBatchNumber: There is no " + batch.getId() + " allSysBatchID found at the productBatch table.";
-        }
+        String actual = DBUtils.executeAndReturnString(String.format("select batchNumber from productBatch where allSysBatchID = '%s'", batch.getId()));
         String expected = batch.getNumber();
         return verifyExpectedResults(actual, expected);
     }
 
-    public String setProductBatchID(ItemsItem item){
+    public String setProductBatchID(ItemsItem item) {
         StringBuilder errorMessage = new StringBuilder();
-        for (BatchesItem batchesItem : item.getBatches()){
+        for (BatchesItem batchesItem : item.getBatches()) {
             errorMessage.append(setProductBatchID(batchesItem));
         }
         return errorMessage.toString();
     }
 
-    public String setProductBatchID(BatchesItem batch){
-        String id = null;
-        try {
-            id = DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where allSysBatchID = '%s'", batch.getId()));
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+    public String setProductBatchID(BatchesItem batch) {
+        String id = DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where allSysBatchID = '%s'", batch.getId()));
+        if (id.isEmpty()) {
             String error = "\ncheckBatchNumber: There is no " + batch.getId() + " allSysBatchID found at the productBatch table.";
             logger.error(error);
             return error;
@@ -71,11 +61,9 @@ public class ProductBatchSteps extends Steps {
         return "";
     }
 
-    public String checkProductBatchIsPresent(String allSysBatchID){
-        try {
-            DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where allSysBatchID = '%s'", allSysBatchID));
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+    public String checkProductBatchIsPresent(String allSysBatchID) {
+        String result = DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where allSysBatchID = '%s'", allSysBatchID));
+        if (result.isEmpty()) {
             String error = "\ncheckBatchNumber: There is no " + allSysBatchID + " allSysBatchID found at the productBatch table.";
             logger.error(error);
             return error;

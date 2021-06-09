@@ -29,13 +29,8 @@ public class BuyerTable extends TableObject {
         int allSysByuerID = Integer.parseInt(lwaTestContext.getJsonObject()
                 .getAsJsonObject("billing_address").get("user_info_id").toString().replace("\"", ""));
         lwaTestContext.setAllSysBuyerID(allSysByuerID);
-        try {
-            return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
-                    "select %s from %s where allSysBuyerID = '%d'",TABLE_NAME+"ID",TABLE_NAME, allSysByuerID)));
-        } catch (SQLException | IOException throwables) {
-            logger.error("!!! There is no line with specified allSysBuyerID exist: " + allSysByuerID + "\nTEST EXIT !!!");
-            throw new SQLException();
-        }
+        return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
+                "select %s from %s where allSysBuyerID = '%d'",TABLE_NAME+"ID",TABLE_NAME, allSysByuerID)));
     }
 
 }

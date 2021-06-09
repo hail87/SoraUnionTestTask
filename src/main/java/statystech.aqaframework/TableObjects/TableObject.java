@@ -18,6 +18,8 @@ public abstract class TableObject {
 
     private static final Logger logger = LoggerFactory.getLogger(TableObject.class);
 
+    protected String TABLE_NAME = "";
+
     public int getPrimaryID() throws SQLException, IOException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];
@@ -126,12 +128,8 @@ public abstract class TableObject {
         String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey2);
         columnName = Introspector.decapitalize(columnName);
         String tableValue = null;
-        try {
-            tableValue = DBUtils.executeAndReturnString(String.format(
-                    "select %s from %s where %s.%s = %d", columnName, tableName, tableName, getFirstColumnName(tableName), primaryID));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        tableValue = DBUtils.executeAndReturnString(String.format(
+                "select %s from %s where %s.%s = %d", columnName, tableName, tableName, getFirstColumnName(tableName), primaryID));
         return Map.of("jsonValue", jsonValue, "tableValue", tableValue);
     }
 
@@ -144,12 +142,8 @@ public abstract class TableObject {
         String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey1);
         columnName = Introspector.decapitalize(columnName);
         String tableValue = null;
-        try {
-            tableValue = DBUtils.executeAndReturnString(String.format(
-                    "select %s from %s where %s = %d", columnName, tableName, getFirstColumnName(tableName), primaryID));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        tableValue = DBUtils.executeAndReturnString(String.format(
+                "select %s from %s where %s = %d", columnName, tableName, getFirstColumnName(tableName), primaryID));
         return Map.of("jsonValue", jsonValue, "tableValue", tableValue);
     }
 
@@ -157,6 +151,10 @@ public abstract class TableObject {
         ResultSet rs = DBUtils.execute("show columns from " + tableName);
         rs.next();
         return rs.getString(1);
+    }
+
+    public boolean checkRowWithIDExist(int id) {
+        return !DBUtils.executeAndReturnString(String.format("select * from %s where %s = '%d'", TABLE_NAME, TABLE_NAME + "ID", id)).isEmpty();
     }
 
 }

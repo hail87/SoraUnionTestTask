@@ -64,8 +64,16 @@ public class OrdersTable extends TableObject {
         return Integer.parseInt(DBUtils.executeAndReturnString("select buyerAccountID from orders where orderID = '" + primaryId + "'"));
     }
 
-    public int getOMSShippingAddressID(int primaryId) throws SQLException, IOException {
+    public int getOMSShippingAddressID(int primaryId) {
         return Integer.parseInt(DBUtils.executeAndReturnString("select OMSShippingAddressID from orders where orderID = '" + primaryId + "'"));
+    }
+
+    public int getOMSBillingAddressID(int primaryId) {
+        return Integer.parseInt(DBUtils.executeAndReturnString("select OMSBillingAddressID from orders where orderID = '" + primaryId + "'"));
+    }
+
+    public int getOMSBuyerAccountLicenseID(int primaryId) {
+        return Integer.parseInt(DBUtils.executeAndReturnString("select OMSBuyerAccountLicenseID from orders where orderID = '" + primaryId + "'"));
     }
 
     @Override

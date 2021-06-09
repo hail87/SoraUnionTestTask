@@ -41,6 +41,8 @@ public class LwaTestContext extends TestContext{
     private int orderID; //orderID in DB
     private LinkedHashMap<Integer, Integer> warehouseOrders; //[warehouseOrderID, warehouseID]
     private int omsShippingAddressID;
+    private int omsBillingAddressID;
+    private int OMSBuyerAccountLicenseID;
 
     private int apiOrderId;
     private int apiBuyerAccountId;

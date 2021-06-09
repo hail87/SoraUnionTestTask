@@ -8,6 +8,7 @@ import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.ApiRestUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ public class OmsApiSteps {
 
     public String sendPostRequestAndSaveResponseToContext(String jsonFileName, TestInfo testInfo) throws IOException {
         LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
+        testContext.setJsonObject(JsonUtils.getJsonObject(jsonFileName));
         String responseString = new ApiRestUtils().submitWebsiteOrder(jsonFileName);
         logger.info("Response from API:\n" + responseString);
         if (responseString.isEmpty()) {

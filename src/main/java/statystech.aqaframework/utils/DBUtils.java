@@ -62,11 +62,16 @@ public class DBUtils {
         return rs;
     }
 
-    public static String executeAndReturnString(String fullRequest) throws SQLException, IOException {
+    public static String executeAndReturnString(String fullRequest) {
         ResultSet rs;
-        rs = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().executeQuery(fullRequest);
-        rs.next();
-        return rs.getString(1);
+        try {
+            rs = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().executeQuery(fullRequest);
+            rs.next();
+            return rs.getString(1);
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+            return "";
+        }
     }
 
     public String select(String tableName, int rowId, String columnName) throws SQLException {

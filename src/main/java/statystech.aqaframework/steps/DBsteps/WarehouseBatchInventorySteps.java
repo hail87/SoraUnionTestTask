@@ -15,19 +15,17 @@ public class WarehouseBatchInventorySteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(WarehouseBatchInventorySteps.class);
 
-    public String checkFreeStock(ItemsItem item){
+    public String checkFreeStock(ItemsItem item) {
         StringBuilder errorMessage = new StringBuilder();
-        for (BatchesItem batchesItem : item.getBatches()){
+        for (BatchesItem batchesItem : item.getBatches()) {
             errorMessage.append(checkFreeStock(batchesItem));
         }
         return errorMessage.toString();
     }
-    public String checkFreeStock(BatchesItem item){
-        String actual = null;
-        try {
-            actual = DBUtils.executeAndReturnString(String.format("select freeStock from warehouseBatchInventory where productBatchID = '%s'", item.getProductBatchID()));
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+
+    public String checkFreeStock(BatchesItem item) {
+        String actual = DBUtils.executeAndReturnString(String.format("select freeStock from warehouseBatchInventory where productBatchID = '%s'", item.getProductBatchID()));
+        if (actual.isEmpty()) {
             return String.format("\n [checkFreeStock]: There is no product with productID %s found at the WarehouseBatchInventory table", item.getId());
         }
         String expected = String.valueOf(item.getQuantity());

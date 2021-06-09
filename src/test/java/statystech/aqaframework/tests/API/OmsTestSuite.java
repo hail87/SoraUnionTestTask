@@ -9,10 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
-import statystech.aqaframework.common.Context.OmsTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
-import statystech.aqaframework.steps.DBsteps.AccountAddressSteps;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
+import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -55,14 +53,24 @@ public class OmsTestSuite extends TestClass {
     @TestRailID(id = 7743)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})
-    public void submitOrderNoBuyerAccountId(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void submitOrderNoBuyerAccountId(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
-        errorMessage.append(new AccountAddressSteps().checkAddressID(lwaTestContext));
+        ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
+        AddressSteps addressSteps = new AddressSteps();
+        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
+        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
+        ordersSteps.setOMSBuyerAccountLicenseIDToContext(lwaTestContext);
+        errorMessage.append(new BuyerAccountLicenseSteps().checkBuyerAccountLicenseID(lwaTestContext));
+        errorMessage.append(new OrderItemSteps().checkOrderID(lwaTestContext));
+        errorMessage.append(new AccountAddressSteps().checkShippingAndBillingAddressesID(lwaTestContext));
+        errorMessage.append(new BuyerAccountSteps().checkBuyerAccountId(lwaTestContext));
+
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

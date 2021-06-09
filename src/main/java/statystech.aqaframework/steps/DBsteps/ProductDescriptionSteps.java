@@ -15,11 +15,8 @@ public class ProductDescriptionSteps extends Steps {
     private static final Logger logger = LoggerFactory.getLogger(ProductDescriptionSteps.class);
 
     public String checkProductDescription(ItemsItem item) {
-        String actual = null;
-        try {
-            actual = DBUtils.executeAndReturnString(String.format("select productDescription from productDescription where productID = '%s'", item.getProductIdFromDB()));
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+        String actual = DBUtils.executeAndReturnString(String.format("select productDescription from productDescription where productID = '%s'", item.getProductIdFromDB()));
+        if (actual.isEmpty()) {
             return String.format("\n [checkProductDescription]: There is no product with productID %s found at the productDescription table", item.getProductIdFromDB());
         }
         String expected = DataUtils.convertUnicodeToAscii(item.getProductNameEng());

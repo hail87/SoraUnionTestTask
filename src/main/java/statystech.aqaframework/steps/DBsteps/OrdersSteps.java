@@ -34,8 +34,18 @@ public class OrdersSteps extends Steps {
         return checkBuyerAccountId(lwaTestContext.getApiOrderId(), lwaTestContext.getApiBuyerAccountId());
     }
 
-    public void setOMSShippingAddressIDToContext(LwaTestContext lwaTestContext) throws SQLException, IOException {
+    public void setOMSShippingAddressIDToContext(LwaTestContext lwaTestContext){
         lwaTestContext.setOmsShippingAddressID(ordersTable.getOMSShippingAddressID(lwaTestContext.getApiOrderId()));
+        Context.updateTestContext(lwaTestContext);
+    }
+
+    public void setOMSBillingAddressIDToContext(LwaTestContext lwaTestContext){
+        lwaTestContext.setOmsBillingAddressID(ordersTable.getOMSBillingAddressID(lwaTestContext.getApiOrderId()));
+        Context.updateTestContext(lwaTestContext);
+    }
+
+    public void setOMSBuyerAccountLicenseIDToContext(LwaTestContext lwaTestContext){
+        lwaTestContext.setOMSBuyerAccountLicenseID(ordersTable.getOMSBuyerAccountLicenseID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);
     }
 

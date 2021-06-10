@@ -8,7 +8,7 @@ public class BuyerAccountLicenseTable extends TableObject{
 
     private static final Logger logger = LoggerFactory.getLogger(BuyerAccountLicenseTable.class);
 
-    private final String TABLE_NAME = "accountAddress";
+    private final String TABLE_NAME = "buyerAccountLicense";
 
     public BuyerAccountLicenseTable(){
         super.TABLE_NAME = TABLE_NAME;

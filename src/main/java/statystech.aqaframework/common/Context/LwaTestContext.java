@@ -6,12 +6,14 @@ import com.google.gson.JsonObject;
 
 import lombok.Getter;
 import lombok.Setter;
+import statystech.aqaframework.DataObjects.OmsDto.OmsSubmitOrderJson;
 import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.DataObjects.OrderJackson.Order;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.ConnectionDB;
 import statystech.aqaframework.utils.DataUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
 
 import java.io.IOException;
@@ -48,6 +50,7 @@ public class LwaTestContext extends TestContext{
     private int apiBuyerAccountId;
     private String apiOrderStatusCd;
     private Response response;
+    private OmsSubmitOrderJson omsSubmitOrderJson;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {
@@ -67,6 +70,15 @@ public class LwaTestContext extends TestContext{
         ObjectMapper mapper = new ObjectMapper();
         Order order = mapper.readValue(DataUtils.convertUnicodeToAscii(jsonString), Order.class);
         setOrder(order);
+    }
+
+    public void makeAndSaveSubmitOrderObjectsFromJson() throws JsonProcessingException {
+        if(jsonString == null || jsonString.isEmpty()){
+            setJsonString(jsonObject.toString());
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        OmsSubmitOrderJson omsSubmitOrderJson = mapper.readValue(DataUtils.convertUnicodeToAscii(jsonString), OmsSubmitOrderJson.class);
+        setOmsSubmitOrderJson(omsSubmitOrderJson);
     }
 
     public Order getOrder() {

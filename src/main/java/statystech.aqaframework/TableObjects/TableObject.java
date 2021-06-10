@@ -37,11 +37,6 @@ public abstract class TableObject {
         return Integer.parseInt(resultSet.getString(1));
     }
 
-    public String getRowColumnValue(ResultSet resultSet, String columnName) throws SQLException {
-        resultSet.next();
-        return resultSet.getString(columnName);
-    }
-
     public String getColumnValueByPrimaryID(int primaryID, String columnName) throws SQLException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];

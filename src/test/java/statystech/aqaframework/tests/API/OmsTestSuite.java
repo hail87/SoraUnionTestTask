@@ -67,10 +67,25 @@ public class OmsTestSuite extends TestClass {
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
         ordersSteps.setOMSBuyerAccountLicenseIDToContext(lwaTestContext);
         errorMessage.append(new BuyerAccountLicenseSteps().checkBuyerAccountLicenseID(lwaTestContext));
-        errorMessage.append(new OrderItemSteps().checkOrderID(lwaTestContext));
+        lwaTestContext.makeAndSaveSubmitOrderObjectsFromJson();
+        errorMessage.append(new OrderItemSteps().checkProductIdsWithOrderID(lwaTestContext));
         errorMessage.append(new AccountAddressSteps().checkShippingAndBillingAddressesID(lwaTestContext));
         errorMessage.append(new BuyerAccountSteps().checkBuyerAccountId(lwaTestContext));
 
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7818)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-twoProducts.json"})
+    public void submitOrderMultipleProducts(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        lwaTestContext.makeAndSaveSubmitOrderObjectsFromJson();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+        errorMessage.append(new OrderItemSteps().checkProductIdsWithOrderID(lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

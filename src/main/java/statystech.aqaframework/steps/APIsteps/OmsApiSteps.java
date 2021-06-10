@@ -19,7 +19,7 @@ public class OmsApiSteps {
     public String sendPostRequestAndSaveResponseToContext(String jsonFileName, TestInfo testInfo) throws IOException {
         LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
         testContext.setJsonObject(JsonUtils.getJsonObject(jsonFileName));
-        String responseString = new ApiRestUtils().submitWebsiteOrder(jsonFileName);
+        String responseString = new ApiRestUtils().submitWebsiteOrderAndGetString(jsonFileName);
         logger.info("Response from API:\n" + responseString);
         if (responseString.isEmpty()) {
             return "\nResponse body is empty!\n";
@@ -32,5 +32,16 @@ public class OmsApiSteps {
             testContext.setResponse(response);
             return "";
         }
+    }
+
+    public String sendPostRequestAndWaitForStatusCode(String jsonFileName, int code) {
+        String errorMessage = "";
+        int responseCode;
+        responseCode = new ApiRestUtils().submitWebsiteOrder(jsonFileName).code();
+        logger.info("ResponseCode:\n" + responseCode);
+        if (responseCode!=code){
+            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, code);
+        }
+        return errorMessage;
     }
 }

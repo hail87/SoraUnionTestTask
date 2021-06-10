@@ -73,4 +73,43 @@ public class OmsTestSuite extends TestClass {
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
+
+    //bugID: OMS-173
+    @TestRailID(id = 7791)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-newLicense.json"})
+    public void submitOrderExistedBuyerLicense(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+        ordersSteps.setOMSBuyerAccountLicenseIDToContext(lwaTestContext);
+        errorMessage.append(new BuyerAccountLicenseSteps().checkBuyerAccountLicenseID(lwaTestContext));
+
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSBuyerAccountLicenseIDToContext(lwaTestContext);
+        errorMessage.append(new BuyerAccountLicenseSteps().checkBuyerAccountLicenseIDisOnlyOne(lwaTestContext));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7817)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-unknownProduct.json"})
+    public void submitOrderUnknownProduct(String jsonFilename) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndWaitForStatusCode(jsonFilename, 400));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7921)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-withEmptyBasket.json"})
+    public void submitOrderEmptyBasket(String jsonFilename) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndWaitForStatusCode(jsonFilename, 400));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
 }

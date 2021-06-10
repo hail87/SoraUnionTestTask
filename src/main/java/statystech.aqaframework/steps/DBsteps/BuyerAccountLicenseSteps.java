@@ -14,7 +14,17 @@ public class BuyerAccountLicenseSteps extends Steps {
 
     public String checkBuyerAccountLicenseID(LwaTestContext lwaTestContext) {
         if (!buyerAccountLicenseTable.checkRowWithIDExist(lwaTestContext.getOMSBuyerAccountLicenseID())) {
-            return String.format("\nThere is no BuyerAccountLicenseID '%d' found at the BuyerAccountLicenseID table", lwaTestContext.getOMSBuyerAccountLicenseID());
+            return String.format("\nThere is no BuyerAccountLicenseID '%d' found at the BuyerAccountLicense table", lwaTestContext.getOMSBuyerAccountLicenseID());
+        }
+        return "";
+    }
+
+    public String checkBuyerAccountLicenseIDisOnlyOne(LwaTestContext lwaTestContext) {
+        if (buyerAccountLicenseTable.getRowsQuantity() > 1) {
+            return String.format("\nThere is more than one row found at the BuyerAccountLicense table", lwaTestContext.getOMSBuyerAccountLicenseID());
+        }
+        if (buyerAccountLicenseTable.getRowsQuantity() < 1) {
+            return String.format("\nThere is no rows found at the BuyerAccountLicense table", lwaTestContext.getOMSBuyerAccountLicenseID());
         }
         return "";
     }

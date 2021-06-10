@@ -79,11 +79,36 @@ public abstract class TableObject {
         return rs;
     }
 
+    @Deprecated
     protected ResultSet getProperRow(String tableName, int id) throws SQLException {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", tableName, tableName, id));
         rs.next();
         return rs;
+    }
+
+    protected ResultSet getProperRow(int id) throws SQLException {
+        ResultSet rs = DBUtils.execute(String.format(
+                "select * from %s where %sID = %d", TABLE_NAME, TABLE_NAME, id));
+        rs.next();
+        return rs;
+    }
+
+    public int getRowsQuantity() {
+        ResultSet rs = DBUtils.execute(String.format(
+                "select * from %s", TABLE_NAME));
+        int count = 0;
+        try {
+            while (rs.next()) {
+                ++count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (count == 0) {
+            System.out.println("No records found");
+        }
+        return count;
     }
 
     public boolean deleteRow(int primaryID) {

@@ -67,3 +67,6 @@ where stageOrderID > 0;
 
 delete from lwa_sandbox.stageProduct
 where stageProductID > 0;
+
+delete from lwa_sandbox.buyerAccountLicense
+where buyerAccountLicenseID > 0;

@@ -52,13 +52,13 @@ public class ProductBatchSteps extends Steps {
     }
 
     public String setProductBatchID(BatchesItem batch) {
-        String id = DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where allSysBatchID = '%s'", batch.getId()));
-        if (id.isEmpty()) {
-            String error = "\ncheckBatchNumber: There is no " + batch.getId() + " allSysBatchID found at the productBatch table.";
+        String productBatchId = DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where batchNumber = '%s'", batch.getNumber()));
+        if (productBatchId.isEmpty()) {
+            String error = "\ncheckBatchNumber: There is no " + batch.getNumber() + " batchNumber found at the productBatch table.";
             logger.error(error);
             return error;
         }
-        batch.setProductBatchID(id);
+        batch.setProductBatchID(productBatchId);
         return "";
     }
 

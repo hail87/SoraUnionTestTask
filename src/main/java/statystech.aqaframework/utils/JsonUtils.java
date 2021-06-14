@@ -77,7 +77,9 @@ public class JsonUtils {
         String jsonString = getStringFromJson(jsonFilename);
         ObjectMapper mapper = new ObjectMapper();
         Product product = mapper.readValue(jsonString, Product.class);
-        Context.getTestContext(testMethodName, LwaTestContext.class).setProduct(product);
+        LwaTestContext lwaTestContext = Context.getTestContext(testMethodName, LwaTestContext.class);
+        lwaTestContext.setProduct(product);
+        Context.updateTestContext(lwaTestContext);
         return jsonString;
     }
 

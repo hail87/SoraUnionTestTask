@@ -10,9 +10,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -77,6 +79,23 @@ public class ItemsItem{
 	public List<BatchesItem> getBatches(){
 		evaluateBatch(new ObjectMapper());
 		return batches;
+	}
+
+	public List<BatchesItem> getUniqueBatches(){
+		evaluateBatch(new ObjectMapper());
+		ArrayList<String> uniqueBatchNumbers = new ArrayList<>();
+		ArrayList<BatchesItem> uniqueBatches = new ArrayList<>();
+		uniqueBatches.addAll(batches);
+		for (BatchesItem batch : batches){
+			if (uniqueBatchNumbers.isEmpty())
+					uniqueBatchNumbers.add(batch.getNumber());
+			if(uniqueBatchNumbers.contains(batch.getNumber())) {
+				uniqueBatches.remove(batch);
+			} else {
+				uniqueBatchNumbers.add(batch.getNumber());
+			}
+		}
+		return uniqueBatches;
 	}
 
 	public void evaluateBatch(ObjectMapper mapper) {

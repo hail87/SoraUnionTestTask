@@ -180,7 +180,7 @@ public class LwaTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 3930)
+    //@TestRailID(id = 3930)
     @ParameterizedTest
     @CsvSource({"ProductsSmallSingleN.json, ProductsSmallUpdateSingle.json"})
     public void updateProduct(String productJson, String updateProductJson, TestInfo testInfo) throws IOException, SQLException {
@@ -202,8 +202,8 @@ public class LwaTestSuite extends TestClass {
         }
         errorMessage.append(productBatchSteps.checkProductBatchIsPresent("994840"));
         errorMessage.append(productBatchSteps.checkProductBatchIsPresent("995582"));
-        errorMessage.append(new WarehouseBatchInventorySteps().checkFreeStock(item));
         errorMessage.append(new ProductSteps().checkProductUnavailable(item));
+        errorMessage.append(new WarehouseBatchInventorySteps().checkFreeStock(item));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

@@ -17,18 +17,22 @@ public class WarehouseBatchInventorySteps extends Steps {
 
     public String checkFreeStock(ItemsItem item) {
         StringBuilder errorMessage = new StringBuilder();
-        for (BatchesItem batchesItem : item.getBatches()) {
+        for (BatchesItem batchesItem : item.getUniqueBatches()) {
             errorMessage.append(checkFreeStock(batchesItem));
         }
         return errorMessage.toString();
     }
 
     public String checkFreeStock(BatchesItem item) {
-        String actual = DBUtils.executeAndReturnString(String.format("select freeStock from warehouseBatchInventory where productBatchID = '%s'", item.getProductBatchID()));
-        if (actual.isEmpty()) {
-            return String.format("\n [checkFreeStock]: There is no product with productID %s found at the WarehouseBatchInventory table", item.getId());
+        String dbFreeStock = DBUtils.executeAndReturnString(String.format("select freeStock from warehouseBatchInventory where productBatchID = '%s'", item.getProductBatchID()));
+        if (dbFreeStock.isEmpty()) {
+            return String.format("\n [checkFreeStock]: There is no product with productBatchID '%s' found at the WarehouseBatchInventory table", item.getProductBatchID());
         }
         String expected = String.valueOf(item.getQuantity());
-        return "\n" + item.getId() + verifyExpectedResults(actual, expected);
+        String result = verifyExpectedResults(dbFreeStock, expected);
+        if (!result.isEmpty()){
+            return "productBatchID '" + item.getProductBatchID() + "' : " + result;
+        }
+        return "";
     }
 }

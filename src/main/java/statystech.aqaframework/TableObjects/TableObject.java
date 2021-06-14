@@ -32,7 +32,7 @@ public abstract class TableObject {
         String tableName = fullTableName[fullTableName.length - 1];
         tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         ResultSet resultSet = DBUtils.execute(String.format(
-                "select * from %s where %s = \"%s\" ORDER by createdDate DESC LIMIT 1", tableName, columnName, value));
+                "select * from %s where %s = '%s' ORDER by createdDate DESC LIMIT 1", tableName, columnName, value));
         resultSet.next();
         return Integer.parseInt(resultSet.getString(1));
     }
@@ -175,6 +175,10 @@ public abstract class TableObject {
 
     public boolean checkRowWithIDExist(int id) {
         return !DBUtils.executeAndReturnString(String.format("select * from %s where %s = '%d'", TABLE_NAME, TABLE_NAME + "ID", id)).isEmpty();
+    }
+
+    public boolean checkRowWithValueIsPresent(String columnName, String value) {
+        return !DBUtils.executeAndReturnString(String.format("select * from %s where %s = '%s'", TABLE_NAME, columnName, value)).isEmpty();
     }
 
 }

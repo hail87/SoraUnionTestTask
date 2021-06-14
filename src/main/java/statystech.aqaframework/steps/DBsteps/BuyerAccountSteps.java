@@ -11,7 +11,6 @@ public class BuyerAccountSteps extends Steps {
     private static final Logger logger = LoggerFactory.getLogger(BuyerAccountSteps.class);
 
     public String checkBuyerAccountId(LwaTestContext lwaTestContext) {
-        StringBuilder errorMessage = new StringBuilder();
         int apiBuyerAccountId = lwaTestContext.getApiBuyerAccountId();
         String dbBuyerAccountID = DBUtils.executeAndReturnString(String.format(
                 "select * from buyerAccount where buyerAccountID = '%d'", apiBuyerAccountId));

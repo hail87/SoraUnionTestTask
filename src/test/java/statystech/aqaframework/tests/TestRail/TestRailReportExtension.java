@@ -19,10 +19,7 @@ import statystech.aqaframework.common.Path;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -127,10 +124,13 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         TestRail testRail = TestRail.builder(url, userId, pwd).build();
         Project project = testRail.projects().get(Integer.parseInt(projectId)).execute();
         Run run;
+        String suiteName = Arrays.stream(Thread.currentThread().getStackTrace()).filter(m -> m.getFileName().contains("TestSuite")).findFirst().get().getClassName();
+        String [] suiteNameArray = suiteName.split("\\.");
+        suiteName = suiteNameArray [suiteNameArray.length -1];
         if (runID == 0) {
             run = testRail.runs()
                     .add(project.getId(),
-                            new Run().setName("AQA framework report [" + DataUtils.getCurrentTimestamp() + "]")
+                            new Run().setName(suiteName + " AQA framework report [" + DataUtils.getCurrentTimestamp() + "]")
                                     .setIncludeAll(false)
                                     .setSuiteId(testSuiteId)
 //                                .setMilestoneId(milestone)

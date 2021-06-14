@@ -36,10 +36,11 @@ public class ProductBatchSteps extends Steps {
         return verifyExpectedResults(actual, expected);
     }
 
-    public String checkBatchNumber(BatchesItem batch) {
-        String actual = DBUtils.executeAndReturnString(String.format("select batchNumber from productBatch where allSysBatchID = '%s'", batch.getId()));
-        String expected = batch.getNumber();
-        return verifyExpectedResults(actual, expected);
+    public String checkBatchNumberIsPresent(BatchesItem batch) {
+        if (!new ProductBatchTable().checkRowWithValueIsPresent("batchNumber", batch.getNumber())){
+            return String.format("\nThere is no batchNumber '%s' found at the productBatch table\n", batch.getNumber());
+        }
+        return "";
     }
 
     public String setProductBatchID(ItemsItem item) {

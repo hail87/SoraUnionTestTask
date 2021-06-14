@@ -10,7 +10,11 @@ import java.sql.SQLException;
 
 public class ProductBatchTable extends TableObject{
 
-    private final String TABLE_NAME = "shopperGroup";
+    private final String TABLE_NAME = "productBatch";
+
+    public ProductBatchTable(){
+        super.TABLE_NAME = TABLE_NAME;
+    }
 
     public String getLastRowColumnValue(String columnName) throws SQLException, IOException {
         return getLastRow(TABLE_NAME).getString(columnName);

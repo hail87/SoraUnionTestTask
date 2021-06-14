@@ -7,10 +7,13 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
 import statystech.aqaframework.steps.DBsteps.*;
+import statystech.aqaframework.tests.DB.LwaTestSuite;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -26,6 +29,8 @@ import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
 public class OmsTestSuite extends TestClass {
+
+    private static final Logger logger = LoggerFactory.getLogger(OmsTestSuite.class);
 
     @BeforeAll
     static void clearTestResults() {
@@ -45,7 +50,9 @@ public class OmsTestSuite extends TestClass {
 
     @BeforeEach
     public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
-        LwaTestContext lwaTestContext = new LwaTestContext(testInfo.getTestMethod().get().getName());
+        String name = testInfo.getTestMethod().get().getName();
+        logger.info(String.format(" Test started : %s\n", name));
+        LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnection();
         Context.addTestContext(lwaTestContext);
     }
@@ -89,7 +96,6 @@ public class OmsTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //bugID: OMS-173
     @TestRailID(id = 7791)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newLicense.json"})

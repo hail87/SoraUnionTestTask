@@ -15,10 +15,9 @@ public class WarehouseInventorySteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(WarehouseInventorySteps.class);
 
-    //ToDo: after https://statystech.atlassian.net/browse/LWA-882 resolving check that table contains lines with all needed warehouses
-    public String checkWarehouseInventory(ItemsItem item) throws SQLException { //verify that table contains only items with butches, and don't contain items without batches
+    public String checkWarehouseInventory(ItemsItem item) throws SQLException { //verify that table contains only items with batches, and don't contain items without batches
         StringBuilder errorMessage = new StringBuilder();
-        if (item.getBatches() != null) {
+        if (item.getBatches() != null && item.getBatches().size() > 0) {
             for (BatchesItem batch : item.getBatches()) {
                 int warehouseID = new WarehouseTable().getWarehouseId(batch.getCenterName());
                 if (DBUtils.executeAndReturnString(String.format(

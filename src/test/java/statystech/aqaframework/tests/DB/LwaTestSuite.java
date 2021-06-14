@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
@@ -31,9 +33,29 @@ import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 @ExtendWith(TestRailReportExtension.class)
 public class LwaTestSuite extends TestClass {
 
+    private static final Logger logger = LoggerFactory.getLogger(LwaTestSuite.class);
+
+    @BeforeAll
+    static void clearTestResults() {
+        TestRailReportExtension.setResults(null);
+        TestRailReportExtension.setResults(new CopyOnWriteArrayList<>());
+    }
+
+    @AfterAll
+    public static void setSuiteID() {
+        Properties properties = loadProperties();
+        properties.setProperty("testrail_testSuiteId", "1");
+        DataUtils.saveTestRailProperty(properties);
+        if (TestRailReportExtension.isTestRailAnnotationPresent) {
+            TestRailReportExtension.reportResults();
+        }
+    }
+
     @BeforeEach
     public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
-        LwaTestContext lwaTestContext = new LwaTestContext(testInfo.getTestMethod().get().getName());
+        String name = testInfo.getTestMethod().get().getName();
+        logger.info(String.format(" Test started : %s\n", name));
+        LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnection();
         Context.addTestContext(lwaTestContext);
     }
@@ -151,14 +173,14 @@ public class LwaTestSuite extends TestClass {
         for (ItemsItem item : getLwaTestContext(testInfo).getProduct().getItems()) {
             errorMessage.append(new ProductSteps().checkProduct(item));
             for (BatchesItem batch : item.getBatches())
-                errorMessage.append(new ProductBatchSteps().checkBatchNumber(batch));
+                errorMessage.append(new ProductBatchSteps().checkBatchNumberIsPresent(batch));
             errorMessage.append(new ProductDescriptionSteps().checkProductDescription(item));
             errorMessage.append(new WarehouseInventorySteps().checkWarehouseInventory(item));
         }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id=3930)
+    @TestRailID(id = 3930)
     @ParameterizedTest
     @CsvSource({"ProductsSmallSingleN.json, ProductsSmallUpdateSingle.json"})
     public void updateProduct(String productJson, String updateProductJson, TestInfo testInfo) throws IOException, SQLException {
@@ -184,21 +206,5 @@ public class LwaTestSuite extends TestClass {
         errorMessage.append(new ProductSteps().checkProductUnavailable(item));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
-
-    @BeforeAll
-    static void clearTestResults(){
-        TestRailReportExtension.setResults(null);
-        TestRailReportExtension.setResults(new CopyOnWriteArrayList<>());
-    }
-
-    @AfterAll
-    public static void setSuiteID(){
-        Properties properties = loadProperties();
-        properties.setProperty("testrail_testSuiteId", "1");
-        DataUtils.saveTestRailProperty(properties);
-        if(TestRailReportExtension.isTestRailAnnotationPresent) {
-            TestRailReportExtension.reportResults();
-        }
     }
 }

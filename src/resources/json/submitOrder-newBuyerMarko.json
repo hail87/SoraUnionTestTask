@@ -1,0 +1,75 @@
+{
+	"order_header": {
+		"website_order_id": "healthsupplies001",
+		"order_date": "2021-06-14",
+		"shipping_total": 2.0,
+		"total": 569.0,
+		"prices_include_tax": false,
+		"currency": "USD"
+	},
+	"discounts": {
+		"discount_total": 0
+	},
+	"buyer": {
+		"buyer_ip_address": "192.168.1.1",
+		"buyer_license": {
+			"license_name": "LN12345",
+			"license_expiry_date": "2024-01-31",
+			"title": "",
+			"first_name": "Marko",
+			"middle_name": "",
+			"last_name": "Candiago",
+			"state": "ON",
+			"country": "CA",
+			"profession": "Pharmacist",
+			"specialty": ""
+		},
+		"buyer_address": {
+			"title": "",
+			"first_name": "Marko",
+			"middle_name": "",
+			"last_name": "Candiago",
+			"company": "",
+			"address_1": "325 Dundas St",
+			"address_2": "",
+			"city": "London",
+			"state": "ON",
+			"postcode": "N6B 1T9",
+			"country": "CA",
+			"phone_number_1": "6472368233",
+			"phone_number_2": "",
+			"email": "marko@contoso.com"
+		}
+	},
+	"shipping": {
+		"title": "",
+		"first_name": "Jane",
+		"middle_name": "",
+		"last_name": "Candiago",
+		"company": "",
+		"address_1": "840 Exeter Rd",
+		"address_2": "",
+		"city": "London",
+		"state": "ON",
+		"postcode": "N6E 1L5",
+		"country": "CA",
+		"phone_number_1": "6472368233",
+		"phone_number_2": "",
+		"email": "jane@contoso.com"
+	},
+	"payment_details": {
+		"payment_transaction_id": "HS-123-9882B94",
+		"payment_token": "AbcDef123Ghi456jkl5299",
+		"payment_method_type": "CC",
+		"payment_method_description": "********5590",
+		"payment_mid": 10
+	},
+	"line_items": [
+		{
+			"product_id": 2295,
+			"quantity": 1,
+			"price": 567.0,
+			"total": 567.0
+		}
+	]
+}

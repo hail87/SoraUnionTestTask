@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
 import statystech.aqaframework.steps.DBsteps.*;
-import statystech.aqaframework.tests.DB.LwaTestSuite;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -131,6 +131,30 @@ public class OmsTestSuite extends TestClass {
     public void submitOrderEmptyBasket(String jsonFilename) {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(new OmsApiSteps().sendPostRequestAndWaitForStatusCode(jsonFilename, 400));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    //@TestRailID(id = 7783)
+    @ParameterizedTest
+    @CsvSource({"submitOrder-newBuyerMarko.json, submitOrder-existingBuyerMarko.json"})
+    public void submitOrderExistedBuyerBillingAddress(String jsonFilename, String updateJsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        OmsApiSteps omsApiSteps = new OmsApiSteps();
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
+        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
+        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
+        accountAddressSteps.setTableRowsQuantity();
+
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(updateJsonFilename, testInfo));
+        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
+        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
+        errorMessage.append(accountAddressSteps.verifyTableRowsQuantityDidNotChange());
+
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

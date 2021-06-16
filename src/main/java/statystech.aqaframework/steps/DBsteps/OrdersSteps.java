@@ -35,7 +35,9 @@ public class OrdersSteps extends Steps {
     }
 
     public void setOMSShippingAddressIDToContext(LwaTestContext lwaTestContext){
-        lwaTestContext.setOmsShippingAddressID(ordersTable.getOMSShippingAddressID(lwaTestContext.getApiOrderId()));
+        int omsShippingAddressID = ordersTable.getOMSShippingAddressID(lwaTestContext.getApiOrderId());
+        lwaTestContext.setOmsShippingAddressID(omsShippingAddressID);
+        logger.info("\nomsShippingAddressID: " + omsShippingAddressID);
         Context.updateTestContext(lwaTestContext);
     }
 

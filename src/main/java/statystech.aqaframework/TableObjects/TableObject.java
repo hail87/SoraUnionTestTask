@@ -122,16 +122,6 @@ public abstract class TableObject {
         return deleted;
     }
 
-//    public int getProductIDbyProductAllSysID(String productAllSysID) throws SQLException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
-//        return Integer.parseInt(
-//                new DBUtils().executeAndReturnString(String.format(
-//                        "select %sID from %s where %s = %s", tableName, tableName,"productAllSysID", productAllSysID))
-//        );
-//    }
-
     public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1, String jsonNodeKey2) throws SQLException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
         String tableName = fullTableName[fullTableName.length - 1];

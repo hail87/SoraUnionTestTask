@@ -40,4 +40,20 @@ public abstract class Steps {
         }
     }
 
+    public String verifyExpectedResults(int ar, int er) {
+        String actualResult = String.valueOf(ar);
+        String expectedResult = String.valueOf(er);
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String callingMethod = stackTraceElements[2].getMethodName();
+        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
+        if (actualResult.equalsIgnoreCase(expectedResult)) {
+            logger.info(String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are the same\n", callingClass, callingMethod, expectedResult, actualResult));
+            return "";
+        } else {
+            String message = String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
+            logger.error(message);
+            return message;
+        }
+    }
+
 }

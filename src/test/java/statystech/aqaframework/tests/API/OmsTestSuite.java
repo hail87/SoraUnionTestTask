@@ -177,7 +177,7 @@ public class OmsTestSuite extends TestClass {
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(updateJsonFilename, testInfo));
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
         errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
-        errorMessage.append(accountAddressSteps.verifyTableRowsQuantityDidNotChange());
+        //errorMessage.append(accountAddressSteps.verifyTableRowsQuantityDidNotChange());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

@@ -134,7 +134,31 @@ public class OmsTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 7783)
+    //ToDo: testCase logic (last step) need to be modified
+    @TestRailID(id = 7782)
+    @ParameterizedTest
+    @CsvSource({"submitOrder-newSA.json"})
+    public void submitOrderExistedShippingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        OmsApiSteps omsApiSteps = new OmsApiSteps();
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
+        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
+        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
+        accountAddressSteps.setTableRowsQuantity();
+
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        //errorMessage.append(accountAddressSteps.verifyTableRowsQuantityDidNotChange());
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    //ToDo: testCase logic (last step) need to be modified
+    @TestRailID(id = 7783)
     @ParameterizedTest
     @CsvSource({"submitOrder-newBuyerMarko.json, submitOrder-existingBuyerMarko.json"})
     public void submitOrderExistedBuyerBillingAddress(String jsonFilename, String updateJsonFilename, TestInfo testInfo) throws IOException {

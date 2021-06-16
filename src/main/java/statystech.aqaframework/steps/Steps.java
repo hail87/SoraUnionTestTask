@@ -47,10 +47,10 @@ public abstract class Steps {
         String callingMethod = stackTraceElements[2].getMethodName();
         String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
         if (actualResult.equalsIgnoreCase(expectedResult)) {
-            logger.info(String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are the same\n", callingClass, callingMethod, expectedResult, actualResult));
+            logger.info(String.format("\n[%s:%s]: expected '%s' and actual '%s' results are the same\n", callingClass, callingMethod, expectedResult, actualResult));
             return "";
         } else {
-            String message = String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
+            String message = String.format("\n[%s:%s]: expected '%s' and actual '%s' results are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
             logger.error(message);
             return message;
         }

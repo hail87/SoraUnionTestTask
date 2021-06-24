@@ -83,12 +83,20 @@ public class JsonUtils {
         return jsonString;
     }
 
-    public static String getStringFromJson(String jsonFilename) throws IOException {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(Path.JSON_PATH.getPath() + jsonFilename), StandardCharsets.UTF_8));
-        String jsonString = IOUtils.toString(reader);
-        reader.close();
+    public static String getStringFromJson(String jsonFilename) {
+        BufferedReader reader;
+        String jsonString = "";
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(Path.JSON_PATH.getPath() + jsonFilename), StandardCharsets.UTF_8));
+            jsonString = IOUtils.toString(reader);
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return jsonString.replace("\\", "\\\\");
     }
 
@@ -108,6 +116,17 @@ public class JsonUtils {
         }
 
         return jsonObject;
+    }
+
+    public static String serializeJsonObjectToJsonString(Class<?> type) {
+        StringWriter writer = new StringWriter();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(writer, type);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return writer.toString();
     }
 
     public static void loadJsonObjectToTestContext(JsonObject jsonObject, String testMethodName){

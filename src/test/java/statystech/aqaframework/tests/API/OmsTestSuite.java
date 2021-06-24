@@ -74,7 +74,7 @@ public class OmsTestSuite extends TestClass {
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
         ordersSteps.setOMSBuyerAccountLicenseIDToContext(lwaTestContext);
         errorMessage.append(new BuyerAccountLicenseSteps().checkBuyerAccountLicenseID(lwaTestContext));
-        lwaTestContext.makeAndSaveSubmitOrderObjectsFromJson();
+        lwaTestContext.setSubmitOrderObjectsFromJson();
         errorMessage.append(new OrderItemSteps().checkProductIdsWithOrderID(lwaTestContext));
         errorMessage.append(new AccountAddressSteps().checkShippingAndBillingAddressesID(lwaTestContext));
         errorMessage.append(new BuyerAccountSteps().checkBuyerAccountId(lwaTestContext));
@@ -89,7 +89,7 @@ public class OmsTestSuite extends TestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        lwaTestContext.makeAndSaveSubmitOrderObjectsFromJson();
+        lwaTestContext.setSubmitOrderObjectsFromJson();
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         errorMessage.append(new OrderItemSteps().checkProductIdsWithOrderID(lwaTestContext));
@@ -179,6 +179,25 @@ public class OmsTestSuite extends TestClass {
         errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
         //errorMessage.append(accountAddressSteps.verifyTableRowsQuantityDidNotChange());
 
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7793)
+    @ParameterizedTest
+    @CsvSource({"submitOrder-newPaymentMethod.json"})
+    public void submitOrderNewAndExistedPaymentMethod(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+
+        OmsApiSteps omsApiSteps = new OmsApiSteps();
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+        ordersSteps.setPaymentMethodID();
+        PaymentMethodSteps paymentMethodSteps = new PaymentMethodSteps();
+        paymentMethodSteps.checkLineCreated(lwaTestContext);
+        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
+        paymentMethodSteps.paymentMethodTable.verifyTableRowsQuantityDidNotChange();
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

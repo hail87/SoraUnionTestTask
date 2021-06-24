@@ -39,15 +39,26 @@ public class ApiRestUtils {
         return "There was an error during API request\n";
     }
 
+    public String submitOrderAndGetString(String jsonString) {
+        try {
+            return submitOrder(jsonString).body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "There was an error during API request\n";
+    }
+
     public okhttp3.Response submitWebsiteOrder(String jsonFileName) {
-        String jsonContent = null;
+        return submitOrder(JsonUtils.getStringFromJson(jsonFileName));
+    }
+
+    public okhttp3.Response submitOrder(String jsonString) {
         okhttp3.Response response = null;
         try {
-            jsonContent = JsonUtils.getStringFromJson(jsonFileName);
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, jsonContent);
+            RequestBody body = RequestBody.create(mediaType, jsonString);
             Request request = new Request.Builder()
                     .url("https://tihrphkst3.execute-api.us-east-1.amazonaws.com/dev/api/v1/websites/orders")
                     .method("POST", body)

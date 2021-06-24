@@ -40,7 +40,7 @@ public abstract class Steps {
         }
     }
 
-    public String verifyExpectedResults(int ar, int er) {
+    public static String verifyExpectedResults(int ar, int er) {
         String actualResult = String.valueOf(ar);
         String expectedResult = String.valueOf(er);
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();

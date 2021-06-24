@@ -30,16 +30,16 @@ public class OmsSubmitOrderJson{
 	@JsonProperty("buyer")
 	private Buyer buyer;
 
-	@Override
- 	public String toString(){
-		return 
-			"OmsSubmitOrderJson{" + 
-			"discounts = '" + discounts + '\'' + 
-			",shipping = '" + shipping + '\'' + 
-			",payment_details = '" + paymentDetails + '\'' + 
-			",order_header = '" + orderHeader + '\'' + 
-			",line_items = '" + lineItems + '\'' + 
-			",buyer = '" + buyer + '\'' + 
-			"}";
-		}
+//	@Override
+// 	public String toString(){
+//		return
+//			"OmsSubmitOrderJson{" +
+//			"discounts = '" + discounts + '\'' +
+//			",shipping = '" + shipping + '\'' +
+//			",payment_details = '" + paymentDetails + '\'' +
+//			",order_header = '" + orderHeader + '\'' +
+//			",line_items = '" + lineItems + '\'' +
+//			",buyer = '" + buyer + '\'' +
+//			"}";
+//		}
 }

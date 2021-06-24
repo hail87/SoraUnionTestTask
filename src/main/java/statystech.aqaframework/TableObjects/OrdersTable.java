@@ -76,6 +76,10 @@ public class OrdersTable extends TableObject {
         return Integer.parseInt(DBUtils.executeAndReturnString("select OMSBuyerAccountLicenseID from orders where orderID = '" + primaryId + "'"));
     }
 
+    public int getPaymentMethodID(int primaryId) {
+        return Integer.parseInt(DBUtils.executeAndReturnString("select paymentMethodID from orders where orderID = '" + primaryId + "'"));
+    }
+
     @Override
     protected ResultSet getProperRow(String tableName, int orderAllSysID) {
         ResultSet rs = DBUtils.execute(String.format(

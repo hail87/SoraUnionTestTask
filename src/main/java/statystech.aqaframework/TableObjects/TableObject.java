@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.Util;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
+import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
 
 import java.beans.Introspector;
@@ -19,6 +20,13 @@ public abstract class TableObject {
     private static final Logger logger = LoggerFactory.getLogger(TableObject.class);
 
     protected String TABLE_NAME = "";
+
+    int linesQuantity;
+
+    public void setTableRowsQuantity(){
+        linesQuantity = getRowsQuantity();
+        logger.info("accountAddressTable rows quantity: " + linesQuantity);
+    }
 
     public int getPrimaryID() throws SQLException, IOException {
         String[] fullTableName = Util.getCallingClass().getName().split("\\.");
@@ -169,6 +177,12 @@ public abstract class TableObject {
 
     public boolean checkRowWithValueIsPresent(String columnName, String value) {
         return !DBUtils.executeAndReturnString(String.format("select * from %s where %s = '%s'", TABLE_NAME, columnName, value)).isEmpty();
+    }
+
+    public String verifyTableRowsQuantityDidNotChange(){
+        logger.info("accountAddressTable rows quantity before update: " + linesQuantity);
+        logger.info("accountAddressTable rows quantity after update: " + getRowsQuantity());
+        return Steps.verifyExpectedResults(linesQuantity, getRowsQuantity());
     }
 
 }

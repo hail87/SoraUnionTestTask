@@ -17,6 +17,7 @@ import statystech.aqaframework.utils.JsonUtils;
 
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -51,6 +52,7 @@ public class LwaTestContext extends TestContext{
     private String apiOrderStatusCd;
     private Response response;
     private OmsSubmitOrderJson omsSubmitOrderJson;
+    private int paymentMethodID;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {
@@ -72,15 +74,6 @@ public class LwaTestContext extends TestContext{
         setOrder(order);
     }
 
-    public void makeAndSaveSubmitOrderObjectsFromJson() throws JsonProcessingException {
-        if(jsonString == null || jsonString.isEmpty()){
-            setJsonString(jsonObject.toString());
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        OmsSubmitOrderJson omsSubmitOrderJson = mapper.readValue(DataUtils.convertUnicodeToAscii(jsonString), OmsSubmitOrderJson.class);
-        setOmsSubmitOrderJson(omsSubmitOrderJson);
-    }
-
     public Order getOrder() {
         if (order == null) {
             try {
@@ -100,6 +93,19 @@ public class LwaTestContext extends TestContext{
         ObjectMapper mapper = new ObjectMapper();
         List<Product> products = mapper.readValue(jsonString, List.class);
         setProductJsonList(products);
+    }
+
+    public void setSubmitOrderObjectsFromJson() throws JsonProcessingException {
+        if(jsonString == null || jsonString.isEmpty()){
+            setJsonString(jsonObject.toString());
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        OmsSubmitOrderJson omsSubmitOrderJson = mapper.readValue(DataUtils.convertUnicodeToAscii(jsonString), OmsSubmitOrderJson.class);
+        setOmsSubmitOrderJson(omsSubmitOrderJson);
+    }
+
+    public void updateBuyerAccountID(){
+        omsSubmitOrderJson.getBuyer().setBuyerAccountId(apiOrderId);
     }
 
     @Override

@@ -19,6 +19,9 @@ public class Buyer{
 	@JsonProperty("buyer_ip_address")
 	private String buyerIpAddress;
 
+	@JsonProperty("buyer_account_id")
+	private int buyerAccountId;
+
 	@Override
  	public String toString(){
 		return 

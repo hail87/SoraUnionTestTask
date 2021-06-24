@@ -12,17 +12,8 @@ public class AccountAddressSteps extends Steps {
 
     AccountAddressTable accountAddressTable = new AccountAddressTable();
 
-    int linesQuantity;
-
     public void setTableRowsQuantity(){
-        linesQuantity = accountAddressTable.getRowsQuantity();
-        logger.info("accountAddressTable rows quantity: " + linesQuantity);
-    }
-
-    public String verifyTableRowsQuantityDidNotChange(){
-        logger.info("accountAddressTable rows quantity before update: " + linesQuantity);
-        logger.info("accountAddressTable rows quantity after update: " + accountAddressTable.getRowsQuantity());
-        return verifyExpectedResults(linesQuantity, accountAddressTable.getRowsQuantity());
+        accountAddressTable.setTableRowsQuantity();
     }
 
     public String checkShippingAndBillingAddressesID(LwaTestContext lwaTestContext) {

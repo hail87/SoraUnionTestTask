@@ -28,9 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
-public class OmsTestSuite extends TestClass {
+public class SubmitOrderTestSuite extends TestClass {
 
-    private static final Logger logger = LoggerFactory.getLogger(OmsTestSuite.class);
+    private static final Logger logger = LoggerFactory.getLogger(SubmitOrderTestSuite.class);
 
     @BeforeAll
     static void clearTestResults() {
@@ -60,7 +60,7 @@ public class OmsTestSuite extends TestClass {
     @TestRailID(id = 7743)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})
-    public void submitOrderNoBuyerAccountId(String jsonFilename, TestInfo testInfo) throws IOException {
+    public void submitOrderNewBuyerAccountId(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));

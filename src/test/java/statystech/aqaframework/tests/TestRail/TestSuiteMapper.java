@@ -1,6 +1,6 @@
 package statystech.aqaframework.tests.TestRail;
 
-import statystech.aqaframework.tests.API.OmsTestSuite;
+import statystech.aqaframework.tests.API.SubmitOrderTestSuite;
 import statystech.aqaframework.tests.DB.LwaTestSuite;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class TestSuiteMapper {
 
     public TestSuiteMapper(){
         classMap.put("1", LwaTestSuite.class);
-        classMap.put("2170", OmsTestSuite.class);
+        classMap.put("2170", SubmitOrderTestSuite.class);
     }
 
     public Class<?> getTestClass(String id){

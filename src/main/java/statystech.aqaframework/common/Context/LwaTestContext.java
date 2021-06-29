@@ -105,7 +105,7 @@ public class LwaTestContext extends TestContext{
     }
 
     public void updateBuyerAccountID(){
-        omsSubmitOrderJson.getBuyer().setBuyerAccountId(apiOrderId);
+        omsSubmitOrderJson.getBuyer().setBuyerAccountId(apiBuyerAccountId);
     }
 
     @Override

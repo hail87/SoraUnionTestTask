@@ -23,8 +23,9 @@ public class OmsApiSteps {
         testContext.setSubmitOrderObjectsFromJson();
         String responseString = new ApiRestUtils().submitWebsiteOrderAndGetString(jsonFileName);
         logger.info("Response from API:\n" + responseString);
-        if (responseString.isEmpty()) {
-            return "\nResponse body is empty!\n";
+        Context.updateTestContext(testContext);
+        if (!responseString.contains("order_id")) {
+            return "\nWrong response!\n responseString";
         } else {
             ObjectMapper mapper = new ObjectMapper();
             Response response = mapper.readValue(responseString, Response.class);
@@ -32,19 +33,44 @@ public class OmsApiSteps {
             testContext.setApiBuyerAccountId(response.getBuyerAccountId());
             testContext.setApiOrderStatusCd(response.getOrderStatusCd());
             testContext.setResponse(response);
+            Context.updateTestContext(testContext);
             return "";
         }
+    }
+
+    public String sendPostRequestAndSaveResponseToContext(LwaTestContext testContext) throws IOException {
+        String responseString = new ApiRestUtils().submitOrderAndGetString(testContext.getJsonString());
+        logger.info("Response from API:\n" + responseString);
+        if (!responseString.contains("order_id")) {
+            return "\nWrong response!\n responseString";
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            Response response = mapper.readValue(responseString, Response.class);
+            testContext.setApiOrderId(response.getOrderId());
+            testContext.setApiBuyerAccountId(response.getBuyerAccountId());
+            testContext.setApiOrderStatusCd(response.getOrderStatusCd());
+            testContext.setResponse(response);
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public void updateBuyerAccountId(LwaTestContext testContext) {
+        testContext.updateBuyerAccountID();
+        String jsonString = JsonUtils.serializeJsonObjectToJsonString(testContext.getOmsSubmitOrderJson());
+        testContext.setJsonString(jsonString);
+        Context.updateTestContext(testContext);
     }
 
     public String updateBuyerAccountIdAndSendPOST(TestInfo testInfo) throws IOException {
         LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
         testContext.updateBuyerAccountID();
         Context.updateTestContext(testContext);
-        String jsonString = JsonUtils.serializeJsonObjectToJsonString(OmsSubmitOrderJson.class);
+        String jsonString = JsonUtils.serializeJsonObjectToJsonString(testContext.getOmsSubmitOrderJson());
         String responseString = new ApiRestUtils().submitOrderAndGetString(jsonString);
         logger.info("Response from API:\n" + responseString);
-        if (responseString.isEmpty()) {
-            return "\nResponse body is empty!\n";
+        if (!responseString.contains("order_id")) {
+            return "\nWrong response!\n responseString";
         } else {
             ObjectMapper mapper = new ObjectMapper();
             Response response = mapper.readValue(responseString, Response.class);
@@ -52,6 +78,7 @@ public class OmsApiSteps {
             testContext.setApiBuyerAccountId(response.getBuyerAccountId());
             testContext.setApiOrderStatusCd(response.getOrderStatusCd());
             testContext.setResponse(response);
+            Context.updateTestContext(testContext);
             return "";
         }
     }

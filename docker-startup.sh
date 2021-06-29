@@ -1,3 +1,3 @@
 #! /bin/sh
 
-mvn -Dtest=LwaTestSuite,OmsTestSuite test
+mvn -Dtest=LwaTestSuite,SubmitOrderTestSuite,OrderValidationTestSuite test

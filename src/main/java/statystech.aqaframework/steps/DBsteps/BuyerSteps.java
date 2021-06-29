@@ -11,8 +11,9 @@ import java.sql.SQLException;
 
 public class BuyerSteps extends Steps {
 
+    BuyerTable buyerTable = new BuyerTable();
+
     public String checkBuyerBillingInformation() throws SQLException {
-        BuyerTable buyerTable = new BuyerTable();
         StringBuilder errorMessage = new StringBuilder();
         int buyerID = buyerTable.getBuyerID();
         errorMessage.append(verifyExpectedResults(
@@ -36,7 +37,7 @@ public class BuyerSteps extends Steps {
     }
 
     private String checkRegion(int buyerID) throws SQLException {
-        String actual = new BuyerTable().getColumnValueByPrimaryID(buyerID,"region");
+        String actual = buyerTable.getColumnValueByPrimaryID(buyerID,"region");
         String expected = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonObject("billing_address").get("state").toString().replace("\"", "");
         return verifyExpectedResults(actual, expected);
     }

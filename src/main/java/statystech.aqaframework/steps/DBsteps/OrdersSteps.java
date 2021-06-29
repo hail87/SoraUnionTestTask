@@ -127,7 +127,7 @@ public class OrdersSteps extends Steps {
         Context.updateTestContext(lwaTestContext);
     }
 
-    public void setPaymentMethodID() throws SQLException, IOException {
+    public void setPaymentMethodID() {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
         lwaTestContext.setPaymentMethodID(ordersTable.getPaymentMethodID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);

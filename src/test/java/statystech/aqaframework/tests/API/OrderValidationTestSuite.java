@@ -12,8 +12,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
-import statystech.aqaframework.steps.DBsteps.PaymentMethodSteps;
+import statystech.aqaframework.steps.DBsteps.OrderExceptionHistorySteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -57,22 +56,19 @@ public class OrderValidationTestSuite extends TestClass {
         Context.addTestContext(lwaTestContext);
     }
 
-    //@TestRailID(id = 7809)
+    @TestRailID(id = 7809)
     @ParameterizedTest
-    @CsvSource({"submitOrder-newPaymentMethod.json"})
-    public void verifySuspiciousAccount(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    @CsvSource({"submitNewOrder.json"})
+    public void verifySuspiciousAccount(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
         OmsApiSteps omsApiSteps = new OmsApiSteps();
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        OrdersSteps ordersSteps = new OrdersSteps();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setPaymentMethodID();
-        PaymentMethodSteps paymentMethodSteps = new PaymentMethodSteps();
-        paymentMethodSteps.checkLineCreated(lwaTestContext);
-        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
-        paymentMethodSteps.paymentMethodTable.verifyTableRowsQuantityDidNotChange();
+        omsApiSteps.updateBuyerAccountId(lwaTestContext);
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
+        errorMessage.append(new OrderExceptionHistorySteps().verifyRowWithOrderIdExist(lwaTestContext));
+
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

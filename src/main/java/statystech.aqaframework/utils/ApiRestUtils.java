@@ -33,7 +33,7 @@ public class ApiRestUtils {
     public String submitWebsiteOrderAndGetString(String jsonFileName) {
         try {
             return submitWebsiteOrder(jsonFileName).body().string();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
         return "There was an error during API request\n";

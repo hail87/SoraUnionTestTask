@@ -7,6 +7,7 @@ import com.google.gson.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.OmsDto.OmsSubmitOrderJson;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.Context.Context;
@@ -118,11 +119,11 @@ public class JsonUtils {
         return jsonObject;
     }
 
-    public static String serializeJsonObjectToJsonString(Class<?> type) {
+    public static String serializeJsonObjectToJsonString(OmsSubmitOrderJson omsSubmitOrderJson) {
         StringWriter writer = new StringWriter();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(writer, type);
+            mapper.writeValue(writer, omsSubmitOrderJson);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -16,6 +16,7 @@
         <slf4j.version>2.0.0-alpha1</slf4j.version>
         <tests.skip>true</tests.skip>
         <allure.version>2.10.0</allure.version>
+        <awaitility.version>4.1.0</awaitility.version>
     </properties>
 
     <dependencyManagement>

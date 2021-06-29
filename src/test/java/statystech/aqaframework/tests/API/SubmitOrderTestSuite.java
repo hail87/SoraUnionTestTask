@@ -182,10 +182,10 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 7793)
+    //@TestRailID(id = 7793)
     @ParameterizedTest
     @CsvSource({"submitOrder-newPaymentMethod.json"})
-    public void submitOrderNewAndExistedPaymentMethod(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void submitOrderNewAndExistedPaymentMethod(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
 
         OmsApiSteps omsApiSteps = new OmsApiSteps();
@@ -197,7 +197,9 @@ public class SubmitOrderTestSuite extends TestClass {
         PaymentMethodSteps paymentMethodSteps = new PaymentMethodSteps();
         paymentMethodSteps.checkLineCreated(lwaTestContext);
         errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
-        paymentMethodSteps.paymentMethodTable.verifyTableRowsQuantityDidNotChange();
+        errorMessage.append(paymentMethodSteps.paymentMethodTable.verifyTableRowsQuantityDidNotChange());
+
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
     }
 }

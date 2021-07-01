@@ -52,6 +52,10 @@ public class ApiRestUtils {
         return submitOrder(JsonUtils.getStringFromJson(jsonFileName));
     }
 
+    public okhttp3.Response submitWebsiteOrder(String jsonFileName, String apiKey) {
+        return submitOrder(JsonUtils.getStringFromJson(jsonFileName), apiKey);
+    }
+
     public okhttp3.Response submitOrder(String jsonString) {
         okhttp3.Response response = null;
         try {
@@ -63,6 +67,26 @@ public class ApiRestUtils {
                     .url("https://tihrphkst3.execute-api.us-east-1.amazonaws.com/dev/api/v1/websites/orders")
                     .method("POST", body)
                     .addHeader("X-API-Key", "rfyA0vcW2aQZHJBFXlKI4HUDuDeBJctxfBBaTW60")
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response submitOrder(String jsonString, String apiKey) {
+        okhttp3.Response response = null;
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, jsonString);
+            Request request = new Request.Builder()
+                    .url("https://tihrphkst3.execute-api.us-east-1.amazonaws.com/dev/api/v1/websites/orders")
+                    .method("POST", body)
+                    .addHeader("X-API-Key", apiKey)
                     .addHeader("Content-Type", "application/json")
                     .build();
             response = client.newCall(request).execute();

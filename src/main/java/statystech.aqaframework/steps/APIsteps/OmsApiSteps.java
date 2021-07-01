@@ -93,4 +93,14 @@ public class OmsApiSteps {
         }
         return errorMessage;
     }
+    public String sendPostRequestWithFakeApiKeyAndWaitForStatusCode(String jsonFileName, int code) {
+        String errorMessage = "";
+        int responseCode;
+        responseCode = new ApiRestUtils().submitWebsiteOrder(jsonFileName, "rfyA0vcW2aQZHJBFXlKI4HUDuDeBJctxfBBaTW61").code();
+        logger.info("ResponseCode:\n" + responseCode);
+        if (responseCode!=code){
+            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, code);
+        }
+        return errorMessage;
+    }
 }

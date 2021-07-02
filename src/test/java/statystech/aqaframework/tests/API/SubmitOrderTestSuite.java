@@ -120,18 +120,16 @@ public class SubmitOrderTestSuite extends TestClass {
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-unknownProduct.json"})
     public void submitOrderUnknownProduct(String jsonFilename) {
-        StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndWaitForStatusCode(jsonFilename, 400));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        String errorMessage = new OmsApiSteps().sendPostRequestAndWaitForStatusCode(jsonFilename, 400);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
     @TestRailID(id = 7921)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-withEmptyBasket.json"})
     public void submitOrderEmptyBasket(String jsonFilename) {
-        StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndWaitForStatusCode(jsonFilename, 400));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        String errorMessage = new OmsApiSteps().sendPostRequestAndWaitForStatusCode(jsonFilename, 400);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
     //ToDo: testCase logic (last step) need to be modified
@@ -182,7 +180,7 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 7793)
+    @TestRailID(id = 7793)
     @ParameterizedTest
     @CsvSource({"submitOrder-newPaymentMethod.json"})
     public void submitOrderNewAndExistedPaymentMethod(String jsonFilename, TestInfo testInfo) throws IOException {

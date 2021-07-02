@@ -203,12 +203,12 @@ public class SubmitOrderTestSuite extends TestClass {
 
     }
 
-    //@TestRailID(id = C7792)
+    //@TestRailID(id = 7792)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})
     public void submitOrderUnknownWebsite(String jsonFilename) {
-        StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestWithFakeApiKeyAndWaitForStatusCode(jsonFilename, 403));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        String errorMessage = new OmsApiSteps().sendPostRequestWithFakeApiKeyAndWaitForStatusCode(jsonFilename, 403);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+
     }
 }

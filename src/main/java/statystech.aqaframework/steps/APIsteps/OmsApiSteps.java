@@ -83,23 +83,23 @@ public class OmsApiSteps {
         }
     }
 
-    public String sendPostRequestAndWaitForStatusCode(String jsonFileName, int code) {
+    public String sendPostRequestAndWaitForStatusCode(String jsonFileName, int statusCode) {
         String errorMessage = "";
         int responseCode;
         responseCode = new ApiRestUtils().submitWebsiteOrder(jsonFileName).code();
         logger.info("ResponseCode:\n" + responseCode);
-        if (responseCode!=code){
-            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, code);
+        if (responseCode!=statusCode){
+            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, statusCode);
         }
         return errorMessage;
     }
-    public String sendPostRequestWithFakeApiKeyAndWaitForStatusCode(String jsonFileName, int code) {
+    public String sendPostRequestWithFakeApiKeyAndWaitForStatusCode(String jsonFileName, int statusCode) {
         String errorMessage = "";
         int responseCode;
         responseCode = new ApiRestUtils().submitWebsiteOrder(jsonFileName, "rfyA0vcW2aQZHJBFXlKI4HUDuDeBJctxfBBaTW61").code();
         logger.info("ResponseCode:\n" + responseCode);
-        if (responseCode!=code){
-            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, code);
+        if (responseCode!=statusCode){
+            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, statusCode);
         }
         return errorMessage;
     }

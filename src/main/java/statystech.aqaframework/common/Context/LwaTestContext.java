@@ -53,6 +53,7 @@ public class LwaTestContext extends TestContext{
     private Response response;
     private OmsSubmitOrderJson omsSubmitOrderJson;
     private int paymentMethodID;
+    private int orderExceptionHistoryID;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {
@@ -106,6 +107,10 @@ public class LwaTestContext extends TestContext{
 
     public void updateBuyerAccountID(){
         omsSubmitOrderJson.getBuyer().setBuyerAccountId(apiBuyerAccountId);
+    }
+
+    public void updateBuyerIpAddress(String ip){
+        omsSubmitOrderJson.getBuyer().setBuyerIpAddress(ip);
     }
 
     @Override

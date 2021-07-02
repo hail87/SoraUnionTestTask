@@ -65,6 +65,32 @@ public class OrderValidationTestSuite extends TestClass {
 
         OmsApiSteps omsApiSteps = new OmsApiSteps();
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+
+        omsApiSteps.updateBuyerAccountId(lwaTestContext);
+        omsApiSteps.updateBuyerAccountIp(lwaTestContext, "192.168.7.0");
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext,10));
+
+        omsApiSteps.updateBuyerAccountIp(lwaTestContext, "192.168.1.1");
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    //@TestRailID(id = 7803)
+    @ParameterizedTest
+    @CsvSource({"submitOrder-existedAllSysID.json"})
+    public void accountValidationAllSysIdValid(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        OmsApiSteps omsApiSteps = new OmsApiSteps();
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         omsApiSteps.updateBuyerAccountId(lwaTestContext);
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
         errorMessage.append(new OrderExceptionHistorySteps().verifyRowWithOrderIdExist(lwaTestContext));

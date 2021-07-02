@@ -62,6 +62,13 @@ public class OmsApiSteps {
         Context.updateTestContext(testContext);
     }
 
+    public void updateBuyerAccountIp(LwaTestContext testContext, String ip) {
+        testContext.updateBuyerIpAddress(ip);
+        String jsonString = JsonUtils.serializeJsonObjectToJsonString(testContext.getOmsSubmitOrderJson());
+        testContext.setJsonString(jsonString);
+        Context.updateTestContext(testContext);
+    }
+
     public String updateBuyerAccountIdAndSendPOST(TestInfo testInfo) throws IOException {
         LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
         testContext.updateBuyerAccountID();

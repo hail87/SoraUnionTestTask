@@ -76,7 +76,7 @@ public class OrderValidationTestSuite extends TestClass {
 
         omsApiSteps.updateBuyerAccountIp(lwaTestContext, "192.168.1.1");
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

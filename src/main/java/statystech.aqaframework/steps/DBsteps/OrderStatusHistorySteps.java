@@ -10,4 +10,11 @@ public class OrderStatusHistorySteps extends Steps {
     public OrderStatusHistorySteps(){
         super.tableObject = orderStatusHistoryTable;
     }
+
+    public String verifyRowWithOrderId (int orderId){
+        if (!orderStatusHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(orderId))){
+            return String.format("Row with orderId '%s' wasn't found at the orderStatusHistory Table", orderId);
+        }
+        return "";
+    }
 }

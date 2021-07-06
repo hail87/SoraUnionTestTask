@@ -13,6 +13,7 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
 import statystech.aqaframework.steps.DBsteps.OrderExceptionHistorySteps;
+import statystech.aqaframework.steps.DBsteps.OrderStatusHistorySteps;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
@@ -109,6 +110,7 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext,9));
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        errorMessage.append(new OrderStatusHistorySteps().verifyRowWithOrderId(lwaTestContext.getApiOrderId()));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

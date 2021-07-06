@@ -25,7 +25,7 @@ public class OmsApiSteps {
         logger.info("Response from API:\n" + responseString);
         Context.updateTestContext(testContext);
         if (!responseString.contains("order_id")) {
-            return "\nWrong response!\n responseString";
+            return "\nWrong response!\n responseString: \n";
         } else {
             ObjectMapper mapper = new ObjectMapper();
             Response response = mapper.readValue(responseString, Response.class);
@@ -42,7 +42,7 @@ public class OmsApiSteps {
         String responseString = new ApiRestUtils().submitOrderAndGetString(testContext.getJsonString());
         logger.info("Response from API:\n" + responseString);
         if (!responseString.contains("order_id")) {
-            return "\nWrong response!\n responseString";
+            return "\nWrong response!\n responseString: \n";
         } else {
             ObjectMapper mapper = new ObjectMapper();
             Response response = mapper.readValue(responseString, Response.class);
@@ -77,7 +77,7 @@ public class OmsApiSteps {
         String responseString = new ApiRestUtils().submitOrderAndGetString(jsonString);
         logger.info("Response from API:\n" + responseString);
         if (!responseString.contains("order_id")) {
-            return "\nWrong response!\n responseString";
+            return "\nWrong response!\n responseString: \n";
         } else {
             ObjectMapper mapper = new ObjectMapper();
             Response response = mapper.readValue(responseString, Response.class);

@@ -23,6 +23,10 @@ public abstract class TableObject {
 
     int linesQuantity;
 
+    public String getName(){
+        return TABLE_NAME;
+    }
+
     public void setTableRowsQuantity(){
         linesQuantity = getRowsQuantity();
         logger.info("accountAddressTable rows quantity: " + linesQuantity);
@@ -90,7 +94,7 @@ public abstract class TableObject {
         return rs;
     }
 
-    protected ResultSet getProperRow(int id) throws SQLException {
+    public ResultSet getRowByID(int id) throws SQLException {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", TABLE_NAME, TABLE_NAME, id));
         rs.next();

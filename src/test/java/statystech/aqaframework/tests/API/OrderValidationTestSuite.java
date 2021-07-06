@@ -13,6 +13,7 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
 import statystech.aqaframework.steps.DBsteps.OrderExceptionHistorySteps;
+import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -82,18 +83,43 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 7803)
+    @TestRailID(id = 7803)
     @ParameterizedTest
     @CsvSource({"submitOrder-existedAllSysID.json"})
     public void accountValidationAllSysIdValid(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(getLwaTestContext(testInfo)));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
 
-        OmsApiSteps omsApiSteps = new OmsApiSteps();
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        omsApiSteps.updateBuyerAccountId(lwaTestContext);
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
-        errorMessage.append(new OrderExceptionHistorySteps().verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7820)
+    @ParameterizedTest
+    @CsvSource({"submitNewOrder.json"})
+    public void accountValidationNoAllSysIdException(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext,9));
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7819)
+    @ParameterizedTest
+    @CsvSource({"submitOrder-matchedAllSysID.json"})
+    public void accountValidationAllSysIdMatched(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo);
+        errorMessage.append(new OrderExceptionHistorySteps().verifyTableIsEmpty());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

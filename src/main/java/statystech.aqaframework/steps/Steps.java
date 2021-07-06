@@ -3,6 +3,7 @@ package statystech.aqaframework.steps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.Util;
+import statystech.aqaframework.TableObjects.TableObject;
 import statystech.aqaframework.common.Context.LwaTestContext;
 
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.Map;
 public abstract class Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(Steps.class);
+
+    protected TableObject tableObject;
 
     public String verifyExpectedResults(Map<String, String> actualAndExpected) {
         String expectedResult = actualAndExpected.get("jsonValue");
@@ -55,6 +58,13 @@ public abstract class Steps {
             logger.error(message);
             return message;
         }
+    }
+
+    public String verifyTableIsEmpty(){
+        if (tableObject.getRowsQuantity() != 0){
+            return String.format("Table %s is NOT empty, rows quantity: %d", tableObject.getName(), tableObject.getRowsQuantity());
+        }
+        return "";
     }
 
 }

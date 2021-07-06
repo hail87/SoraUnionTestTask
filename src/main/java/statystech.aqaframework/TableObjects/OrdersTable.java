@@ -13,18 +13,22 @@ import java.sql.SQLException;
 
 public class OrdersTable extends TableObject {
 
-    private final String TABLE_NAME = "orders";
+    public final String TABLE_NAME = "orders";
+
+    public OrdersTable(){
+        super.TABLE_NAME = TABLE_NAME;
+    }
 
     public String getOrderAllSysIDValue() {
         return JsonUtils.getValueFromJSON("order_id");
     }
 
-    public int getUserIDValue() throws SQLException, IOException {
+    public int getUserIDValue() {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
                 "select %s from %s where orderAllSysID = '%s'", "userID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }
 
-    public String getOrderStatusName() throws SQLException, JsonProcessingException {
+    public String getOrderStatusName() throws SQLException {
         return getProperRow(TABLE_NAME, Integer.parseInt(Context.getTestContext(LwaTestContext.class).getOrder().getOrderId())).getString("orderStatusName");
     }
 
@@ -37,7 +41,7 @@ public class OrdersTable extends TableObject {
         return getProperRow(TABLE_NAME, Integer.parseInt(lwaTestContext.getOrder().getOrderId())).getString("orderStatusID");
     }
 
-    public int getShippingAddressIDValue() throws SQLException, IOException {
+    public int getShippingAddressIDValue() {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
                 "select %s from %s where orderAllSysID = '%s'", "shippingAddressID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }
@@ -50,7 +54,7 @@ public class OrdersTable extends TableObject {
         return getColumnValueByPrimaryID(Integer.parseInt(getOrderAllSysIDValue()), "conversionUSD");
     }
 
-    public int getShopperGroupIDValue() throws SQLException, IOException {
+    public int getShopperGroupIDValue() throws IOException {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
                 "select %s from %s where orderAllSysID = '%s'", "shopperGroupID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }

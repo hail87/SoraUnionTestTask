@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.OrdersTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
-import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.steps.Steps;
+import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
@@ -30,31 +30,31 @@ public class OrdersSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkApiResponse(LwaTestContext lwaTestContext){
+    public String checkApiResponse(LwaTestContext lwaTestContext) {
         return checkBuyerAccountId(lwaTestContext.getApiOrderId(), lwaTestContext.getApiBuyerAccountId());
     }
 
-    public void setOMSShippingAddressIDToContext(LwaTestContext lwaTestContext){
+    public void setOMSShippingAddressIDToContext(LwaTestContext lwaTestContext) {
         int omsShippingAddressID = ordersTable.getOMSShippingAddressID(lwaTestContext.getApiOrderId());
         lwaTestContext.setOmsShippingAddressID(omsShippingAddressID);
         logger.info("\nomsShippingAddressID: " + omsShippingAddressID);
         Context.updateTestContext(lwaTestContext);
     }
 
-    public void setOMSBillingAddressIDToContext(LwaTestContext lwaTestContext){
+    public void setOMSBillingAddressIDToContext(LwaTestContext lwaTestContext) {
         lwaTestContext.setOmsBillingAddressID(ordersTable.getOMSBillingAddressID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);
     }
 
-    public void setOMSBuyerAccountLicenseIDToContext(LwaTestContext lwaTestContext){
+    public void setOMSBuyerAccountLicenseIDToContext(LwaTestContext lwaTestContext) {
         lwaTestContext.setOMSBuyerAccountLicenseID(ordersTable.getOMSBuyerAccountLicenseID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);
     }
 
-    private String checkBuyerAccountId(int orderId, int buyerAccountID){
+    private String checkBuyerAccountId(int orderId, int buyerAccountID) {
         try {
-            int dbBuyerAccountID= ordersTable.getBuyerAccountId(orderId);
-            if(buyerAccountID == dbBuyerAccountID) {
+            int dbBuyerAccountID = ordersTable.getBuyerAccountId(orderId);
+            if (buyerAccountID == dbBuyerAccountID) {
                 return "";
             } else {
                 return String.format("buyerAccountID '%d' is different from dbBuyerAccountID '%d'", buyerAccountID, dbBuyerAccountID);
@@ -65,7 +65,7 @@ public class OrdersSteps extends Steps {
         }
     }
 
-    private String checkOrder(int orderId){
+    private String checkOrder(int orderId) {
         try {
             ordersTable.getPrimaryID("orderID", String.valueOf(orderId));
             return "";
@@ -96,14 +96,16 @@ public class OrdersSteps extends Steps {
 
     public String checkOrderAllSysID() {
         String expectedOrderID = Context.getTestContext(LwaTestContext.class).getJsonObject().get("order_id").toString();
-        expectedOrderID = expectedOrderID.substring(1,expectedOrderID.length() -1 );
+        expectedOrderID = expectedOrderID.substring(1, expectedOrderID.length() - 1);
         String actualOrderID = new OrdersTable().getOrderAllSysIDValue();
         if (actualOrderID.equalsIgnoreCase(expectedOrderID)) {
-            logger.info(new Object(){}.getClass().getEnclosingMethod().getName() + "() passed successfully\n");
+            logger.info(new Object() {
+            }.getClass().getEnclosingMethod().getName() + "() passed successfully\n");
             Context.getTestContext(LwaTestContext.class).setOrderAllSysID(actualOrderID);
             return "";
         } else {
-            logger.error(new Object(){}.getClass().getEnclosingMethod().getName() + "() not passed\n");
+            logger.error(new Object() {
+            }.getClass().getEnclosingMethod().getName() + "() not passed\n");
             return "Wrong orders.orderAllSysID value found\nActual: '" +
                     actualOrderID + "'\nExpected: '" + expectedOrderID + "'";
         }
@@ -131,5 +133,11 @@ public class OrdersSteps extends Steps {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
         lwaTestContext.setPaymentMethodID(ordersTable.getPaymentMethodID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);
+    }
+
+    public String verifyOrderStatusName(int orderID, String expectedException) {
+        String actualException = DBUtils.executeAndReturnString(
+                String.format("select orderStatusName from %s where orderID = %d", ordersTable.TABLE_NAME, orderID));
+        return verifyExpectedResults(actualException, expectedException);
     }
 }

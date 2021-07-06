@@ -26,6 +26,9 @@ where warehouseOrderID > 0;
 delete FROM lwa_sandbox.orderExceptionHistory
 where orderExceptionHistoryID > 0;
 
+delete FROM lwa_sandbox.orderStatusHistory
+where orderStatusHistoryID > 0;
+
 delete FROM lwa_sandbox.orderItem
 where orderItemID > 0;
 

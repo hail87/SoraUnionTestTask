@@ -6,14 +6,18 @@ import statystech.aqaframework.TableObjects.OrderExceptionHistoryTable;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class OrderExceptionHistorySteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderExceptionHistorySteps.class);
 
-    OrderExceptionHistoryTable orderExceptionHistoryTable = new OrderExceptionHistoryTable();
+    OrderExceptionHistoryTable orderExceptionHistoryTable;
+
+    public OrderExceptionHistorySteps(){
+        orderExceptionHistoryTable = new OrderExceptionHistoryTable();
+        super.tableObject = orderExceptionHistoryTable;
+    }
 
     public String verifyRowWithOrderIdExist(LwaTestContext lwaTestContext) {
         boolean rowIsPresent = false;
@@ -21,7 +25,7 @@ public class OrderExceptionHistorySteps extends Steps {
         while(!orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId())) && i < 3)
         {
             try {
-                Thread.sleep(20000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -35,6 +39,27 @@ public class OrderExceptionHistorySteps extends Steps {
         return "";
     }
 
+
+    public String verifyRowWithOrderIdNotExist(LwaTestContext lwaTestContext) {
+        boolean rowIsPresent = false;
+        int i = 0;
+        while(!orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId())) && i < 3)
+        {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            i++;
+        }
+        rowIsPresent = orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId()));
+
+        if (rowIsPresent) {
+            return "There is a row with orderID : '" + lwaTestContext.getApiOrderId() + "', but should NOT!";
+        }
+        return "";
+    }
+
     public String verifyOrderExceptionTypeID(LwaTestContext lwaTestContext, int expectedType) {
         int orderExceptionHistoryID;
         int actualType = 0;
@@ -43,11 +68,11 @@ public class OrderExceptionHistorySteps extends Steps {
             actualType = Integer.parseInt(orderExceptionHistoryTable.getColumnValueByPrimaryID(orderExceptionHistoryID, "orderExceptionTypeID"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            return "Can't get orderExceptionHistoryID or orderExceptionTypeID";
+            return "\nCan't get orderExceptionHistoryID or orderExceptionTypeID\n";
         }
 
         if (expectedType != actualType) {
-            return String.format("Expected orderExceptionTypeID '%s' and actual '%s' are NOT the same!", expectedType, actualType);
+            return String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are NOT the same!", expectedType, actualType);
         }
         return "";
     }
@@ -60,12 +85,14 @@ public class OrderExceptionHistorySteps extends Steps {
             actualType = Integer.parseInt(orderExceptionHistoryTable.getColumnValueByPrimaryID(orderExceptionHistoryID, "orderExceptionTypeID"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            return "Can't get orderExceptionHistoryID or orderExceptionTypeID";
+            return "\nCan't get orderExceptionHistoryID or orderExceptionTypeID\n";
         }
 
         if (expectedType == actualType) {
-            return String.format("Expected orderExceptionTypeID '%s' and actual '%s' are the same, but should NOT be", expectedType, actualType);
+            return String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are the same, but should NOT be\n", expectedType, actualType);
         }
         return "";
     }
+
+
 }

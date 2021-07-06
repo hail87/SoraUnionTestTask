@@ -10,7 +10,7 @@ public class AccountAddressSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountAddressSteps.class);
 
-    AccountAddressTable accountAddressTable = new AccountAddressTable();
+    public AccountAddressTable accountAddressTable = new AccountAddressTable();
 
     public void setTableRowsQuantity(){
         accountAddressTable.setTableRowsQuantity();

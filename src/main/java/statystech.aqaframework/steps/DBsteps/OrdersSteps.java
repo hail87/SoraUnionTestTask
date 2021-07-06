@@ -140,4 +140,17 @@ public class OrdersSteps extends Steps {
                 String.format("select orderStatusName from %s where orderID = %d", ordersTable.TABLE_NAME, orderID));
         return verifyExpectedResults(actualException, expectedException);
     }
+
+    public String verifyOrderStatusNameWithDelay(int orderID, String expectedException) {
+        //Thread.sleep was added because status name is updated with delay, 4000 millis added because 3000 is not enough
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String actualException = DBUtils.executeAndReturnString(
+                String.format("select orderStatusName from %s where orderID = %d", ordersTable.TABLE_NAME, orderID));
+        return verifyExpectedResults(actualException, expectedException);
+    }
+
 }

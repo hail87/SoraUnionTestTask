@@ -209,4 +209,17 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage);
 
     }
+
+    //@TestRailID(id = 7922)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-nonValidMid.json"})
+    public void submitOrderWithNonValidMid(String jsonFilename, TestInfo testInfo) throws IOException{
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        errorMessage.append(new OrdersSteps().verifyOrderStatusNameWithDelay(lwaTestContext.getApiOrderId(), "Exception"));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
 }

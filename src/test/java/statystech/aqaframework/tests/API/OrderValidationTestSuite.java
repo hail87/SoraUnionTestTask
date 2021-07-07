@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
+import statystech.aqaframework.steps.DBsteps.BuyerAccountSteps;
 import statystech.aqaframework.steps.DBsteps.OrderExceptionHistorySteps;
 import statystech.aqaframework.steps.DBsteps.OrderStatusHistorySteps;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
@@ -74,12 +75,12 @@ public class OrderValidationTestSuite extends TestClass {
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 10));
 
         omsApiSteps.updateBuyerAccountIp(lwaTestContext, "192.168.1.1");
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -93,8 +94,8 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -108,14 +109,13 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext,9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 9));
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         errorMessage.append(new OrderStatusHistorySteps().verifyRowWithOrderId(lwaTestContext.getApiOrderId()));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //ToDo: add last verification point
     @TestRailID(id = 7819)
     @ParameterizedTest
     @CsvSource({"submitOrder-matchedAllSysID.json"})
@@ -125,8 +125,9 @@ public class OrderValidationTestSuite extends TestClass {
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+        errorMessage.append(new BuyerAccountSteps().checkAllSysAccountIDMatch(9998, 9997));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

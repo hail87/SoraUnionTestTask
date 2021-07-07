@@ -2,13 +2,18 @@ package statystech.aqaframework.steps.DBsteps;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.TableObjects.BuyerAccountTable;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
 
+import java.sql.SQLException;
+
 public class BuyerAccountSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(BuyerAccountSteps.class);
+
+    BuyerAccountTable buyerAccountTable = new BuyerAccountTable();
 
     public String checkBuyerAccountId(LwaTestContext lwaTestContext) {
         int apiBuyerAccountId = lwaTestContext.getApiBuyerAccountId();
@@ -20,5 +25,24 @@ public class BuyerAccountSteps extends Steps {
         } else {
             return "";
         }
+    }
+
+    public String checkAllSysAccountIDMatch(int buyerAccountId1, int buyerAccountId2) {
+        String allSysAccountId1 = "";
+        String allSysAccountId2 = "";
+        try {
+            allSysAccountId1 = buyerAccountTable.getColumnValueByPrimaryID(buyerAccountId1, "ALLSYSAccountID");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return String.format("Can't get ALLSYSAccountID value from %s where buyerAccountId = '%d'", buyerAccountTable.getName(), buyerAccountId1);
+        }
+        try {
+            allSysAccountId2 = buyerAccountTable.getColumnValueByPrimaryID(buyerAccountId2, "ALLSYSAccountID");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return String.format("Can't get ALLSYSAccountID value from %s where buyerAccountId = '%d'", buyerAccountTable.getName(), buyerAccountId2);
+        }
+        return verifyExpectedResults(allSysAccountId1,allSysAccountId2);
+
     }
 }

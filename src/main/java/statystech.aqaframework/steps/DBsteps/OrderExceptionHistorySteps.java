@@ -40,10 +40,10 @@ public class OrderExceptionHistorySteps extends Steps {
     }
 
 
-    public String verifyRowWithOrderIdNotExist(LwaTestContext lwaTestContext) {
+    public String verifyRowWithOrderIdNotExist(int orderID) {
         boolean rowIsPresent = false;
         int i = 0;
-        while(!orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId())) && i < 3)
+        while(!orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(orderID)) && i < 3)
         {
             try {
                 Thread.sleep(3000);
@@ -52,10 +52,10 @@ public class OrderExceptionHistorySteps extends Steps {
             }
             i++;
         }
-        rowIsPresent = orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId()));
+        rowIsPresent = orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(orderID));
 
         if (rowIsPresent) {
-            return "There is a row with orderID : '" + lwaTestContext.getApiOrderId() + "', but should NOT!";
+            return "There is a row with orderID : '" + orderID + "', but should NOT!";
         }
         return "";
     }

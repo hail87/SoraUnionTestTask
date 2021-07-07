@@ -92,7 +92,7 @@ public class OrderValidationTestSuite extends TestClass {
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(getLwaTestContext(testInfo)));
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,9));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
 
@@ -115,13 +115,18 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //ToDo: add last verification point
     @TestRailID(id = 7819)
     @ParameterizedTest
     @CsvSource({"submitOrder-matchedAllSysID.json"})
     public void accountValidationAllSysIdMatched(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
-        new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo);
-        errorMessage.append(new OrderExceptionHistorySteps().verifyTableIsEmpty());
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

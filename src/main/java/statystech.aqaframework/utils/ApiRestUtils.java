@@ -39,6 +39,15 @@ public class ApiRestUtils {
         return "There was an error during API request\n";
     }
 
+    public String submitWebsiteOrderAndGetString(String jsonFileName, String apiKey) {
+        try {
+            return submitWebsiteOrder(jsonFileName, apiKey).body().string();
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return "There was an error during API request\n";
+    }
+
     public String submitOrderAndGetString(String jsonString) {
         try {
             return submitOrder(jsonString).body().string();

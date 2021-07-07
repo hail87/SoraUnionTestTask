@@ -221,5 +221,16 @@ public class SubmitOrderTestSuite extends TestClass {
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
+    //@TestRailID(id = 7801)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-newBuyer.json"})
+    public void submitOrderWithValidMidWrongApiKey(String jsonFilename, TestInfo testInfo) throws IOException{
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestWithWrongApiKeyAndSaveResponseToContext(jsonFilename, testInfo));
+        errorMessage.append(new OrdersSteps().verifyOrderStatusNameWithDelay(lwaTestContext.getApiOrderId(), "Exception"));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
 
 }

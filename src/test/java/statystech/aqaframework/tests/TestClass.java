@@ -7,6 +7,7 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.OmsTestContext;
 import statystech.aqaframework.common.Context.TestContext;
+import statystech.aqaframework.steps.TestRail.TestRailSteps;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
 

@@ -200,4 +200,49 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
     }
+
+    @TestRailID(id = 7792)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-newBuyer.json"})
+    public void submitOrderUnknownWebsite(String jsonFilename) {
+        String errorMessage = new OmsApiSteps().sendPostRequestWithFakeApiKeyAndWaitForStatusCode(jsonFilename, 403);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+
+    }
+
+    @TestRailID(id = 7922)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-nonValidMid.json"})
+    public void submitOrderNonValidMerchantAccount(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7801)
+    @ParameterizedTest
+    @ValueSource(strings = {"submitOrder-newBuyer.json"})
+    public void submitOrderValidMerchantAccountWrongApiKey(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestWithWrongApiKeyAndSaveResponseToContext(jsonFilename, testInfo));
+        //Thread.sleep was added because status name is updated with delay, 4000 millis added because 3000 is not enough
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
 }

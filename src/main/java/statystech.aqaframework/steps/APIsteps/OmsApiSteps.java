@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.OmsDto.OmsSubmitOrderJson;
 import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
@@ -22,6 +21,27 @@ public class OmsApiSteps {
         testContext.setJsonObject(JsonUtils.getJsonObject(jsonFileName));
         testContext.setSubmitOrderObjectsFromJson();
         String responseString = new ApiRestUtils().submitWebsiteOrderAndGetString(jsonFileName);
+        logger.info("Response from API:\n" + responseString);
+        Context.updateTestContext(testContext);
+        if (!responseString.contains("order_id")) {
+            return "\nWrong response!\n responseString: \n";
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            Response response = mapper.readValue(responseString, Response.class);
+            testContext.setApiOrderId(response.getOrderId());
+            testContext.setApiBuyerAccountId(response.getBuyerAccountId());
+            testContext.setApiOrderStatusCd(response.getOrderStatusCd());
+            testContext.setResponse(response);
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String sendPostRequestWithWrongApiKeyAndSaveResponseToContext(String jsonFileName, TestInfo testInfo) throws IOException {
+        LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
+        testContext.setJsonObject(JsonUtils.getJsonObject(jsonFileName));
+        testContext.setSubmitOrderObjectsFromJson();
+        String responseString = new ApiRestUtils().submitWebsiteOrderAndGetString(jsonFileName, "Z6XqmojdLV3XigTe1ZHQJ9WMJwI4qeHR8oUrgzBG");
         logger.info("Response from API:\n" + responseString);
         Context.updateTestContext(testContext);
         if (!responseString.contains("order_id")) {
@@ -90,13 +110,24 @@ public class OmsApiSteps {
         }
     }
 
-    public String sendPostRequestAndWaitForStatusCode(String jsonFileName, int code) {
+    public String sendPostRequestAndWaitForStatusCode(String jsonFileName, int statusCode) {
         String errorMessage = "";
         int responseCode;
         responseCode = new ApiRestUtils().submitWebsiteOrder(jsonFileName).code();
         logger.info("ResponseCode:\n" + responseCode);
-        if (responseCode!=code){
-            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, code);
+        if (responseCode != statusCode) {
+            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, statusCode);
+        }
+        return errorMessage;
+    }
+
+    public String sendPostRequestWithFakeApiKeyAndWaitForStatusCode(String jsonFileName, int statusCode) {
+        String errorMessage = "";
+        int responseCode;
+        responseCode = new ApiRestUtils().submitWebsiteOrder(jsonFileName, "rfyA0vcW2aQZHJBFXlKI4HUDuDeBJctxfBBaTW61").code();
+        logger.info("ResponseCode:\n" + responseCode);
+        if (responseCode != statusCode) {
+            errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, statusCode);
         }
         return errorMessage;
     }

@@ -140,4 +140,5 @@ public class OrdersSteps extends Steps {
                 String.format("select orderStatusName from %s where orderID = %d", ordersTable.TABLE_NAME, orderID));
         return verifyExpectedResults(actualException, expectedException);
     }
+
 }

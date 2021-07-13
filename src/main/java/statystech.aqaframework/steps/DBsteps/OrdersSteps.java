@@ -41,6 +41,12 @@ public class OrdersSteps extends Steps {
         Context.updateTestContext(lwaTestContext);
     }
 
+    public String checkOMSShippingAddressID(int primaryID, int expectedOMSShippingAddressID) {
+        int omsShippingAddressID = ordersTable.getOMSShippingAddressID(primaryID);
+        logger.info("\nomsShippingAddressID: " + omsShippingAddressID);
+        return verifyExpectedResults(omsShippingAddressID, expectedOMSShippingAddressID);
+    }
+
     public void setOMSBillingAddressIDToContext(LwaTestContext lwaTestContext) {
         lwaTestContext.setOmsBillingAddressID(ordersTable.getOMSBillingAddressID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);
@@ -135,22 +141,10 @@ public class OrdersSteps extends Steps {
         Context.updateTestContext(lwaTestContext);
     }
 
-    public String verifyOrderStatusName(int orderID, String expectedException) {
-        String actualException = DBUtils.executeAndReturnString(
+    public String verifyOrderStatusName(int orderID, String expectedStatus) {
+        String actualStatus = DBUtils.executeAndReturnString(
                 String.format("select orderStatusName from %s where orderID = %d", ordersTable.TABLE_NAME, orderID));
-        return verifyExpectedResults(actualException, expectedException);
-    }
-
-    public String verifyOrderStatusNameWithDelay(int orderID, String expectedException) {
-        //Thread.sleep was added because status name is updated with delay, 4000 millis added because 3000 is not enough
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        String actualException = DBUtils.executeAndReturnString(
-                String.format("select orderStatusName from %s where orderID = %d", ordersTable.TABLE_NAME, orderID));
-        return verifyExpectedResults(actualException, expectedException);
+        return verifyExpectedResults(actualStatus, expectedStatus);
     }
 
 }

@@ -9,12 +9,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.TableObjects.AddressTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
-import statystech.aqaframework.steps.DBsteps.OrderExceptionHistorySteps;
-import statystech.aqaframework.steps.DBsteps.OrderStatusHistorySteps;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
+import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -62,11 +61,10 @@ public class OrderValidationTestSuite extends TestClass {
     @ParameterizedTest
     @CsvSource({"submitNewOrder.json"})
     public void verifySuspiciousAccount(String jsonFilename, TestInfo testInfo) throws IOException {
+        OmsApiSteps omsApiSteps = new OmsApiSteps();
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-
-        OmsApiSteps omsApiSteps = new OmsApiSteps();
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
 
         omsApiSteps.updateBuyerAccountId(lwaTestContext);
         omsApiSteps.updateBuyerAccountIp(lwaTestContext, "192.168.7.0");
@@ -74,12 +72,12 @@ public class OrderValidationTestSuite extends TestClass {
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 10));
 
         omsApiSteps.updateBuyerAccountIp(lwaTestContext, "192.168.1.1");
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -88,13 +86,13 @@ public class OrderValidationTestSuite extends TestClass {
     @ParameterizedTest
     @CsvSource({"submitOrder-existedAllSysID.json"})
     public void accountValidationAllSysIdValid(String jsonFilename, TestInfo testInfo) throws IOException {
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -103,30 +101,142 @@ public class OrderValidationTestSuite extends TestClass {
     @ParameterizedTest
     @CsvSource({"submitNewOrder.json"})
     public void accountValidationNoAllSysIdException(String jsonFilename, TestInfo testInfo) throws IOException {
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext,9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 9));
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
-        errorMessage.append(new OrderStatusHistorySteps().verifyRowWithOrderId(lwaTestContext.getApiOrderId()));
+        errorMessage.append(new OrderStatusHistorySteps().checkRowWithOrderIdIsPresent(lwaTestContext.getApiOrderId()));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //ToDo: add last verification point
     @TestRailID(id = 7819)
     @ParameterizedTest
     @CsvSource({"submitOrder-matchedAllSysID.json"})
     public void accountValidationAllSysIdMatched(String jsonFilename, TestInfo testInfo) throws IOException {
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext,10));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+        errorMessage.append(new BuyerAccountSteps().checkAllSysAccountIDMatch(9998, 9997));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7804)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation-NoValidAddress.json"})
+    public void noValidAddressException(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        AddressTable addressTable = new AddressTable();
+        addressTable.setTableRowsQuantity();
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
+        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 636));
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 8));
+
+        errorMessage.append(new OrderStatusHistorySteps().validateRowWithOrderIdHasOrderStatusID(lwaTestContext.getApiOrderId(), 19));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7812)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation-ExternalAddressValidationFailed.json"})
+    public void externalAddressValidationFailed(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        AddressTable addressTable = new AddressTable();
+        addressTable.setTableRowsQuantity();
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
+        errorMessage.append(addressTable.verifyNewRowCreated());
+        errorMessage.append(new AddressSteps().verifyVerificationStatus("error"));
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 8));
+
+        errorMessage.append(new OrderStatusHistorySteps().validateRowWithOrderIdHasOrderStatusID(lwaTestContext.getApiOrderId(), 19));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7821)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - addressValid.json"})
+    public void addressValid(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        AddressTable addressTable = new AddressTable();
+        addressTable.setTableRowsQuantity();
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
+        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 296));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9)); //this step fails
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7822)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - newAddressValid.json"})
+    public void addressValidatedByExternalService(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        AddressTable addressTable = new AddressTable();
+        addressTable.setTableRowsQuantity();
+        assertTrue(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo).isEmpty());
+
+        errorMessage.append(addressTable.verifyNewRowCreated());
+        AddressSteps addressSteps = new AddressSteps();
+        errorMessage.append(addressSteps.verifyVerificationStatus("verified"));  //this step fails (null is set at the table)
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

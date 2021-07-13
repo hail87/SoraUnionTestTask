@@ -7,6 +7,9 @@ import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class AddressSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(AddressSteps.class);
@@ -21,4 +24,14 @@ public class AddressSteps extends Steps {
     }
 
 
+    public String verifyVerificationStatus(String expectedVerificationStatus) {
+        String actualVerificationStatus = null;
+        try {
+            actualVerificationStatus = addressTable.getLastRowColumnValue("verificationStatus");
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+            return "\nSQL request processing error! Can't get verificationStatus from address table\n";
+        }
+        return verifyExpectedResults(actualVerificationStatus,expectedVerificationStatus);
+    }
 }

@@ -147,10 +147,10 @@ public class SubmitOrderTestSuite extends TestClass {
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
         AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
         errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
-        accountAddressSteps.setTableRowsQuantity();
+        accountAddressSteps.accountAddressTable.setTableRowsQuantity();
 
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        //errorMessage.append(accountAddressSteps.verifyTableRowsQuantityDidNotChange());
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -175,7 +175,7 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(updateJsonFilename, testInfo));
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
         errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
-        //errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -201,7 +201,7 @@ public class SubmitOrderTestSuite extends TestClass {
 
     }
 
-    //@TestRailID(id = 7792)
+    @TestRailID(id = 7792)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})
     public void submitOrderUnknownWebsite(String jsonFilename) {
@@ -210,25 +210,37 @@ public class SubmitOrderTestSuite extends TestClass {
 
     }
 
-    //@TestRailID(id = 7922)
+    @TestRailID(id = 7922)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-nonValidMid.json"})
-    public void submitOrderWithNonValidMid(String jsonFilename, TestInfo testInfo) throws IOException{
+    public void submitOrderNonValidMerchantAccount(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        errorMessage.append(new OrdersSteps().verifyOrderStatusNameWithDelay(lwaTestContext.getApiOrderId(), "Exception"));
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
-    //@TestRailID(id = 7801)
+
+    @TestRailID(id = 7801)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})
-    public void submitOrderWithValidMidWrongApiKey(String jsonFilename, TestInfo testInfo) throws IOException{
+    public void submitOrderValidMerchantAccountWrongApiKey(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestWithWrongApiKeyAndSaveResponseToContext(jsonFilename, testInfo));
-        errorMessage.append(new OrdersSteps().verifyOrderStatusNameWithDelay(lwaTestContext.getApiOrderId(), "Exception"));
+        //Thread.sleep was added because status name is updated with delay, 4000 millis added because 3000 is not enough
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

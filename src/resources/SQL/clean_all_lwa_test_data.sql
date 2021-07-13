@@ -4,7 +4,6 @@ where trackingEventID > 0;
 delete from lwa_sandbox.tracking
 where trackingID > 0;
 
-
 delete from lwa_sandbox.inventoryTransaction
 where inventoryTransactionID > 0;
 

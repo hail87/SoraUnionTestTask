@@ -147,10 +147,10 @@ public class SubmitOrderTestSuite extends TestClass {
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
         AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
         errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
-        accountAddressSteps.setTableRowsQuantity();
+        accountAddressSteps.accountAddressTable.setTableRowsQuantity();
 
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        //errorMessage.append(accountAddressSteps.verifyTableRowsQuantityDidNotChange());
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -175,7 +175,7 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(updateJsonFilename, testInfo));
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
         errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
-        //errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

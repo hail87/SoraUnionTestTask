@@ -24,7 +24,7 @@ public class OmsApiSteps {
         logger.info("Response from API:\n" + responseString);
         Context.updateTestContext(testContext);
         if (!responseString.contains("order_id")) {
-            return "\nWrong response!\n responseString: \n";
+            return String.format("\nWrong response!\nResponseString:\n'%s'\n", responseString);
         } else {
             ObjectMapper mapper = new ObjectMapper();
             Response response = mapper.readValue(responseString, Response.class);

@@ -17,7 +17,7 @@ public class OmsApiSteps {
     private static final Logger logger = LoggerFactory.getLogger(OmsApiSteps.class);
 
     public String sendPostRequestAndSaveResponseToContext(String jsonFileName, TestInfo testInfo) throws IOException {
-        LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         testContext.setJsonObject(JsonUtils.getJsonObject(jsonFileName));
         testContext.setSubmitOrderObjectsFromJson();
         String responseString = new ApiRestUtils().submitWebsiteOrderAndGetString(jsonFileName);

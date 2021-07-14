@@ -239,7 +239,6 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(addressSteps.verifyVerificationStatus("verified"));
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
-
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -256,6 +255,142 @@ public class OrderValidationTestSuite extends TestClass {
         }
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
 
+    //@TestRailID(id = 7815)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - VerifyLicenseNeededAndExist.json"})
+    public void verifyLicenseNeededAndExist(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 1));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 4));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 5));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 6));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    //@TestRailID(id = 13175)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - VerifyLicenseNotNeededAndDontExist.json"})
+    public void verifyLicenseNotNeededAndDontExist(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 1));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 4));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 5));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 6));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7807)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - VerifyLicenseNeededAndDontExist.json"})
+    public void verifyNoLicenseException(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 6));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7806)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - VerifyLicenseToValidateException.json"})
+    public void verifyLicenseToValidateException(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 5));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 7805)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - VerifyLicenseExpiredException.json"})
+    public void verifyLicenseExpiredException(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 5));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

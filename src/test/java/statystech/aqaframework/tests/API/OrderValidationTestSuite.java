@@ -389,7 +389,7 @@ public class OrderValidationTestSuite extends TestClass {
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 5));
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 4));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

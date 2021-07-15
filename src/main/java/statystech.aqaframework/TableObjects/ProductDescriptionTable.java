@@ -9,7 +9,11 @@ public class ProductDescriptionTable extends TableObject{
 
     private final String TABLE_NAME = "productDescription";
 
-    public String getProductDescription(int productID) throws SQLException, IOException {
+    public ProductDescriptionTable(){
+        super.TABLE_NAME = TABLE_NAME;
+    }
+
+    public String getProductDescription(int productID) {
         return DBUtils.executeAndReturnString(String.format("select productDescription from %s where productID='%d'", TABLE_NAME, productID));
     }
 }

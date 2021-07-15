@@ -11,6 +11,10 @@ public class ShippingAddressTable extends TableObject {
 
     private final String TABLE_NAME = "shippingAddress";
 
+    public ShippingAddressTable(){
+        super.TABLE_NAME = TABLE_NAME;
+    }
+
     protected ResultSet getLastRow(String tableName) throws SQLException, IOException {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", tableName, TABLE_NAME, getPrimaryID()));

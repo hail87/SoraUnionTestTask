@@ -257,7 +257,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 7815)
+    @TestRailID(id = 7815)
     @ParameterizedTest
     @CsvSource({"OrderValidation - VerifyLicenseNeededAndExist.json"})
     public void verifyLicenseNeededAndExist(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -288,7 +288,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 13175)
+    @TestRailID(id = 13175)
     @ParameterizedTest
     @CsvSource({"OrderValidation - VerifyLicenseNotNeededAndDontExist.json"})
     public void verifyLicenseNotNeededAndDontExist(String jsonFilename, TestInfo testInfo) throws IOException {

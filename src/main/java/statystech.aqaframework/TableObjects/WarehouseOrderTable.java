@@ -11,6 +11,10 @@ public class WarehouseOrderTable extends TableObject {
 
     private final String TABLE_NAME = "warehouseOrder";
 
+    public WarehouseOrderTable(){
+        super.TABLE_NAME = TABLE_NAME;
+    }
+
     public String getLastRowColumnValue(String columnName) throws SQLException {
         String result = "";
         try {

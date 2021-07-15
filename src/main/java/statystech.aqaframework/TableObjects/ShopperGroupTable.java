@@ -10,6 +10,10 @@ public class ShopperGroupTable extends TableObject{
 
     private final String TABLE_NAME = "shopperGroup";
 
+    public ShopperGroupTable(){
+        super.TABLE_NAME = TABLE_NAME;
+    }
+
     public String getLastRowColumnValue(String columnName) throws SQLException, IOException {
         return getLastRow(TABLE_NAME).getString(columnName);
     }

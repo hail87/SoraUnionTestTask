@@ -33,16 +33,10 @@ public abstract class TableObject {
     }
 
     public int getPrimaryID() throws SQLException, IOException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         return Integer.parseInt(DBUtils.select(TABLE_NAME, 1));
     }
 
     public int getPrimaryID(String columnName, String value) throws SQLException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         ResultSet resultSet = DBUtils.execute(String.format(
                 "select * from %s where %s = '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, columnName, value));
         resultSet.next();
@@ -50,16 +44,10 @@ public abstract class TableObject {
     }
 
     public String getColumnValueByPrimaryID(int primaryID, String columnName) throws SQLException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         return getProperRow(TABLE_NAME, primaryID).getString(columnName);
     }
 
     public String getColumnValueByProductName(String productName, String columnName) throws SQLException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, productName));
         rs.next();
@@ -67,9 +55,6 @@ public abstract class TableObject {
     }
 
     public String getLastRowColumnValue(String columnName) throws SQLException, IOException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         String result = "";
         try {
             result = getLastRow(TABLE_NAME).getString(columnName);
@@ -120,9 +105,6 @@ public abstract class TableObject {
 
     public boolean deleteRow(int primaryID) {
         boolean deleted = false;
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         try {
             deleted = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().execute(
                     "DELETE FROM " + TABLE_NAME + " WHERE stageOrderID = '" + primaryID + "'");
@@ -135,9 +117,6 @@ public abstract class TableObject {
     }
 
     public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1, String jsonNodeKey2) throws SQLException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         LwaTestContext lwaTestContext = Context.getTestContext(Thread.currentThread().getStackTrace()[3].getMethodName(), LwaTestContext.class);
         String jsonValue = "";
         try {
@@ -156,9 +135,6 @@ public abstract class TableObject {
     }
 
     public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1) throws SQLException {
-//        String[] fullTableName = Util.getCallingClass().getName().split("\\.");
-//        String tableName = fullTableName[fullTableName.length - 1];
-//        tableName = Introspector.decapitalize(tableName.substring(0, tableName.length() - 5));
         String jsonValue = Context.getTestContext(LwaTestContext.class).getJsonObject().get(jsonNodeKey1).
                 toString().replace("\"", "");
         String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey1);

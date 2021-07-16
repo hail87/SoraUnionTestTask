@@ -1,5 +1,6 @@
 package statystech.aqaframework.tests;
 
+import org.junit.Test;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,5 +58,15 @@ public abstract class TestClass {
 //    @Test
 //    public void closeTestRailOpenRuns() {
 //        new TestRailSteps().closeAllOpenTestRuns();
+//    }
+
+//    @Test
+//    public void cleanDB(){
+//        try {
+//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+//            DBUtils.cleanDB("clean_new_address_failed.sql");
+//        } catch (SQLException | IOException throwables) {
+//            throwables.printStackTrace();
+//        }
 //    }
 }

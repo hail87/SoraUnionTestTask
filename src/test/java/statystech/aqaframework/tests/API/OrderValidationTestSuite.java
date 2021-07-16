@@ -168,6 +168,7 @@ public class OrderValidationTestSuite extends TestClass {
         addressTable.setTableRowsQuantity();
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(addressTable.verifyNewRowCreated());
         errorMessage.append(new AddressSteps().verifyVerificationStatus("error"));
 
@@ -185,6 +186,13 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 8));
 
         errorMessage.append(new OrderStatusHistorySteps().validateRowWithOrderIdHasOrderStatusID(lwaTestContext.getApiOrderId(), 19));
+
+        try {
+            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+            DBUtils.cleanDB("clean_new_address_failed.sql");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -236,8 +244,8 @@ public class OrderValidationTestSuite extends TestClass {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        errorMessage.append(addressSteps.verifyVerificationStatus("verified"));
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(addressSteps.verifyVerificationStatus("verified"));
 
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();

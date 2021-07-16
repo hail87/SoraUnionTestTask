@@ -26,11 +26,15 @@ public class AddressSteps extends Steps {
 
     public String verifyVerificationStatus(String expectedVerificationStatus) {
         String actualVerificationStatus = null;
-        try {
-            actualVerificationStatus = addressTable.getLastRowColumnValue("verificationStatus");
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-            return "\nSQL request processing error! Can't get verificationStatus from address table\n";
+        int i = 0;
+        while (actualVerificationStatus == null && i < 10) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = 'Smithello'");
+            i++;
         }
         return verifyExpectedResults(actualVerificationStatus,expectedVerificationStatus);
     }

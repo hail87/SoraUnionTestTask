@@ -23,13 +23,13 @@ public abstract class TableObject {
 
     int linesQuantity;
 
-    public String getName(){
+    public String getName() {
         return TABLE_NAME;
     }
 
-    public void setTableRowsQuantity(){
+    public void setTableRowsQuantity() {
         linesQuantity = getRowsQuantity();
-        logger.info("accountAddressTable rows quantity: " + linesQuantity);
+        logger.info(TABLE_NAME + " table rows quantity: " + linesQuantity);
     }
 
     public int getPrimaryID() throws SQLException, IOException {
@@ -159,17 +159,17 @@ public abstract class TableObject {
         return !DBUtils.executeAndReturnString(String.format("select * from %s where %s = '%s'", TABLE_NAME, columnName, value)).isEmpty();
     }
 
-    public String verifyTableRowsQuantityDidNotChange(){
-        logger.info("accountAddressTable rows quantity before update: " + linesQuantity);
-        logger.info("accountAddressTable rows quantity after update: " + getRowsQuantity());
+    public String verifyTableRowsQuantityDidNotChange() {
+        logger.info(String.format("%s table - rows quantity before update: %d", TABLE_NAME, linesQuantity));
+        logger.info(String.format("%s table - rows quantity after update: %d", TABLE_NAME, getRowsQuantity()));
         return Steps.verifyExpectedResults(linesQuantity, getRowsQuantity());
     }
 
-    public String verifyNewRowCreated(){
-        logger.info("accountAddressTable rows quantity before update: " + linesQuantity);
-        logger.info("accountAddressTable rows quantity after update: " + getRowsQuantity());
-        if(getRowsQuantity()<=linesQuantity){
-            return "No new records at the 'address' table found\n";
+    public String verifyNewRowCreated() {
+        logger.info(String.format("%s table - rows quantity before update: %d", TABLE_NAME, linesQuantity));
+        logger.info(String.format("%s table - rows quantity after update: %d", TABLE_NAME, getRowsQuantity()));
+        if (getRowsQuantity() <= linesQuantity) {
+            return String.format("No new records at the '%s' table found\n", TABLE_NAME);
         }
         return "";
     }

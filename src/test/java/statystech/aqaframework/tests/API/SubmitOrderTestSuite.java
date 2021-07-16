@@ -178,7 +178,7 @@ public class SubmitOrderTestSuite extends TestClass {
 
         errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
         AddressSteps addressSteps = new AddressSteps();
-        errorMessage.append(addressTable.verifyNewRowCreated());
+        //errorMessage.append(addressTable.verifyNewRowCreated());
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
         addressTable.setTableRowsQuantity();
 
@@ -198,8 +198,7 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
 
         try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_address.sql");
+            DBUtils.cleanDB("clean_new_billing_address.sql");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

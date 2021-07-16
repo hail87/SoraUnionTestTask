@@ -49,6 +49,7 @@ public class OrdersSteps extends Steps {
 
     public void setOMSBillingAddressIDToContext(LwaTestContext lwaTestContext) {
         lwaTestContext.setOmsBillingAddressID(ordersTable.getOMSBillingAddressID(lwaTestContext.getApiOrderId()));
+        logger.info("\nomsBillingAddressID: " + ordersTable.getOMSBillingAddressID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);
     }
 

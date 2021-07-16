@@ -42,7 +42,7 @@ public class AccountAddressSteps extends Steps {
             return String.format(
                     "AddressID '%d' from AccountAddress table is different from BillingAddressID - '%d' \n " +
                             "P.S.: OmsShippingAddressID or OmsBillingAddressID",
-                    accountAddressTable.getShippingAddressId(lwaTestContext.getApiBuyerAccountId()),
+                    accountAddressTable.getBillingAddressId(lwaTestContext.getApiBuyerAccountId()),
                     lwaTestContext.getOmsBillingAddressID());
         }
     }

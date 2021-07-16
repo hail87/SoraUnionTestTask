@@ -20,10 +20,13 @@ public class BuyerAccountLicenseSteps extends Steps {
     }
 
     public String checkBuyerAccountLicenseIDisOnlyOne(LwaTestContext lwaTestContext) {
-        if (buyerAccountLicenseTable.getRowsQuantity() > 1) {
+
+        int rowsQuantity = buyerAccountLicenseTable.getRowsQuantity(lwaTestContext.getOMSBuyerAccountLicenseID());
+
+        if (rowsQuantity > 1) {
             return String.format("\nThere is more than one row found at the BuyerAccountLicense table", lwaTestContext.getOMSBuyerAccountLicenseID());
         }
-        if (buyerAccountLicenseTable.getRowsQuantity() < 1) {
+        if (rowsQuantity < 1) {
             return String.format("\nThere is no rows found at the BuyerAccountLicense table", lwaTestContext.getOMSBuyerAccountLicenseID());
         }
         return "";

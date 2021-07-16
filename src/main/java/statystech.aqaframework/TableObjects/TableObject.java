@@ -79,16 +79,31 @@ public abstract class TableObject {
         return rs;
     }
 
-    public ResultSet getRowByID(int id) throws SQLException {
+    public ResultSet getRowByID(int id) {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", TABLE_NAME, TABLE_NAME, id));
-        rs.next();
         return rs;
     }
 
     public int getRowsQuantity() {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s", TABLE_NAME));
+        int count = 0;
+        try {
+            while (rs.next()) {
+                ++count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (count == 0) {
+            System.out.println("No records found");
+        }
+        return count;
+    }
+
+    public int getRowsQuantity(int id) {
+        ResultSet rs = getRowByID(id);
         int count = 0;
         try {
             while (rs.next()) {

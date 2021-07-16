@@ -147,7 +147,7 @@ public class OrderValidationTestSuite extends TestClass {
 
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrdersSteps ordersSteps = new OrdersSteps();
-        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 636));
+        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 638));
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();

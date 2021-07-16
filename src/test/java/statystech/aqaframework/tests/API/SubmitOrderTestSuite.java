@@ -133,7 +133,7 @@ public class SubmitOrderTestSuite extends TestClass {
     }
 
     //ToDo: testCase logic (last step) need to be modified
-    @TestRailID(id = 7782)
+    //@TestRailID(id = 7782)
     @ParameterizedTest
     @CsvSource({"submitOrder-newSA.json"})
     public void submitOrderExistedShippingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -156,7 +156,7 @@ public class SubmitOrderTestSuite extends TestClass {
     }
 
     //ToDo: testCase logic (last step) need to be modified
-    @TestRailID(id = 7783)
+    //@TestRailID(id = 7783)
     @ParameterizedTest
     @CsvSource({"submitOrder-newBuyerMarko.json, submitOrder-existingBuyerMarko.json"})
     public void submitOrderExistedBuyerBillingAddress(String jsonFilename, String updateJsonFilename, TestInfo testInfo) throws IOException {
@@ -207,10 +207,9 @@ public class SubmitOrderTestSuite extends TestClass {
     public void submitOrderUnknownWebsite(String jsonFilename) {
         String errorMessage = new OmsApiSteps().sendPostRequestWithFakeApiKeyAndWaitForStatusCode(jsonFilename, 403);
         assertTrue(errorMessage.isEmpty(), errorMessage);
-
     }
 
-    @TestRailID(id = 7922)
+    //@TestRailID(id = 7922)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-nonValidMid.json"})
     public void submitOrderNonValidMerchantAccount(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -234,7 +233,6 @@ public class SubmitOrderTestSuite extends TestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestWithWrongApiKeyAndSaveResponseToContext(jsonFilename, testInfo));
-        //Thread.sleep was added because status name is updated with delay, 4000 millis added because 3000 is not enough
         try {
             Thread.sleep(4000);
         } catch (InterruptedException e) {

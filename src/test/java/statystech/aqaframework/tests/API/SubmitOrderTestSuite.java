@@ -157,7 +157,6 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //ToDo: delete after this test created BA addresses from  accountAddress and Address tables
     //@TestRailID(id = 7783)
     @ParameterizedTest
     @CsvSource({"submitOrder-newBuyerAndrew.json"})
@@ -167,24 +166,27 @@ public class SubmitOrderTestSuite extends TestClass {
 
         OmsApiSteps omsApiSteps = new OmsApiSteps();
         AddressTable addressTable = new AddressTable();
+        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
         addressTable.setTableRowsQuantity();
+        accountAddressSteps.setTableRowsQuantity();
+
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
-        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
-
+        errorMessage.append(addressTable.verifyNewRowCreated());
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
         errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
         AddressSteps addressSteps = new AddressSteps();
-        errorMessage.append(addressTable.verifyNewRowCreated());
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
         addressTable.setTableRowsQuantity();
 
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
         errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));

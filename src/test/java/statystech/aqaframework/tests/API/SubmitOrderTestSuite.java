@@ -134,26 +134,46 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
-    //ToDo: testCase logic (last step) need to be modified
-    //@TestRailID(id = 7782)
+    @TestRailID(id = 7782)
     @ParameterizedTest
     @CsvSource({"submitOrder-newSA.json"})
-    public void submitOrderExistedShippingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
+    public void submitOrderAsNewBuyerAndCheckShippingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
+        AddressTable addressTable = new AddressTable();
+        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
+        addressTable.setTableRowsQuantity();
+        accountAddressSteps.setTableRowsQuantity();
+
         OmsApiSteps omsApiSteps = new OmsApiSteps();
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
-        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
+        errorMessage.append(addressTable.verifyNewRowCreated());
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
         errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
-        accountAddressSteps.accountAddressTable.setTableRowsQuantity();
+        AddressSteps addressSteps = new AddressSteps();
+        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
+        addressTable.setTableRowsQuantity();
+        accountAddressSteps.setTableRowsQuantity();
 
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
+        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
+        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
+        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
+        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
 
+        try {
+            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+            DBUtils.cleanDB("clean_new_shipping_address.sql");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

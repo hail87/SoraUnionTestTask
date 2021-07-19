@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.TableObjects.AddressTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
@@ -18,7 +17,6 @@ import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
-import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
@@ -135,7 +133,7 @@ public class SubmitOrderTestSuite extends TestClass {
     }
 
     //ToDo: testCase logic (last step) need to be modified
-    @TestRailID(id = 7782)
+    //@TestRailID(id = 7782)
     @ParameterizedTest
     @CsvSource({"submitOrder-newSA.json"})
     public void submitOrderExistedShippingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -157,54 +155,28 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //ToDo: testCase logic (last step) need to be modified
     //@TestRailID(id = 7783)
     @ParameterizedTest
-    @CsvSource({"submitOrder-newBuyerAndrew.json"})
-    public void submitOrderExistedBuyerBillingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
+    @CsvSource({"submitOrder-newBuyerMarko.json, submitOrder-existingBuyerMarko.json"})
+    public void submitOrderExistedBuyerBillingAddress(String jsonFilename, String updateJsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
         OmsApiSteps omsApiSteps = new OmsApiSteps();
-        AddressTable addressTable = new AddressTable();
-        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
-        addressTable.setTableRowsQuantity();
-        accountAddressSteps.setTableRowsQuantity();
-
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
-        errorMessage.append(addressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
-        AddressSteps addressSteps = new AddressSteps();
-        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
-        addressTable.setTableRowsQuantity();
-
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
-        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
-        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
+        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
+        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
+        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
         accountAddressSteps.setTableRowsQuantity();
-        addressTable.setTableRowsQuantity();
 
-        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(updateJsonFilename, testInfo));
+        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
+        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
         errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
-        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
 
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_billing_address.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
@@ -235,10 +207,9 @@ public class SubmitOrderTestSuite extends TestClass {
     public void submitOrderUnknownWebsite(String jsonFilename) {
         String errorMessage = new OmsApiSteps().sendPostRequestWithFakeApiKeyAndWaitForStatusCode(jsonFilename, 403);
         assertTrue(errorMessage.isEmpty(), errorMessage);
-
     }
 
-    @TestRailID(id = 7922)
+    //@TestRailID(id = 7922)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-nonValidMid.json"})
     public void submitOrderNonValidMerchantAccount(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -262,7 +233,6 @@ public class SubmitOrderTestSuite extends TestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestWithWrongApiKeyAndSaveResponseToContext(jsonFilename, testInfo));
-        //Thread.sleep was added because status name is updated with delay, 4000 millis added because 3000 is not enough
         try {
             Thread.sleep(4000);
         } catch (InterruptedException e) {

@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class OrdersTable extends TableObject {
 
-    public final String TABLE_NAME = "orders";
+    final String TABLE_NAME = "orders";
 
     public OrdersTable(){
         super.TABLE_NAME = TABLE_NAME;

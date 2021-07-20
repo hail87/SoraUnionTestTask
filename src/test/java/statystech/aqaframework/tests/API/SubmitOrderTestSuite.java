@@ -155,7 +155,6 @@ public class SubmitOrderTestSuite extends TestClass {
         addressTable.setTableRowsQuantity();
         AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
         errorMessage.append(accountAddressSteps.checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
-        //errorMessage.append(accountAddressSteps.verifyAddressTypeCD(lwaTestContext.getAccountAddressID(), "SA"));
 
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
@@ -165,7 +164,6 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(verifyExpectedResults(omsShippingAddressID, newOmsShippingAddressID));
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
         errorMessage.append(accountAddressSteps.checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
-        //errorMessage.append(accountAddressSteps.verifyAddressTypeCD(lwaTestContext.getAccountAddressID(), "SA"));
 
         try {
             DBUtils.cleanDB("clean_all_lwa_test_data.sql");
@@ -280,11 +278,6 @@ public class SubmitOrderTestSuite extends TestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestWithWrongApiKeyAndSaveResponseToContext(jsonFilename, testInfo));
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

@@ -148,7 +148,19 @@ public class OrdersSteps extends Steps {
 
     public String verifyOrderStatusName(int orderID, String expectedStatus) {
         String actualStatus = DBUtils.executeAndReturnString(
-                String.format("select orderStatusName from %s where orderID = %d", ordersTable.TABLE_NAME, orderID));
+                String.format("select orderStatusName from %s where orderID = %d", ordersTable.getName(), orderID));
+        int i = 0;
+        while(actualStatus.equalsIgnoreCase("New Order") && i < 3)
+        {
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            actualStatus = DBUtils.executeAndReturnString(
+                    String.format("select orderStatusName from %s where orderID = %d", ordersTable.getName(), orderID));
+            i++;
+        }
         return verifyExpectedResults(actualStatus, expectedStatus);
     }
 

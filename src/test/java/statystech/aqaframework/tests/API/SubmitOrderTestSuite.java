@@ -176,56 +176,56 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 7783)
-    @ParameterizedTest
-    @CsvSource({"submitOrder-newBuyerAndrew.json"})
-    public void submitOrderExistedBuyerBillingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
-        StringBuilder errorMessage = new StringBuilder();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-
-        OmsApiSteps omsApiSteps = new OmsApiSteps();
-        AddressTable addressTable = new AddressTable();
-        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
-        addressTable.setTableRowsQuantity();
-        accountAddressSteps.setTableRowsQuantity();
-
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        OrdersSteps ordersSteps = new OrdersSteps();
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
-        errorMessage.append(addressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
-        AddressSteps addressSteps = new AddressSteps();
-        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
-        addressTable.setTableRowsQuantity();
-
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
-        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
-        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
-        accountAddressSteps.setTableRowsQuantity();
-        addressTable.setTableRowsQuantity();
-
-        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
-        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
-
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_billing_address.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
+//    @TestRailID(id = 7783)
+//    @ParameterizedTest
+//    @CsvSource({"submitOrder-newBuyerAndrew.json"})
+//    public void submitOrderExistedBuyerBillingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
+//        StringBuilder errorMessage = new StringBuilder();
+//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+//
+//        OmsApiSteps omsApiSteps = new OmsApiSteps();
+//        AddressTable addressTable = new AddressTable();
+//        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
+//        addressTable.setTableRowsQuantity();
+//        accountAddressSteps.setTableRowsQuantity();
+//
+//        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//
+//        OrdersSteps ordersSteps = new OrdersSteps();
+//        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+//        ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
+//        errorMessage.append(addressTable.verifyNewRowCreated());
+//        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
+//        errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
+//        AddressSteps addressSteps = new AddressSteps();
+//        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
+//        addressTable.setTableRowsQuantity();
+//
+//        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+//        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+//        ordersSteps.setOMSBillingAddressIDToContext(lwaTestContext);
+//        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
+//        errorMessage.append(accountAddressSteps.checkBillingAddressID(lwaTestContext));
+//        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
+//        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
+//        accountAddressSteps.setTableRowsQuantity();
+//        addressTable.setTableRowsQuantity();
+//
+//        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
+//        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+//        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsBillingAddressID()));
+//        errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
+//        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
+//
+//        try {
+//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+//            DBUtils.cleanDB("clean_new_billing_address.sql");
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 
     @TestRailID(id = 7793)
     @ParameterizedTest

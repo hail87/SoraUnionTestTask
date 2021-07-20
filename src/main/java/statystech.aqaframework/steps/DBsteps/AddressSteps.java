@@ -23,7 +23,6 @@ public class AddressSteps extends Steps {
         return "";
     }
 
-
     public String verifyVerificationStatus(String expectedVerificationStatus) {
         String actualVerificationStatus = null;
         int i = 0;

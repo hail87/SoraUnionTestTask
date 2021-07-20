@@ -32,6 +32,54 @@ public abstract class TableObject {
         logger.info(TABLE_NAME + " table rows quantity: " + linesQuantity);
     }
 
+    public int getRowsQuantity(int id) {
+        ResultSet rs = getRowByID(id);
+        int count = 0;
+        try {
+            while (rs.next()) {
+                ++count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (count == 0) {
+            System.out.println("No records found");
+        }
+        return count;
+    }
+
+    public int getRowsQuantity(ResultSet rs) {
+        int count = 0;
+        try {
+            while (rs.next()) {
+                ++count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (count == 0) {
+            System.out.println("No records found");
+        }
+        return count;
+    }
+
+    public int getRowsQuantity() {
+        ResultSet rs = DBUtils.execute(String.format(
+                "select * from %s", TABLE_NAME));
+        int count = 0;
+        try {
+            while (rs.next()) {
+                ++count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (count == 0) {
+            System.out.println("No records found");
+        }
+        return count;
+    }
+
     public int getPrimaryID() throws SQLException, IOException {
         return Integer.parseInt(DBUtils.select(TABLE_NAME, 1));
     }
@@ -45,6 +93,10 @@ public abstract class TableObject {
 
     public String getColumnValueByPrimaryID(int primaryID, String columnName) throws SQLException {
         return getProperRow(TABLE_NAME, primaryID).getString(columnName);
+    }
+
+    public String getColumnValueByColumnValue(String columnNameToGet, String columnNameToSearchIn, String valueToSearchBy) throws SQLException {
+        return getProperRow(columnNameToSearchIn, valueToSearchBy).getString(columnNameToGet);
     }
 
     public String getColumnValueByProductName(String productName, String columnName) throws SQLException {
@@ -79,43 +131,24 @@ public abstract class TableObject {
         return rs;
     }
 
+    protected ResultSet getProperRow(int id) throws SQLException {
+        ResultSet rs = DBUtils.execute(String.format(
+                "select * from %s where %sID = %d", TABLE_NAME, TABLE_NAME, id));
+        rs.next();
+        return rs;
+    }
+
+    protected ResultSet getProperRow(String columnName, String columnValue) throws SQLException {
+        ResultSet rs = DBUtils.execute(String.format(
+                "select * from %s where %s = %s", TABLE_NAME, columnName, columnValue));
+        rs.next();
+        return rs;
+    }
+
     public ResultSet getRowByID(int id) {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", TABLE_NAME, TABLE_NAME, id));
         return rs;
-    }
-
-    public int getRowsQuantity() {
-        ResultSet rs = DBUtils.execute(String.format(
-                "select * from %s", TABLE_NAME));
-        int count = 0;
-        try {
-            while (rs.next()) {
-                ++count;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        if (count == 0) {
-            System.out.println("No records found");
-        }
-        return count;
-    }
-
-    public int getRowsQuantity(int id) {
-        ResultSet rs = getRowByID(id);
-        int count = 0;
-        try {
-            while (rs.next()) {
-                ++count;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        if (count == 0) {
-            System.out.println("No records found");
-        }
-        return count;
     }
 
     public boolean deleteRow(int primaryID) {

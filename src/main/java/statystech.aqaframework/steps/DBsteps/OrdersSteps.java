@@ -41,6 +41,10 @@ public class OrdersSteps extends Steps {
         Context.updateTestContext(lwaTestContext);
     }
 
+    public int getOMSShippingAddressID(int orderID) {
+        return ordersTable.getOMSShippingAddressID(orderID);
+    }
+
     public String checkOMSShippingAddressID(int primaryID, int expectedOMSShippingAddressID) {
         int omsShippingAddressID = ordersTable.getOMSShippingAddressID(primaryID);
         logger.info("\nomsShippingAddressID: " + omsShippingAddressID);

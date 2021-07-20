@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static statystech.aqaframework.steps.Steps.verifyExpectedResults;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
@@ -141,32 +142,30 @@ public class SubmitOrderTestSuite extends TestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
-        AddressTable addressTable = new AddressTable();
-        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
-        addressTable.setTableRowsQuantity();
-        accountAddressSteps.setTableRowsQuantity();
-
         OmsApiSteps omsApiSteps = new OmsApiSteps();
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
-        errorMessage.append(addressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
         AddressSteps addressSteps = new AddressSteps();
-        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
+        int omsShippingAddressID = lwaTestContext.getOmsShippingAddressID();
+        errorMessage.append(addressSteps.checkAddressExist(omsShippingAddressID));
+        AddressTable addressTable = new AddressTable();
         addressTable.setTableRowsQuantity();
-        accountAddressSteps.setTableRowsQuantity();
+        AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
+        errorMessage.append(accountAddressSteps.checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
+        //errorMessage.append(accountAddressSteps.verifyAddressTypeCD(lwaTestContext.getAccountAddressID(), "SA"));
 
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
-        errorMessage.append(accountAddressSteps.accountAddressTable.verifyNewRowCreated());
-        errorMessage.append(accountAddressSteps.checkShippingAddressID(lwaTestContext));
+        int newOmsShippingAddressID = ordersSteps.getOMSShippingAddressID(lwaTestContext.getApiOrderId());
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
+        errorMessage.append(verifyExpectedResults(omsShippingAddressID, newOmsShippingAddressID));
+        errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
+        errorMessage.append(accountAddressSteps.checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
+        //errorMessage.append(accountAddressSteps.verifyAddressTypeCD(lwaTestContext.getAccountAddressID(), "SA"));
 
         try {
             DBUtils.cleanDB("clean_all_lwa_test_data.sql");

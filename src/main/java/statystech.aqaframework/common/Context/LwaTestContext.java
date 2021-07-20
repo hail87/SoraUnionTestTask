@@ -54,6 +54,7 @@ public class LwaTestContext extends TestContext{
     private OmsSubmitOrderJson omsSubmitOrderJson;
     private int paymentMethodID;
     private int orderExceptionHistoryID;
+    private int accountAddressID;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {

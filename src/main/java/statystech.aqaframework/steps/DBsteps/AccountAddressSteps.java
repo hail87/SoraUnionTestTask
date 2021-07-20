@@ -3,8 +3,13 @@ package statystech.aqaframework.steps.DBsteps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.AccountAddressTable;
+import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
+import statystech.aqaframework.utils.DBUtils;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AccountAddressSteps extends Steps {
 
@@ -12,7 +17,7 @@ public class AccountAddressSteps extends Steps {
 
     public AccountAddressTable accountAddressTable = new AccountAddressTable();
 
-    public void setTableRowsQuantity(){
+    public void setTableRowsQuantity() {
         accountAddressTable.setTableRowsQuantity();
     }
 
@@ -21,6 +26,37 @@ public class AccountAddressSteps extends Steps {
         errorMessage.append(checkShippingAddressID(lwaTestContext));
         errorMessage.append(checkBillingAddressID(lwaTestContext));
         return errorMessage.toString();
+    }
+
+    public String checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(LwaTestContext lwaTestContext, String addressTypeCD) {
+        ResultSet rs = DBUtils.execute(String.format("select * from %s where addressID = '%d' and buyerAccountID = '%d' and addressTypeCD = '%s'",
+                accountAddressTable.getName(), lwaTestContext.getOmsShippingAddressID(), lwaTestContext.getApiBuyerAccountId(), addressTypeCD));
+        int rowsQuantity = accountAddressTable.getRowsQuantity(rs);
+        if (rowsQuantity < 1) {
+            return "\nThere was no row with specified parameters found";
+        }
+        if (rowsQuantity > 1) {
+            return "\nThere was more then one row with specified parameters found";
+        }
+        try {
+            rs.cancelRowUpdates();
+            rs.next();
+            lwaTestContext.setAccountAddressID(Integer.parseInt(rs.getString(1)));
+            Context.updateTestContext(lwaTestContext);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return "";
+    }
+
+    public String verifyAddressTypeCD(int primaryID, String expectedAddressTypeCD) {
+        String actualAddressTypeCD = "";
+        try {
+            actualAddressTypeCD = accountAddressTable.getColumnValueByPrimaryID(primaryID, "addressTypeCD");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return verifyExpectedResults(actualAddressTypeCD, expectedAddressTypeCD);
     }
 
     public String checkShippingAddressID(LwaTestContext lwaTestContext) {

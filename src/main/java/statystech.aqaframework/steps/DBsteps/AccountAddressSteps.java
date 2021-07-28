@@ -29,7 +29,7 @@ public class AccountAddressSteps extends Steps {
     }
 
     public String checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(LwaTestContext lwaTestContext, String addressTypeCD) {
-        ResultSet rs = DBUtils.execute(String.format("select * from %s where addressID = '%d' and buyerAccountID = '%d' and addressTypeCD = '%s'",
+        ResultSet rs = DBUtils.executeUpdatable(String.format("select * from %s where addressID = '%d' and buyerAccountID = '%d' and addressTypeCD = '%s'",
                 accountAddressTable.getName(), lwaTestContext.getOmsShippingAddressID(), lwaTestContext.getApiBuyerAccountId(), addressTypeCD));
         int rowsQuantity = accountAddressTable.getRowsQuantity(rs);
         if (rowsQuantity < 1) {
@@ -39,7 +39,7 @@ public class AccountAddressSteps extends Steps {
             return "\nThere was more then one row with specified parameters found";
         }
         try {
-            rs.cancelRowUpdates();
+            rs.beforeFirst();
             rs.next();
             lwaTestContext.setAccountAddressID(Integer.parseInt(rs.getString(1)));
             Context.updateTestContext(lwaTestContext);

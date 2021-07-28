@@ -62,6 +62,21 @@ public class DBUtils {
         return rs;
     }
 
+    public static ResultSet executeUpdatable(String fullRequest) {
+        ResultSet rs = null;
+        try {
+            PreparedStatement prepStmt = Context.getTestContext(LwaTestContext.class).getConnection().prepareStatement(
+                    fullRequest,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            rs = prepStmt.executeQuery();
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+            logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
+        }
+        return rs;
+    }
+
     public static String executeAndReturnString(String fullRequest) {
         ResultSet rs;
         try {

@@ -45,6 +45,10 @@ public class OrdersSteps extends Steps {
         return ordersTable.getOMSShippingAddressID(orderID);
     }
 
+    public int getOMSBillingAddressID(int orderID) {
+        return ordersTable.getOMSBillingAddressID(orderID);
+    }
+
     public String checkOMSShippingAddressID(int primaryID, int expectedOMSShippingAddressID) {
         int omsShippingAddressID = ordersTable.getOMSShippingAddressID(primaryID);
         logger.info("\nomsShippingAddressID: " + omsShippingAddressID);

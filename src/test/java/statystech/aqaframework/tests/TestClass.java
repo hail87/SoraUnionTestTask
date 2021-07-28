@@ -64,7 +64,7 @@ public abstract class TestClass {
 //    public void cleanDB(){
 //        try {
 //            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-//            DBUtils.cleanDB("clean_new_address_failed.sql");
+//            DBUtils.cleanDB("clean_new_billing_address.sql");
 //        } catch (SQLException | IOException throwables) {
 //            throwables.printStackTrace();
 //        }

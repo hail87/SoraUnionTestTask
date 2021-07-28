@@ -28,15 +28,40 @@ public class AccountAddressSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(LwaTestContext lwaTestContext, String addressTypeCD) {
+    public String checkRowWithShippingAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(LwaTestContext lwaTestContext, String addressTypeCD) {
         ResultSet rs = DBUtils.executeUpdatable(String.format("select * from %s where addressID = '%d' and buyerAccountID = '%d' and addressTypeCD = '%s'",
                 accountAddressTable.getName(), lwaTestContext.getOmsShippingAddressID(), lwaTestContext.getApiBuyerAccountId(), addressTypeCD));
         int rowsQuantity = accountAddressTable.getRowsQuantity(rs);
         if (rowsQuantity < 1) {
-            return "\nThere was no row with specified parameters found";
+            return "\nAccountAddressSteps:checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID"
+                    + "\nThere was no row with specified parameters found";
         }
         if (rowsQuantity > 1) {
-            return "\nThere was more then one row with specified parameters found";
+            return "\nAccountAddressSteps:checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID"
+            + "\nThere was more then one row with specified parameters found";
+        }
+        try {
+            rs.beforeFirst();
+            rs.next();
+            lwaTestContext.setAccountAddressID(Integer.parseInt(rs.getString(1)));
+            Context.updateTestContext(lwaTestContext);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return "";
+    }
+
+    public String checkRowWithBillingAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(LwaTestContext lwaTestContext, String addressTypeCD) {
+        ResultSet rs = DBUtils.executeUpdatable(String.format("select * from %s where addressID = '%d' and buyerAccountID = '%d' and addressTypeCD = '%s'",
+                accountAddressTable.getName(), lwaTestContext.getOmsBillingAddressID(), lwaTestContext.getApiBuyerAccountId(), addressTypeCD));
+        int rowsQuantity = accountAddressTable.getRowsQuantity(rs);
+        if (rowsQuantity < 1) {
+            return "\nAccountAddressSteps:checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID"
+                    + "\nThere was no row with specified parameters found";
+        }
+        if (rowsQuantity > 1) {
+            return "\nAccountAddressSteps:checkRowWithAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID"
+                    + "\nThere was more then one row with specified parameters found";
         }
         try {
             rs.beforeFirst();

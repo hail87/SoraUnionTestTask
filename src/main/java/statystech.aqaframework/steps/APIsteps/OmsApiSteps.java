@@ -89,8 +89,7 @@ public class OmsApiSteps {
         Context.updateTestContext(testContext);
     }
 
-    public String updateBuyerAccountIdAndSendPOST(TestInfo testInfo) throws IOException {
-        LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
+    public String updateBuyerAccountIdAndSendPOST(LwaTestContext testContext) throws IOException {
         testContext.updateBuyerAccountID();
         Context.updateTestContext(testContext);
         String jsonString = JsonUtils.serializeJsonObjectToJsonString(testContext.getOmsSubmitOrderJson());
@@ -108,6 +107,11 @@ public class OmsApiSteps {
             Context.updateTestContext(testContext);
             return "";
         }
+    }
+
+    public String updateBuyerAccountIdAndSendPOST(TestInfo testInfo) throws IOException {
+        LwaTestContext testContext = Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
+        return updateBuyerAccountIdAndSendPOST(testContext);
     }
 
     public String sendPostRequestAndWaitForStatusCode(String jsonFileName, int statusCode) {

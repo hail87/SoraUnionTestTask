@@ -93,9 +93,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdNotExist(lwaTestContext.getApiOrderId()));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -108,10 +106,13 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 9));
-        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+
         errorMessage.append(new OrderStatusHistorySteps().checkRowWithOrderIdIsPresent(lwaTestContext.getApiOrderId()));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
@@ -126,9 +127,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdNotExist(lwaTestContext.getApiOrderId()));
         errorMessage.append(new BuyerAccountSteps().checkAllSysAccountIDMatch(9998, 9997));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
@@ -211,11 +210,6 @@ public class OrderValidationTestSuite extends TestClass {
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 296));
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -362,11 +356,6 @@ public class OrderValidationTestSuite extends TestClass {
 
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrdersSteps ordersSteps = new OrdersSteps();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();

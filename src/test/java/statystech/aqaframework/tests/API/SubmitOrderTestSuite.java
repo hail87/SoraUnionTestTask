@@ -218,7 +218,7 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 7783)
+    @TestRailID(id = 7783)
     @ParameterizedTest
     @CsvSource({"submitOrder-newBuyerAndrew.json"})
     public void submitOrderExistedBuyerBillingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -275,6 +275,7 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //todo: re-write according to the test case
     @TestRailID(id = 12708)
     @ParameterizedTest
     @CsvSource({"submitOrder-newBuyerErikaSA.json, submitOrder-knownBuyerOtherSA.json"})

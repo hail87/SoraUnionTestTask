@@ -275,19 +275,17 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //todo: re-write according to the test case
     @TestRailID(id = 12708)
     @ParameterizedTest
     @CsvSource({"submitOrder-newBuyerErikaSA.json, submitOrder-knownBuyerOtherSA.json"})
     public void submitOrderExistedBuyerOtherShippingAddress(String jsonFilename, String updateJsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
         OmsApiSteps omsApiSteps = new OmsApiSteps();
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
         OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         AddressTable addressTable = new AddressTable();
         addressTable.setTableRowsQuantity();

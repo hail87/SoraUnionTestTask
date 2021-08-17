@@ -47,16 +47,16 @@ delete from lwa_sandbox.shopperGroup
 where shopperGroupID > 0;
 
 delete from lwa_sandbox.warehouseBatchInventory
-where warehouseBatchInventoryID > 0;
+where warehouseBatchInventoryID NOT in (8057) and warehouseBatchInventoryID > 0;
 
 delete from lwa_sandbox.warehouseInventory
-where warehouseInventoryID > 0;
+where warehouseInventoryID NOT in (4188) and warehouseInventoryID > 0;
 
 delete from lwa_sandbox.productDescription
 where productDescriptionID > 0;
 
 delete from lwa_sandbox.productBatch
-where productBatchID > 0;
+where productBatchID NOT in (6207) and productBatchID > 0;
 
 delete from lwa_sandbox.product
 where productID NOT in (2295, 2391) and productID > 0;

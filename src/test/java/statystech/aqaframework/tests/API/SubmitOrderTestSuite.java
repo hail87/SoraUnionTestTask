@@ -336,6 +336,7 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
+    //fail
     @TestRailID(id = 7922)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-nonValidMid.json"})
@@ -353,6 +354,7 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //fail
     @TestRailID(id = 7801)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})

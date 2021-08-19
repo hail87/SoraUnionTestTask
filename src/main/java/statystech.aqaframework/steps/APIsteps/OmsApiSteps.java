@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.OmsDto.AretoApi.AretoAuthorizeResponse;
+import statystech.aqaframework.DataObjects.OmsDto.AretoApi.Capture.AretoCaptureResponse;
 import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
@@ -82,7 +84,7 @@ public class OmsApiSteps {
         Context.updateTestContext(testContext);
     }
 
-    public void updateBuyerAccountIp(LwaTestContext testContext, String ip) {
+    public void updateBuyerAccountId(LwaTestContext testContext, String ip) {
         testContext.updateBuyerIpAddress(ip);
         String jsonString = JsonUtils.serializeJsonObjectToJsonString(testContext.getOmsSubmitOrderJson());
         testContext.setJsonString(jsonString);
@@ -134,5 +136,36 @@ public class OmsApiSteps {
             errorMessage = String.format("Actual response code '%d' is different from expected one '%d'\n", responseCode, statusCode);
         }
         return errorMessage;
+    }
+
+    public String aretoAuthorizeAndSaveResponseToContext(String orderId, LwaTestContext lwaTestContext) throws IOException {
+        String responseString = new ApiRestUtils().authorizeAretoTransactionAndGetString(orderId);
+        logger.info("Response from API:\n" + responseString);
+        if (!responseString.contains("orderId")) {
+            return String.format("\nWrong response!\nResponseString:\n'%s'\n", responseString);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            AretoAuthorizeResponse response = mapper.readValue(responseString, AretoAuthorizeResponse.class);
+            lwaTestContext.setAretoAuthorizeDescription(response.getDescription());
+            lwaTestContext.setAretoToken(response.getDetail().getToken());
+            lwaTestContext.setAretoInternalOrderId(response.getDetail().getInternalOrderId());
+            lwaTestContext.setAretoAuthorizeAmount(response.getDetail().getAmount());
+            Context.updateTestContext(lwaTestContext);
+            return "";
+        }
+    }
+
+    public String aretoCaptureAndSaveResponseToContext(Double amount, String internalOrderId, LwaTestContext testContext) throws IOException {
+        String responseString = new ApiRestUtils().captureAretoTransactionAndGetString(amount.toString(), internalOrderId);
+        logger.info("Response from API:\n" + responseString);
+        if (!responseString.contains("orderId")) {
+            return String.format("\nWrong response!\nResponseString:\n'%s'\n", responseString);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            AretoCaptureResponse response = mapper.readValue(responseString, AretoCaptureResponse.class);
+            testContext.setAretoCaptureDescription(response.getDescription());
+            Context.updateTestContext(testContext);
+            return "";
+        }
     }
 }

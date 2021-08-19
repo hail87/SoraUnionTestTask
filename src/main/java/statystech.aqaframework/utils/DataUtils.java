@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Path;
 
 import java.io.*;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,7 +60,7 @@ public class DataUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
         cal.setTime(ts);
-        cal.add(Calendar.HOUR,-4);
+        cal.add(Calendar.HOUR, -4);
         return sdf.format(cal.getTime());
     }
 
@@ -79,7 +80,23 @@ public class DataUtils {
         out.close();
     }
 
-    public static String convertUnicodeToAscii(String input){
+    public static String convertUnicodeToAscii(String input) {
         return StringEscapeUtils.unescapeJava(input);
     }
+
+    public static String getAlphaNumericRandom(int alphaLength, int digitsLength) {
+        final String Alpha = "abcdefghijklmnopqrstuvwxyz";
+        final String Numeric = "0123456789";
+        SecureRandom rnd = new SecureRandom();
+        int len1 = alphaLength;
+        int len2 = digitsLength;
+        StringBuilder sb = new StringBuilder(alphaLength + digitsLength);
+        for (int i = 0; i < len1; i++)
+            sb.append(Alpha.charAt(rnd.nextInt(Alpha.length())));
+        for (int i = 0; i < len2; i++)
+            sb.append(Numeric.charAt(rnd.nextInt(Numeric.length())));
+        return sb.toString();
+    }
+
 }
+

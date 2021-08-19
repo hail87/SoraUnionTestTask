@@ -95,11 +95,11 @@ public class OrdersSteps extends Steps {
         return verifyExpectedResults(ordersTable.getJsonAndTableValue(orderLineID, "order_date"));
     }
 
-    public String checkOrderIsCancelled() throws SQLException, JsonProcessingException {
+    public String checkOrderIsCancelled() throws SQLException {
         return checkOrderStatusName("Cancelled");
     }
 
-    private String checkOrderStatusName(String expectedStatus) throws SQLException, JsonProcessingException {
+    private String checkOrderStatusName(String expectedStatus) throws SQLException {
         String actual = ordersTable.getOrderStatusName();
         return verifyExpectedResults(actual, expectedStatus);
     }
@@ -166,6 +166,14 @@ public class OrdersSteps extends Steps {
             i++;
         }
         return verifyExpectedResults(actualStatus, expectedStatus);
+    }
+
+    public String verifyOMSisPaid(String expectedOMSisPaid) {
+        String actualOMSisPaid = ordersTable.getOMSisPaid();
+        if (actualOMSisPaid.isEmpty()){
+            return "\nCouldn't get OMSisPaid from orders table\n";
+        }
+        return verifyExpectedResults(actualOMSisPaid, expectedOMSisPaid);
     }
 
 }

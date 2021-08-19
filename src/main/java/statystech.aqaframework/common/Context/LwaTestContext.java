@@ -56,6 +56,13 @@ public class LwaTestContext extends TestContext{
     private int orderExceptionHistoryID;
     private int accountAddressID;
 
+    private String aretoInternalOrderId;
+    private String aretoToken;
+    private String aretoAuthorizeDescription;
+    private Double aretoAuthorizeAmount;
+    private String aretoCaptureDescription;
+    private String aretoCaptureCode;
+
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {
             throw new SQLException("\nThere is no warehouseOrders yet\n");

@@ -104,4 +104,63 @@ public class ApiRestUtils {
         }
         return response;
     }
+
+    public String authorizeAretoTransactionAndGetString(String orderId) {
+        try {
+            return authorizeAretoTransaction(orderId).body().string();
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return "There was an error during areto authorize API request\n";
+    }
+
+    private okhttp3.Response authorizeAretoTransaction(String orderId) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"amount\": 200.02,\n    \"client\": {\n        \"email\": \"email@email.com\",\n        \"externalId\": \"MytestUserName1\",\n        \"ip\": \"217.125.203.36\",\n        \"forwardIp\": \"21.25.41.152\",\n        \"phone\": \"+421365241417\",\n        \"dob\": {\n            \"day\": 1,\n            \"month\": 12,\n            \"year\": 1992\n        }\n    },\n    \"currency\": \"USD\",\n    \"orderId\": \"" + orderId + "\",\n    \"payment\": {\n        \"type\": \"CARD\",\n        \"createToken\": true,\n        \"cardNumber\": \"4444333322221111\",\n        \"cardType\": \"VISA\",\n        \"cardCode\": \"123\",\n        \"cardExpiryDate\": {\n            \"month\": 1,\n            \"year\": 2023\n        },\n        \"cardHolder\": {\n            \"city\": \"Rome\",\n            \"country\": \"US\",\n            \"name\": \"John\",\n            \"street\": \"24 My big street\",\n            \"zip\": \"05212\",\n            \"surname\": \"Doe\",\n            \"state\": \"AL\"\n        }\n    },\n    \"mid\": 2,\n    \"items\": [\n        {\n            \"code\": \"XR01\",\n            \"name\": \"SD Card 128GB\",\n            \"qty\": 2\n        },\n        {\n            \"code\": \"XR01\",\n            \"name\": \"SD Card 128GB\",\n            \"qty\": 2\n        }\n    ],\n    \"finalization\": {\n        \"returnUrl\": \"/processfinal\"\n    }\n}");
+        Request request = new Request.Builder()
+                .url("https://api.stage.areto-payment.com/api/authorize/v2")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "Basic a19uTEpCVFFQYW9PMG1HcVc0NVBFWVFyZ20vWi9LTHFNS1Z1S1BBM0U1R09rPTo=")
+                .build();
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public String captureAretoTransactionAndGetString(String amount, String internalOrderId) {
+        try {
+            return captureAretoTransaction(amount, internalOrderId).body().string();
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return "There was an error during areto capture API request\n";
+    }
+
+    private okhttp3.Response captureAretoTransaction(String amount, String internalOrderId) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"amount\": " + amount + "\n}");
+        Request request = new Request.Builder()
+                .url("https://api.stage.areto-payment.com/api/capture/v2/" + internalOrderId)
+                .method("PUT", body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "Basic a19uTEpCVFFQYW9PMG1HcVc0NVBFWVFyZ20vWi9LTHFNS1Z1S1BBM0U1R09rPTo=")
+                .build();
+
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
 }

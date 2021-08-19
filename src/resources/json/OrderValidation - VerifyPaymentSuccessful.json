@@ -1,0 +1,75 @@
+{
+    "order_header": {
+        "website_order_id": "",
+        "order_date": "2021-08-18",
+        "shipping_total": 2.00,
+        "total": 200.00,
+        "prices_include_tax": true,
+        "currency": "USD"
+    },
+    "discounts": {
+        "discount_total": 0
+    },
+    "buyer": {
+        "buyer_ip_address": "192.168.1.1",
+        "buyer_license": {
+            "license_name": "LN12345",
+            "license_expiry_date": "2024-01-31",
+            "title": "",
+            "first_name": "Marko",
+            "middle_name": "",
+            "last_name": "Candiago",
+            "state": "ON",
+            "country": "CA",
+            "profession": "Pharmacist",
+            "specialty": ""
+        },
+        "buyer_address": {
+            "title": "",
+            "first_name": "Marko",
+            "middle_name": "",
+            "last_name": "Candiago",
+            "company": "",
+            "address_1": "325 Dundas St",
+            "address_2": "",
+            "city": "London",
+            "state": "ON",
+            "postcode": "N6B 1T9",
+            "country": "CA",
+            "phone_number_1": "6472368233",
+            "phone_number_2": "",
+            "email": "marko@contoso.com"
+        }
+    },
+    "shipping": {
+        "title": "",
+        "first_name": "Jane",
+        "middle_name": "",
+        "last_name": "Candiago",
+        "company": "",
+        "address_1": "840 Exeter Rd",
+        "address_2": "",
+        "city": "London",
+        "state": "ON",
+        "postcode": "N6E 1L5",
+        "country": "CA",
+        "phone_number_1": "6472368233",
+        "phone_number_2": "",
+        "email": "jane@contoso.com"
+    },
+    "payment_details": {
+        "payment_transaction_id": "HS",
+        "payment_token": "ABC",
+        "payment_method_type": "C",
+        "payment_method_description": "5590",
+        "payment_mid": 1004
+    },
+    "line_items": [
+        {
+            "product_id": 2391,
+            "quantity": 9,
+            "price": 200.0,
+            "total": 200.0
+        }
+    ]
+}

@@ -84,6 +84,20 @@ public class OrdersTable extends TableObject {
         return Integer.parseInt(DBUtils.executeAndReturnString("select paymentMethodID from orders where orderID = '" + primaryId + "'"));
     }
 
+    public String getOMSisPaid() {
+        int primaryId;
+        String omsIsPaid = "";
+        try {
+            primaryId = getPrimaryID();
+            omsIsPaid = DBUtils.executeAndReturnString("select OMSIsPaid from orders where orderID = '" + primaryId + "'");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return omsIsPaid;
+    }
+
     @Override
     protected ResultSet getProperRow(String tableName, int orderAllSysID) {
         ResultSet rs = DBUtils.execute(String.format(

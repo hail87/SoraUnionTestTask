@@ -4,7 +4,7 @@
         "order_date": "2021-06-15",
         "shipping_total": 2.00,
         "total": 200.00,
-        "prices_include_tax": true,
+        "prices_include_tax": false,
         "currency": "USD"
     },
     "discounts": {
@@ -63,7 +63,7 @@
         "payment_token": "AbcDef123Ghi456jkl5300",
         "payment_method_type": "CC",
         "payment_method_description": "********5590",
-        "payment_mid": 1004
+        "payment_mid": 10
     },
     "line_items": [
         {

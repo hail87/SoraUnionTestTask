@@ -34,14 +34,14 @@ public class OrderExceptionHistorySteps extends Steps {
         rowIsPresent = orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId()));
 
         if (!rowIsPresent) {
-            return "There is no row with orderID : " + lwaTestContext.getApiOrderId();
+            return "OrderExceptionHistorySteps: There is no row with orderID : " + lwaTestContext.getApiOrderId();
         }
         return "";
     }
 
 
-    public String verifyRowWithOrderIdNotExist(int orderID) {
-        boolean rowIsPresent = false;
+    public String verifyRowWithOrderIdDontExist(int orderID) {
+        boolean rowIsPresent;
         int i = 0;
         while(!orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(orderID)) && i < 3)
         {
@@ -55,7 +55,7 @@ public class OrderExceptionHistorySteps extends Steps {
         rowIsPresent = orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(orderID));
 
         if (rowIsPresent) {
-            return "There is a row with orderID : '" + orderID + "', but should NOT!";
+            return "OrderExceptionHistorySteps: There is a row with orderID : '" + orderID + "', but should NOT be!";
         }
         return "";
     }
@@ -78,20 +78,24 @@ public class OrderExceptionHistorySteps extends Steps {
     }
 
     public String verifyOrderExceptionTypeIDIsNot(LwaTestContext lwaTestContext, int expectedType) {
-        int orderExceptionHistoryID;
-        int actualType = 0;
-        try {
-            orderExceptionHistoryID = orderExceptionHistoryTable.getPrimaryID("orderID", String.valueOf(lwaTestContext.getApiOrderId()));
-            actualType = Integer.parseInt(orderExceptionHistoryTable.getColumnValueByPrimaryID(orderExceptionHistoryID, "orderExceptionTypeID"));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return "\nCan't get orderExceptionHistoryID or orderExceptionTypeID\n";
-        }
+        boolean rowIsPresent = verifyRowWithOrderIdExist(lwaTestContext).isEmpty();
+        if (rowIsPresent) {
+            int orderExceptionHistoryID;
+            int actualType;
+            try {
+                orderExceptionHistoryID = orderExceptionHistoryTable.getPrimaryID("orderID", String.valueOf(lwaTestContext.getApiOrderId()));
+                actualType = Integer.parseInt(orderExceptionHistoryTable.getColumnValueByPrimaryID(orderExceptionHistoryID, "orderExceptionTypeID"));
+            } catch (SQLException throwables) {
+                return "\nOrderExceptionHistorySteps: Can't get orderExceptionHistoryID or orderExceptionTypeID\n";
+            }
 
-        if (expectedType == actualType) {
-            return String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are the same, but should NOT be\n", expectedType, actualType);
+            if (expectedType == actualType) {
+                return String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are the same, but should NOT be\n", expectedType, actualType);
+            }
+            return "";
+        } else {
+            return "OrderExceptionHistorySteps: There is no row with orderID : " + lwaTestContext.getApiOrderId();
         }
-        return "";
     }
 
 

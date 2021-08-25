@@ -15,7 +15,7 @@ public class OrdersTable extends TableObject {
 
     final String TABLE_NAME = "orders";
 
-    public OrdersTable(){
+    public OrdersTable() {
         super.TABLE_NAME = TABLE_NAME;
     }
 
@@ -60,6 +60,7 @@ public class OrdersTable extends TableObject {
     }
 
     public int getPrimaryID() throws SQLException, IOException {
+
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
                 "select orderID from %s where orderAllSysID = \"" + getOrderAllSysIDValue() + "\"", TABLE_NAME)));
     }
@@ -84,17 +85,9 @@ public class OrdersTable extends TableObject {
         return Integer.parseInt(DBUtils.executeAndReturnString("select paymentMethodID from orders where orderID = '" + primaryId + "'"));
     }
 
-    public String getOMSisPaid() {
-        int primaryId;
+    public String getOMSisPaid(int orderId) {
         String omsIsPaid = "";
-        try {
-            primaryId = getPrimaryID();
-            omsIsPaid = DBUtils.executeAndReturnString("select OMSIsPaid from orders where orderID = '" + primaryId + "'");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        omsIsPaid = DBUtils.executeAndReturnString("select OMSIsPaid from orders where orderID = '" + orderId + "'");
         return omsIsPaid;
     }
 

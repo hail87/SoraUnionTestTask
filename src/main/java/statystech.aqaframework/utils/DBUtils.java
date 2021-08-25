@@ -84,7 +84,6 @@ public class DBUtils {
             rs.next();
             return rs.getString(1);
         } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
             logger.error("Empty response from DB");
             return "";
         }

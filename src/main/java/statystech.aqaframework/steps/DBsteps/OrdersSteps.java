@@ -157,7 +157,7 @@ public class OrdersSteps extends Steps {
         while(actualStatus.equalsIgnoreCase("New Order") && i < 3)
         {
             try {
-                Thread.sleep(4000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -168,8 +168,8 @@ public class OrdersSteps extends Steps {
         return verifyExpectedResults(actualStatus, expectedStatus);
     }
 
-    public String verifyOMSisPaid(String expectedOMSisPaid) {
-        String actualOMSisPaid = ordersTable.getOMSisPaid();
+    public String verifyOMSisPaid(String expectedOMSisPaid, int orderId) {
+        String actualOMSisPaid = ordersTable.getOMSisPaid(orderId);
         if (actualOMSisPaid.isEmpty()){
             return "\nCouldn't get OMSisPaid from orders table\n";
         }

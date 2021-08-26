@@ -24,15 +24,15 @@ public class AddressSteps extends Steps {
     }
 
     public String verifyVerificationStatus(String expectedVerificationStatus) {
-        String actualVerificationStatus = null;
+        String actualVerificationStatus = "";
         int i = 0;
-        while (actualVerificationStatus == null && i < 10) {
+        while (actualVerificationStatus == null || actualVerificationStatus.isEmpty() && i < 10) {
+            actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = 'Woznik'");
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = 'Smithello'");
             i++;
         }
         return verifyExpectedResults(actualVerificationStatus,expectedVerificationStatus);

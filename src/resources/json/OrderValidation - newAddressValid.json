@@ -60,10 +60,10 @@
     },
     "payment_details": {
         "payment_transaction_id": "HS-123-9882B95",
-        "payment_token": "AbcDef123Ghi456jkl5300",
+        "payment_token": "SMB5BRgp9ESRdDDo8HCN",
         "payment_method_type": "CC",
-        "payment_method_description": "********5590",
-        "payment_mid": 1004
+        "payment_method_description": "********1111",
+        "payment_mid": 2
     },
     "line_items": [
         {

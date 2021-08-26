@@ -100,16 +100,21 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //bug lwa-946
+
     @TestRailID(id = 7820)
     @ParameterizedTest
     @CsvSource({"submitNewOrder.json"})
     public void accountValidationNoAllSysIdException(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -125,9 +130,11 @@ public class OrderValidationTestSuite extends TestClass {
     @CsvSource({"submitOrder-matchedAllSysID.json"})
     public void accountValidationAllSysIdMatched(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
@@ -142,15 +149,17 @@ public class OrderValidationTestSuite extends TestClass {
     public void noValidAddressException(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         addressTable.setTableRowsQuantity();
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
 
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        OrdersSteps ordersSteps = new OrdersSteps();
+        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
         errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 638));
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -167,16 +176,17 @@ public class OrderValidationTestSuite extends TestClass {
     public void externalAddressValidationFailed(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         addressTable.setTableRowsQuantity();
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(addressTable.verifyNewRowCreated());
         errorMessage.append(new AddressSteps().verifyVerificationStatus("error"));
-
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -200,15 +210,19 @@ public class OrderValidationTestSuite extends TestClass {
     public void addressValid(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
         addressTable.setTableRowsQuantity();
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
 
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 296));
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
@@ -223,31 +237,37 @@ public class OrderValidationTestSuite extends TestClass {
     @CsvSource({"OrderValidation - newAddressValid.json"})
     public void addressValidatedByExternalService(String jsonFilename, TestInfo testInfo) throws IOException {
 
+        try {
+            //DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+            DBUtils.cleanDB("clean_new_address.sql");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
         addressTable.setTableRowsQuantity();
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         errorMessage.append(addressTable.verifyNewRowCreated());
         AddressSteps addressSteps = new AddressSteps();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
         errorMessage.append(addressSteps.verifyVerificationStatus("verified"));
 
-        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
 
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
-
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_address.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -257,17 +277,15 @@ public class OrderValidationTestSuite extends TestClass {
     @CsvSource({"OrderValidation - VerifyLicenseNeededAndExist.json"})
     public void verifyLicenseNeededAndExist(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        OrdersSteps ordersSteps = new OrdersSteps();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -299,6 +317,7 @@ public class OrderValidationTestSuite extends TestClass {
             e.printStackTrace();
         }
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -314,17 +333,21 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //https://statystech.atlassian.net/browse/LWA-947
     @TestRailID(id = 7807)
     @ParameterizedTest
     @CsvSource({"OrderValidation - VerifyLicenseNeededAndDontExist.json"})
     public void verifyNoLicenseException(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
@@ -334,23 +357,22 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //todo: failed payment errortype 3 (not 5)
+    //https://statystech.atlassian.net/browse/LWA-947
     @TestRailID(id = 7806)
     @ParameterizedTest
     @CsvSource({"OrderValidation - VerifyLicenseToValidateException.json"})
     public void verifyLicenseToValidateException(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrdersSteps ordersSteps = new OrdersSteps();
-        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
-        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 5));
+
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(new OrderExceptionHistorySteps().verifyOrderExceptionTypeID(lwaTestContext, 5));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -360,17 +382,16 @@ public class OrderValidationTestSuite extends TestClass {
     @CsvSource({"OrderValidation - VerifyLicenseExpiredException.json"})
     public void verifyLicenseExpiredException(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrdersSteps ordersSteps = new OrdersSteps();
-        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
-        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 4));
+
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(new OrderExceptionHistorySteps().verifyOrderExceptionTypeID(lwaTestContext, 4));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -380,27 +401,29 @@ public class OrderValidationTestSuite extends TestClass {
     @CsvSource({"OrderValidation - VerifyInsufficientInventoryExceptionEnoughInventory.json"})
     public void verifyInsufficientInventoryExceptionEnoughInventory(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         OrdersSteps ordersSteps = new OrdersSteps();
-        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Confirmed"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 1));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 4));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 5));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 6));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 7));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
 
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+//        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 1));
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 4));
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 5));
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 6));
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 7));
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+//
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
     @TestRailID(id = 14449)
@@ -458,13 +481,15 @@ public class OrderValidationTestSuite extends TestClass {
         //omsApiSteps.aretoCaptureAndSaveResponseToContext(lwaTestContext.getAretoAuthorizeAmount(), lwaTestContext.getAretoInternalOrderId(), lwaTestContext);
 
         String updatedJson = JsonUtils.getStringFromJson(jsonFileName).replace("\"website_order_id\": \"\"", "\"website_order_id\": \"" + orderID + "\"");
-
+        updatedJson = updatedJson.replace("\"payment_transaction_id\": \"\"", "\"payment_transaction_id\": \"" + lwaTestContext.getAretoInternalOrderId() + "\"");
+        updatedJson = updatedJson.replace("\"payment_token\": \"\"", "\"payment_token\": \"" + lwaTestContext.getAretoToken() + "\"");
+        logger.info("\nUpdated .json:\n" + updatedJson);
         lwaTestContext.setJsonString(updatedJson);
         Context.updateTestContext(lwaTestContext);
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         OrdersSteps ordersSteps = new OrdersSteps();
-        //errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Confirmed"));
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Confirmed"));
         errorMessage.append(ordersSteps.verifyOMSisPaid("1", lwaTestContext.getApiOrderId()));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

@@ -176,4 +176,10 @@ public class OrdersSteps extends Steps {
         return verifyExpectedResults(actualOMSisPaid, expectedOMSisPaid);
     }
 
+    public boolean setOMSIsPaid(int isPaid, int orderId) {
+        boolean omsIsPaid = ordersTable.setOMSIsPaid(isPaid, orderId);
+        logger.info("OMSIsPaid was set to '" + isPaid + "' - '" + omsIsPaid + "'");
+        return omsIsPaid;
+    }
+
 }

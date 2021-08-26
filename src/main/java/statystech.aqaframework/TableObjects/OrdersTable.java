@@ -91,6 +91,10 @@ public class OrdersTable extends TableObject {
         return omsIsPaid;
     }
 
+    public boolean setOMSIsPaid(int isPaid, int orderId) {
+        return DBUtils.update(String.format("UPDATE %s SET OMSIsPaid = %d WHERE orderID = %d", TABLE_NAME, isPaid, orderId));
+    }
+
     @Override
     protected ResultSet getProperRow(String tableName, int orderAllSysID) {
         ResultSet rs = DBUtils.execute(String.format(

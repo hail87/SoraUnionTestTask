@@ -1,5 +1,7 @@
 delete from lwa_sandbox.accountAddress
-order by accountAddressID desc limit 1;
+where addressID = (SELECT addressID FROM lwa_sandbox.address where lastName = 'Woznik');
+--order by accountAddressID desc limit 1;
 
 delete from lwa_sandbox.address
-order by addressID desc limit 1;
+where lastName = 'Woznik';
+--order by addressID desc limit 1;

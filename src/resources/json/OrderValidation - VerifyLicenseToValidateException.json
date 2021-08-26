@@ -12,7 +12,7 @@
     },
     "buyer": {
         "buyer_ip_address": "192.168.1.1",
-        "buyer_account_id": 1001219,
+        "buyer_account_id": 9999999,
         "buyer_license": {
             "license_name": "LN12345",
             "license_expiry_date": "2024-02-02",
@@ -60,14 +60,14 @@
     },
     "payment_details": {
         "payment_transaction_id": "HS-123-9882B95",
-        "payment_token": "AbcDef123Ghi456jkl5300",
+        "payment_token": "SMB5BRgp9ESRdDDo8HCN",
         "payment_method_type": "CC",
         "payment_method_description": "********5590",
-        "payment_mid": 10
+        "payment_mid": 2
     },
     "line_items": [
         {
-            "product_id": 2295,
+            "product_id": 2392,
             "quantity": 1,
             "price": 200.0,
             "total": 200.0

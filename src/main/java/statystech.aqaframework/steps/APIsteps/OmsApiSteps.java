@@ -140,7 +140,7 @@ public class OmsApiSteps {
 
     public String aretoAuthorizeAndSaveResponseToContext(String orderId, LwaTestContext lwaTestContext) throws IOException {
         String responseString = new ApiRestUtils().authorizeAretoTransactionAndGetString(orderId);
-        logger.info("Response from API:\n" + responseString);
+        logger.info("Response from Areto API:\n" + responseString);
         if (!responseString.contains("orderId")) {
             return String.format("\nWrong response!\nResponseString:\n'%s'\n", responseString);
         } else {

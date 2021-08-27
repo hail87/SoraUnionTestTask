@@ -2,7 +2,7 @@
     "order_header": {
         "website_order_id": "",
         "order_date": "2021-08-18",
-        "shipping_total": 2.00,
+        "shipping_total": 0.00,
         "total": 200.00,
         "prices_include_tax": true,
         "currency": "USD"
@@ -63,7 +63,7 @@
         "payment_token": "",
         "payment_method_type": "C",
         "payment_method_description": "5590",
-        "payment_mid": 10
+        "payment_mid": 2
     },
     "line_items": [
         {

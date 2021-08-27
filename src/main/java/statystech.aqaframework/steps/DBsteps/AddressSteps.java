@@ -16,18 +16,18 @@ public class AddressSteps extends Steps {
 
     AddressTable addressTable = new AddressTable();
 
-    public String checkAddressExist(int id){
-        if (!addressTable.checkRowWithIDExist(id)){
+    public String checkAddressExist(int id) {
+        if (!addressTable.checkRowWithIDExist(id)) {
             return String.format("There is no row with id '%d' found at the AddressTable", id);
         }
         return "";
     }
 
-    public String verifyVerificationStatus(String expectedVerificationStatus) {
+    public String verifyVerificationStatus(String lastName, String expectedVerificationStatus) {
         String actualVerificationStatus = "";
         int i = 0;
         while (actualVerificationStatus == null || actualVerificationStatus.isEmpty() && i < 10) {
-            actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = 'Woznik'");
+            actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = '" + lastName + "'");
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -35,6 +35,6 @@ public class AddressSteps extends Steps {
             }
             i++;
         }
-        return verifyExpectedResults(actualVerificationStatus,expectedVerificationStatus);
+        return verifyExpectedResults(actualVerificationStatus, expectedVerificationStatus);
     }
 }

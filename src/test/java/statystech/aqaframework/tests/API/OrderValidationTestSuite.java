@@ -174,6 +174,13 @@ public class OrderValidationTestSuite extends TestClass {
     @ParameterizedTest
     @CsvSource({"OrderValidation-ExternalAddressValidationFailed.json"})
     public void externalAddressValidationFailed(String jsonFilename, TestInfo testInfo) throws IOException {
+        try {
+            //DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+            DBUtils.cleanDB("clean_new_address_failed.sql");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();
         OrdersSteps ordersSteps = new OrdersSteps();
@@ -184,7 +191,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(addressTable.verifyNewRowCreated());
-        errorMessage.append(new AddressSteps().verifyVerificationStatus("error"));
+        errorMessage.append(new AddressSteps().verifyVerificationStatus("Smithello", "error"));
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
@@ -193,13 +200,6 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 8));
 
         //errorMessage.append(new OrderStatusHistorySteps().validateRowWithOrderIdHasOrderStatusID(lwaTestContext.getApiOrderId(), 19));
-
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_address_failed.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -257,7 +257,7 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(addressTable.verifyNewRowCreated());
         AddressSteps addressSteps = new AddressSteps();
 
-        errorMessage.append(addressSteps.verifyVerificationStatus("verified"));
+        errorMessage.append(addressSteps.verifyVerificationStatus("Woznik", "verified"));
 
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
@@ -474,7 +474,7 @@ public class OrderValidationTestSuite extends TestClass {
     public void verifyPaymentSuccessful(String jsonFileName, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         OmsApiSteps omsApiSteps = new OmsApiSteps();
-        String orderID = DataUtils.getAlphaNumericRandom(2,3);
+        String orderID = DataUtils.getAlphaNumericRandom(2, 3);
         logger.info("\nGenerated orderID: '" + orderID + "'");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         omsApiSteps.aretoAuthorizeAndSaveResponseToContext(orderID, lwaTestContext);

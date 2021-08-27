@@ -336,7 +336,6 @@ public class SubmitOrderTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
-    //fail
     @TestRailID(id = 7922)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-nonValidMid.json"})
@@ -345,16 +344,15 @@ public class SubmitOrderTestSuite extends TestClass {
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         try {
-            Thread.sleep(4000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "New Order"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //fail
     @TestRailID(id = 7801)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})

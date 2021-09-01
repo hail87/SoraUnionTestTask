@@ -101,7 +101,6 @@ public class OrderValidationTestSuite extends TestClass {
     }
 
     //bug lwa-946
-
     @TestRailID(id = 7820)
     @ParameterizedTest
     @CsvSource({"submitNewOrder.json"})

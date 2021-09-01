@@ -1,6 +1,5 @@
 package statystech.aqaframework.tests;
 
-import org.junit.Test;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +7,6 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.OmsTestContext;
 import statystech.aqaframework.common.Context.TestContext;
-import statystech.aqaframework.steps.TestRail.TestRailSteps;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
 
@@ -64,7 +62,7 @@ public abstract class TestClass {
 //    public void cleanDB(){
 //        try {
 //            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-//            DBUtils.cleanDB("clean_new_billing_address.sql");
+//            //DBUtils.cleanDB("clean_new_billing_address.sql");
 //        } catch (SQLException | IOException throwables) {
 //            throwables.printStackTrace();
 //        }

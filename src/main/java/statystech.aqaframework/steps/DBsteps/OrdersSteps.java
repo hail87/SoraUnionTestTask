@@ -154,10 +154,10 @@ public class OrdersSteps extends Steps {
         String actualStatus = DBUtils.executeAndReturnString(
                 String.format("select orderStatusName from %s where orderID = %d", ordersTable.getName(), orderID));
         int i = 0;
-        while(actualStatus.equalsIgnoreCase("New Order") && i < 3)
+        while(actualStatus.equalsIgnoreCase("New Order") && i < 30)
         {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

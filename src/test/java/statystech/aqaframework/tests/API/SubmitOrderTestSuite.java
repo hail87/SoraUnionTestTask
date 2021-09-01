@@ -55,7 +55,8 @@ public class SubmitOrderTestSuite extends TestClass {
     @BeforeEach
     public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
         String name = testInfo.getTestMethod().get().getName();
-        logger.info(String.format(" Test started : %s\n", name));
+        logger.info(String.format(
+                "\nTest № %d has been started : '%s'\n", testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id(), name));
         LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnection();
         Context.addTestContext(lwaTestContext);

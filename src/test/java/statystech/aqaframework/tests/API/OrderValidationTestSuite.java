@@ -53,7 +53,8 @@ public class OrderValidationTestSuite extends TestClass {
     @BeforeEach
     public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
         String name = testInfo.getTestMethod().get().getName();
-        logger.info(String.format("\nTest started : %s\n", name));
+        logger.info(String.format(
+                "\nTest № %d has been started : '%s'\n", testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id(), name));
         LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnection();
         Context.addTestContext(lwaTestContext);
@@ -135,6 +136,9 @@ public class OrderValidationTestSuite extends TestClass {
         ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
         errorMessage.append(new BuyerAccountSteps().checkAllSysAccountIDMatch(9998, 9997));

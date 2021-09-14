@@ -143,7 +143,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //https://statystech.atlassian.net/browse/OMS-598
+    //https://statystech.atlassian.net/browse/OMS-598 do not uncomment until resolved
 //    @TestRailID(id = 7807)
 //    @ParameterizedTest
 //    @CsvSource({"OrderValidation - VerifyLicenseNeededAndDontExist.json"})

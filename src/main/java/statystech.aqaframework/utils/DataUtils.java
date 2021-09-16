@@ -1,5 +1,15 @@
 package statystech.aqaframework.utils;
 
+import io.kubernetes.client.PodLogs;
+import io.kubernetes.client.openapi.ApiClient;
+import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.Configuration;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1APIResource;
+import io.kubernetes.client.openapi.models.V1Pod;
+import io.kubernetes.client.util.Config;
+import io.kubernetes.client.util.KubeConfig;
+import io.kubernetes.client.util.Streams;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +20,7 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 
 public class DataUtils {
@@ -98,5 +109,58 @@ public class DataUtils {
         return sb.toString();
     }
 
+    public static void executeShellCommand(String cmd) {
+        try {
+            Process process
+                    = Runtime.getRuntime().exec(cmd);
+
+            StringBuilder output = new StringBuilder();
+
+            BufferedReader reader
+                    = new BufferedReader(new InputStreamReader(
+                    process.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                System.out.println(
+                        "**************************** The Output is ******************************");
+                System.out.println(output);
+                System.exit(0);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void downloadKubeCtlLogs() {
+        try {
+            ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
+
+            Configuration.setDefaultApiClient(client);
+            CoreV1Api coreApi = new CoreV1Api(client);
+
+            PodLogs logs = new PodLogs();
+            V1Pod pod =
+                    coreApi
+                            .listNamespacedPod(
+                                    "lwa-sandbox", "false", null, null, null, null, null, null, null, null, null)
+                            .getItems()
+                            .get(21);
+
+            InputStream is = logs.streamNamespacedPodLog(pod);
+            Streams.copy(is, System.out);
+        } catch (ApiException | IOException e){
+            logger.error("\nCan't get logs from kubernetees\n");
+        }
+    }
 }
+
+
 

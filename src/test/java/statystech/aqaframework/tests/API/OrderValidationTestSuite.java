@@ -340,7 +340,6 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //https://statystech.atlassian.net/browse/LWA-946
     @TestRailID(id = 7820)
     @ParameterizedTest
     @CsvSource({"submitNewOrder.json"})

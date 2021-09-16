@@ -8,8 +8,6 @@ import com.codepine.api.testrail.model.Run;
 import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
@@ -142,12 +140,13 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         }
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
         testRail.results().addForCases(runID, results, customResultFields).execute();
-        addLogsToTestRun(runID);
+        addTestLogsToTestRun(runID);
+        //addAppLogsToTestRun(runID);
         logger.info("Closing test run #" + runID);
         testRail.runs().close(runID).execute();
     }
 
-    private static void addLogsToTestRun(int runID){
+    private static void addTestLogsToTestRun(int runID){
         String url = Path.TEST_RAIL.getPath() + "index.php?/api/v2/add_attachment_to_run/" + runID;
         Properties properties = DataUtils.getProperty("test_rail_config.properties");
         final String userId = properties.getProperty("testrail_userId").trim();
@@ -155,6 +154,41 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         logger.info("[Uploading log file] Sending post to:" + url);
         LogManager.shutdown(); //Delete to show full logs until very end, but proper log file uploading to the testRail won't be guaranteed
         String[] CMD_ARRAY = {"curl", "-H", "Content-Type: multipart/form-data", "-u", userId + ":" + pwd, "-F", "attachment=@target/logs/test.log", url};
+        ProcessBuilder processBuilder = new ProcessBuilder(CMD_ARRAY);
+        Process process = null;
+        try {
+            process = processBuilder.start();
+            process.waitFor();
+            logger.info(IOUtils.toString(process.getInputStream()));
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            try {
+                logger.error(IOUtils.toString(process.getErrorStream()));
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        logger.info("\nPost request with logs has been sent. \nResponse status code: " + process.exitValue() + "\nBody :\n" + process.info().toString());
+        process.destroy();
+    }
+
+    private static void addAppLogsToTestRun(int runID){
+        DataUtils.downloadKubeCtlLogs();
+        addAppLogToTestRun("oms-rules-engine.log", runID);
+        DataUtils.executeShellCommand("kubectl logs service/service-oms-services -n lwa-sandbox > target/logs/oms-services.log");
+        addAppLogToTestRun("oms-services.log", runID);
+        DataUtils.executeShellCommand("kubectl logs service/service-oms-website-api -n lwa-sandbox > target/logs/oms-website-api.log");
+        addAppLogToTestRun("oms-website-api.log", runID);
+    }
+
+    private static void addAppLogToTestRun(String logName, int runID){
+        String url = Path.TEST_RAIL.getPath() + "index.php?/api/v2/add_attachment_to_run/" + runID;
+        Properties properties = DataUtils.getProperty("test_rail_config.properties");
+        final String userId = properties.getProperty("testrail_userId").trim();
+        final String pwd = properties.getProperty("testrail_pwd").trim();
+        logger.info("[Uploading log file] Sending post to:" + url);
+        LogManager.shutdown(); //Delete to show full logs until very end, but proper log file uploading to the testRail won't be guaranteed
+        String[] CMD_ARRAY = {"curl", "-H", "Content-Type: multipart/form-data", "-u", userId + ":" + pwd, "-F", "attachment=@target/logs/" + logName, url};
         ProcessBuilder processBuilder = new ProcessBuilder(CMD_ARRAY);
         Process process = null;
         try {
@@ -182,4 +216,5 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
 //            }
         }
     }
+
 }

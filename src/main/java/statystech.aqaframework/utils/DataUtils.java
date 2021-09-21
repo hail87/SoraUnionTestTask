@@ -158,7 +158,8 @@ public class DataUtils {
     public static void downloadKubeCtlLog(String logName) {
         try {
             //ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
-            ApiClient client = Config.defaultClient();
+            ApiClient client = Config.fromCluster();
+            //ApiClient client = Config.defaultClient();
             Configuration.setDefaultApiClient(client);
             CoreV1Api coreApi = new CoreV1Api(client);
             PodLogs logs = new PodLogs();

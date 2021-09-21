@@ -140,8 +140,8 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         }
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
         testRail.results().addForCases(runID, results, customResultFields).execute();
-        addTestLogsToTestRun(runID);
         addAppLogsToTestRun(runID);
+        addTestLogsToTestRun(runID);
         logger.info("Closing test run #" + runID);
         testRail.runs().close(runID).execute();
     }

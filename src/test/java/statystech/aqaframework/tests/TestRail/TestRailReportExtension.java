@@ -141,7 +141,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         List<ResultField> customResultFields = testRail.resultFields().list().execute();
         testRail.results().addForCases(runID, results, customResultFields).execute();
         addTestLogsToTestRun(runID);
-        //addAppLogsToTestRun(runID);
+        addAppLogsToTestRun(runID);
         logger.info("Closing test run #" + runID);
         testRail.runs().close(runID).execute();
     }
@@ -175,9 +175,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
     private static void addAppLogsToTestRun(int runID){
         DataUtils.downloadKubeCtlLogs();
         addAppLogToTestRun("oms-rules-engine.log", runID);
-        DataUtils.executeShellCommand("kubectl logs service/service-oms-services -n lwa-sandbox > target/logs/oms-services.log");
         addAppLogToTestRun("oms-services.log", runID);
-        DataUtils.executeShellCommand("kubectl logs service/service-oms-website-api -n lwa-sandbox > target/logs/oms-website-api.log");
         addAppLogToTestRun("oms-website-api.log", runID);
     }
 

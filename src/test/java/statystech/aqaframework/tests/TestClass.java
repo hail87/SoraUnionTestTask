@@ -9,7 +9,6 @@ import statystech.aqaframework.common.Context.OmsTestContext;
 import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
-import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -53,15 +52,4 @@ public abstract class TestClass {
         }
         return testRailID;
     }
-
-
-//    @Test
-//    public void cleanDB(){
-//        try {
-//            //DBUtils.cleanDB("clean_all_lwa_test_data.sql"); - already cleared at the @beforeAll
-//            //DBUtils.cleanDB("clean_new_billing_address.sql");
-//        } catch (SQLException | IOException throwables) {
-//            throwables.printStackTrace();
-//        }
-//    }
 }

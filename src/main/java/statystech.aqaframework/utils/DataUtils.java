@@ -1,5 +1,9 @@
 package statystech.aqaframework.utils;
 
+import com.google.common.io.CharStreams;
+import com.google.common.util.concurrent.SimpleTimeLimiter;
+import com.google.common.util.concurrent.TimeLimiter;
+import com.google.common.util.concurrent.UncheckedTimeoutException;
 import io.kubernetes.client.PodLogs;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
@@ -7,9 +11,12 @@ import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1APIResource;
 import io.kubernetes.client.openapi.models.V1Pod;
+import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.util.Config;
 import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.Streams;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class DataUtils {
 
@@ -140,26 +150,52 @@ public class DataUtils {
     }
 
     public static void downloadKubeCtlLogs() {
-        try {
-            ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
+        downloadKubeCtlLog("oms-rules-engine");
+        downloadKubeCtlLog("oms-services");
+        downloadKubeCtlLog("oms-website-api");
+    }
 
+    public static void downloadKubeCtlLog(String logName) {
+        try {
+            //ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
+            ApiClient client = Config.defaultClient();
             Configuration.setDefaultApiClient(client);
             CoreV1Api coreApi = new CoreV1Api(client);
-
             PodLogs logs = new PodLogs();
             V1Pod pod =
                     coreApi
                             .listNamespacedPod(
                                     "lwa-sandbox", "false", null, null, null, null, null, null, null, null, null)
                             .getItems()
-                            .get(21);
+                            .stream().filter(p -> p.getMetadata().getName().contains(logName)).findFirst().get();
+            InputStream inputStream = logs.streamNamespacedPodLog(pod);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            TimeLimiter timeLimiter = new SimpleTimeLimiter();
+            String line = "";
+            long deltaT = 0;
+            long start = System.currentTimeMillis();
 
-            InputStream is = logs.streamNamespacedPodLog(pod);
-            Streams.copy(is, System.out);
-        } catch (ApiException | IOException e){
-            logger.error("\nCan't get logs from kubernetees\n");
+            try (BufferedWriter writter = new BufferedWriter(
+                    new FileWriter(String.format("/Users/HAiL/IdeaProjects/aqa/target/logs/%s.log", logName)))) {
+                while (deltaT < 10000 && (line = timeLimiter.callWithTimeout(bufferedReader::readLine, 3, TimeUnit.SECONDS, false)) != null) {
+                    writter.write(line);
+                    deltaT = System.currentTimeMillis() - start;
+                }
+                writter.close();
+                bufferedReader.close();
+                inputStream.close();
+                logger.info("close");
+                bufferedReader.close();
+                inputStream.close();
+            }
+
+        } catch (ApiException | IOException e) {
+            logger.error("\nCan't get logs from kubernetes\n");
+        } catch (Exception e) {
+            //e.printStackTrace();
         }
     }
+
 }
 
 

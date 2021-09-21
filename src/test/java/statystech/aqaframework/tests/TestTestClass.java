@@ -1,7 +1,10 @@
 package statystech.aqaframework.tests;
 
 import org.junit.jupiter.api.Test;
-import statystech.aqaframework.utils.DataUtils;
+import statystech.aqaframework.utils.DBUtils;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class TestTestClass {
 
@@ -16,13 +19,13 @@ public class TestTestClass {
 //        new TestRailSteps().closeAllOpenTestRuns();
 //    }
 
-    //    @Test
-//    public void cleanDB(){
-//        try {
-//            //DBUtils.cleanDB("clean_all_lwa_test_data.sql"); - already cleared at the @beforeAll
-//            //DBUtils.cleanDB("clean_new_billing_address.sql");
-//        } catch (SQLException | IOException throwables) {
-//            throwables.printStackTrace();
-//        }
-//    }
+        @Test
+    public void cleanDB(){
+        try {
+            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+            DBUtils.cleanDB("clean_new_billing_address.sql");
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }

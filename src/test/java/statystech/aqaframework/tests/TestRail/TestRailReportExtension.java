@@ -147,44 +147,22 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
     }
 
     private static void addTestLogsToTestRun(int runID){
-        String url = Path.TEST_RAIL.getPath() + "index.php?/api/v2/add_attachment_to_run/" + runID;
-        Properties properties = DataUtils.getProperty("test_rail_config.properties");
-        final String userId = properties.getProperty("testrail_userId").trim();
-        final String pwd = properties.getProperty("testrail_pwd").trim();
-        logger.info("[Uploading log file] Sending post to:" + url);
-        LogManager.shutdown(); //Delete to show full logs until very end, but proper log file uploading to the testRail won't be guaranteed
-        String[] CMD_ARRAY = {"curl", "-H", "Content-Type: multipart/form-data", "-u", userId + ":" + pwd, "-F", "attachment=@target/logs/test.log", url};
-        ProcessBuilder processBuilder = new ProcessBuilder(CMD_ARRAY);
-        Process process = null;
-        try {
-            process = processBuilder.start();
-            process.waitFor();
-            logger.info(IOUtils.toString(process.getInputStream()));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            try {
-                logger.error(IOUtils.toString(process.getErrorStream()));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-        logger.info("\nPost request with logs has been sent. \nResponse status code: " + process.exitValue() + "\nBody :\n" + process.info().toString());
-        process.destroy();
+        addAttachmentToTestRun("test.log", runID);
     }
 
     private static void addAppLogsToTestRun(int runID){
         DataUtils.downloadKubeCtlLogs();
-        addAppLogToTestRun("oms-rules-engine.log", runID);
-        addAppLogToTestRun("oms-services.log", runID);
-        addAppLogToTestRun("oms-website-api.log", runID);
+        addAttachmentToTestRun("oms-rules-engine.log", runID);
+        addAttachmentToTestRun("oms-services.log", runID);
+        addAttachmentToTestRun("oms-website-api.log", runID);
     }
 
-    private static void addAppLogToTestRun(String logName, int runID){
+    private static void addAttachmentToTestRun(String logName, int runID){
         String url = Path.TEST_RAIL.getPath() + "index.php?/api/v2/add_attachment_to_run/" + runID;
         Properties properties = DataUtils.getProperty("test_rail_config.properties");
         final String userId = properties.getProperty("testrail_userId").trim();
         final String pwd = properties.getProperty("testrail_pwd").trim();
-        logger.info("[Uploading log file] Sending post to:" + url);
+        logger.info(String.format("[Uploading log file '%s'] Sending post to: %s", logName, url));
         LogManager.shutdown(); //Delete to show full logs until very end, but proper log file uploading to the testRail won't be guaranteed
         String[] CMD_ARRAY = {"curl", "-H", "Content-Type: multipart/form-data", "-u", userId + ":" + pwd, "-F", "attachment=@target/logs/" + logName, url};
         ProcessBuilder processBuilder = new ProcessBuilder(CMD_ARRAY);

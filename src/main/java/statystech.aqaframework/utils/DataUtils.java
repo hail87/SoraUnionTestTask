@@ -158,8 +158,10 @@ public class DataUtils {
     public static void downloadKubeCtlLog(String logName) {
         try {
             //ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
-            ApiClient client = Config.fromCluster();
+            ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("config")));
             //ApiClient client = Config.defaultClient();
+//            ApiClient client = Config.fromUserPassword(
+//                    "https://6FC317B21D634B0FD1C5A1A2B66BBEBD.gr7.us-east-1.eks.amazonaws.com", "ihorb", "fWMkr%s%*vw5f+@");
             Configuration.setDefaultApiClient(client);
             CoreV1Api coreApi = new CoreV1Api(client);
             PodLogs logs = new PodLogs();
@@ -178,7 +180,7 @@ public class DataUtils {
 
             try (BufferedWriter writter = new BufferedWriter(
                     new FileWriter(String.format("/Users/HAiL/IdeaProjects/aqa/target/logs/%s.log", logName)))) {
-                while (deltaT < 10000 && (line = timeLimiter.callWithTimeout(bufferedReader::readLine, 3, TimeUnit.SECONDS, false)) != null) {
+                while (deltaT < 8000 && (line = timeLimiter.callWithTimeout(bufferedReader::readLine, 2, TimeUnit.SECONDS, false)) != null) {
                     writter.write(line);
                     deltaT = System.currentTimeMillis() - start;
                 }

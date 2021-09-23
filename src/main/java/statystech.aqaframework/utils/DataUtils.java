@@ -156,15 +156,22 @@ public class DataUtils {
     }
 
     public static void downloadKubeCtlLog(String logName) {
+        ApiClient client = null;
         try {
-            //ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
-            ApiClient client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("config")));
-            //ApiClient client = Config.defaultClient();
-//            ApiClient client = Config.fromUserPassword(
-//                    "https://6FC317B21D634B0FD1C5A1A2B66BBEBD.gr7.us-east-1.eks.amazonaws.com", "ihorb", "fWMkr%s%*vw5f+@");
+            client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader(".kube/config")));
+            //client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
+            //client = Config.defaultClient();
+            //client = Config.fromUserPassword(
+//                    "https://6FC317B21D634B0FD1C5A1A2B66BBEBD.gr7.us-east-1.eks.amazonaws.com", "aqa", "uXFGwe%1");
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("Can't get Kube ApiClient");
+        }
             Configuration.setDefaultApiClient(client);
             CoreV1Api coreApi = new CoreV1Api(client);
             PodLogs logs = new PodLogs();
+
+            try {
             V1Pod pod =
                     coreApi
                             .listNamespacedPod(
@@ -192,10 +199,10 @@ public class DataUtils {
                 inputStream.close();
             }
 
-        } catch (ApiException | IOException e) {
+        } catch (ApiException e) {
             logger.error("\nCan't get logs from kubernetes\n");
         } catch (Exception e) {
-            //e.printStackTrace();
+            //logger.info("App logs downloaded from kube successful");
         }
     }
 

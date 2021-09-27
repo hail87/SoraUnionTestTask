@@ -143,29 +143,28 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //https://statystech.atlassian.net/browse/OMS-598 do not uncomment until resolved
-//    @TestRailID(id = 7807)
-//    @ParameterizedTest
-//    @CsvSource({"OrderValidation - VerifyLicenseNeededAndDontExist.json"})
-//    public void verifyNoLicenseException(String jsonFilename, TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        OrdersSteps ordersSteps = new OrdersSteps();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//
-//        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-//        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-//        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 6));
-//
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 7807)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - VerifyLicenseNeededAndDontExist.json"})
+    public void verifyNoLicenseException(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 6));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
 
     @TestRailID(id = 7808)
     @ParameterizedTest

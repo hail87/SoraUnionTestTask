@@ -2,6 +2,7 @@ FROM maven
 
 COPY src /aqa/src
 COPY pom.xml /aqa/pom.xml
+COPY .kube /aqa/.kube
 COPY docker-startup.sh /aqa/docker-startup.sh
 WORKDIR /aqa
 

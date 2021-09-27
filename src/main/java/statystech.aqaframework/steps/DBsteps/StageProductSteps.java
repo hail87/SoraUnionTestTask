@@ -7,6 +7,7 @@ import statystech.aqaframework.TableObjects.StageOrderTable;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.ApiRestUtils;
 import statystech.aqaframework.utils.DBUtils;
+import statystech.aqaframework.utils.DataUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class StageProductSteps extends Steps {
     public void triggerProcessingSandBox() {
         logger.info("Triggering stageProduct processing at the SandBox");
         if (!new ApiRestUtils().sendGetRequest(
-                "http://8a57e667-lwasandbox-ingres-3266-559840864.us-east-1.elb.amazonaws.com/start"))
+                DataUtils.getPropertyValue("url.properties", "stageProductProcessingTrigger")))
             logger.error("Response code != 200");
     }
 

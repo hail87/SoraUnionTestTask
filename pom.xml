@@ -173,6 +173,7 @@
                 <configuration>
                     <source>16</source>
                     <target>16</target>
+                    <encoding>UTF-8</encoding>
                     <fork>true</fork>
                     <compilerArgs>
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>

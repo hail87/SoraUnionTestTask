@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.StageOrderTable;
 import statystech.aqaframework.utils.ApiRestUtils;
 import statystech.aqaframework.utils.DBUtils;
+import statystech.aqaframework.utils.DataUtils;
 import statystech.aqaframework.utils.JsonUtils;
 import statystech.aqaframework.steps.Steps;
 
@@ -19,7 +20,7 @@ public class StageOrderSteps extends Steps {
     public void triggerProcessingSandBox() {
         logger.info("Triggering order processing at the SandBox");
         if (!new ApiRestUtils().sendGetRequest(
-                "http://8a57e667-lwasandbox-ingres-db29-1956677137.us-east-1.elb.amazonaws.com/start"))
+                DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTrigger")))
             logger.error("Response code != 200");
     }
 

@@ -9,11 +9,11 @@ import java.sql.SQLException;
 
 public class TestTestClass {
 
-    @Test
-    public void downloadAppLogs() {
-        DataUtils.downloadKubeCtlLogs();
-        //DataUtils.downloadKubeCtlLogs();
-    }
+//    @Test
+//    public void downloadAppLogs() {
+//        DataUtils.downloadKubeCtlLogs();
+//        //DataUtils.downloadKubeCtlLogs();
+//    }
 
     //    @Test
 //    public void closeTestRailOpenRuns() {

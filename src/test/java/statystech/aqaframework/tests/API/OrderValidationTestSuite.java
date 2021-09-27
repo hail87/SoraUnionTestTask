@@ -260,7 +260,6 @@ public class OrderValidationTestSuite extends TestClass {
     @CsvSource({"OrderValidation-ExternalAddressValidationFailed.json"})
     public void externalAddressValidationFailed(String jsonFilename, TestInfo testInfo) throws IOException {
         try {
-            //DBUtils.cleanDB("clean_all_lwa_test_data.sql");
             DBUtils.cleanDB("clean_new_address_failed.sql");
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -22,7 +22,7 @@ public class DBUtils {
                         "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
                         "Values ('" + jsonContent + "','N','',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'')",
                 Statement.RETURN_GENERATED_KEYS);
-        logger.info("SQL request was executed: " + jsonContent);
+        //logger.info("SQL request was executed: " + jsonContent);
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 createdId = (int) generatedKeys.getLong(1);
@@ -40,7 +40,7 @@ public class DBUtils {
                         "(productData, status, createdDate, createdBy, modifiedDate, modifiedBy, processingComment) " +
                         "Values ('" + jsonContent + "','N',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'','')",
                 Statement.RETURN_GENERATED_KEYS);
-        logger.info("SQL request was executed: " + jsonContent);
+        //logger.info("SQL request was executed: " + jsonContent);
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 createdId = (int) generatedKeys.getLong(1);

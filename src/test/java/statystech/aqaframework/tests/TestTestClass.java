@@ -1,6 +1,7 @@
 package statystech.aqaframework.tests;
 
 import org.junit.jupiter.api.Test;
+import statystech.aqaframework.steps.TestRail.TestRailSteps;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 
@@ -9,13 +10,13 @@ import java.sql.SQLException;
 
 public class TestTestClass {
 
-//    @Test
-//    public void downloadAppLogs() {
-//        DataUtils.downloadKubeCtlLogs();
-//        //DataUtils.downloadKubeCtlLogs();
-//    }
+    @Test
+    public void downloadAppLogs() {
+        System.out.println(DataUtils.downloadKubeCtlLogs());
+        //DataUtils.downloadKubeCtlLogs();
+    }
 
-    //    @Test
+//        @Test
 //    public void closeTestRailOpenRuns() {
 //        new TestRailSteps().closeAllOpenTestRuns();
 //    }

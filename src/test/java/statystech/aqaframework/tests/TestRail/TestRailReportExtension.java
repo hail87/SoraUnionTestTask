@@ -151,10 +151,12 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
     }
 
     private static void addAppLogsToTestRun(int runID){
-        DataUtils.downloadKubeCtlLogs();
-        addAttachmentToTestRun("oms-rules-engine.log", runID);
-        addAttachmentToTestRun("oms-services.log", runID);
-        addAttachmentToTestRun("oms-website-api.log", runID);
+        logger.info("DataUtils.downloadKubeCtlLogs() - " + DataUtils.downloadKubeCtlLogs());
+        if (DataUtils.downloadKubeCtlLogs()) {
+            addAttachmentToTestRun("oms-rules-engine.log", runID);
+            addAttachmentToTestRun("oms-services.log", runID);
+            addAttachmentToTestRun("oms-website-api.log", runID);
+        }
     }
 
     private static void addAttachmentToTestRun(String logName, int runID){

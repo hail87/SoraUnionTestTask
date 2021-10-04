@@ -149,61 +149,81 @@ public class DataUtils {
         }
     }
 
-    public static void downloadKubeCtlLogs() {
-        downloadKubeCtlLog("oms-rules-engine");
-        downloadKubeCtlLog("oms-services");
-        downloadKubeCtlLog("oms-website-api");
+    public static boolean downloadKubeCtlLogs() {
+        return downloadKubeCtlLog("oms-rules-engine") ||
+                downloadKubeCtlLog("oms-services") ||
+                downloadKubeCtlLog("oms-website-api");
     }
 
-    public static void downloadKubeCtlLog(String logName) {
+    public static boolean downloadKubeCtlLog(String logName) {
         ApiClient client = null;
+        String logFilePath = String.format("target/logs/%s.log", logName);
+        //String logFilePath = String.format("/Users/HAiL/IdeaProjects/aqa/target/logs/%s.log", logName);
+        boolean result = false;
         try {
+            logger.info("getting API client");
             client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader(".kube/config")));
-            //client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader("/Users/HAiL/.kube/config")));
             //client = Config.defaultClient();
-            //client = Config.fromUserPassword(
-//                    "https://6FC317B21D634B0FD1C5A1A2B66BBEBD.gr7.us-east-1.eks.amazonaws.com", "aqa", "uXFGwe%1");
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-            logger.error("Can't get Kube ApiClient");
-        }
-            Configuration.setDefaultApiClient(client);
-            CoreV1Api coreApi = new CoreV1Api(client);
-            PodLogs logs = new PodLogs();
-
-            try {
+            logger.error("Can't find Kube config file");
+        } catch (IOException e) {
+        e.printStackTrace();
+        logger.error("Can't get Kube ApiClient");
+    }
+        logger.info("setting API client");
+        Configuration.setDefaultApiClient(client);
+        CoreV1Api coreApi = new CoreV1Api(client);
+        PodLogs logs = new PodLogs();
+        InputStream inputStream = null;
+        BufferedReader bufferedReader = null;
+        try {
             V1Pod pod =
                     coreApi
                             .listNamespacedPod(
                                     "lwa-sandbox", "false", null, null, null, null, null, null, null, null, null)
                             .getItems()
                             .stream().filter(p -> p.getMetadata().getName().contains(logName)).findFirst().get();
-            InputStream inputStream = logs.streamNamespacedPodLog(pod);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+             inputStream = logs.streamNamespacedPodLog(pod);
+             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             TimeLimiter timeLimiter = new SimpleTimeLimiter();
             String line = "";
             long deltaT = 0;
             long start = System.currentTimeMillis();
 
-            try (BufferedWriter writter = new BufferedWriter(
-                    new FileWriter(String.format("/Users/HAiL/IdeaProjects/aqa/target/logs/%s.log", logName)))) {
-                while (deltaT < 8000 && (line = timeLimiter.callWithTimeout(bufferedReader::readLine, 2, TimeUnit.SECONDS, false)) != null) {
+            try (BufferedWriter writter = new BufferedWriter(new FileWriter(logFilePath))) {
+                while (deltaT < 8000 &&
+                        (line = timeLimiter.callWithTimeout(bufferedReader::readLine, 2, TimeUnit.SECONDS, false)) != null) {
                     writter.write(line);
                     deltaT = System.currentTimeMillis() - start;
+                    result = true;
                 }
-                writter.close();
-                bufferedReader.close();
-                inputStream.close();
-                logger.info("close");
-                bufferedReader.close();
-                inputStream.close();
+            } catch (Exception e) {
+                logger.error("\nCan't write logs to file : '" + logFilePath + "'");
             }
 
         } catch (ApiException e) {
-            logger.error("\nCan't get logs from kubernetes\n");
-        } catch (Exception e) {
-            //logger.info("App logs downloaded from kube successful");
+            //logger.error("\nCan't get logs from kubernetes\n");
+        } catch (IOException e) {
+            logger.error("\nTrouble with streaming logs from the pod\n");
+        }finally {
+            logger.info("closing the streams\n");
+            if (inputStream!=null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bufferedReader!=null){
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+        return result;
     }
 
 }

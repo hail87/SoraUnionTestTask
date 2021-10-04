@@ -74,7 +74,7 @@ public class OrderExceptionHistorySteps extends Steps {
             if (expectedType != actualType) {
                 return String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are NOT the same!", expectedType, actualType);
             }
-            logger.info(String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' arec ndjbv frrjv hf,jnftn the same!", expectedType, actualType));
+            logger.info(String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are the same!", expectedType, actualType));
             return "";
         } else {
             return "\nOrderExceptionHistorySteps: There is no row with orderID : " + lwaTestContext.getApiOrderId();

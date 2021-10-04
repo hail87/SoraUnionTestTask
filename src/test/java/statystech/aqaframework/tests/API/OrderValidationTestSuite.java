@@ -61,7 +61,6 @@ public class OrderValidationTestSuite extends TestClass {
     }
 
 
-
     @TestRailID(id = 7803)
     @ParameterizedTest
     @CsvSource({"submitOrder-existedAllSysID.json"})
@@ -223,7 +222,7 @@ public class OrderValidationTestSuite extends TestClass {
         String updatedJson = JsonUtils.getStringFromJson(jsonFileName).replace("\"website_order_id\": \"\"", "\"website_order_id\": \"" + orderID + "\"");
         updatedJson = updatedJson.replace("\"payment_transaction_id\": \"\"", "\"payment_transaction_id\": \"" + lwaTestContext.getAretoInternalOrderId() + "\"");
         updatedJson = updatedJson.replace("\"payment_token\": \"\"", "\"payment_token\": \"" + lwaTestContext.getAretoToken() + "\"");
-        logger.info("\nUpdated .json:\n" + updatedJson);
+        //logger.info("\nUpdated .json:\n" + updatedJson);
         lwaTestContext.setJsonString(updatedJson);
         Context.updateTestContext(lwaTestContext);
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(lwaTestContext));
@@ -300,21 +299,24 @@ public class OrderValidationTestSuite extends TestClass {
         ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 1));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 4));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 5));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 6));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
-        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
-
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        if (!ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Confirmed").isEmpty()) {
+            errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+            assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+            OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+            errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+            assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+            errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 1));
+            errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 4));
+            errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 5));
+            errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 6));
+            errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 8));
+            errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 9));
+            errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeIDIsNot(lwaTestContext, 10));
+            assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        } else {
+            errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Confirmed"));
+            assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        }
     }
 
     @TestRailID(id = 7819)
@@ -429,7 +431,6 @@ public class OrderValidationTestSuite extends TestClass {
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
-
 
 
     @TestRailID(id = 13175)

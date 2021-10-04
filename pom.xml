@@ -201,6 +201,9 @@
             <resource>
                 <directory>src/resources</directory>
             </resource>
+            <resource>
+                <directory>.kube</directory>
+            </resource>
         </resources>
     </build>
 

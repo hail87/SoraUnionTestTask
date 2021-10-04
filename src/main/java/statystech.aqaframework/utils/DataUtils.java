@@ -150,8 +150,8 @@ public class DataUtils {
     }
 
     public static boolean downloadKubeCtlLogs() {
-        return downloadKubeCtlLog("oms-rules-engine") ||
-                downloadKubeCtlLog("oms-services") ||
+        return downloadKubeCtlLog("oms-rules-engine") |
+                downloadKubeCtlLog("oms-services") |
                 downloadKubeCtlLog("oms-website-api");
     }
 
@@ -199,7 +199,7 @@ public class DataUtils {
                     result = true;
                 }
             } catch (Exception e) {
-                logger.error("\nCan't write logs to file : '" + logFilePath + "'");
+                logger.error("\nClosing file '" + logFilePath + "'");
             }
 
         } catch (ApiException e) {

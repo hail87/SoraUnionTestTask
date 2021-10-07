@@ -8,19 +8,19 @@ delete from lwa_sandbox.inventoryTransaction
 where inventoryTransactionID > 0;
 
 delete from lwa_sandbox.parcelLine
-where parcelLineID > 0;
+where parcelLineID NOT in (2437) and parcelLineID > 0;
 
 delete from lwa_sandbox.parcel
 where parcelID > 0;
 
 delete FROM lwa_sandbox.orderLine
-where OrderLineID > 0;
+where OrderLineID NOT in (2437) and OrderLineID > 0;
 
 delete from lwa_sandbox.preselectedBox
 where preselectedBoxID > 0;
 
 delete FROM lwa_sandbox.warehouseOrder
-where warehouseOrderID > 0;
+where warehouseOrderID NOT in (2190) and warehouseOrderID > 0;
 
 delete FROM lwa_sandbox.orderExceptionHistory
 where orderExceptionHistoryID > 0;
@@ -32,7 +32,7 @@ delete FROM lwa_sandbox.orderItem
 where orderItemID > 0;
 
 delete FROM lwa_sandbox.orders
-where orderID > 0;
+where orderID NOT in (21817) and orderID > 0;
 
 delete FROM lwa_sandbox.buyer
 where buyerID > 0;

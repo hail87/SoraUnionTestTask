@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 
@@ -162,5 +163,28 @@ public class ApiRestUtils {
             e.printStackTrace();
         }
         return response;
+    }
+
+    /**
+     * Authorization provided from user with userId = 7 (WarehouseManager for WareHouse 6)
+     */
+    public static String getWarehouseOrders() {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n}");
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/warehouse-orders/search")
+                .method("POST", body)
+                .addHeader("Authorization", "eyJraWQiOiJ0NWNKK0hsY1BcL3JZbFI5ZTVWM3NnT2E0bW9rOU1ERUFRa1B3clBMTWhhUT0iLCJhbGciOiJSUzI1NiJ9.eyJjb2duaXRvOnJvbGVzIjpbImFybjphd3M6aWFtOjozMjY3MjYxNDIyMzk6cm9sZVwvQ29nbml0b191cGxvYWR0b3MzdGVzdEF1dGhfUm9sZSJdLCJzdWIiOiI1ZDFmMGUzYS04ZTVmLTQ1ZTktYTFhNy02OTgwYWY5OWI1NDUiLCJhdWQiOiJjNmVhdjh1YmZvNjEwMjc2Ym0wMGtkNm84IiwiY29nbml0bzpncm91cHMiOlsidGVzdCJdLCJldmVudF9pZCI6ImExMTVhZmM3LWJjYzgtNDMwNi1iZjA1LWFhY2E2OTcyZjk0MyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjMzNTMwOTEyLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuY2EtY2VudHJhbC0xLmFtYXpvbmF3cy5jb21cL2NhLWNlbnRyYWwtMV9qNEdJa2JXMjYiLCJjb2duaXRvOnVzZXJuYW1lIjoidGVzdF93aG0iLCJleHAiOjE2MzM1MzI3MTIsImlhdCI6MTYzMzUzMDkxMn0.PShvXPFzXNhC_lZzdo65ph8a6dae6j3P-YWZ1kWdGbe-1Y7YSOa_SUhqnKy0-loVTk8xCVjDNmh0T2bPBY2M3S-OcZoP4-AaRxE5vfLbg-2HpaS4BhdOwHf25KPQFr62uPneSUDozW-bQ_4W2mmh_IPjERB6XaaaOctk6ZBjtzDzRngpu0HbYOo7i8biz1Y2de7uD2auxx_KDFWWTOkh28jdzG4m9-bNBLoqjv6SsblcooviBMNUSn6bXTbfPXbBmMsGhQeds42jXbSwuru5Fyu3zWb2PpeJMfJs6WdDI6bW5r8AfJndpcQ-EAfHI88LHO0-1-qyBLuBuW5c5jqw7A")
+                .addHeader("Content-Type", "application/json")
+                .build();
+        String result = "";
+        try {
+            result = Objects.requireNonNull(client.newCall(request).execute().body()).string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

@@ -158,7 +158,6 @@ public class DataUtils {
     public static boolean downloadKubeCtlLog(String logName) {
         ApiClient client = null;
         String logFilePath = String.format("target/logs/%s.log", logName);
-        //String logFilePath = String.format("/Users/HAiL/IdeaProjects/aqa/target/logs/%s.log", logName);
         boolean result = false;
         try {
             logger.info("getting API client");
@@ -199,7 +198,7 @@ public class DataUtils {
                     result = true;
                 }
             } catch (Exception e) {
-                logger.error("\nClosing file '" + logFilePath + "'");
+                logger.info("\nClosing file '" + logFilePath + "'");
             }
 
         } catch (ApiException e) {

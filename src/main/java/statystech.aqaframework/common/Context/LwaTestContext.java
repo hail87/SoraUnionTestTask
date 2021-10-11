@@ -11,6 +11,7 @@ import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.DataObjects.OrderJackson.Order;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
+import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
 import statystech.aqaframework.common.ConnectionDB;
 import statystech.aqaframework.utils.DataUtils;
 import statystech.aqaframework.utils.JsonUtils;
@@ -62,6 +63,8 @@ public class LwaTestContext extends TestContext{
     private Double aretoAuthorizeAmount;
     private String aretoCaptureDescription;
     private String aretoCaptureCode;
+
+    private WarehouseSearchResponse warehouseSearchResponse;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {

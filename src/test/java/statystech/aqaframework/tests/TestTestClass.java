@@ -21,13 +21,13 @@ public class TestTestClass {
 //        new TestRailSteps().closeAllOpenTestRuns();
 //    }
 
-        @Test
-    public void cleanDB(){
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_billing_address.sql");
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+//        @Test
+//    public void cleanDB(){
+//        try {
+//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+//            DBUtils.cleanDB("clean_new_billing_address.sql");
+//        } catch (SQLException | IOException throwables) {
+//            throwables.printStackTrace();
+//        }
+//    }
 }

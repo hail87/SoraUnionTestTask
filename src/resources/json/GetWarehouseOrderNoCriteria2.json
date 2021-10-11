@@ -1,0 +1,82 @@
+{
+    "order_id": "6097800",
+    "user_id": "131352fc6b6275e1f58c670286c5c2fc",
+    "order_status": "Confirmed",
+    "replacement_order_id": "0",
+    "seller_id": "7d336e37513a355d39b33703c0dcbd55",
+    "seller_username": "Peakmedical01",
+    "csr_assigned_id": "",
+    "csr_assigned_username": null,
+    "billing_address":
+    {
+        "user_info_id": "611961",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "P****a",
+        "middle_name": "",
+        "last_name": "G****a",
+        "country": "UNITED STATES",
+        "state": "Kentucky",
+        "city": "Edgewood",
+        "zip": "41017",
+        "address_line_1": "162 Barnwood Drive",
+        "address_line_2": "",
+        "company": "A****r",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "shipping_address":
+    {
+        "user_info_id": "611961",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "P****a",
+        "middle_name": "",
+        "last_name": "G****a",
+        "country": "UNITED STATES",
+        "state": "Kentucky",
+        "city": "Edgewood",
+        "zip": "41017",
+        "address_line_1": "162 Barnwood Drive",
+        "address_line_2": "",
+        "company": "A****r",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "order_date": "2021-06-08",
+    "shipped_at": null,
+    "delivered_at": null,
+    "order_items":
+    [
+        {
+            "order_item_id": "1792460",
+            "product_id": "88323",
+            "product_name": "HYALGAN® English",
+            "product_quantity": "21",
+            "product_item_price": "40.00",
+            "SKU": "buy_hyalgan_wholesale_online_2",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "161",
+                    "ff_center_name": "Iberianium",
+                    "assigned_qty": "21",
+                    "batches":
+                    [
+                        {
+                            "qty": "21",
+                            "number": "C22990",
+                            "ff_center_id": "161"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "website_name": "peakmedicalwholesale.com",
+    "shopper_group_name": "Peak Medical Licensed",
+    "account_number": "294685",
+    "order_currency": "USD",
+    "currency_conversion": "1.00",
+    "shipping_notes": ""
+}

@@ -80,7 +80,7 @@ public class OrdersSteps extends Steps {
         }
     }
 
-    private String checkOrder(int orderId) {
+    public String checkOrder(int orderId) {
         try {
             ordersTable.getPrimaryID("orderID", String.valueOf(orderId));
             return "";

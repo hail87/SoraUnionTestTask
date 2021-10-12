@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -222,14 +223,14 @@ public class LwaTestSuite extends TestClass {
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
 
-        for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()){
+        for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
             int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 
-        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays. asList(6097147, 6097800, 6095793, 6098207, 6097621));
+        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
         OrdersTable ordersTable = new OrdersTable();
-        for(int orderAllSysID : expectedOrderNumbersList) {
+        for (int orderAllSysID : expectedOrderNumbersList) {
             assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
         }
 
@@ -238,7 +239,36 @@ public class LwaTestSuite extends TestClass {
         errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders(), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(lwaTestContext));
+        errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
+                new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207)), lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 39705)
+    @Test
+    public void getWarehouseOrdersAllsysOrderId(TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+
+        for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
+            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+        }
+
+        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
+        OrdersTable ordersTable = new OrdersTable();
+        for (int orderAllSysID : expectedOrderNumbersList) {
+            assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
+        }
+
+        LwaApiSteps lwaApiSteps = new LwaApiSteps();
+
+        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders(6097147), lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
+                new ArrayList<>(Collections.singletonList(6097147)), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

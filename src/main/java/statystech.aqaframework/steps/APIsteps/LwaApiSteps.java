@@ -32,8 +32,7 @@ public class LwaApiSteps {
         }
     }
 
-    public String checkWarehouseSearchResponse(LwaTestContext testContext){
-        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays. asList(6097147, 6097800, 6095793, 6098207));
+    public String checkWarehouseSearchResponse(ArrayList<Integer> expectedOrderNumbersList, LwaTestContext testContext){
         logger.info(String.format("\nExpected orders: %s", expectedOrderNumbersList));
 
         List<OrdersItem> actualOrdersList = testContext.getWarehouseSearchResponse().getOrders();

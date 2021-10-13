@@ -76,8 +76,9 @@ public class LwaTestSuite extends TestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        new OrdersSteps().setOrderID();
-        errorMessage.append(new OrdersSteps().checkOrdersTable());
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderID();
+        errorMessage.append(ordersSteps.checkOrdersTable());
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
         errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());

@@ -19,9 +19,10 @@ public class StageProductSteps extends Steps {
 
     public void triggerProcessingSandBox() {
         logger.info("Triggering stageProduct processing at the SandBox");
-        if (!new ApiRestUtils().sendGetRequest(
-                DataUtils.getPropertyValue("url.properties", "stageProductProcessingTrigger")))
-            logger.error("Response code != 200");
+        int responseCode = new ApiRestUtils().sendGetRequest(
+                DataUtils.getPropertyValue("url.properties", "stageProductProcessingTrigger"));
+        if (responseCode != 200)
+            logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
     }
 
     public String checkStatusColumn(int rowID) throws SQLException {

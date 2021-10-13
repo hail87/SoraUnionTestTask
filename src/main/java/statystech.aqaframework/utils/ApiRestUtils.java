@@ -61,8 +61,8 @@ public class ApiRestUtils {
         return result;
     }
 
-    public boolean sendGetRequest(String url) {
-        return getRequest(url).statusCode() == 200;
+    public int sendGetRequest(String url) {
+        return getRequest(url).statusCode();
     }
 
     public Response getRequest(String url) {

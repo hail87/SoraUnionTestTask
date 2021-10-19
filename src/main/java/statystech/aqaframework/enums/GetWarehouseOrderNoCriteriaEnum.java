@@ -1,11 +1,11 @@
 package statystech.aqaframework.enums;
 
 public enum GetWarehouseOrderNoCriteriaEnum {
-    order1 ("GetWarehouseOrderNoCriteria1.json"),
-    order2 ("GetWarehouseOrderNoCriteria2.json"),
-    order3 ("GetWarehouseOrderNoCriteria3.json"),
-    order4 ("GetWarehouseOrderNoCriteria4.json"),
-    order5 ("GetWarehouseOrderNoCriteria5.json");
+    order6097147 ("GetWarehouseOrderNoCriteria1.json"),
+    order6097800 ("GetWarehouseOrderNoCriteria2.json"),
+    order6098207 ("GetWarehouseOrderNoCriteria3.json"),
+    order6097621 ("GetWarehouseOrderNoCriteria4.json"),
+    order6095793 ("GetWarehouseOrderNoCriteria5.json");
 
     private String title;
 

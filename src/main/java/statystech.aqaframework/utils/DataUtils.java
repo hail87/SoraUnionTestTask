@@ -152,7 +152,9 @@ public class DataUtils {
     public static boolean downloadKubeCtlLogs() {
         return downloadKubeCtlLog("oms-rules-engine") |
                 downloadKubeCtlLog("oms-services") |
-                downloadKubeCtlLog("oms-website-api");
+                downloadKubeCtlLog("oms-website-api") |
+                downloadKubeCtlLog("lwa-etl-orders") |
+                downloadKubeCtlLog("lwa-etl-products");
     }
 
     public static boolean downloadKubeCtlLog(String logName) {

@@ -54,7 +54,7 @@ public class LwaTestSuite extends TestClass {
         properties.setProperty("testrail_testSuiteId", "1");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
-            //TestRailReportExtension.reportResults();
+            TestRailReportExtension.reportResults();
         }
     }
 

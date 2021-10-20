@@ -54,7 +54,7 @@ public class LwaTestSuite extends TestClass {
         properties.setProperty("testrail_testSuiteId", "1");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
-            TestRailReportExtension.reportResults();
+            //TestRailReportExtension.reportResults();
         }
     }
 
@@ -342,7 +342,7 @@ public class LwaTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 45288)
+    @TestRailID(id = 45425)
     @Test
     public void getWarehouseOrdersByWarehouseId(TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
@@ -367,6 +367,34 @@ public class LwaTestSuite extends TestClass {
 
         errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
                 new ArrayList<>(Arrays.asList(6097621, 6095793)), lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 45288)
+    @Test
+    public void getWarehouseOrdersByDate(TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+
+        for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
+            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+        }
+
+        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
+        OrdersTable ordersTable = new OrdersTable();
+        for (int orderAllSysID : expectedOrderNumbersList) {
+            assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
+        }
+
+        LwaApiSteps lwaApiSteps = new LwaApiSteps();
+
+        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrdersByDate("2021-10-01", "2021-10-31"), lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
+                new ArrayList<>(Collections.singletonList(6097147)), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

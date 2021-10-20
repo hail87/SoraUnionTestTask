@@ -40,6 +40,25 @@ public class ApiRestUtils {
         }
         return result;
     }
+    public static String getWarehouseOrdersNonWHMuser() {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n}");
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/warehouse-orders/search")
+                .method("POST", body)
+                .addHeader("Authorization", "eyJraWQiOiJybU5HQk5XR1oxKzdIMktBNmZRenZTcXlPQnVLbWlEVWw3WDJcL2p6N0x3dz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIyMDNkODc0ZC02ZmU5LTQ5MGMtYTQ1MS01YTdjMzQyNTMzYmEiLCJkZXZpY2Vfa2V5IjoiY2EtY2VudHJhbC0xX2QwMTE5NzY3LWQzODItNGVhMS1iMTliLTZjMzU2MzI5M2JiNSIsImV2ZW50X2lkIjoiMDkwZjVjZjgtOGUxMi00ZWRlLWI5OTMtZjQ0Y2YwZWZkMjQ5IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTYzNDcyMjM0MSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmNhLWNlbnRyYWwtMS5hbWF6b25hd3MuY29tXC9jYS1jZW50cmFsLTFfajRHSWtiVzI2IiwiZXhwIjoxNjM0NzI0MTQxLCJpYXQiOjE2MzQ3MjIzNDEsImp0aSI6IjM0MjA4MDcxLTZlZjItNDY5NC1iZjcxLTFhMWVjMWRmOTM2MiIsImNsaWVudF9pZCI6ImM2ZWF2OHViZm82MTAyNzZibTAwa2Q2bzgiLCJ1c2VybmFtZSI6InRlc3RfY3NyIn0.RtmDGyIHHOb530WPu5-tT5EPgwDAq-LxWkWjwzbfPg3kB_ZXR1pBuw_vaxlkGDL_3ag62DBARuyx-ZkIPg6Le2lwRn0Cj7b88suU4-1xsNxrA89hhO_uKCESixocbdfCiLCZ9T3xkbg0IzFzm_lwMRPTtGoF0rDNfdd7jZ_z5x1GU5mJh9VO4wF-sCVrJ_-5XXNm1HRG4jppBiDxoyp3yica-gnu2vb8Sz10nGKMDtHWuHqf42jwTrw7XGHzhnxljPZ6BCThnLwD6gpGYtjbYPTo0uqBkgHgawLHRIDYL6m6szNylPz7kyXxEMxuX0KR-wxhTZ94pLBcV8grfluwGQ")
+                .addHeader("Content-Type", "application/json")
+                .build();
+        String result = "";
+        try {
+            result = Objects.requireNonNull(client.newCall(request).execute().body()).string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public static String getWarehouseOrders(int allsysOrderId) {
         OkHttpClient client = new OkHttpClient().newBuilder()

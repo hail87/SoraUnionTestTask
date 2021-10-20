@@ -7,13 +7,14 @@ import statystech.aqaframework.DataObjects.WarehouseSearch.OrdersItem;
 import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
+import statystech.aqaframework.steps.Steps;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LwaApiSteps {
+public class LwaApiSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(LwaApiSteps.class);
 

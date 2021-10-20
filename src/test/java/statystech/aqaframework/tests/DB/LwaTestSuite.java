@@ -330,14 +330,43 @@ public class LwaTestSuite extends TestClass {
 
     @TestRailID(id = 40874)
     @Test
-    public void getWarehouseOrdersWrongUserRole(TestInfo testInfo) throws IOException {
+    public void getWarehouseOrdersWrongUserRole() {
         StringBuilder errorMessage = new StringBuilder();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
 
-        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders(6097147, "EU", "ROTW"), lwaTestContext));
+        errorMessage.append(lwaApiSteps.verifyExpectedResultsContains(
+                ApiRestUtils.getWarehouseOrdersNonWHMuser(),
+                "User does not have permission to access the endpoint"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 45288)
+    @Test
+    public void getWarehouseOrdersAllsysOrderIdOtherCriteria1(TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+
+        for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
+            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+        }
+
+        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
+        OrdersTable ordersTable = new OrdersTable();
+        for (int orderAllSysID : expectedOrderNumbersList) {
+            assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
+        }
+
+        LwaApiSteps lwaApiSteps = new LwaApiSteps();
+
+        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders("EU", "ROTW"), lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
+                new ArrayList<>(Collections.singletonList(6097621)), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

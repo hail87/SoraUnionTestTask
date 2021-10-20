@@ -67,4 +67,18 @@ public abstract class Steps {
         return "";
     }
 
+    public String verifyExpectedResultsContains(String actualResult, String expectedResult) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String callingMethod = stackTraceElements[2].getMethodName();
+        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
+        if (actualResult.contains(expectedResult)) {
+            logger.info(String.format("\n[%s:%s]: actualResult '%s' contains expectedResult '%s'\n", callingClass, callingMethod, actualResult, expectedResult));
+            return "";
+        } else {
+            String message = String.format("\n[%s:%s]: actualResult '%s' contains expectedResult '%s'\n", callingClass, callingMethod, actualResult, expectedResult);
+            logger.error(message);
+            return message;
+        }
+    }
+
 }

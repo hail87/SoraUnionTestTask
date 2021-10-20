@@ -344,7 +344,7 @@ public class LwaTestSuite extends TestClass {
 
     @TestRailID(id = 45288)
     @Test
-    public void getWarehouseOrdersAllsysOrderIdOtherCriteria1(TestInfo testInfo) throws IOException, SQLException {
+    public void getWarehouseOrdersByWarehouseId(TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -362,11 +362,11 @@ public class LwaTestSuite extends TestClass {
 
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
 
-        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders("EU", "ROTW"), lwaTestContext));
+        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrdersByWarehouseID(24), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
-                new ArrayList<>(Collections.singletonList(6097621)), lwaTestContext));
+                new ArrayList<>(Arrays.asList(6097621, 6095793)), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }

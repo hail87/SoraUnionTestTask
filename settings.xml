@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>codeartifact</id>
+            <username>aws</username>
+            <password>eyJ2ZXIiOjEsImlzdSI6MTYzNTMzOTgzNiwiZW5jIjoiQTEyOEdDTSIsInRhZyI6IjRIcEhmWkZCdHo0ODVuX3JnQ3NNb0EiLCJleHAiOjE2MzUzODMwMzYsImFsZyI6IkExMjhHQ01LVyIsIml2IjoiY1RNN21HNEFhc2JVeVBjciJ9.CW7xxkku6xh6HPTOCwR7Aw.XPv3rKZqMuGyR3qW.0yeE6YqBawvnMhjKct6UscjA8vx1FgzPKujnQmbFP4TdyMiHxmOZkqMfa6V1bRzmVcLaY6b2-tq8WZZ38rxYPGofdNAi_r0tjQ-v2fTzrwu3dcdklpF7XIQ01ERqkCacauIFbC-STGCa2SfHcm1WZXca48wjHKMnW8NkLoVrrOeWPOFF7_zihpwrtTzbZ0OyWwYIRGeMmzGJG9ITKoszFRsL039iMZ78chHpZAlv6uSCqp_Pmz5codxNSUtITgAivWF4dSVNexiPo2Ji2iSL8Tn4xdZw1oiowNMk3OnV6_PGK1EMPGDPDZ4OindbfhsV0qgSGutBqhTaZJEMOlZZE_siu_ye9ax4euc-NzvoJhKCqcN1dqYfrFZgrNsgLtOSqbHe5DrRx8-ejV1SEP2XkOo8DNo7vNR-inCZQSUBmIP1363-hrVT0OebhVFeWt8isEDcGMo1zDJyCA4p6I4SmxP4Qkz5r8KTQz6m1GKcxPT27ehhVBqcDudWBsgwgo_c3-A1-mR5jC1BFp-ass4_cppE6zsVIEN5NFIx8G7GEs3qtwvkv2txDQ-A5_TCIhJdgNNROAoy7ccBFW0aZyOzMnDQBjtRLb1cctzCmnA6czeojyIbE6k0AXf9IrDoEJfaNq92RIgSO9UnbisgjOxlzxF-55NJtxZCgGfh_H7qFABeUqkBtckdEf-iTu89S6QPVL_Xbwd8TjBXjwo1imVBhSNpLvVHt039kKcvPgEFVlyVePuIdqbo7YWbz2fw51_TOnJPeXE7Pv9tdaW6W7wzAOrO-x2MGcLcWwS10Kc-84-PTsdxIA19CZSTDnyz4JcnALHfWJbAst6a-4AvwWT0f_uOtQjeWL-4h68Dj_bmSQ7cF99znJ-vfiKVFPe8ZDgnHLtB9akCZ05x6PizUQjzpr2WS7hs.OTdCSGoQjnFw_RNkhsIsDA</password>
+        </server>
+    </servers>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <repositories>
+                <repository>
+                    <id>codeartifact</id>
+                    <url>https://lwa-326726142239.d.codeartifact.us-east-1.amazonaws.com/maven/lwa-shared/</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>default</activeProfile>
+    </activeProfiles>
+</settings>

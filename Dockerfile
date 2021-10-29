@@ -11,10 +11,14 @@
 
 FROM maven
 
+RUN mkdir -p /root/.m2 && mkdir /root/.m2/repository
+COPY settings.xml /root/.m2
+
 COPY src /aqa/src
 COPY pom.xml /aqa/pom.xml
 COPY .kube /aqa/.kube
 COPY docker-startup.sh /aqa/docker-startup.sh
+
 WORKDIR /aqa
 
 RUN mvn -f /aqa/pom.xml clean install

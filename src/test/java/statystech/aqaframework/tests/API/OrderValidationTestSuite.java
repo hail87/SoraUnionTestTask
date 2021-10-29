@@ -1,9 +1,6 @@
 package statystech.aqaframework.tests.API;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -59,6 +56,12 @@ public class OrderValidationTestSuite extends TestClass {
         lwaTestContext.getConnection();
         Context.addTestContext(lwaTestContext);
     }
+
+//    @TestRailID(id = 1111)
+//    @Test
+//    public void encryptDB() throws SQLException {
+//        String s = "";
+//    }
 
 
     @TestRailID(id = 7803)

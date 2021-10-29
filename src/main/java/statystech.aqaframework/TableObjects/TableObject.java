@@ -14,6 +14,7 @@ import java.beans.Introspector;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public abstract class TableObject {
@@ -81,6 +82,10 @@ public abstract class TableObject {
         return count;
     }
 
+    public ResultSet getRows() {
+        return DBUtils.executeUpdatable(String.format("select * from %s", TABLE_NAME));
+    }
+
     public int getPrimaryID() throws SQLException, IOException {
         return Integer.parseInt(DBUtils.select(TABLE_NAME, 1));
     }
@@ -103,7 +108,7 @@ public abstract class TableObject {
     public String getColumnValueByProductName(String productName, String columnName) throws SQLException {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, productName));
-         rs.next();
+        rs.next();
         return rs.getString(columnName);
     }
 
@@ -239,6 +244,27 @@ public abstract class TableObject {
             return String.format("No new records at the '%s' table found\n", TABLE_NAME);
         }
         return "";
+    }
+
+    public void encryptRows(List<String> encryptedColums) throws SQLException {
+        ResultSet rs = getRows();
+        while (rs.next()) {
+            for (String columnName : encryptedColums) {
+                String originalData = rs.getString(columnName);
+                String encryptedData = DataUtils.encrypt(originalData);
+                if (encryptedData != null && !encryptedData.isEmpty()) {
+                    try {
+                        rs.updateString(columnName, encryptedData);
+                        rs.updateRow();
+                        logger.info(String.format("Value '%s' from column '%s : %s' has been encrypted successfully", originalData, TABLE_NAME, columnName));
+                    } catch (SQLException e) {
+                        rs.cancelRowUpdates();
+                        logger.info(String.format("Can't update value '%s' from table '%s' column '%s' because field isn't encrypted", originalData, TABLE_NAME, columnName));
+                    }
+                }
+            }
+            logger.info(String.format("%s table encryption complete", TABLE_NAME));
+        }
     }
 
 }

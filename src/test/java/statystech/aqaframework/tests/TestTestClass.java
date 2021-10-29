@@ -1,6 +1,8 @@
 package statystech.aqaframework.tests;
 
 import org.junit.jupiter.api.Test;
+import statystech.aqaframework.TableObjects.AddressTable;
+import statystech.aqaframework.TableObjects.TableObject;
 import statystech.aqaframework.steps.TestRail.TestRailSteps;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;

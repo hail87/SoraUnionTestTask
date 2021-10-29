@@ -229,6 +229,9 @@ public class DataUtils {
     }
 
     public static String encrypt(String text) {
+        if (text == null || text.isEmpty()){
+            return text;
+        }
         return new ColumnCryptoServiceImpl("dev_encryption_passphrase").encrypt(text);
     }
 

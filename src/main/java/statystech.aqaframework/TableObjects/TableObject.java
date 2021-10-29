@@ -8,6 +8,7 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
+import statystech.aqaframework.utils.DataUtils;
 
 import java.beans.Introspector;
 import java.io.IOException;
@@ -102,7 +103,7 @@ public abstract class TableObject {
     public String getColumnValueByProductName(String productName, String columnName) throws SQLException {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, productName));
-        rs.next();
+         rs.next();
         return rs.getString(columnName);
     }
 
@@ -180,6 +181,24 @@ public abstract class TableObject {
         tableValue = DBUtils.executeAndReturnString(String.format(
                 "select %s from %s where %s.%s = %d", columnName, TABLE_NAME, TABLE_NAME, getFirstColumnName(TABLE_NAME), primaryID));
         return Map.of("jsonValue", jsonValue, "tableValue", tableValue);
+    }
+
+    public Map<String, String> getJsonAndTableDecryptValue(int primaryID, String jsonNodeKey1, String jsonNodeKey2) throws SQLException {
+        LwaTestContext lwaTestContext = Context.getTestContext(Thread.currentThread().getStackTrace()[3].getMethodName(), LwaTestContext.class);
+        String jsonValue = "";
+        try {
+            jsonValue = lwaTestContext.getJsonObject().getAsJsonObject(jsonNodeKey1).get(jsonNodeKey2).
+                    toString().replace("\"", "");
+        } catch (ClassCastException e) {
+            jsonValue = lwaTestContext.getJsonObject().getAsJsonArray(jsonNodeKey1).get(0).getAsJsonObject().get(jsonNodeKey2)
+                    .toString().replace("\"", "");
+        }
+        String columnName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, jsonNodeKey2);
+        columnName = Introspector.decapitalize(columnName);
+        String tableValue = null;
+        tableValue = DBUtils.executeAndReturnString(String.format(
+                "select %s from %s where %s.%s = %d", columnName, TABLE_NAME, TABLE_NAME, getFirstColumnName(TABLE_NAME), primaryID));
+        return Map.of("jsonValue", jsonValue, "tableValue", DataUtils.decrypt(tableValue));
     }
 
     public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1) throws SQLException {

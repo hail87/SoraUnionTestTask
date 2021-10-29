@@ -117,7 +117,8 @@ public class ProductSteps extends Steps {
         String expected = item.getProductUnavailable().equalsIgnoreCase("Y") ? "1" : "0";
         String actual = null;
         try {
-            actual = new ProductTable().getColumnValueByProductName(DataUtils.convertUnicodeToAscii(item.getProductNameEng()), "productUnavailable");
+            //actual = new ProductTable().getColumnValueByProductName(DataUtils.convertUnicodeToAscii(item.getProductNameEng()), "productUnavailable");
+            actual = new ProductTable().getColumnValueByProductName(item.getProductNameEng(), "productUnavailable");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return "[checkProductUnavailable]: There is no " + item.getProductNameEng() + "at the Product table found";

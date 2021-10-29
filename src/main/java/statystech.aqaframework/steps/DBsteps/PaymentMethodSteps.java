@@ -16,6 +16,7 @@ public class PaymentMethodSteps extends Steps {
         if (!paymentMethodTable.checkRowWithIDExist(lwaTestContext.getPaymentMethodID())){
             return "There is no line with PaymentMethodID " + lwaTestContext.getPaymentMethodID();
         }
+        logger.info(String.format("Line with PaymentMethodID '%d' has been created", lwaTestContext.getPaymentMethodID()));
         paymentMethodTable.setTableRowsQuantity();
         return "";
     }

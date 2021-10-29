@@ -9,6 +9,7 @@ import statystech.aqaframework.TableObjects.WarehouseTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
+import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -63,14 +64,14 @@ public class WarehouseOrderSteps extends Steps {
         return errorMessage.toString();
     }
 
-    private String checkComments() throws JsonProcessingException {
+    private String checkComments() {
         StringBuilder errorMessage = new StringBuilder();
         String expectedComments = StringEscapeUtils.unescapeJava(Context.getTestContext(LwaTestContext.class).getOrder().getShippingNotes());
         String actualComments = "";
         for (Map.Entry<Integer, Integer> entry : Context.getTestContext(LwaTestContext.class).getWarehouseOrders().entrySet()) {
             try {
                 actualComments = new WarehouseOrderTable().getColumnValueByPrimaryID(entry.getKey(), "comments");
-                return verifyExpectedResults(actualComments, expectedComments);
+                return verifyExpectedResults(StringEscapeUtils.unescapeJava(actualComments), expectedComments);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

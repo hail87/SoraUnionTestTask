@@ -8,6 +8,7 @@ import statystech.aqaframework.TableObjects.OrderLineTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
+import statystech.aqaframework.utils.DataUtils;
 
 import java.sql.SQLException;
 
@@ -69,13 +70,13 @@ public class OrderLineSteps extends Steps {
     private String checkPrice(OrderItem product) throws SQLException {
         String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "itemPrice");
         String expected = product.getProductItemPrice();
-        return verifyExpectedResults(actual, expected);
+        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
     }
 
     private String checkQuantity(OrderItem product) throws SQLException {
         String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "quantity");
         String expected = product.getProductQuantity();
-        return verifyExpectedResults(actual, expected);
+        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
     }
 
     private String checkWarehouseOrderID(OrderItem product) throws SQLException {

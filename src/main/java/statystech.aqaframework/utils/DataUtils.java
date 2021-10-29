@@ -4,6 +4,7 @@ import com.google.common.io.CharStreams;
 import com.google.common.util.concurrent.SimpleTimeLimiter;
 import com.google.common.util.concurrent.TimeLimiter;
 import com.google.common.util.concurrent.UncheckedTimeoutException;
+import com.lwa.common.crypto.service.impl.ColumnCryptoServiceImpl;
 import io.kubernetes.client.PodLogs;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
@@ -169,9 +170,9 @@ public class DataUtils {
             e.printStackTrace();
             logger.error("Can't find Kube config file");
         } catch (IOException e) {
-        e.printStackTrace();
-        logger.error("Can't get Kube ApiClient");
-    }
+            e.printStackTrace();
+            logger.error("Can't get Kube ApiClient");
+        }
         logger.info("setting API client");
         Configuration.setDefaultApiClient(client);
         CoreV1Api coreApi = new CoreV1Api(client);
@@ -185,8 +186,8 @@ public class DataUtils {
                                     "lwa-sandbox", "false", null, null, null, null, null, null, null, null, null)
                             .getItems()
                             .stream().filter(p -> p.getMetadata().getName().contains(logName)).findFirst().get();
-             inputStream = logs.streamNamespacedPodLog(pod);
-             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            inputStream = logs.streamNamespacedPodLog(pod);
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             TimeLimiter timeLimiter = new SimpleTimeLimiter();
             String line = "";
             long deltaT = 0;
@@ -207,16 +208,16 @@ public class DataUtils {
             //logger.error("\nCan't get logs from kubernetes\n");
         } catch (IOException e) {
             logger.error("\nTrouble with streaming logs from the pod\n");
-        }finally {
+        } finally {
             logger.info("closing the streams\n");
-            if (inputStream!=null){
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if (bufferedReader!=null){
+            if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
@@ -225,6 +226,18 @@ public class DataUtils {
             }
         }
         return result;
+    }
+
+    public static String encrypt(String text) {
+        return new ColumnCryptoServiceImpl("dev_encryption_passphrase").encrypt(text);
+    }
+
+    public static String decrypt(String text) {
+        try {
+            return new ColumnCryptoServiceImpl("dev_encryption_passphrase").decrypt(text);
+        } catch (IllegalStateException e) {
+            return "wrong decryption";
+        }
     }
 
 }

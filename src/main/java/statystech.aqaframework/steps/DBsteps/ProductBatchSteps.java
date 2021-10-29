@@ -9,6 +9,7 @@ import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.TableObjects.ProductBatchTable;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
+import statystech.aqaframework.utils.DataUtils;
 
 import java.sql.SQLException;
 
@@ -33,7 +34,7 @@ public class ProductBatchSteps extends Steps {
             return "\ncheckBatchNumber: There is no " + product.getProductName() + " at the productBatch table.";
         }
         String expected = product.getWarehouses().get(0).getBatches().get(0).getNumber();
-        return verifyExpectedResults(actual, expected);
+        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
     }
 
     public String checkBatchNumberIsPresent(BatchesItem batch) {
@@ -52,7 +53,7 @@ public class ProductBatchSteps extends Steps {
     }
 
     public String setProductBatchID(BatchesItem batch) {
-        String productBatchId = DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where batchNumber = '%s'", batch.getNumber()));
+        String productBatchId = DBUtils.executeAndReturnString(String.format("select productBatchID from productBatch where batchNumber = '%s'", DataUtils.encrypt(batch.getNumber())));
         if (productBatchId.isEmpty()) {
             String error = "\ncheckBatchNumber: There is no " + batch.getNumber() + " batchNumber found at the productBatch table.";
             logger.error(error);

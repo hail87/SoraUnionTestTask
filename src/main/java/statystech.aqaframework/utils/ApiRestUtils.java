@@ -328,4 +328,8 @@ public class ApiRestUtils {
         }
         return response;
     }
+
+//    public static String getAwsToken(){
+//
+//    }
 }

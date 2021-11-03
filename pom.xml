@@ -30,8 +30,7 @@
 <!--            </snapshots>-->
 <!--            <name>StatysTechRepo</name>-->
 <!--            <id>codeartifact</id>-->
-<!--&lt;!&ndash;            <url>https://git-codecommit.ca-central-1.amazonaws.com/v1/repos</url>&ndash;&gt;-->
-<!--            <url>https://console.aws.amazon.com/codesuite/codeartifact/start?region=us-east-1</url>-->
+<!--            <url>https://lwa-326726142239.d.codeartifact.us-east-1.amazonaws.com/maven/lwa-shared/</url>-->
 <!--            <layout>default</layout>-->
 <!--        </repository>-->
 <!--    </repositories>-->

@@ -22,7 +22,7 @@ public class OrderExceptionHistorySteps extends Steps {
     public String verifyRowWithOrderIdExist(LwaTestContext lwaTestContext) {
         boolean rowIsPresent = false;
         int i = 0;
-        while (!orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId())) && i < 3) {
+        while (!orderExceptionHistoryTable.checkRowWithValueIsPresent("orderID", String.valueOf(lwaTestContext.getApiOrderId())) && i < 10) {
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {

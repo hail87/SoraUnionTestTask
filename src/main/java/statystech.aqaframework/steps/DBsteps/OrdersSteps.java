@@ -155,11 +155,11 @@ public class OrdersSteps extends Steps {
                 String.format("select orderStatusName from %s where orderID = %d", ordersTable.getName(), orderID));
         int i = 0;
         logger.info("Waiting for orderStatusName");
-        while(actualStatus.isEmpty() || actualStatus.equalsIgnoreCase("New Order") && i < 30)
+        while(actualStatus.isEmpty() || actualStatus.equalsIgnoreCase("New Order") && i < 60)
         {
             logger.info(String.format("OrderStatusName: %s\ni = %d\n", actualStatus, i));
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -106,25 +106,24 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //https://statystech.atlassian.net/browse/LWA-946
-//    @TestRailID(id = 7805)
-//    @ParameterizedTest
-//    @CsvSource({"OrderValidation - VerifyLicenseExpiredException.json"})
-//    public void verifyLicenseExpiredException(String jsonFilename, TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        OrdersSteps ordersSteps = new OrdersSteps();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//
-//        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-//        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//        errorMessage.append(new OrderExceptionHistorySteps().verifyOrderExceptionTypeID(lwaTestContext, 4));
-//
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 7805)
+    @ParameterizedTest
+    @CsvSource({"OrderValidation - VerifyLicenseExpiredException.json"})
+    public void verifyLicenseExpiredException(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        OrdersSteps ordersSteps = new OrdersSteps();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(new OrderExceptionHistorySteps().verifyOrderExceptionTypeID(lwaTestContext, 4));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
 
     @TestRailID(id = 7806)
     @ParameterizedTest

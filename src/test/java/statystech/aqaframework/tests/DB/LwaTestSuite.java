@@ -277,31 +277,31 @@ public class LwaTestSuite extends TestClass {
     }
 
     //https://statystech.atlassian.net/browse/LWA-963
-    @TestRailID(id = 39706)
-    @Test
-    public void getWarehouseOrdersAllsysOrderIdIgnoreOtherCriteria(TestInfo testInfo) throws IOException, SQLException {
-        StringBuilder errorMessage = new StringBuilder();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-
-        int idNew = stageOrderSteps.insertJsonToTableAndContext(GetWarehouseOrderNoCriteriaEnum.order6097147.getTitle(), testInfo);
-        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
-
-        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Collections.singletonList(6097147));
-        OrdersTable ordersTable = new OrdersTable();
-        for (int orderAllSysID : expectedOrderNumbersList) {
-            assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
-        }
-
-        LwaApiSteps lwaApiSteps = new LwaApiSteps();
-
-        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders(6097147, "EU", "ROTW"), lwaTestContext));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
-                new ArrayList<>(Collections.singletonList(6097147)), lwaTestContext));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
+//    @TestRailID(id = 39706)
+//    @Test
+//    public void getWarehouseOrdersAllsysOrderIdIgnoreOtherCriteria(TestInfo testInfo) throws IOException, SQLException {
+//        StringBuilder errorMessage = new StringBuilder();
+//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+//
+//        int idNew = stageOrderSteps.insertJsonToTableAndContext(GetWarehouseOrderNoCriteriaEnum.order6097147.getTitle(), testInfo);
+//        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+//
+//        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Collections.singletonList(6097147));
+//        OrdersTable ordersTable = new OrdersTable();
+//        for (int orderAllSysID : expectedOrderNumbersList) {
+//            assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
+//        }
+//
+//        LwaApiSteps lwaApiSteps = new LwaApiSteps();
+//
+//        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders(6097147, "EU", "ROTW"), lwaTestContext));
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//
+//        errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
+//                new ArrayList<>(Collections.singletonList(6097147)), lwaTestContext));
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 
     @TestRailID(id = 40873)
     @Test

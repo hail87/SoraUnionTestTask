@@ -62,7 +62,7 @@
         "payment_token": "AbcDef123Ghi456jkl5299",
         "payment_method_type": "CC",
         "payment_method_description": "********5590",
-        "payment_mid": 1004
+        "payment_mid": 10
     },
     "line_items": [
         {

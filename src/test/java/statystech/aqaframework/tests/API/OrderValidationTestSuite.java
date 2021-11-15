@@ -43,7 +43,7 @@ public class OrderValidationTestSuite extends TestClass {
         properties.setProperty("testrail_testSuiteId", "2170");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
-            TestRailReportExtension.reportResults();
+            //TestRailReportExtension.reportResults();
         }
     }
 

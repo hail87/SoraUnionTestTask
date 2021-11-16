@@ -72,3 +72,6 @@ where stageProductID > 0;
 
 delete from lwa_sandbox.buyerAccountLicense
 where buyerAccountLicenseID NOT in (1526, 1528, 1529, 1530, 1531) and buyerAccountLicenseID > 0;
+
+delete from lwa_sandbox.paymentMethod
+where buyerAccountID NOT in (416) and buyerAccountID > 0;

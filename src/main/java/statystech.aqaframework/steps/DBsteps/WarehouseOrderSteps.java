@@ -96,4 +96,8 @@ public class WarehouseOrderSteps extends Steps {
     public int getWarehouseId(int warehouseOrderId) throws SQLException {
         return Integer.parseInt(new WarehouseOrderTable().getColumnValueByPrimaryID(warehouseOrderId, "warehouseID"));
     }
+
+    public int getWarehouseOrderId(int orderId) throws SQLException {
+        return Integer.parseInt(new WarehouseOrderTable().getColumnValueByColumnValue("warehouseOrderID", "orderID", String.valueOf(orderId)));
+    }
 }

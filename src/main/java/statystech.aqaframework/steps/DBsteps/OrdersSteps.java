@@ -138,13 +138,13 @@ public class OrdersSteps extends Steps {
         return verifyExpectedResults(actual, expected.toString());
     }
 
-    public void setOrderID() throws SQLException, IOException {
+    public void setOrderIDtoContext() throws SQLException, IOException {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
         lwaTestContext.setOrderID(ordersTable.getPrimaryID());
         Context.updateTestContext(lwaTestContext);
     }
 
-    public void setPaymentMethodID() {
+    public void setPaymentMethodIDtoContext() {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
         lwaTestContext.setPaymentMethodID(ordersTable.getPaymentMethodID(lwaTestContext.getApiOrderId()));
         Context.updateTestContext(lwaTestContext);

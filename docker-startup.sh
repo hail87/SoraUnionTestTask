@@ -1,5 +1,5 @@
 #! /bin/sh
 
-mvn -Dtest=LwaTestSuite,SubmitOrderTestSuite,OrderValidationTestSuite test
+mvn -Dtest=LwaTestSuite,SubmitOrderTestSuite,OrderValidationTestSuite,ParcelLineTestSuite test
 #mvn -Dtest=LwaTestSuite#addProductTest test
 

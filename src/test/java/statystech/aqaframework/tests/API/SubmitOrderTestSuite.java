@@ -266,7 +266,7 @@ public class SubmitOrderTestSuite extends TestClass {
         OrdersSteps ordersSteps = new OrdersSteps();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setPaymentMethodID();
+        ordersSteps.setPaymentMethodIDtoContext();
         PaymentMethodSteps paymentMethodSteps = new PaymentMethodSteps();
         paymentMethodSteps.checkLineCreated(lwaTestContext);
         errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));

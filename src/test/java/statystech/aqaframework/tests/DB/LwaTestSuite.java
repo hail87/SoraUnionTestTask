@@ -1,8 +1,6 @@
 package statystech.aqaframework.tests.DB;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,8 +9,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
-import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
-import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.enums.GetWarehouseOrderNoCriteriaEnum;
 import statystech.aqaframework.TableObjects.OrdersTable;
 import statystech.aqaframework.common.Context.Context;
@@ -24,7 +20,6 @@ import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.ApiRestUtils;
 import statystech.aqaframework.utils.DataUtils;
-import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -77,7 +72,7 @@ public class LwaTestSuite extends TestClass {
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
         OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderID();
+        ordersSteps.setOrderIDtoContext();
         errorMessage.append(ordersSteps.checkOrdersTable());
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
@@ -127,7 +122,7 @@ public class LwaTestSuite extends TestClass {
         int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
 
-        new OrdersSteps().setOrderID();
+        new OrdersSteps().setOrderIDtoContext();
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
@@ -152,7 +147,7 @@ public class LwaTestSuite extends TestClass {
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
 
         OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderID();
+        ordersSteps.setOrderIDtoContext();
         errorMessage.append(ordersSteps.checkOrdersTable());
 
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();

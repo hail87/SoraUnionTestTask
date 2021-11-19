@@ -64,6 +64,10 @@ public class LwaTestContext extends TestContext{
     private String aretoCaptureDescription;
     private String aretoCaptureCode;
 
+    private okhttp3.Response parcelLineResponse;
+    private int parcelLineID;
+    private int warehouseBatchInventoryID;
+
     private WarehouseSearchResponse warehouseSearchResponse;
 
     public int getLastWarehouseOrderID() throws SQLException {

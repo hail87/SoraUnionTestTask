@@ -35,10 +35,24 @@ public abstract class Steps {
         String callingMethod = stackTraceElements[2].getMethodName();
         String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
         if (actualResult.equalsIgnoreCase(expectedResult)) {
-            logger.info(String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are the same\n", callingClass, callingMethod, expectedResult, actualResult));
+            logger.info(String.format("\n[%s:%s]: expectedResult '%s' and actualResult '%s' are the same\n", callingClass, callingMethod, expectedResult, actualResult));
             return "";
         } else {
-            String message = String.format("\n[%s:%s]: jsonValue '%s' and tableValue '%s' are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
+            String message = String.format("\n[%s:%s]: expectedResult '%s' and actualResult '%s' are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
+            logger.error(message);
+            return message;
+        }
+    }
+
+    public String verifyActualResultsContains(String actualResult, String expectedResult) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String callingMethod = stackTraceElements[2].getMethodName();
+        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
+        if (actualResult.contains(expectedResult)) {
+            logger.info(String.format("\n[%s:%s]: actualResult '%s' contains expectedResult '%s'\n", callingClass, callingMethod, actualResult, expectedResult));
+            return "";
+        } else {
+            String message = String.format("\n[%s:%s]: actualResult '%s' aren't contain expectedResult '%s'\n", callingClass, callingMethod, actualResult, expectedResult);
             logger.error(message);
             return message;
         }

@@ -18,9 +18,9 @@ public class ParcelLineApiSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(ParcelLineApiSteps.class);
 
-    public String sendGetRequestAndSaveResponseToContext(int warehouseOrderID, TestInfo testInfo) throws IOException {
+    public String sendGetRequestAndSaveResponseToContext(int warehouseOrderID, String token, TestInfo testInfo) throws IOException {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
-        String responseString = new ApiRestUtils().sendGetParcelLine(warehouseOrderID).body().string();
+        String responseString = new ApiRestUtils().sendGetParcelLine(warehouseOrderID, token).body().string();
         logger.info("Response from API:\n" + responseString);
         if (!responseString.contains("parcel_lineid")) {
             return String.format("\nWrong response!\nResponseString:\n'%s'\n", responseString);
@@ -34,9 +34,9 @@ public class ParcelLineApiSteps extends Steps {
         }
     }
 
-    public String sendPutRequestAndSaveResponseToContext(String authToken, int expectedStatusCode, TestInfo testInfo){
+    public String sendPutRequestAndSaveResponseToContext(String authToken, int expectedStatusCode, int warehouseBatchInventoryID, TestInfo testInfo){
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
-        Response response = new ApiRestUtils().sendPutParcelLine(testContext.getParcelLineID(),testContext.getWarehouseBatchInventoryID(), authToken);
+        Response response = new ApiRestUtils().sendPutParcelLine(testContext.getParcelLineID(),warehouseBatchInventoryID, authToken);
         logger.info("Response from API:\n" + response.code());
         if (response.code()!=expectedStatusCode) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());

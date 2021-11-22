@@ -270,7 +270,7 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response sendGetParcelLine(int warehouseOrderID) {
+    public okhttp3.Response sendGetParcelLine(int warehouseOrderID, String token) {
         okhttp3.Response response = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
@@ -278,7 +278,7 @@ public class ApiRestUtils {
             Request request = new Request.Builder()
                     .url(DataUtils.getPropertyValue("url.properties", "parcelLineGET") + warehouseOrderID)
                     .method("GET", null)
-                    .addHeader("Authorization", DataUtils.getPropertyValue("tokens.properties", "WHMuser7"))
+                    .addHeader("Authorization", token)
                     .build();
             response = client.newCall(request).execute();
         } catch (IOException e) {

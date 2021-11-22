@@ -29,7 +29,7 @@ import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 @ExtendWith(TestRailReportExtension.class)
 public class ParcelLineTestSuite extends TestClass {
 
-    private static final Logger logger = LoggerFactory.getLogger(LwaTestSuite.class);
+    private static final Logger logger = LoggerFactory.getLogger(ParcelLineTestSuite.class);
 
     @BeforeAll
     static void clearTestResults() {

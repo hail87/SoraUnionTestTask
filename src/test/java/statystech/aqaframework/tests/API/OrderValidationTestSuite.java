@@ -40,7 +40,7 @@ public class OrderValidationTestSuite extends TestClass {
     @AfterAll
     public static void setSuiteID() {
         Properties properties = loadProperties();
-        properties.setProperty("testrail_testSuiteId", "2170");
+        properties.setProperty("testrail_testSuiteId", "5960");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
             TestRailReportExtension.reportResults();
@@ -93,7 +93,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
-        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 6866));
+        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 7236));
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
@@ -274,7 +274,6 @@ public class OrderValidationTestSuite extends TestClass {
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(addressTable.verifyNewRowCreated());
         errorMessage.append(new AddressSteps().verifyVerificationStatus("IECCrPzcm85scw6YQCrSzw==", "error")); //Smithello = IECCrPzcm85scw6YQCrSzw==
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
@@ -380,7 +379,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
 
-        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 6861));
+        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 7192));
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 

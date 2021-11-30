@@ -5,6 +5,7 @@ import okhttp3.Response;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ParcelLines.AddProductButchResponse;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
@@ -47,10 +48,18 @@ public class ParcelLineApiSteps extends Steps {
         }
     }
 
-    public String verifyResponseBody(String expectedResponse, LwaTestContext lwaTestContext) throws IOException {
-        Response response = lwaTestContext.getParcelLineResponse();
-        String responseBody = response.body().string();
-        logger.info("Response body:\n" + responseBody);
-        return verifyActualResultsContains(responseBody, expectedResponse);
+    public String addNewProductButch(String authToken, int productID, int freeStock, TestInfo testInfo) throws IOException {
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        Response response = new ApiRestUtils().sendPostParcelLine(productID, freeStock, authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code()!=200) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            AddProductButchResponse addProductButchResponse = mapper.readValue(response.body().string(), AddProductButchResponse.class);
+            testContext.setProductBatchId(addProductButchResponse.getProductBatchId());
+            Context.updateTestContext(testContext);
+            return "";
+        }
     }
 }

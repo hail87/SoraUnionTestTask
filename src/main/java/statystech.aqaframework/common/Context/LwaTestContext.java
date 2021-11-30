@@ -67,6 +67,7 @@ public class LwaTestContext extends TestContext{
     private okhttp3.Response parcelLineResponse;
     private int parcelLineID;
     private int warehouseBatchInventoryID;
+    private int productBatchId;
 
     private WarehouseSearchResponse warehouseSearchResponse;
 

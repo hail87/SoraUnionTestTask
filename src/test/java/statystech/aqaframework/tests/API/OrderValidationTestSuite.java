@@ -93,7 +93,7 @@ public class OrderValidationTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
-        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 7236));
+        errorMessage.append(ordersSteps.checkOMSShippingAddressID(lwaTestContext.getApiOrderId(), 7236)); //638 2780 6866
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 

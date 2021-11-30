@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
 
@@ -30,9 +31,20 @@ public class WarehouseBatchInventorySteps extends Steps {
         }
         String expected = String.valueOf(item.getQuantity());
         String result = verifyExpectedResults(dbFreeStock, expected);
-        if (!result.isEmpty()){
+        if (!result.isEmpty()) {
             return "productBatchID '" + item.getProductBatchID() + "' : " + result;
         }
         return "";
     }
+
+    public String getWarehouseBatchInventoryID(LwaTestContext lwaTestContext) {
+        int productBatchID = lwaTestContext.getProductBatchId();
+        String warehouseBatchInventoryID = DBUtils.executeAndReturnString(String.format("select warehouseBatchInventoryID from warehouseBatchInventory where productBatchID = '%d'", productBatchID));
+        if (warehouseBatchInventoryID.isEmpty()) {
+            return String.format("\n [checkFreeStock]: There is no product with productBatchID '%s' found at the WarehouseBatchInventory table", productBatchID);
+        }
+        lwaTestContext.setWarehouseBatchInventoryID(Integer.parseInt(warehouseBatchInventoryID));
+        return "";
+    }
+
 }

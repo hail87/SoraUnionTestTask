@@ -65,7 +65,7 @@ public class SubmitOrderTestSuite extends TestClass {
 
     @TestRailID(id = 7743)
     @ParameterizedTest
-    @ValueSource(strings = {"submitOrder-newBuyer.json"})
+    @ValueSource(strings = {"submitOrder-newBuyerC7743.json"})
     public void submitOrderNewBuyerAccountId(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
@@ -157,12 +157,6 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
         errorMessage.append(accountAddressSteps.checkRowWithShippingAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
 
-//        try {
-//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-//            DBUtils.cleanDB("clean_new_shipping_address.sql");
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
@@ -214,29 +208,25 @@ public class SubmitOrderTestSuite extends TestClass {
 
         errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
 
-//        try {
-//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-//            DBUtils.cleanDB("clean_new_billing_address.sql");
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
     @TestRailID(id = 7791)
     @ParameterizedTest
-    @ValueSource(strings = {"submitOrder-newLicense.json"})
-    public void submitOrderExistedBuyerLicense(String jsonFilename, TestInfo testInfo) throws IOException {
+    @CsvSource({"submitOrder-newLicenseC7791-a.json, submitOrder-newLicenseC7791-b.json "})
+    public void submitOrderExistedBuyerLicense(String jsonFilename1, String jsonFilename2, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename1, testInfo));
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         ordersSteps.setOMSBuyerAccountLicenseIDToContext(lwaTestContext);
         errorMessage.append(new BuyerAccountLicenseSteps().checkBuyerAccountLicenseID(lwaTestContext));
 
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        JsonUtils.loadObjectToContextAndGetString(jsonFilename2, testInfo.getTestMethod().get().getName());
+        errorMessage.append(new OmsApiSteps().updateBuyerAccountIdAndSendPOST(lwaTestContext));
+
         ordersSteps.setOMSBuyerAccountLicenseIDToContext(lwaTestContext);
         errorMessage.append(new BuyerAccountLicenseSteps().checkBuyerAccountLicenseIDisOnlyOne(lwaTestContext));
 
@@ -323,38 +313,6 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
 
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
-
-    @TestRailID(id = 12708)
-    @ParameterizedTest
-    @CsvSource({"submitOrder-newBuyerErikaSA.json, submitOrder-knownBuyerOtherSA.json"})
-    public void submitOrderExistedBuyerOtherShippingAddress(String jsonFilename, String updateJsonFilename, TestInfo testInfo) throws IOException {
-        StringBuilder errorMessage = new StringBuilder();
-
-        OmsApiSteps omsApiSteps = new OmsApiSteps();
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        OrdersSteps ordersSteps = new OrdersSteps();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        AddressTable addressTable = new AddressTable();
-        addressTable.setTableRowsQuantity();
-
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(updateJsonFilename, testInfo));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setOMSShippingAddressIDToContext(lwaTestContext);
-        errorMessage.append(new AccountAddressSteps().checkRowWithShippingAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
-        errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
-        errorMessage.append(new AddressSteps().checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
-
-//        try {
-//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-//            DBUtils.cleanDB("clean_shipping_address_TC12708.sql");
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

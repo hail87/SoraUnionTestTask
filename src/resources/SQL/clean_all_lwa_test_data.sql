@@ -75,3 +75,12 @@ where buyerAccountLicenseID NOT in (1526, 1528, 1529, 1530, 1531) and buyerAccou
 
 delete from lwa_sandbox.paymentMethod
 where buyerAccountID NOT in (416) and buyerAccountID > 0;
+
+delete from lwa_sandbox.accountAddress
+where accountAddressID > 0;
+
+delete from lwa_sandbox.address
+where addressID > 0;
+
+delete from lwa_sandbox.buyerAccount
+where buyerAccountID > 0;

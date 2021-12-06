@@ -21,6 +21,7 @@ import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.utils.DBCleaner;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -89,14 +90,14 @@ public class SubmitOrderTestSuite extends TestClass {
 
     @TestRailID(id = 7774)
     @ParameterizedTest
-    @CsvSource({"submitOrder-knownBuyerNewSA.json"})
-    public void submitOrderKnownBuyerNewShippingAddress(String jsonFilename, TestInfo testInfo) throws IOException {
+    @CsvSource({"submitOrder-knownBuyerNewSAC7774-a.json, submitOrder-knownBuyerNewSAC7774-b.json"})
+    public void submitOrderKnownBuyerNewShippingAddress(String jsonFilename1, String jsonFilename2, TestInfo testInfo) throws IOException {
 
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
 
         OmsApiSteps omsApiSteps = new OmsApiSteps();
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename1, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
@@ -111,7 +112,9 @@ public class SubmitOrderTestSuite extends TestClass {
         AccountAddressSteps accountAddressSteps = new AccountAddressSteps();
         errorMessage.append(accountAddressSteps.checkRowWithShippingAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
 
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+        JsonUtils.loadObjectToContextAndGetString(jsonFilename2, testInfo.getTestMethod().get().getName());
+        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(lwaTestContext));
+
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
         int newOmsShippingAddressID = ordersSteps.getOMSShippingAddressID(lwaTestContext.getApiOrderId());
@@ -121,13 +124,6 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
         errorMessage.append(accountAddressSteps.checkRowWithShippingAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
 
-        try {
-            Thread.sleep(3000);
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_shipping_address_TC7774.sql");
-        } catch (SQLException | InterruptedException throwables) {
-            throwables.printStackTrace();
-        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
@@ -161,12 +157,12 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(addressSteps.checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
         errorMessage.append(accountAddressSteps.checkRowWithShippingAddressIdBuyerAccountIDAddressTypeCDAndSetAccountAddressID(lwaTestContext, "SA"));
 
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_shipping_address.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+//        try {
+//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+//            DBUtils.cleanDB("clean_new_shipping_address.sql");
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
@@ -218,12 +214,12 @@ public class SubmitOrderTestSuite extends TestClass {
 
         errorMessage.append(accountAddressSteps.accountAddressTable.verifyTableRowsQuantityDidNotChange());
 
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_billing_address.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+//        try {
+//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+//            DBUtils.cleanDB("clean_new_billing_address.sql");
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
@@ -353,12 +349,12 @@ public class SubmitOrderTestSuite extends TestClass {
         errorMessage.append(addressTable.verifyTableRowsQuantityDidNotChange());
         errorMessage.append(new AddressSteps().checkAddressExist(lwaTestContext.getOmsShippingAddressID()));
 
-        try {
-            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_shipping_address_TC12708.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+//        try {
+//            DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+//            DBUtils.cleanDB("clean_shipping_address_TC12708.sql");
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

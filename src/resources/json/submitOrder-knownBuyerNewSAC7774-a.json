@@ -1,0 +1,83 @@
+{
+    "order_header":
+    {
+        "website_order_id": "hs001",
+        "order_date": "2021-07-16",
+        "shipping_total": 2.00,
+        "total": 569.00,
+        "prices_include_tax": true,
+        "currency": "USD"
+    },
+    "discounts":
+    {
+        "discount_total": 0
+    },
+    "buyer":
+    {
+        "buyer_ip_address": "192.168.1.1",
+        "buyer_license":
+        {
+            "license_name": "LN76543",
+            "license_expiry_date": "2024-04-01",
+            "title": "",
+            "first_name": "Andrew",
+            "middle_name": "",
+            "last_name": "Paterson",
+            "state": "ON",
+            "country": "CA",
+            "profession": "Pharmacist",
+            "specialty": ""
+        },
+        "buyer_address":
+        {
+            "title": "",
+            "first_name": "Andrew",
+            "middle_name": "",
+            "last_name": "Paterson",
+            "company": "",
+            "address_1": "87 Douglas Ave",
+            "address_2": "",
+            "city": "Toronto",
+            "state": "ON",
+            "postcode": "S4S 8H9",
+            "country": "CA",
+            "phone_number_1": "3472898283",
+            "phone_number_2": "",
+            "email": "paterson@test.com"
+        }
+    },
+    "shipping":
+    {
+        "title": "",
+        "first_name": "Andrew",
+        "middle_name": "",
+        "last_name": "Paterson",
+        "company": "",
+        "address_1": "87 Douglas Ave",
+        "address_2": "",
+        "city": "Toronto",
+        "state": "ON",
+        "postcode": "S4S 8H9",
+        "country": "CA",
+        "phone_number_1": "3472898283",
+        "phone_number_2": "",
+        "email": "paterson@test.com"
+    },
+    "payment_details":
+    {
+        "payment_transaction_id": "HS-123-9882B94",
+        "payment_token": "AbcDef123Ghi456jkl5299",
+        "payment_method_type": "CC",
+        "payment_method_description": "********5590",
+        "payment_mid": 10
+    },
+    "line_items":
+    [
+        {
+            "product_id": 2295,
+            "quantity": 1,
+            "price": 567.0,
+            "total": 567.0
+        }
+    ]
+}

@@ -156,7 +156,7 @@ public class OrdersSteps extends Steps {
         int i = 0;
         logger.info("Waiting for orderStatusName");
         String command;
-        while((actualStatus.isEmpty() || actualStatus.equalsIgnoreCase("New Order")) & i < 60)
+        while((actualStatus.isEmpty() || actualStatus.equalsIgnoreCase("New Order")) & i < 120)
         {
             logger.info(String.format("OrderStatusName: '%s'\ni = %d\n", actualStatus, i));
             try {

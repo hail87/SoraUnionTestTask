@@ -1,6 +1,7 @@
 package statystech.aqaframework.steps.DBsteps;
 
 
+import groovy.json.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
@@ -42,7 +43,7 @@ public class ProductSteps extends Steps {
             throwables.printStackTrace();
             return "There is no " + productName + " at the Product table found";
         }
-        return verifyExpectedResults(actual, productName);
+        return verifyExpectedResults(actual, StringEscapeUtils.escapeJava(productName));
     }
 
     private String checkProductAllSysID(OrderItem product) {
@@ -116,12 +117,13 @@ public class ProductSteps extends Steps {
     public String checkProductUnavailable(ItemsItem item){
         String expected = item.getProductUnavailable().equalsIgnoreCase("Y") ? "1" : "0";
         String actual = null;
+        String productName = item.getProductNameEng();
         try {
             //actual = new ProductTable().getColumnValueByProductName(DataUtils.convertUnicodeToAscii(item.getProductNameEng()), "productUnavailable");
-            actual = new ProductTable().getColumnValueByProductName(item.getProductNameEng(), "productUnavailable");
+            actual = new ProductTable().getColumnValueByProductName(productName, "productUnavailable");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            return "[checkProductUnavailable]: There is no " + item.getProductNameEng() + "at the Product table found";
+            return "[checkProductUnavailable]: There is no '" + productName + "' at the Product table found";
         }
         return verifyExpectedResults(actual, expected);
     }

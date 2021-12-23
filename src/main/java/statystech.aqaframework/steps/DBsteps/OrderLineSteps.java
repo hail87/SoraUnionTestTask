@@ -18,7 +18,7 @@ public class OrderLineSteps extends Steps {
 
     public String checkProductIsAbsent(String productName) {
         try {
-            if(checkName(productName).isEmpty()) {
+            if (checkName(productName).isEmpty()) {
                 return String.format("Product with name '%s' have been found, but shouldn't", productName);
             } else return "";
         } catch (SQLException throwables) {
@@ -51,14 +51,15 @@ public class OrderLineSteps extends Steps {
     }
 
     private String checkName(OrderItem product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(StringEscapeUtils.unescapeJava(product.getProductName()), "productName");
-        String expected = product.getProductName();
-        return verifyExpectedResults(actual, expected);
+        return checkName(product.getProductName());
     }
 
     private String checkName(String productName) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(productName, "productName");
-        return verifyExpectedResults(actual, productName);
+
+        String actual = productName.contains("®") ?
+                new OrderLineTable().getColumnValueContainsProductName(productName, "productName")
+                : new OrderLineTable().getColumnValueByProductName(productName, "productName");
+        return verifyExpectedResults(StringEscapeUtils.unescapeJava(actual), productName);
     }
 
     private String checkSKU(OrderItem product) throws SQLException {
@@ -82,7 +83,9 @@ public class OrderLineSteps extends Steps {
     private String checkWarehouseOrderID(OrderItem product) throws SQLException {
         if (Context.getTestContext(LwaTestContext.class).getWarehouseOrders() != null) {
             String expected = String.valueOf(Context.getTestContext(LwaTestContext.class).getLastWarehouseOrderID());
-            String actual = new OrderLineTable().getColumnValueByProductName(StringEscapeUtils.unescapeJava(product.getProductName()), "warehouseOrderID");
+            String actual = product.getProductName().contains("®") ?
+                    new OrderLineTable().getColumnValueContainsProductName(product.getProductName(), "warehouseOrderID")
+                    : new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {
             logger.warn("There is no warehouseOrderID set at the TestContext yet");

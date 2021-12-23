@@ -38,7 +38,7 @@ public class ProductBatchSteps extends Steps {
     }
 
     public String checkBatchNumberIsPresent(BatchesItem batch) {
-        if (!new ProductBatchTable().checkRowWithValueIsPresent("batchNumber", batch.getNumber())){
+        if (!new ProductBatchTable().checkRowWithValueIsPresent("batchNumber", DataUtils.encrypt(batch.getNumber()))){
             return String.format("\nThere is no batchNumber '%s' found at the productBatch table\n", batch.getNumber());
         }
         return "";

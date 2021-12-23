@@ -1,5 +1,6 @@
 package statystech.aqaframework.steps.DBsteps;
 
+import groovy.json.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
@@ -20,6 +21,6 @@ public class ProductDescriptionSteps extends Steps {
             return String.format("\n [checkProductDescription]: There is no product with productID %s found at the productDescription table", item.getProductIdFromDB());
         }
         String expected = DataUtils.convertUnicodeToAscii(item.getProductNameEng());
-        return verifyExpectedResults(actual, expected);
+        return verifyExpectedResults(actual, DataUtils.encrypt(StringEscapeUtils.escapeJava(expected)));
     }
 }

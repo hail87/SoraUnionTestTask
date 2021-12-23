@@ -1,6 +1,7 @@
 package statystech.aqaframework.TableObjects;
 
 import com.google.common.base.CaseFormat;
+import groovy.json.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.Util;
@@ -106,8 +107,24 @@ public abstract class TableObject {
     }
 
     public String getColumnValueByProductName(String productName, String columnName) throws SQLException {
+        if (productName.contains("®") || productName.contains("\t") || productName.contains("\\t") || productName.contains("\\u00ae")) {
+            return getColumnValueContainsProductName(productName, columnName);
+        } else {
+            ResultSet rs = DBUtils.execute(String.format(
+                    "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, StringEscapeUtils.unescapeJava(productName)));
+            rs.next();
+            return rs.getString(columnName);
+        }
+    }
+
+    public String getColumnValueContainsProductName(String productName, String columnName) throws SQLException {
+        String productNameWithoutUnicode = productName.replace("®", "%");
+        productNameWithoutUnicode = productNameWithoutUnicode.contains("\t") ?
+                productName.replace("\t", "%") :
+                productName.replace("\\t", "%");
+        productNameWithoutUnicode = productName.replace("\\u00ae", "%");
         ResultSet rs = DBUtils.execute(String.format(
-                "select * from %s where productName = '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, productName));
+                "select * from %s where productName like '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, productNameWithoutUnicode));
         rs.next();
         return rs.getString(columnName);
     }

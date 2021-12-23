@@ -85,6 +85,7 @@ public class ParcelLineTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    // wrong test case! needs to be updated at the TestRail
 //    @TestRailID(id = 16812)
 //    @ParameterizedTest
 //    @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
@@ -160,4 +161,41 @@ public class ParcelLineTestSuite extends TestClass {
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
+
+    @TestRailID(id = 16869)
+    @ParameterizedTest
+    @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
+    public void WarehouseBatchInventoryIdFromDifferentWarehouse(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
+        new OrdersSteps().setOrderIDtoContext();
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
+        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
+                new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID()),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                400,
+                lwaTestContext.getWarehouseBatchInventoryID(),
+                testInfo).isEmpty());
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Access denied for the user auto_WHM to warehouse: 6"));
+
+        assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
+                DataUtils.getPropertyValue("tokens.properties", "CSRuser-1"),
+                400,
+                lwaTestContext.getWarehouseBatchInventoryID(),
+                testInfo).isEmpty());
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Access denied for the user test_csr to warehouse: 6"));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
 }

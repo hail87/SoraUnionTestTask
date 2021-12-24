@@ -11,10 +11,9 @@ import java.io.IOException;
 public class DBUser {
 
     public DBUser() throws IOException {
-        DataUtils dataUtils = new DataUtils();
-        this.name = dataUtils.getPropertyValue("DB.properties", "name");
-        this.password = dataUtils.getPropertyValue("DB.properties", "pass");
-        this.url = dataUtils.getPropertyValue("DB.properties", "url");
+        this.name = DataUtils.getPropertyValue("DB.properties", "name");
+        this.password = DataUtils.getPropertyValue("DB.properties", "pass");
+        this.url = DataUtils.getPropertyValue("DB.properties", "url");
     }
 
     private String name;

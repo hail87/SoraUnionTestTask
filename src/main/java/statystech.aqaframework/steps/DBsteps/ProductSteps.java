@@ -43,7 +43,7 @@ public class ProductSteps extends Steps {
             throwables.printStackTrace();
             return "There is no " + productName + " at the Product table found";
         }
-        return verifyExpectedResults(actual, StringEscapeUtils.escapeJava(productName));
+        return verifyExpectedResults(DataUtils.removeFuckingUnicode(actual), DataUtils.removeFuckingUnicode(productName));
     }
 
     private String checkProductAllSysID(OrderItem product) {
@@ -114,7 +114,7 @@ public class ProductSteps extends Steps {
         return verifyExpectedResults(actual, expected);
     }
 
-    public String checkProductUnavailable(ItemsItem item){
+    public String checkProductUnavailable(ItemsItem item) {
         String expected = item.getProductUnavailable().equalsIgnoreCase("Y") ? "1" : "0";
         String actual = null;
         String productName = item.getProductNameEng();

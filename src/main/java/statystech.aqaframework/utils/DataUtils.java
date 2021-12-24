@@ -229,7 +229,7 @@ public class DataUtils {
     }
 
     public static String encrypt(String text) {
-        if (text == null || text.isEmpty()){
+        if (text == null || text.isEmpty()) {
             return text;
         }
         return new ColumnCryptoServiceImpl("dev_encryption_passphrase").encrypt(text);
@@ -241,6 +241,22 @@ public class DataUtils {
         } catch (IllegalStateException e) {
             return "wrong decryption";
         }
+    }
+
+    public static String removeFuckingUnicode(String text) {
+        String result = text;
+        if (text.contains("®")) {
+            result = text.replace("®", "%");
+        }
+        if (text.contains("\t")) {
+            result = text.replace("\t", "%");
+        } else if (text.contains("\\t")) {
+            result = text.replace("\\t", "%");
+        }
+        if (text.contains("\\u00ae")) {
+            result = text.replace("\\u00ae", "%");
+        }
+        return result;
     }
 
 }

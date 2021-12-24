@@ -118,13 +118,8 @@ public abstract class TableObject {
     }
 
     public String getColumnValueContainsProductName(String productName, String columnName) throws SQLException {
-        String productNameWithoutUnicode = productName.replace("®", "%");
-        productNameWithoutUnicode = productNameWithoutUnicode.contains("\t") ?
-                productName.replace("\t", "%") :
-                productName.replace("\\t", "%");
-        productNameWithoutUnicode = productName.replace("\\u00ae", "%");
         ResultSet rs = DBUtils.execute(String.format(
-                "select * from %s where productName like '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, productNameWithoutUnicode));
+                "select * from %s where productName like '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, DataUtils.removeFuckingUnicode(productName)));
         rs.next();
         return rs.getString(columnName);
     }

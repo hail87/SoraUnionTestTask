@@ -83,9 +83,10 @@ public class OrderLineSteps extends Steps {
     private String checkWarehouseOrderID(OrderItem product) throws SQLException {
         if (Context.getTestContext(LwaTestContext.class).getWarehouseOrders() != null) {
             String expected = String.valueOf(Context.getTestContext(LwaTestContext.class).getLastWarehouseOrderID());
-            String actual = product.getProductName().contains("®") ?
-                    new OrderLineTable().getColumnValueContainsProductName(product.getProductName(), "warehouseOrderID")
-                    : new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID");
+            String productName = product.getProductName();
+            String actual = productName.contains("®") ?
+                    new OrderLineTable().getColumnValueContainsProductName(productName, "warehouseOrderID")
+                    : new OrderLineTable().getColumnValueByProductName(productName, "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {
             logger.warn("There is no warehouseOrderID set at the TestContext yet");

@@ -63,7 +63,7 @@ public class DBUtils {
     }
 
     public static boolean update(String fullRequest) {
-            int i = 0;
+        int i = 0;
         try {
             i = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().executeUpdate(fullRequest);
         } catch (SQLException | IOException throwables) {
@@ -148,3 +148,5 @@ public class DBUtils {
         connection.close();
     }
 }
+
+

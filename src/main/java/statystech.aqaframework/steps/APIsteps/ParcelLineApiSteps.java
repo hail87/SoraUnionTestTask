@@ -11,7 +11,6 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.ApiRestUtils;
-import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
 
@@ -37,7 +36,8 @@ public class ParcelLineApiSteps extends Steps {
 
     public String sendPutRequestAndSaveResponseToContext(String authToken, int expectedStatusCode, int warehouseBatchInventoryID, TestInfo testInfo){
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
-        Response response = new ApiRestUtils().sendPutParcelLine(testContext.getParcelLineID(),warehouseBatchInventoryID, authToken);
+        int parcelLineID = testContext.getParcelLineID();
+        Response response = new ApiRestUtils().sendPutParcelLine(parcelLineID,warehouseBatchInventoryID, authToken);
         logger.info("Response from API:\n" + response.code());
         if (response.code()!=expectedStatusCode) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
@@ -58,6 +58,20 @@ public class ParcelLineApiSteps extends Steps {
             ObjectMapper mapper = new ObjectMapper();
             AddProductButchResponse addProductButchResponse = mapper.readValue(response.body().string(), AddProductButchResponse.class);
             testContext.setProductBatchId(addProductButchResponse.getProductBatchId());
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String sendPostRequestExternalShipmentAndSaveResponseToContext(String authToken, TestInfo testInfo){
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        int parcelLineId = testContext.getParcelLineID();
+        Response response = new ApiRestUtils().sendPostExternalShipmentParcelLine(parcelLineId, authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code()!=200) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+        } else {
+            testContext.setParcelLineResponse(response);
             Context.updateTestContext(testContext);
             return "";
         }

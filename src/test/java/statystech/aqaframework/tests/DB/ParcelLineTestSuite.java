@@ -157,7 +157,7 @@ public class ParcelLineTestSuite extends TestClass {
                 400,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Access denied for the user test_csr to warehouse: 6"));
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "User does not have permission to access the endpoint. Please contact support at xxxxxx@xxx.com"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -194,6 +194,42 @@ public class ParcelLineTestSuite extends TestClass {
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
         errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Access denied for the user test_csr to warehouse: 6"));
+
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 16810)
+    @ParameterizedTest
+    @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
+    public void updateParcelLineParcelStatusIsC(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
+        new OrdersSteps().setOrderIDtoContext();
+
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
+        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
+                new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID()),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+
+        errorMessage.append(parcelLineApiSteps.sendPostRequestExternalShipmentAndSaveResponseToContext(
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "The parcel has a complete status"));
+
+        assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                200,
+                lwaTestContext.getWarehouseBatchInventoryID(),
+                testInfo).isEmpty());
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "The parcel has a complete status"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

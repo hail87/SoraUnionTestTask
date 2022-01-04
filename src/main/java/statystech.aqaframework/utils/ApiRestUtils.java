@@ -307,13 +307,13 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response sendPostParcelLine(int productID, int freeSTock, String authToken) {
+    public okhttp3.Response sendPostParcelLine(int productID, int freeStock, String authToken) {
         okhttp3.Response response = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": 6,\n    \"batch_number\": \"FRI19112021\",\n    \"batch_exp_date\": \"2023-06-30\",\n    \"quantity\": " + freeSTock + ",\n    \"note\": \"\"\n}");
+            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": 6,\n    \"batch_number\": \"FRI19112021\",\n    \"batch_exp_date\": \"2023-06-30\",\n    \"quantity\": " + freeStock + ",\n    \"note\": \"\"\n}");
             Request request = new Request.Builder()
                     .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/products/" + productID + "/product-batches")
                     .method("POST", body)
@@ -321,6 +321,26 @@ public class ApiRestUtils {
                     .addHeader("Content-Type", "application/json")
                     .build();
             response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response sendPostExternalShipmentParcelLine(int productID, String authToken) {
+        okhttp3.Response response = null;
+        try {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"tracking_number\": \"AA2182814AA\",\n    \"shipping_rate\": 10,\n    \"shipping_rate_currency\": \"EUR\"\n}");
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/test/api/v1/parcels/" + productID + "/external-shipment")
+                .method("POST", body)
+                .addHeader("Authorization", authToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+             response = client.newCall(request).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }

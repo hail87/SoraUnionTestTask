@@ -29,7 +29,7 @@ public class ParcelLinesItem{
 	private int orderLineid;
 
 	@JsonProperty("parcel_id")
-	private Object parcelId;
+	private int parcelId;
 
 	@JsonProperty("is_cold")
 	private Object isCold;

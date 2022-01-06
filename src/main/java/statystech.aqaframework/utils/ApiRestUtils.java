@@ -307,6 +307,23 @@ public class ApiRestUtils {
         return response;
     }
 
+    public okhttp3.Response sendPostCreateParcel(int parcelLineID, int warehouseOrderId, String authToken) throws IOException {
+        okhttp3.Response response = null;
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, String.format("{\n\"warehouse_order_id\": %d,\n\"parcel_lineid_list\": [\n{\n\"parcel_lineid\": %d\n\n\n\n}\n]\n}", warehouseOrderId, parcelLineID));
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/parcels")
+                .method("POST", body)
+                .addHeader("Authorization", authToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        response = client.newCall(request).execute();
+        return response;
+    }
+
     public okhttp3.Response sendPostParcelLine(int productID, int freeStock, String authToken) {
         okhttp3.Response response = null;
         try {
@@ -327,20 +344,39 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response sendPostExternalShipmentParcelLine(int productID, String authToken) {
+    public okhttp3.Response sendPostExternalShipmentParcelLine(int parcelID, String authToken) {
         okhttp3.Response response = null;
         try {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\n    \"tracking_number\": \"AA2182814AA\",\n    \"shipping_rate\": 10,\n    \"shipping_rate_currency\": \"EUR\"\n}");
-        Request request = new Request.Builder()
-                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/test/api/v1/parcels/" + productID + "/external-shipment")
-                .method("POST", body)
-                .addHeader("Authorization", authToken)
-                .addHeader("Content-Type", "application/json")
-                .build();
-             response = client.newCall(request).execute();
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "{\n    \"tracking_number\": \"AA2182814AA\",\n    \"shipping_rate\": 10,\n    \"shipping_rate_currency\": \"EUR\"\n}");
+            Request request = new Request.Builder()
+                    .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/parcels/" + parcelID + "/external-shipment")
+                    .method("POST", body)
+                    .addHeader("Authorization", authToken)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response sendPostStartFulfillmentParcelLine(int warehouseOrderID, String authToken) {
+        okhttp3.Response response = null;
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("text/plain");
+            RequestBody body = RequestBody.create(mediaType, "");
+            Request request = new Request.Builder()
+                    .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/warehouse-orders/" + warehouseOrderID + "/start-fulfillment")
+                    .method("POST", body)
+                    .addHeader("Authorization", authToken)
+                    .build();
+            response = client.newCall(request).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }

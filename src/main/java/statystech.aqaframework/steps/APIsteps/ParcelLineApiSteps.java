@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.ParcelLines.AddProductButchResponse;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
+import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
@@ -63,7 +64,7 @@ public class ParcelLineApiSteps extends Steps {
         }
     }
 
-    public String sendPostRequestExternalShipmentAndSaveResponseToContext(String authToken, TestInfo testInfo){
+    public String sendPostRequestAndSaveResponseToContext(String authToken, TestInfo testInfo){
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         int parcelLineId = testContext.getParcelLineID();
         Response response = new ApiRestUtils().sendPostExternalShipmentParcelLine(parcelLineId, authToken);
@@ -73,6 +74,45 @@ public class ParcelLineApiSteps extends Steps {
         } else {
             testContext.setParcelLineResponse(response);
             Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String sendPostCreateParcelAndSaveResponseToContext(int warehouseOrderID, String authToken, TestInfo testInfo) throws IOException {
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        int parcelLineId = testContext.getParcelLineID();
+        Response response = new ApiRestUtils().sendPostCreateParcel(parcelLineId, warehouseOrderID,authToken);
+        int parcelID = Integer.parseInt(response.body().string().replaceAll("\\D+",""));
+        logger.info("Response from API:\n" + response.code());
+        if (response.code()!=200) {
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", response.body().string(), 200, response.code());
+        } else {
+            testContext.setParcelID(parcelID);
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String sendPostRequestExternalShipmentAndSaveResponseToContext(String authToken, TestInfo testInfo){
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        int parcelId = testContext.getParcelID();
+        Response response = new ApiRestUtils().sendPostExternalShipmentParcelLine(parcelId, authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code()!=200) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+        } else {
+            testContext.setParcelLineResponse(response);
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String sendPostStartFulfillment(int warehouseOrderId, String authToken) {
+        Response response = new ApiRestUtils().sendPostStartFulfillmentParcelLine(warehouseOrderId, authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code()!=200) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+        } else {
             return "";
         }
     }

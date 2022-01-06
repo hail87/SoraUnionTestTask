@@ -162,6 +162,7 @@ public class ParcelLineTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //https://statystech.atlassian.net/browse/LWA-1084
     @TestRailID(id = 16869)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
@@ -204,31 +205,48 @@ public class ParcelLineTestSuite extends TestClass {
     public void updateParcelLineParcelStatusIsC(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        logger.info("------------------------------------Precondition Step 1------------------------------------");
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
+        logger.info("------------------------------------Precondition Step 2------------------------------------");
         new OrdersSteps().setOrderIDtoContext();
 
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
+        logger.info("------------------------------------Precondition Step 3------------------------------------");
+        int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
+        logger.info("------------------------------------Precondition Step 4------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostStartFulfillment(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7")));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Precondition Step 5------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
-                new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID()),
+                warehouseOrderId,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
+        logger.info("------------------------------------Precondition Step 6,7------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostCreateParcelAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
+        logger.info("------------------------------------Precondition Step 8------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendPostRequestExternalShipmentAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
 
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "The parcel has a complete status"));
-
-        assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
+        logger.info("------------------------------------Step 1------------------------------------");
+        parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-                200,
+                400,
                 lwaTestContext.getWarehouseBatchInventoryID(),
-                testInfo).isEmpty());
+                testInfo);
         errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "The parcel has a complete status"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

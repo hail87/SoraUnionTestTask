@@ -1,4 +1,4 @@
-FROM maven
+FROM maven:3.3.9
 
 LABEL maintainer="StatysTechAQAImage"
 

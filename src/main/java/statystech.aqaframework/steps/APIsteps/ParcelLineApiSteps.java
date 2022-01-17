@@ -35,12 +35,12 @@ public class ParcelLineApiSteps extends Steps {
         }
     }
 
-    public String sendPutRequestAndSaveResponseToContext(String authToken, int expectedStatusCode, int warehouseBatchInventoryID, TestInfo testInfo){
+    public String sendPutRequestAndSaveResponseToContext(String authToken, int expectedStatusCode, int warehouseBatchInventoryID, TestInfo testInfo) {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         int parcelLineID = testContext.getParcelLineID();
-        Response response = new ApiRestUtils().sendPutParcelLine(parcelLineID,warehouseBatchInventoryID, authToken);
+        Response response = new ApiRestUtils().sendPutParcelLine(parcelLineID, warehouseBatchInventoryID, authToken);
         logger.info("Response from API:\n" + response.code());
-        if (response.code()!=expectedStatusCode) {
+        if (response.code() != expectedStatusCode) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
         } else {
             testContext.setParcelLineResponse(response);
@@ -53,7 +53,7 @@ public class ParcelLineApiSteps extends Steps {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         Response response = new ApiRestUtils().sendPostParcelLine(productID, freeStock, authToken);
         logger.info("Response from API:\n" + response.code());
-        if (response.code()!=200) {
+        if (response.code() != 200) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
         } else {
             ObjectMapper mapper = new ObjectMapper();
@@ -64,12 +64,12 @@ public class ParcelLineApiSteps extends Steps {
         }
     }
 
-    public String sendPostRequestAndSaveResponseToContext(String authToken, TestInfo testInfo){
+    public String sendPostRequestAndSaveResponseToContext(String authToken, TestInfo testInfo) {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         int parcelLineId = testContext.getParcelLineID();
         Response response = new ApiRestUtils().sendPostExternalShipmentParcelLine(parcelLineId, authToken);
         logger.info("Response from API:\n" + response.code());
-        if (response.code()!=200) {
+        if (response.code() != 200) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
         } else {
             testContext.setParcelLineResponse(response);
@@ -79,26 +79,36 @@ public class ParcelLineApiSteps extends Steps {
     }
 
     public String sendPostCreateParcelAndSaveResponseToContext(int warehouseOrderID, String authToken, TestInfo testInfo) throws IOException {
+        return sendPostCreateParcelAndSaveResponseToContext(warehouseOrderID, authToken, testInfo, 200);
+    }
+
+    public String sendPostCreateParcelAndSaveResponseToContext(int warehouseOrderID, String authToken, TestInfo testInfo, int expectedStatusCode) throws IOException {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         int parcelLineId = testContext.getParcelLineID();
-        Response response = new ApiRestUtils().sendPostCreateParcel(parcelLineId, warehouseOrderID,authToken);
-        int parcelID = Integer.parseInt(response.body().string().replaceAll("\\D+",""));
-        logger.info("Response from API:\n" + response.code());
-        if (response.code()!=200) {
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", response.body().string(), 200, response.code());
+        Response response = new ApiRestUtils().sendPostCreateParcel(parcelLineId, warehouseOrderID, authToken);
+        testContext.setParcelLineResponse(response);
+        int responseCode = response.code();
+        logger.info("Response from API:\n" + responseCode);
+
+        if (responseCode != expectedStatusCode) {
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", response.body().string(), expectedStatusCode, response.code());
+        } else if (expectedStatusCode == 400 && responseCode == expectedStatusCode) {
+            return "";
         } else {
+            int parcelID = Integer.parseInt(response.body().string().replaceAll("\\D+", ""));
             testContext.setParcelID(parcelID);
             Context.updateTestContext(testContext);
             return "";
         }
     }
 
-    public String sendPostRequestExternalShipmentAndSaveResponseToContext(String authToken, TestInfo testInfo){
+
+    public String sendPostRequestExternalShipmentAndSaveResponseToContext(String authToken, TestInfo testInfo) {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         int parcelId = testContext.getParcelID();
         Response response = new ApiRestUtils().sendPostExternalShipmentParcelLine(parcelId, authToken);
         logger.info("Response from API:\n" + response.code());
-        if (response.code()!=200) {
+        if (response.code() != 200) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
         } else {
             testContext.setParcelLineResponse(response);
@@ -110,7 +120,7 @@ public class ParcelLineApiSteps extends Steps {
     public String sendPostStartFulfillment(int warehouseOrderId, String authToken) {
         Response response = new ApiRestUtils().sendPostStartFulfillmentParcelLine(warehouseOrderId, authToken);
         logger.info("Response from API:\n" + response.code());
-        if (response.code()!=200) {
+        if (response.code() != 200) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
         } else {
             return "";

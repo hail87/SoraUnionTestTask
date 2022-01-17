@@ -9,7 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.ParcelLineApiSteps;
@@ -166,7 +165,7 @@ public class ParcelLineTestSuite extends TestClass {
     @TestRailID(id = 16869)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
-    public void WarehouseBatchInventoryIdFromDifferentWarehouse(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void warehouseBatchInventoryIdFromDifferentWarehouse(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
@@ -251,5 +250,4 @@ public class ParcelLineTestSuite extends TestClass {
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
-
 }

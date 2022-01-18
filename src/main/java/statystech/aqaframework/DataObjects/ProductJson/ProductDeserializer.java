@@ -18,8 +18,7 @@ import statystech.aqaframework.DataObjects.ProductJson.ProductItemsParsingExcept
 public class ProductDeserializer extends JsonDeserializer<ProductDto> {
 
     @Override
-    public ProductDto deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+    public ProductDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
 
         ObjectCodec oc = jp.getCodec();
         JsonNode node = oc.readTree(jp);

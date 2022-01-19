@@ -98,7 +98,7 @@ public class AddParcelTestSuite extends TestClass {
                 testInfo, 400));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        String response = lwaTestContext.getParcelLineResponse().body().string();
+        String response = lwaTestContext.getParcelLineResponseBody();
 
         logger.info("------------------------------------Response------------------------------------\n" + response);
 
@@ -152,5 +152,56 @@ public class AddParcelTestSuite extends TestClass {
 
         assertTrue(new ParcelTable().checkRowWithIDExist(lwaTestContext.getParcelID()));
         assertEquals(Integer.parseInt(new ParcelTable().getColumnValueByPrimaryID(lwaTestContext.getParcelID(), "warehouseOrderID")), warehouseOrderId);
+    }
+
+    @TestRailID(id = 17871)
+    @ParameterizedTest
+    @ValueSource(strings = {"GetWarehouseOrderNoCriteria2.json"})
+    public void validateParcelLineIdAssociatedWithAnyParcel(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        logger.info("------------------------------------Precondition Step 1------------------------------------");
+        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Precondition Step 2------------------------------------");
+        new OrdersSteps().setOrderIDtoContext();
+        logger.info("------------------------------------Precondition Step 3------------------------------------");
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
+        int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
+        logger.info("------------------------------------Precondition Step 4------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostStartFulfillment(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7")));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Precondition Step 5,6------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        logger.info("------------------------------------Precondition Step 7------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostCreateParcelAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Step 1------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostCreateParcelAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo, 400));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Response------------------------------------\n" + lwaTestContext.getParcelLineResponseBody());
+
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(),
+                "One or more parcel lines have assigned to a parcel already. Please contact support at"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
     }
 }

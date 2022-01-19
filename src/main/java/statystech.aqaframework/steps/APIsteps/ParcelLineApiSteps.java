@@ -92,7 +92,7 @@ public class ParcelLineApiSteps extends Steps {
         String body = Objects.requireNonNull(response.body()).string();
         testContext.setParcelLineResponseBody(body);
         if (responseCode != expectedStatusCode) {
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", response.body().string(), expectedStatusCode, response.code());
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", body, expectedStatusCode, response.code());
         } else if (expectedStatusCode == 400) {
             return "";
         } else {

@@ -5,7 +5,7 @@
     <servers>
         <server>
             <id>codeartifact</id>
-            <username>aws</username>
+            <username>awstoken_docker</username>
             <password>eyJ2ZXIiOjEsImlzdSI6MTY0MjUzOTI2MCwiZW5jIjoiQTEyOEdDTSIsInRhZyI6IldTTXRMOGRHR1J4MngycUExQXdDaEEiLCJleHAiOjE2NDI1ODI0NjAsImFsZyI6IkExMjhHQ01LVyIsIml2IjoiUUJ3VnRya01QZThVRnNtYSJ9.QgSpD9JUr0aZbib9mrgIKw.d3-sql5VzWhURjQq.6JC3ZEMOufB_RdHkWsvJtBzWZzq1rPsxsYzADbmVJCEoBKCWJliWpNRtCv2VR-ga77V2rrpf4bvx18M7XKeCRPlJH2QvAKyggFqiRqMuvHVZGkIvTEV8Sv0pjrlWL86EVsfSw4edE0-XxoOe6e4Cb82Dp2KZGa7A-J9OZKzIe0I6BBQc-dCHaVgJQOvJcU1agaM0-LxIFyeQlgFajvKYmlOO0wGFACUo-L4ILNlfzNE4eOwt-qKKdG-Uzu-1aOmvZUinXnrgLugczuhjH3oMz3vSMmuXES5K8RkTI7TXv0zQ-Fl19Kk00Y_CPeGRKQTcnahFOrhqQecd834_uX4tnavuwSn4mcVPSiBfBJh4izNJ3ypn-uOM67bfA2ZUwab34QwTAe2LSYPPVifQZfNJXsYLbTNAOz1ESTgL765BzcknobpSH8Ds7WLmf3IF5i2pyLgH1LCWgBurIWYMDpFjNJv6hM5NSdkWUm0XxOMQYNAIqdOzbH5m6qYyz-pegne0aZAsEwKWXbC0v6wRlbC77cBKT4iDuBKZoDgSA7ASUxO95wYOeDpbF-OMn_TsFXdvP8AENitZKRfUCWheafIm9vpCVJ810YpBWIO0kI8wpXrZRm4VPqfY6Q1bZ7m8-wufJIhHDN9hujPMkp8jChSy4Yc738Elss73Md9GNsKQpLRQ9RcdohWOCUmhjUA9K0IWOFIKjlyky4uZXRDMYgmpP_rVJrGfnUXvoDgCOzKnaO-CmGIgRhXak8HQN3Yz12eGxEGud4RY50OYv4v-ebQPoIgcAAUo1NbVym14_U_ytZ3iMc9tYFfnSylaxmi2LAlRFbqNb87i6hqjfR3hszZwk9uT_b6-pDpUeyXyHXc6Hgr9u4IxBIB7iHJuDh3D2Et8TioNN7buPhgPiqR85ObOmzlbUvu1_AMkSKZeFQ0pH0Hi7aWG.dUd0gR_Q9vHqaAKpdVm1LA</password>
         </server>
     </servers>

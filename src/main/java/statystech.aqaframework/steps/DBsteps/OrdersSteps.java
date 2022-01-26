@@ -67,16 +67,11 @@ public class OrdersSteps extends Steps {
     }
 
     private String checkBuyerAccountId(int orderId, int buyerAccountID) {
-        try {
-            int dbBuyerAccountID = ordersTable.getBuyerAccountId(orderId);
-            if (buyerAccountID == dbBuyerAccountID) {
-                return "";
-            } else {
-                return String.format("buyerAccountID '%d' is different from dbBuyerAccountID '%d'", buyerAccountID, dbBuyerAccountID);
-            }
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-            return "There is no line with orderID: '" + orderId + "'";
+        int dbBuyerAccountID = ordersTable.getBuyerAccountId(orderId);
+        if (buyerAccountID == dbBuyerAccountID) {
+            return "";
+        } else {
+            return String.format("buyerAccountID '%d' is different from dbBuyerAccountID '%d'", buyerAccountID, dbBuyerAccountID);
         }
     }
 

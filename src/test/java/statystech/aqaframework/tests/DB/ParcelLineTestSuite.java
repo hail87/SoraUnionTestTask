@@ -138,25 +138,28 @@ public class ParcelLineTestSuite extends TestClass {
 
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
+        logger.info("sendGetRequestAndSaveResponseToContext");
         errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
                 new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID()),
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
+        logger.info("sendPutRequestAndSaveResponseToContext");
         assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
-                400,
+                403,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Access denied for the user auto_WHM to warehouse: 6"));
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(), "Access denied for the user auto_WHM to warehouse: 6"));
 
+        logger.info("sendPutRequestAndSaveResponseToContext");
         assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "CSRuser-1"),
                 400,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "User does not have permission to access the endpoint. Please contact support at xxxxxx@xxx.com"));
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(), "User does not have permission to access the endpoint. Please contact support at xxxxxx@xxx.com"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -238,6 +241,7 @@ public class ParcelLineTestSuite extends TestClass {
         logger.info("------------------------------------Precondition Step 8------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendPostRequestExternalShipmentAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                "AA2182814AA",
                 testInfo));
 
         logger.info("------------------------------------Step 1------------------------------------");

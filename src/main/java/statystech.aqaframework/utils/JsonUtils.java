@@ -93,8 +93,6 @@ public class JsonUtils {
                             new FileInputStream(Path.JSON_PATH.getPath() + jsonFilename), StandardCharsets.UTF_8));
             jsonString = IOUtils.toString(reader);
             reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

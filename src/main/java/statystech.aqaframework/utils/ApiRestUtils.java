@@ -344,13 +344,17 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response sendPostExternalShipmentParcelLine(int parcelID, String authToken) {
+//    public okhttp3.Response sendPostExternalShipmentParcelLine(int parcelID, String authToken) {
+//        return sendPostExternalShipmentParcelLine(parcelID, authToken, "AA2182814AA");
+//    }
+
+    public okhttp3.Response sendPostExternalShipmentParcelLine(int parcelID, String trackingNumber, String authToken) {
         okhttp3.Response response = null;
         try {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n    \"tracking_number\": \"AA2182814AA\",\n    \"shipping_rate\": 10,\n    \"shipping_rate_currency\": \"EUR\"\n}");
+            RequestBody body = RequestBody.create(mediaType, String.format("{\n    \"tracking_number\": \"%s\",\n    \"shipping_rate\": 10,\n    \"shipping_rate_currency\": \"EUR\"\n}", trackingNumber));
             Request request = new Request.Builder()
                     .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/parcels/" + parcelID + "/external-shipment")
                     .method("POST", body)

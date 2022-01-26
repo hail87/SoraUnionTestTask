@@ -65,8 +65,13 @@ public class OrdersTable extends TableObject {
                 "select orderID from %s where orderAllSysID = \"" + getOrderAllSysIDValue() + "\"", TABLE_NAME)));
     }
 
-    public int getBuyerAccountId(int primaryId) throws SQLException, IOException {
-        return Integer.parseInt(DBUtils.executeAndReturnString("select buyerAccountID from orders where orderID = '" + primaryId + "'"));
+    public int getBuyerAccountId(int primaryId) {
+        String response = DBUtils.executeAndReturnString("select buyerAccountID from orders where orderID = '" + primaryId + "'");
+        if (!response.isEmpty()) {
+            return Integer.parseInt(response);
+        } else {
+            throw new NumberFormatException();
+        }
     }
 
     public int getOMSShippingAddressID(int primaryId) {

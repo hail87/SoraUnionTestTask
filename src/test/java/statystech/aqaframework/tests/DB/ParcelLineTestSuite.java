@@ -78,7 +78,7 @@ public class ParcelLineTestSuite extends TestClass {
 
         assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser20"), 400, -1, testInfo).isEmpty());
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "No value present"));
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(), "No value present"));
 
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
@@ -184,19 +184,25 @@ public class ParcelLineTestSuite extends TestClass {
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
+        errorMessage.append((parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
                 400,
                 lwaTestContext.getWarehouseBatchInventoryID(),
-                testInfo).isEmpty());
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Access denied for the user auto_WHM to warehouse: 6"));
+                testInfo).isEmpty()));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(
+                lwaTestContext.getParcelLineResponseBody(),
+                "Access denied for the user auto_WHM to warehouse: 6"));
 
         assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "CSRuser-1"),
                 400,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Access denied for the user test_csr to warehouse: 6"));
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(
+                lwaTestContext.getParcelLineResponseBody(),
+                "Access denied for the user test_csr to warehouse: 6"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
@@ -250,7 +256,7 @@ public class ParcelLineTestSuite extends TestClass {
                 400,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo);
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "The parcel has a complete status"));
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(), "The parcel has a complete status"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

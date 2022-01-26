@@ -197,7 +197,9 @@ public class ApiRestUtils {
 
     public String submitWebsiteOrderAndGetString(String jsonFileName) {
         try {
-            return submitWebsiteOrder(jsonFileName).body().string();
+            okhttp3.Response response = submitWebsiteOrder(jsonFileName);
+            logger.info("\nResponse status code :\n" + response.code());
+            return response.body().string();
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }

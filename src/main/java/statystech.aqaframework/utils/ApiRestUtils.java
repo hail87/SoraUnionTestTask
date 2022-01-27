@@ -8,8 +8,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
@@ -315,6 +317,27 @@ public class ApiRestUtils {
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, String.format("{\n\"warehouse_order_id\": %d,\n\"parcel_lineid_list\": [\n{\n\"parcel_lineid\": %d\n\n\n\n}\n]\n}", warehouseOrderId, parcelLineID));
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/parcels")
+                .method("POST", body)
+                .addHeader("Authorization", authToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        response = client.newCall(request).execute();
+        return response;
+    }
+
+    public okhttp3.Response sendPostCreateParcels(List<ParcelLinesItem> parcelLinesItemList, int warehouseOrderId, String authToken) throws IOException {
+        okhttp3.Response response = null;
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+
+        StringBuilder stringBuilder = new StringBuilder();
+        parcelLinesItemList.forEach(parcelLinesItem -> stringBuilder.append(String.format("{\"parcel_lineid\":%d},", parcelLinesItem.getParcelLineId())));
+        stringBuilder.setLength(stringBuilder.length() - 1);
+        RequestBody body = RequestBody.create(mediaType, String.format("{\"warehouse_order_id\":%d,\"parcel_lineid_list\":[%s]}", warehouseOrderId, stringBuilder));
         Request request = new Request.Builder()
                 .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/parcels")
                 .method("POST", body)

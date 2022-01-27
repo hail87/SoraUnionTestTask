@@ -1,13 +1,13 @@
 package statystech.aqaframework.steps.DBsteps;
 
 
-import groovy.json.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.steps.Steps;
+import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.sql.SQLException;
@@ -15,6 +15,16 @@ import java.sql.SQLException;
 public class ProductSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductSteps.class);
+
+    ProductTable productTable = new ProductTable();
+
+    public String changeIsCold(int isCold, String productName){
+        if (productTable.changeIsCold(isCold, productName)){
+            return "";
+        } else {
+            return "\nproduct.isCold wasn't change!\n";
+        }
+    }
 
     public String checkProduct(OrderItem product) {
         StringBuilder errorMessage = new StringBuilder();

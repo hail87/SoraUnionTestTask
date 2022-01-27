@@ -64,6 +64,7 @@ public class OrderValidationTestSuite extends TestClass {
 //    }
 
 
+    //https://statystech.atlassian.net/browse/OMS-854
     @TestRailID(id = 7803)
     @ParameterizedTest
     @CsvSource({"submitOrder-existedAllSysID.json"})

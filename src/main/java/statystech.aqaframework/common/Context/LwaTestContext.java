@@ -10,6 +10,7 @@ import statystech.aqaframework.DataObjects.OmsDto.OmsSubmitOrderJson;
 import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.DataObjects.OrderJackson.Order;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
+import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
@@ -70,6 +71,7 @@ public class LwaTestContext extends TestContext{
     private ParcelLinesResponse parcelLineResponseObject;
     private int parcelLineID;
     private int warehouseBatchInventoryID;
+    private List<ParcelLinesItem> parcelLineItems;
     private int productBatchId;
     private int parcelID;
 

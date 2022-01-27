@@ -49,7 +49,7 @@ public class SubmitOrderTestSuite extends TestClass {
         properties.setProperty("testrail_testSuiteId", "2170");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
-            //TestRailReportExtension.reportResults();
+            TestRailReportExtension.reportResults();
         }
     }
 
@@ -262,6 +262,7 @@ public class SubmitOrderTestSuite extends TestClass {
 
     }
 
+    //https://statystech.atlassian.net/browse/OMS-855
     @TestRailID(id = 7801)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})
@@ -269,8 +270,8 @@ public class SubmitOrderTestSuite extends TestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         errorMessage.append(new OmsApiSteps().sendPostRequestWithWrongApiKeyAndSaveResponseToContext(jsonFilename, testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
-
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.ParcelLines.AddProductButchResponse;
+import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
@@ -13,6 +14,7 @@ import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.ApiRestUtils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class ParcelLineApiSteps extends Steps {
@@ -28,8 +30,10 @@ public class ParcelLineApiSteps extends Steps {
         } else {
             ObjectMapper mapper = new ObjectMapper();
             ParcelLinesResponse response = mapper.readValue(responseString, ParcelLinesResponse.class);
-            testContext.setParcelLineID(response.getParcelLines().get(0).getParcelLineId());
-            testContext.setWarehouseBatchInventoryID(response.getParcelLines().get(0).getWarehouseBatchInventoryId());
+            List<ParcelLinesItem> parcelLinesItemList = response.getParcelLines();
+            testContext.setParcelLineItems(parcelLinesItemList);
+            testContext.setParcelLineID(parcelLinesItemList.get(0).getParcelLineId());
+            testContext.setWarehouseBatchInventoryID(parcelLinesItemList.get(0).getWarehouseBatchInventoryId());
             Context.updateTestContext(testContext);
             return "";
         }
@@ -92,6 +96,25 @@ public class ParcelLineApiSteps extends Steps {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         int parcelLineId = testContext.getParcelLineID();
         Response response = new ApiRestUtils().sendPostCreateParcel(parcelLineId, warehouseOrderID, authToken);
+        int responseCode = response.code();
+        logger.info("Response from API:\n" + responseCode);
+        String body = Objects.requireNonNull(response.body()).string();
+        testContext.setParcelLineResponseBody(body);
+        if (responseCode != expectedStatusCode) {
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", body, expectedStatusCode, response.code());
+        } else if (expectedStatusCode == 400) {
+            return "";
+        } else {
+            int parcelID = Integer.parseInt(body.replaceAll("\\D+", ""));
+            testContext.setParcelID(parcelID);
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String sendPostCreateParcelsAndSaveResponseToContext(int warehouseOrderID, String authToken, TestInfo testInfo, int expectedStatusCode) throws IOException {
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        Response response = new ApiRestUtils().sendPostCreateParcels(testContext.getParcelLineItems(), warehouseOrderID, authToken);
         int responseCode = response.code();
         logger.info("Response from API:\n" + responseCode);
         String body = Objects.requireNonNull(response.body()).string();

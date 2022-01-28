@@ -360,3 +360,5 @@ public class AddParcelTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }
+
+//git update-index --no-assume-unchanged settings.xml

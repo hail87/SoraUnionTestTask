@@ -13,10 +13,7 @@ import statystech.aqaframework.TableObjects.ParcelTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.ParcelLineApiSteps;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
-import statystech.aqaframework.steps.DBsteps.ProductSteps;
-import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
-import statystech.aqaframework.steps.DBsteps.WarehouseOrderSteps;
+import statystech.aqaframework.steps.DBsteps.*;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -298,11 +295,9 @@ public class AddParcelTestSuite extends TestClass {
 //                testInfo, 200));
 //        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 //
-//        logger.info("------------------------------------Response------------------------------------\n" + lwaTestContext.getParcelLineResponseBody());
-//
-//        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(),
-//                String.format("Check if parcel_id exists in DB parcels table with corresponding 'warehouse_order_id'", warehouseOrderId)));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//        ParcelTable parcelTable = new ParcelTable();
+//        assertTrue(parcelTable.checkRowWithIDExist(lwaTestContext.getParcelID()));
+//        assertTrue(parcelTable.checkRowWithValueIsPresent("warehouseOrderID", String.valueOf(warehouseOrderId)));
 //    }
 
     @TestRailID(id = 17869)

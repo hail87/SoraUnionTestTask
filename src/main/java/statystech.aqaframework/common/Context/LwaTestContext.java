@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import lombok.Getter;
 import lombok.Setter;
+import statystech.aqaframework.DataObjects.IrsDto.SearchProductResponse;
 import statystech.aqaframework.DataObjects.OmsDto.OmsSubmitOrderJson;
 import statystech.aqaframework.DataObjects.OmsDto.Response;
 import statystech.aqaframework.DataObjects.OrderJackson.Order;
@@ -74,6 +75,8 @@ public class LwaTestContext extends TestContext{
     private List<ParcelLinesItem> parcelLineItems;
     private int productBatchId;
     private int parcelID;
+
+    private SearchProductResponse searchProductResponse;
 
     private WarehouseSearchResponse warehouseSearchResponse;
 

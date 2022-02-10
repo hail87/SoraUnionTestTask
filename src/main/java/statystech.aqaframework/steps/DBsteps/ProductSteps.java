@@ -26,6 +26,14 @@ public class ProductSteps extends Steps {
         }
     }
 
+    public String changeProductParentID(int productParentID, String productName){
+        if (productTable.changeProductParentID(productParentID, productName)){
+            return "";
+        } else {
+            return "\nproduct.isCold wasn't change!\n";
+        }
+    }
+
     public String checkProduct(OrderItem product) {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkName(product.getProductName()));

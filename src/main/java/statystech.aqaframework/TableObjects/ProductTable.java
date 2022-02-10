@@ -14,4 +14,8 @@ public class ProductTable extends TableObject{
         return DBUtils.update(String.format("UPDATE %s SET isCold = %d WHERE productName = '%s'", TABLE_NAME, isCold, productName));
     }
 
+    public boolean changeProductParentID(int productParentID, String productName){
+        return DBUtils.update(String.format("UPDATE %s SET productParentID = %d WHERE productName = '%s'", TABLE_NAME, productParentID, productName));
+    }
+
 }

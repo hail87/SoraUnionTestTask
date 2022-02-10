@@ -45,7 +45,7 @@ public class AddParcelTestSuite extends TestClass {
         properties.setProperty("testrail_testSuiteId", "3418");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
-            TestRailReportExtension.reportResults();
+            //TestRailReportExtension.reportResults();
         }
     }
 
@@ -216,7 +216,7 @@ public class AddParcelTestSuite extends TestClass {
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");
 
-        new ProductSteps().changeIsCold(1,"DEPO-PROVERA®");
+        new ProductSteps().changeProductParentID(3,"DEPO-PROVERA®");
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 4------------------------------------");

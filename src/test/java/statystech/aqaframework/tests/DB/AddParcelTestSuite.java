@@ -45,7 +45,7 @@ public class AddParcelTestSuite extends TestClass {
         properties.setProperty("testrail_testSuiteId", "3418");
         DataUtils.saveTestRailProperty(properties);
         if (TestRailReportExtension.isTestRailAnnotationPresent) {
-            //TestRailReportExtension.reportResults();
+            TestRailReportExtension.reportResults();
         }
     }
 

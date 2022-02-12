@@ -203,102 +203,102 @@ public class AddParcelTestSuite extends TestClass {
 
     }
 
-//    @TestRailID(id = 17867)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"GetWarehouseOrderNoCriteria1.json"})
-//    public void verifyParcelLinesHasAColdProduct(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-//
-//        StringBuilder errorMessage = new StringBuilder();
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        logger.info("------------------------------------Precondition Step 1------------------------------------");
-//        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
-//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//
-//        logger.info("------------------------------------Precondition Step 2------------------------------------");
-//
-//        new ProductSteps().changeIsCold(1,"DEPO-PROVERA®");
-//        logger.info("------------------------------------Precondition Step 3------------------------------------");
-//        new OrdersSteps().setOrderIDtoContext();
-//        logger.info("------------------------------------Precondition Step 4------------------------------------");
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
-//        int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
-//        logger.info("------------------------------------Precondition Step 5------------------------------------");
-//        errorMessage.append(parcelLineApiSteps.sendPostStartFulfillment(
-//                warehouseOrderId,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7")));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        logger.info("------------------------------------Precondition Step 6,7------------------------------------");
-//        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
-//                warehouseOrderId,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                testInfo));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        logger.info("------------------------------------Step 1------------------------------------");
-//
-//        errorMessage.append(parcelLineApiSteps.sendPostCreateParcelsAndSaveResponseToContext(
-//                warehouseOrderId,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                testInfo, 400));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        logger.info("------------------------------------Response------------------------------------\n" + lwaTestContext.getParcelLineResponseBody());
-//
-//        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(),
-//                "One or more parcel lines has a cold product and should be in a separate parcel"));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
-//
-//    @TestRailID(id = 17868)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"GetWarehouseOrderProductIsCold6.json"})
-//    public void verifyIsColdTrue(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-//
-//        StringBuilder errorMessage = new StringBuilder();
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        logger.info("------------------------------------Precondition Step 1------------------------------------");
-//        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
-//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//
-//        logger.info("------------------------------------Precondition Step 2------------------------------------");
-//        new ProductSteps().changeIsCold(1,"SAYPHA® FILLER with Lidocaine");
-//        new ProductSteps().changeIsCold(1,"SAYPHA® RICH");
-//
-//        logger.info("------------------------------------Precondition Step 3------------------------------------");
-//        new OrdersSteps().setOrderIDtoContext();
-//
-//        logger.info("------------------------------------Precondition Step 4------------------------------------");
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
-//        int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
-//
-//        logger.info("------------------------------------Precondition Step 5------------------------------------");
-//        errorMessage.append(parcelLineApiSteps.sendPostStartFulfillment(
-//                warehouseOrderId,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7")));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        logger.info("------------------------------------Precondition Step 6,7------------------------------------");
-//        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
-//                warehouseOrderId,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                testInfo));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        logger.info("------------------------------------Step 1------------------------------------");
-//
-//        errorMessage.append(parcelLineApiSteps.sendPostCreateParcelsAndSaveResponseToContext(
-//                warehouseOrderId,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                testInfo, 200));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        ParcelTable parcelTable = new ParcelTable();
-//        assertTrue(parcelTable.checkRowWithIDExist(lwaTestContext.getParcelID()));
-//        assertTrue(parcelTable.checkRowWithValueIsPresent("warehouseOrderID", String.valueOf(warehouseOrderId)));
-//    }
+    @TestRailID(id = 17867)
+    @ParameterizedTest
+    @ValueSource(strings = {"GetWarehouseOrderNoCriteria1.json"})
+    public void verifyParcelLinesHasAColdProduct(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        logger.info("------------------------------------Precondition Step 1------------------------------------");
+        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Precondition Step 2------------------------------------");
+
+        new ProductSteps().changeProductParentID(3,"DEPO-PROVERA®");
+        logger.info("------------------------------------Precondition Step 3------------------------------------");
+        new OrdersSteps().setOrderIDtoContext();
+        logger.info("------------------------------------Precondition Step 4------------------------------------");
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
+        int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
+        logger.info("------------------------------------Precondition Step 5------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostStartFulfillment(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7")));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Precondition Step 6,7------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Step 1------------------------------------");
+
+        errorMessage.append(parcelLineApiSteps.sendPostCreateParcelsAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo, 400));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Response------------------------------------\n" + lwaTestContext.getParcelLineResponseBody());
+
+        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(),
+                "One or more parcel lines has a cold product and should be in a separate parcel"));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 17868)
+    @ParameterizedTest
+    @ValueSource(strings = {"GetWarehouseOrderProductIsCold6.json"})
+    public void verifyIsColdTrue(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+
+        StringBuilder errorMessage = new StringBuilder();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        logger.info("------------------------------------Precondition Step 1------------------------------------");
+        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Precondition Step 2------------------------------------");
+        new ProductSteps().changeIsCold(1,"SAYPHA® FILLER with Lidocaine");
+        new ProductSteps().changeIsCold(1,"SAYPHA® RICH");
+
+        logger.info("------------------------------------Precondition Step 3------------------------------------");
+        new OrdersSteps().setOrderIDtoContext();
+
+        logger.info("------------------------------------Precondition Step 4------------------------------------");
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
+        int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
+
+        logger.info("------------------------------------Precondition Step 5------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostStartFulfillment(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7")));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Precondition Step 6,7------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        logger.info("------------------------------------Step 1------------------------------------");
+
+        errorMessage.append(parcelLineApiSteps.sendPostCreateParcelsAndSaveResponseToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo, 200));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
+        ParcelTable parcelTable = new ParcelTable();
+        assertTrue(parcelTable.checkRowWithIDExist(lwaTestContext.getParcelID()));
+        assertTrue(parcelTable.checkRowWithValueIsPresent("warehouseOrderID", String.valueOf(warehouseOrderId)));
+    }
 
     @TestRailID(id = 17869)
     @ParameterizedTest

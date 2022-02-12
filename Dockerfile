@@ -2,6 +2,7 @@ FROM maven
 
 LABEL maintainer="StatysTechAQAImage"
 
+RUN aws codeartifact get-authorization-token --domain lwa --domain-owner 326726142239 --query authorizationToken --output text --region us-east-1 > token.xml
 COPY settings.xml /root/.m2/
 COPY settings.xml /usr/share/maven/ref/
 

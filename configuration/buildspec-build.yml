@@ -27,7 +27,7 @@ phases:
             - echo docker build -t "aqa:${COMMIT_ID# }" .
             - $TOKEN
             - echo $TOKEN
-            - docker run -e TOKEN='aws codeartifact get-authorization-token --domain lwa --domain-owner 326726142239 --query authorizationToken --output text --region us-east-1'
+            - docker run -e TOKEN='aws codeartifact get-authorization-token --domain lwa --domain-owner 326726142239 --query authorizationToken --output text --region us-east-1' "aqa:${COMMIT_ID# }"
             - docker build -t "aqa:${COMMIT_ID# }" .
             - echo Tagging the docker image...
             - docker tag "aqa:${COMMIT_ID# }" "326726142239.dkr.ecr.ca-central-1.amazonaws.com/aqa:${COMMIT_ID# }"

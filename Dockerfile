@@ -3,7 +3,7 @@ FROM maven
 LABEL maintainer="StatysTechAQAImage"
 
 RUN curl --silent --show-error --fail "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN unzip awscliv2.zip
+RUN yam unzip awscliv2.zip
 RUN ./aws/install
 RUN aws codeartifact get-authorization-token --domain lwa --domain-owner 326726142239 --query authorizationToken --output text --region us-east-1 > token.xml
 COPY settings.xml /root/.m2/

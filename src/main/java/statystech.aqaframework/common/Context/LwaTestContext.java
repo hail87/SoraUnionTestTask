@@ -1,6 +1,7 @@
 package statystech.aqaframework.common.Context;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 
@@ -77,6 +78,9 @@ public class LwaTestContext extends TestContext{
     private int parcelID;
 
     private SearchProductResponse searchProductResponse;
+
+    private String responseBody;
+    private JsonNode lastNode;
 
     private WarehouseSearchResponse warehouseSearchResponse;
 

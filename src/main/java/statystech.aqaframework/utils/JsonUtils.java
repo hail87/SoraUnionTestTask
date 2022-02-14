@@ -2,6 +2,7 @@ package statystech.aqaframework.utils;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
 import org.apache.commons.io.IOUtils;
@@ -17,7 +18,10 @@ import statystech.aqaframework.common.Context.LwaTestContext;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JsonUtils {
 
@@ -117,6 +121,18 @@ public class JsonUtils {
         return jsonObject;
     }
 
+    public static JsonNode getJsonNode(String jsonString) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode actualObj = null;
+        try {
+            actualObj = mapper.readTree(jsonString);
+        } catch (JsonParseException | IOException e) {
+            logger.error(e.toString());
+        }
+        assertNotNull(actualObj);
+        return actualObj;
+    }
+
     public static String serializeJsonObjectToJsonString(OmsSubmitOrderJson omsSubmitOrderJson) {
         StringWriter writer = new StringWriter();
         ObjectMapper mapper = new ObjectMapper();
@@ -132,5 +148,49 @@ public class JsonUtils {
         TestContext testContext = Context.getTestContext(testMethodName, LwaTestContext.class);
         testContext.setJsonObject(jsonObject);
         Context.updateTestContext(testContext);
+    }
+
+    public JsonNode getNode(String jsonString, String stringPath) {
+        return getValue(getJsonNode(jsonString), getPath(stringPath));
+    }
+
+    public JsonNode getValue(String jsonString, String stringPath) {
+        return getValue(getJsonNode(jsonString), getPath(stringPath));
+    }
+
+    public JsonNode getValue(JsonNode jsonNode, String stringPath) {
+        return getValue(jsonNode, getPath(stringPath));
+    }
+
+    private List<String> getPath(String stringPath) {
+        return new ArrayList<>(List.of(stringPath.split("\\.")));
+    }
+
+    private JsonNode getValue(JsonNode jsonNode, List<String> path) {
+        if (path.size() == 1) {
+            if (jsonNode.isArray()) {
+                for (JsonNode node : jsonNode
+                ) {
+                    if (node.get(path.get(0)) != null) {
+                        return node.get(path.get(0));
+                    }
+                }
+                return null;
+            } else {
+                return jsonNode.get(path.get(0));
+            }
+        } else {
+            if (jsonNode.isArray()) {
+                for (JsonNode node : jsonNode
+                ) {
+                    if (node.get(path.get(0)) != null) {
+                        return getValue(node.get(path.remove(0)), path);
+                    }
+                }
+                return null;
+            } else {
+                return getValue(jsonNode.get(path.remove(0)), path);
+            }
+        }
     }
 }

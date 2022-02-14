@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.Util;
 import statystech.aqaframework.TableObjects.TableObject;
+import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
+import statystech.aqaframework.utils.JsonUtils;
 
 import java.util.Map;
 
@@ -93,6 +95,31 @@ public abstract class Steps {
             logger.error(message);
             return message;
         }
+    }
+
+    public String verifyJsonResponseContainsNotNullAttribute(String attributeStringPath, LwaTestContext lwaTestContext) {
+        JsonUtils jsonUtils = new JsonUtils();
+        var value = jsonUtils.getValue(lwaTestContext.getResponseBody(), attributeStringPath);
+        //Assert.assertNotNull(value);
+        lwaTestContext.setLastNode(value);
+        Context.updateTestContext(lwaTestContext);
+        if (value.isNull()) {
+            return String.format("\nNoda '%s' haven't been found at the json response", attributeStringPath);
+        }
+        logger.info(String.format("\nNoda '%s' successfully have been found at the json response", attributeStringPath));
+        return "";
+    }
+
+    public String verifyJsonResponseContainsAttribute(String attributeStringPath, LwaTestContext lwaTestContext) {
+        JsonUtils jsonUtils = new JsonUtils();
+        var node = jsonUtils.getNode(lwaTestContext.getResponseBody(), attributeStringPath);
+        lwaTestContext.setLastNode(node);
+        Context.updateTestContext(lwaTestContext);
+        if (node.isNull()) {
+            return String.format("\nNoda '%s' haven't been found at the json response", attributeStringPath);
+        }
+        logger.info(String.format("\nNoda '%s' successfully have been found at the json response", attributeStringPath));
+        return "";
     }
 
 }

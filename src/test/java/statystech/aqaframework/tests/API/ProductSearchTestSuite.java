@@ -58,7 +58,7 @@ public class ProductSearchTestSuite extends TestClass {
 
     @TestRailID(id = 95822)
     @Test
-    public void wrongUserRole(TestInfo testInfo) throws IOException {
+    public void verifyIfMethodReturnCorrectResult(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();
@@ -68,7 +68,21 @@ public class ProductSearchTestSuite extends TestClass {
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 lwaTestContext));
         assertEquals(lwaTestContext.getSearchProductResponse().getProductRecords().get(0).getProductName(), "REST® LIP REFRESH™");
-        //errorMessage.append(irsApiSteps.verifySearchResponse(lwaTestContext));
+        errorMessage.append(irsApiSteps.verifySearchResponse(lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 95187)
+    @Test
+    public void wrongUserRole(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
+                "RESTYLANE™",
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "ProductSearchWrongUserRole"),
+                lwaTestContext));
+        assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
     }
 }

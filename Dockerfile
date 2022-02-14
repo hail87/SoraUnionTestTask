@@ -2,7 +2,9 @@ FROM maven
 
 LABEL maintainer="StatysTechAQAImage"
 
-#RUN curl --silent --show-error --fail "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN curl --silent --show-error --fail "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+FROM registry.access.redhat.com/rhel7/rhel
+RUN yum install unzip
 #RUN apt-get install unzip
 #RUN unzip awscliv2.zip
 #RUN ./aws/install

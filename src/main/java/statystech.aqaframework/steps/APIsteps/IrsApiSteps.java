@@ -54,4 +54,19 @@ public class IrsApiSteps extends Steps {
         errorMessage.append(verifyJsonResponseContainsAttribute("product_records.tiers", lwaTestContext));
         return errorMessage.toString();
     }
+
+    public String verifyAllProductsAtTheSearchResponseContainsString(String partOfName, LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        for (int i = 0; i < lwaTestContext.getSearchProductResponse().getProductRecords().size(); i++) {
+            errorMessage.append(verifyExpectedResultsContains(lwaTestContext.getSearchProductResponse().getProductRecords().get(i).getProductName(), partOfName));
+        }
+        return errorMessage.toString();
+    }
+
+    public String verifySearchResponseProductUnavailable(LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(verifyJsonResponseContainsNotNullAttribute("record_count", 0, lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_records", lwaTestContext));
+        return errorMessage.toString();
+    }
 }

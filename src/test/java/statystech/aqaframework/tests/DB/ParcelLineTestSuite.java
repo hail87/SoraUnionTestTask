@@ -164,18 +164,18 @@ public class ParcelLineTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //https://statystech.atlassian.net/browse/LWA-1084
     @TestRailID(id = 16869)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
     public void warehouseBatchInventoryIdFromDifferentWarehouse(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        logger.info("------------------------------------Precondition Step 1------------------------------------");
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-
+        logger.info("------------------------------------Precondition Step 2------------------------------------");
         new OrdersSteps().setOrderIDtoContext();
-
+        logger.info("------------------------------------Precondition Step 3,4,5,6------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
         errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
@@ -183,27 +183,25 @@ public class ParcelLineTestSuite extends TestClass {
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        errorMessage.append((parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
+        logger.info("------------------------------------Precondition Step 7,8------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
-                400,
-                lwaTestContext.getWarehouseBatchInventoryID(),
-                testInfo).isEmpty()));
+                lwaTestContext.getProductID(),
+                testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(
-                lwaTestContext.getParcelLineResponseBody(),
-                "Access denied for the user auto_WHM to warehouse: 6"));
-
+        logger.info("------------------------------------Precondition Step 9------------------------------------");
+        errorMessage.append(new WarehouseBatchInventorySteps().getWarehouseBatchInventoryID(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        logger.info("------------------------------------Step 1------------------------------------");
         assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
-                DataUtils.getPropertyValue("tokens.properties", "CSRuser-1"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 400,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
         errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(
                 lwaTestContext.getParcelLineResponseBody(),
-                "Access denied for the user test_csr to warehouse: 6"));
-
+                "Batch is not from the warehouse"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

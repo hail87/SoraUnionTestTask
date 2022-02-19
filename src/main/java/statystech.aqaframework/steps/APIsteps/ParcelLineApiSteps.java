@@ -1,6 +1,7 @@
 package statystech.aqaframework.steps.APIsteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import okhttp3.Response;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.ParcelLines.AddProductButchResponse;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
+import statystech.aqaframework.DataObjects.ProductBatch.ProductBatchResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
@@ -33,6 +35,7 @@ public class ParcelLineApiSteps extends Steps {
             List<ParcelLinesItem> parcelLinesItemList = response.getParcelLines();
             testContext.setParcelLineItems(parcelLinesItemList);
             testContext.setParcelLineID(parcelLinesItemList.get(0).getParcelLineId());
+            testContext.setProductID(parcelLinesItemList.get(0).getProductId());
             testContext.setWarehouseBatchInventoryID(parcelLinesItemList.get(0).getWarehouseBatchInventoryId());
             Context.updateTestContext(testContext);
             return "";
@@ -83,6 +86,24 @@ public class ParcelLineApiSteps extends Steps {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
         } else {
             testContext.setParcelLineResponse(response);
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    @SneakyThrows
+    public String sendPostAddNewProductBatchAndSaveResponseToContext(String authToken, int productID, TestInfo testInfo) {
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        Response response = new ApiRestUtils().sendPostAddNewProductBatch(productID, authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code() != 200) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+        } else {
+            String parcelLineResponseBody = response.body().string();
+            testContext.setParcelLineResponseBody(parcelLineResponseBody);
+            ObjectMapper mapper = new ObjectMapper();
+            ProductBatchResponse productButchResponse = mapper.readValue(parcelLineResponseBody, ProductBatchResponse.class);
+            testContext.setProductBatchId(productButchResponse.getProductBatchId());
             Context.updateTestContext(testContext);
             return "";
         }

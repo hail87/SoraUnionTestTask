@@ -86,20 +86,20 @@ public class ProductSearchTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-//    @TestRailID(id = 95821)
-//    @Test
-//    public void verifyIfMethodReturnResultBasedOnPartialSearch(TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        IrsApiSteps irsApiSteps = new IrsApiSteps();
-//        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
-//                "REST",
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                lwaTestContext));
-//        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REST", lwaTestContext));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 95821)
+    @Test
+    public void verifyIfMethodReturnResultBasedOnPartialSearch(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
+                "REST",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REST", lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
 //
 //    @TestRailID(id = 95822)
 //    @Test

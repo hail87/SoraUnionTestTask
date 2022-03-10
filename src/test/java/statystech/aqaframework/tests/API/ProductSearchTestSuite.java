@@ -100,47 +100,47 @@ public class ProductSearchTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REST", lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
-//
-//    @TestRailID(id = 95822)
-//    @Test
-//    public void verifyIfMethodReturnCorrectResult(TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        IrsApiSteps irsApiSteps = new IrsApiSteps();
-//        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
-//                "REST® LIP REFRESH™",
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                lwaTestContext));
-//        assertEquals(lwaTestContext.getSearchProductResponse().getProductRecords().get(0).getProductName(), "REST® LIP REFRESH™");
-//        errorMessage.append(irsApiSteps.verifySearchResponse(lwaTestContext));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
-//
-//    @TestRailID(id = 96313)
-//    @Test
-//    public void verifyIfWebsiteIdIsProvided(TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        IrsApiSteps irsApiSteps = new IrsApiSteps();
-//        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
-//                "REST® LIP REFRESH™",
-//                400,
-//                DataUtils.getPropertyValue("tokens.properties", "CSRuser-1"),
-//                lwaTestContext));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//        assertTrue(lwaTestContext.getResponseBody().contains("Website is required. Please contact support at"));
-//
-//        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
-//                "REST® LIP REFRESH™",
-//                400,
-//                DataUtils.getPropertyValue("tokens.properties", "CSMuser"),
-//                lwaTestContext));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//        assertTrue(lwaTestContext.getResponseBody().contains("Website is required. Please contact support at"));
-//
-//    }
-//
+
+    @TestRailID(id = 95822)
+    @Test
+    public void verifyIfMethodReturnCorrectResult(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
+                "REST® LIP REFRESH™",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                lwaTestContext));
+        assertEquals(lwaTestContext.getSearchProductResponse().getProductRecords().get(0).getProductName(), "REST® LIP REFRESH™");
+        errorMessage.append(irsApiSteps.verifySearchResponse(lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 96313)
+    @Test
+    public void verifyIfWebsiteIdIsProvided(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
+                "REST® LIP REFRESH™",
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "CSRuser-1"),
+                lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getResponseBody().contains("Website is required. Please contact support at"));
+
+        errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
+                "REST® LIP REFRESH™",
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "CSMuser"),
+                lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getResponseBody().contains("Website is required. Please contact support at"));
+
+    }
+
 //    @TestRailID(id = 96314)
 //    @Test
 //    public void verifyWebsiteIdExist(TestInfo testInfo) throws IOException {

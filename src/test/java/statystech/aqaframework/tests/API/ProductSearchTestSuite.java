@@ -65,7 +65,7 @@ public class ProductSearchTestSuite extends TestClass {
         IrsApiSteps irsApiSteps = new IrsApiSteps();
         errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
                 "RESTYLANE™",
-                400,
+                403,
                 DataUtils.getPropertyValue("tokens.properties", "ProductSearchWrongUserRole"),
                 lwaTestContext));
         assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
@@ -139,6 +139,35 @@ public class ProductSearchTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         assertTrue(lwaTestContext.getResponseBody().contains("Website is required. Please contact support at"));
 
+    }
+
+    @TestRailID(id = 124928)
+    @Test
+    public void verifyUserRole(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendGetProductDetailsAndSaveResponseToContext(
+                2392,
+                403,
+                DataUtils.getPropertyValue("tokens.properties", "ProductSearchWrongUserRole"),
+                lwaTestContext));
+        assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
+    }
+
+    @TestRailID(id = 124929)
+    @Test
+    public void verifyProductDetailsResults(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendGetProductDetailsAndSaveResponseToContext(
+                2392,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext));
+
+        assertTrue(irsApiSteps.verifyGetProductDetailsResponse(2392,lwaTestContext).isEmpty());
     }
 
 //    @TestRailID(id = 96314)

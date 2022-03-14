@@ -15,11 +15,39 @@ public class IrsApiSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(IrsApiSteps.class);
 
+    public String sendGetProductDetailsAndSaveResponseToContext(int productId, int expectedStatusCode, String authToken,  LwaTestContext testContext) throws IOException {
+        okhttp3.Response response = new ApiRestUtils().getProductDetails(productId, authToken);
+        int statusCode = response.code();
+        if ( statusCode!= expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        logger.info("Response from API:\n" + responseString);
+        if (responseString.contains("product_name")) {
+            ObjectMapper mapper = new ObjectMapper();
+            SearchProductResponse searchProductResponse = mapper.readValue(responseString, SearchProductResponse.class);
+            testContext.setSearchProductResponse(searchProductResponse);
+            Context.updateTestContext(testContext);
+        }
+        return "";
+    }
+
     public String sendPostProductSearchAndSaveResponseToContext(String productName, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
         okhttp3.Response response = new ApiRestUtils().searchProduct(productName, authToken);
-
-        if (response.code() != expectedStatusCode)
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
+        int statusCode = response.code();
+        if ( statusCode!= expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
 
         String responseString = response.body().string();
         testContext.setResponseBody(responseString);
@@ -52,6 +80,31 @@ public class IrsApiSteps extends Steps {
         errorMessage.append(verifyJsonResponseContainsAttribute("product_records.is_cold", lwaTestContext));
         errorMessage.append(verifyJsonResponseContainsAttribute("product_records.total_available", lwaTestContext));
         errorMessage.append(verifyJsonResponseContainsAttribute("product_records.tiers", lwaTestContext));
+        return errorMessage.toString();
+    }
+
+    public String verifyGetProductDetailsResponse(int productID, LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(verifyJsonResponseContainsNotNullAttribute("product_id", productID, lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_name", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_short_desc", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_dosage_value", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_dosage_type", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_items_in_pack", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_pack_type", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("product_sku", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("is_cold", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.warehouse_id", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.warehouse_name", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.threshold", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.total_available_product", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.batches.warehouse_batch_inventory_id", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.batches.product_batch_id", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.batches.batch_number", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.batches.exp_date", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.batches.available", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.batches.shipped", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("warehouses.batches.written_off", lwaTestContext));
         return errorMessage.toString();
     }
 

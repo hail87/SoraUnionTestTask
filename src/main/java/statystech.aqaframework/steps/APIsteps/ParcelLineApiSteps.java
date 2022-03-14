@@ -123,7 +123,7 @@ public class ParcelLineApiSteps extends Steps {
         testContext.setParcelLineResponseBody(body);
         if (responseCode != expectedStatusCode) {
             return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", body, expectedStatusCode, response.code());
-        } else if (expectedStatusCode == 400) {
+        } else if (expectedStatusCode == 400 || expectedStatusCode == 403) {
             return "";
         } else {
             int parcelID = Integer.parseInt(body.replaceAll("\\D+", ""));

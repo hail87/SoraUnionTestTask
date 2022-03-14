@@ -510,4 +510,21 @@ public class ApiRestUtils {
         }
         return response;
     }
+
+    public okhttp3.Response getProductDetails(int productId, String authToken) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/products/" + productId)
+                .method("GET", null)
+                .addHeader("Authorization", authToken)
+                .build();
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
 }

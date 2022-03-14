@@ -93,7 +93,7 @@ public class AddParcelTestSuite extends TestClass {
         errorMessage.append(parcelLineApiSteps.sendPostCreateParcelAndSaveResponseToContext(
                 warehouseOrderId,
                 DataUtils.getPropertyValue("tokens.properties", "User24"),
-                testInfo, 400));
+                testInfo, 403));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         String response = lwaTestContext.getParcelLineResponseBody();

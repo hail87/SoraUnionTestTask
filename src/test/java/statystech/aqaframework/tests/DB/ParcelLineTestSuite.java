@@ -156,7 +156,7 @@ public class ParcelLineTestSuite extends TestClass {
         logger.info("sendPutRequestAndSaveResponseToContext");
         assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "CSRuser-1"),
-                400,
+                403,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
         errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponseBody(), "User does not have permission to access the endpoint. Please contact support at xxxxxx@xxx.com"));

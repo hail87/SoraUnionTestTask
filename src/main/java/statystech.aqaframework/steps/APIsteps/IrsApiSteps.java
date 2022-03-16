@@ -61,6 +61,29 @@ public class IrsApiSteps extends Steps {
         return "";
     }
 
+    public String sendPostPartialProductSearchAndSaveResponseToContext(String partOfProductName, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        okhttp3.Response response = new ApiRestUtils().partialSearchProduct(partOfProductName, authToken);
+        int statusCode = response.code();
+        if ( statusCode!= expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        logger.info("Response from API:\n" + responseString);
+        if (responseString.contains("product_name")) {
+            ObjectMapper mapper = new ObjectMapper();
+            SearchProductResponse searchProductResponse = mapper.readValue(responseString, SearchProductResponse.class);
+            testContext.setSearchProductResponse(searchProductResponse);
+            Context.updateTestContext(testContext);
+        }
+        return "";
+    }
+
     public String verifySearchResponse(LwaTestContext lwaTestContext) {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(verifyJsonResponseContainsAttribute("record_count", lwaTestContext));

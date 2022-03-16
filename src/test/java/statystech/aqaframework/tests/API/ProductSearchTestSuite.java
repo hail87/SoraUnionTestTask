@@ -170,6 +170,21 @@ public class ProductSearchTestSuite extends TestClass {
         assertTrue(irsApiSteps.verifyGetProductDetailsResponse(2392,lwaTestContext).isEmpty());
     }
 
+    @TestRailID(id = 126273)
+    @Test
+    public void verifyPartialProductSearchResults(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
+                "R",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext));
+
+        assertTrue(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("R",lwaTestContext).isEmpty());
+    }
+
 //    @TestRailID(id = 96314)
 //    @Test
 //    public void verifyWebsiteIdExist(TestInfo testInfo) throws IOException {

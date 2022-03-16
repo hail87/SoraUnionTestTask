@@ -176,13 +176,45 @@ public class ProductSearchTestSuite extends TestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();
+
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "R",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
                 lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("R",lwaTestContext));
 
-        assertTrue(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("R",lwaTestContext).isEmpty());
+        errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
+                "RE",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("RE",lwaTestContext));
+
+        errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
+                "REF",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF",lwaTestContext));
+
+        errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
+                "REF",
+                "2391",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF",lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyResultNotContain("2391",lwaTestContext));
+
+        errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
+                "PLASMOLIFTING",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext));
+        errorMessage.append(irsApiSteps.verifySearchResponseProductEmpty(lwaTestContext));
+
+        assertTrue(errorMessage.isEmpty());
     }
 
 //    @TestRailID(id = 96314)

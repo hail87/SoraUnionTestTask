@@ -9,6 +9,7 @@ import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.JsonUtils;
 
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class Steps {
 
@@ -121,6 +122,21 @@ public abstract class Steps {
             return String.format("\nExpected value '%d' and Node value '%d' aren't the same", expectedValue, value.intValue());
         }
         logger.info(String.format("\nExpected value '%d' and Node value '%d' are the same", expectedValue, value.intValue()));
+        return "";
+    }
+
+    public String verifyJsonResponseContainsNotNullAttribute(String attributeStringPath, String expectedValue, LwaTestContext lwaTestContext) {
+        JsonUtils jsonUtils = new JsonUtils();
+        var value = jsonUtils.getValue(lwaTestContext.getResponseBody(), attributeStringPath);
+        lwaTestContext.setLastNode(value);
+        Context.updateTestContext(lwaTestContext);
+        if (value.isNull()) {
+            return String.format("\nNoda '%s' haven't been found at the json response", attributeStringPath);
+        }
+        if (!Objects.equals(value.toString(), expectedValue)){
+            return String.format("\nExpected value '%s' and Node value '%s' aren't the same", expectedValue, value);
+        }
+        logger.info(String.format("\nExpected value '%s' and Node value '%s' are the same", expectedValue, value));
         return "";
     }
 

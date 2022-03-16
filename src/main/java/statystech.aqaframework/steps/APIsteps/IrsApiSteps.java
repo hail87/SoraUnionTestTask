@@ -84,6 +84,29 @@ public class IrsApiSteps extends Steps {
         return "";
     }
 
+    public String sendPostPartialProductSearchAndSaveResponseToContext(String partOfProductName, String excludedProductIds, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        okhttp3.Response response = new ApiRestUtils().partialSearchProduct(partOfProductName, excludedProductIds, authToken);
+        int statusCode = response.code();
+        if ( statusCode!= expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        logger.info("Response from API:\n" + responseString);
+        if (responseString.contains("product_name")) {
+            ObjectMapper mapper = new ObjectMapper();
+            SearchProductResponse searchProductResponse = mapper.readValue(responseString, SearchProductResponse.class);
+            testContext.setSearchProductResponse(searchProductResponse);
+            Context.updateTestContext(testContext);
+        }
+        return "";
+    }
+
     public String verifySearchResponse(LwaTestContext lwaTestContext) {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(verifyJsonResponseContainsAttribute("record_count", lwaTestContext));
@@ -139,10 +162,25 @@ public class IrsApiSteps extends Steps {
         return errorMessage.toString();
     }
 
+    public String verifyResultNotContain(String excludedIds, LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        for (int i = 0; i < lwaTestContext.getSearchProductResponse().getProductRecords().size(); i++) {
+            if (lwaTestContext.getSearchProductResponse().getProductRecords().get(i).getProductId() == Integer.parseInt(excludedIds))
+            errorMessage.append(String.format("Id '%d' was found at the result, but shouldn't", excludedIds));
+        }
+        return errorMessage.toString();
+    }
+
     public String verifySearchResponseProductUnavailable(LwaTestContext lwaTestContext) {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(verifyJsonResponseContainsNotNullAttribute("record_count", 0, lwaTestContext));
         errorMessage.append(verifyJsonResponseContainsAttribute("product_records", lwaTestContext));
+        return errorMessage.toString();
+    }
+
+    public String verifySearchResponseProductEmpty(LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(verifyJsonResponseContainsNotNullAttribute("product_records", "[]", lwaTestContext));
         return errorMessage.toString();
     }
 }

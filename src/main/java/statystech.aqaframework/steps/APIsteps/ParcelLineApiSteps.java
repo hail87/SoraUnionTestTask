@@ -62,21 +62,6 @@ public class ParcelLineApiSteps extends Steps {
         }
     }
 
-    public String addNewProductButch(String authToken, int productID, int freeStock, TestInfo testInfo) throws IOException {
-        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
-        Response response = new ApiRestUtils().sendPostParcelLine(productID, freeStock, authToken);
-        logger.info("Response from API:\n" + response.code());
-        if (response.code() != 200) {
-            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
-        } else {
-            ObjectMapper mapper = new ObjectMapper();
-            AddProductButchResponse addProductButchResponse = mapper.readValue(response.body().string(), AddProductButchResponse.class);
-            testContext.setProductBatchId(addProductButchResponse.getProductBatchId());
-            Context.updateTestContext(testContext);
-            return "";
-        }
-    }
-
     public String sendPostRequestAndSaveResponseToContext(String authToken, String trackingNumber, TestInfo testInfo) {
         LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
         int parcelLineId = testContext.getParcelLineID();

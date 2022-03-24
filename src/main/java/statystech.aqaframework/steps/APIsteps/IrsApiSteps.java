@@ -1,8 +1,13 @@
 package statystech.aqaframework.steps.APIsteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+import okhttp3.Response;
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ParcelLines.AddProductButchResponse;
+import statystech.aqaframework.DataObjects.ProductBatch.ProductBatchResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
@@ -183,4 +188,36 @@ public class IrsApiSteps extends Steps {
         errorMessage.append(verifyJsonResponseContainsNotNullAttribute("product_records", "[]", lwaTestContext));
         return errorMessage.toString();
     }
+
+    @SneakyThrows
+    public String sendPostAddNewProductBatchAndSaveResponseToContext( int productID, int warehouseId, int expectedStatusCode, String authToken, LwaTestContext testContext) {
+        Response response = new ApiRestUtils().sendPostAddNewProductBatch(productID, warehouseId, authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code() != expectedStatusCode) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
+        } else {
+            String responseBody = response.body().string();
+            testContext.setResponseBody(responseBody);
+            ObjectMapper mapper = new ObjectMapper();
+            ProductBatchResponse productButchResponse = mapper.readValue(responseBody, ProductBatchResponse.class);
+            testContext.setProductBatchId(productButchResponse.getProductBatchId());
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+//    public String addNewProductButch(String authToken, int productID, int freeStock, TestInfo testInfo) throws IOException {
+//        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+//        Response response = new ApiRestUtils().sendPostParcelLine(productID, freeStock, authToken);
+//        logger.info("Response from API:\n" + response.code());
+//        if (response.code() != 200) {
+//            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+//        } else {
+//            ObjectMapper mapper = new ObjectMapper();
+//            AddProductButchResponse addProductButchResponse = mapper.readValue(response.body().string(), AddProductButchResponse.class);
+//            testContext.setProductBatchId(addProductButchResponse.getProductBatchId());
+//            Context.updateTestContext(testContext);
+//            return "";
+//        }
+//    }
 }

@@ -2,15 +2,11 @@ package statystech.aqaframework.tests.API;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.IrsApiSteps;
-import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -26,9 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
-public class ProductSearchTestSuite extends TestClass {
+public class IrsTestSuite extends TestClass {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductSearchTestSuite.class);
+    private static final Logger logger = LoggerFactory.getLogger(IrsTestSuite.class);
 
     @BeforeAll
     static void clearTestResults() {
@@ -167,7 +163,7 @@ public class ProductSearchTestSuite extends TestClass {
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
                 lwaTestContext));
 
-        assertTrue(irsApiSteps.verifyGetProductDetailsResponse(2392,lwaTestContext).isEmpty());
+        assertTrue(irsApiSteps.verifyGetProductDetailsResponse(2392, lwaTestContext).isEmpty());
     }
 
     @TestRailID(id = 126273)
@@ -182,21 +178,21 @@ public class ProductSearchTestSuite extends TestClass {
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
                 lwaTestContext));
-        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("R",lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("R", lwaTestContext));
 
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "RE",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
                 lwaTestContext));
-        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("RE",lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("RE", lwaTestContext));
 
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "REF",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
                 lwaTestContext));
-        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF",lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF", lwaTestContext));
 
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "REF",
@@ -204,8 +200,8 @@ public class ProductSearchTestSuite extends TestClass {
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
                 lwaTestContext));
-        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF",lwaTestContext));
-        errorMessage.append(irsApiSteps.verifyResultNotContain("2391",lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF", lwaTestContext));
+        errorMessage.append(irsApiSteps.verifyResultNotContain("2391", lwaTestContext));
 
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "PLASMOLIFTING",
@@ -214,20 +210,78 @@ public class ProductSearchTestSuite extends TestClass {
                 lwaTestContext));
         errorMessage.append(irsApiSteps.verifySearchResponseProductEmpty(lwaTestContext));
 
-        assertTrue(errorMessage.isEmpty());
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-//    @TestRailID(id = 96314)
-//    @Test
-//    public void verifyWebsiteIdExist(TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
-//
-//    @TestRailID(id = 96315)
-//    @Test
-//    public void verifyForWebsiteIdIfTheUserHasPermission(TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 130882)
+    @Test
+    public void addProductBatchVerifyUserRole(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                2391,
+                10,
+                403,
+                DataUtils.getPropertyValue("tokens.properties", "ProductSearchWrongUserRole"),
+                lwaTestContext
+        ));
+        assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"User does not have permission to access the endpoint. Please contact support at "));
+    }
+
+    @TestRailID(id = 130947)
+    @Test
+    public void addProductBatchVerifyWrongProductId(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                -1000,
+                10,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext
+        ));
+        assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"Unknown product ID. Please contact support at"));
+    }
+
+    @TestRailID(id = 130969)
+    @Test
+    public void addProductBatchVerifyWrongWarehouseId(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                2391,
+                -1000,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext
+        ));
+        assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"Unknown warehouse ID. Please contact support at"));
+    }
+
+    @TestRailID(id = 131399)
+    @Test
+    public void addProductBatchVerifyBatchAlreadyExist(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                2391,
+                10,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext
+        ));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                2391,
+                10,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                lwaTestContext
+        ));
+        assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"The batch number already exists. Please update the existing batch number or contact support at"));
+    }
 }

@@ -284,4 +284,30 @@ public class IrsTestSuite extends TestClass {
         ));
         assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"The batch number already exists. Please update the existing batch number or contact support at"));
     }
+
+    @TestRailID(id = 132369)
+    @Test
+    public void addProductBatchVerifyFutureDate(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        IrsApiSteps irsApiSteps = new IrsApiSteps();
+        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                2391,
+                10,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                "2020-07-31",
+                lwaTestContext
+        ));
+        assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"The expiry date should be in the future. Please contact support"));
+        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                2391,
+                10,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getCurrentDate(),
+                lwaTestContext
+        ));
+        assertTrue(lwaTestContext.getResponseBody().contains("product_batch_id"));
+    }
 }

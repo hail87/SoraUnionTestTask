@@ -4,7 +4,6 @@ import com.google.common.base.CaseFormat;
 import groovy.json.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.helpers.Util;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
@@ -119,7 +118,7 @@ public abstract class TableObject {
 
     public String getColumnValueContainsProductName(String productName, String columnName) throws SQLException {
         ResultSet rs = DBUtils.execute(String.format(
-                "select * from %s where productName like '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, DataUtils.removeFuckingUnicode(productName)));
+                "select * from %s where productName like '%s' ORDER by createdDate DESC LIMIT 1", TABLE_NAME, DataUtils.removeUnicode(productName)));
         rs.next();
         return rs.getString(columnName);
     }

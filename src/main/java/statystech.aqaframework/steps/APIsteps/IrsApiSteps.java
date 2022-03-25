@@ -206,6 +206,28 @@ public class IrsApiSteps extends Steps {
         }
     }
 
+    @SneakyThrows
+    public String sendPostAddNewProductBatchAndSaveResponseToContext( int productID,
+                                                                      int warehouseId,
+                                                                      int expectedStatusCode,
+                                                                      String authToken,
+                                                                      String date,
+                                                                      LwaTestContext testContext) {
+        Response response = new ApiRestUtils().sendPostAddNewProductBatch(productID, warehouseId, date, authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code() != expectedStatusCode) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
+        } else {
+            String responseBody = response.body().string();
+            testContext.setResponseBody(responseBody);
+            ObjectMapper mapper = new ObjectMapper();
+            ProductBatchResponse productButchResponse = mapper.readValue(responseBody, ProductBatchResponse.class);
+            testContext.setProductBatchId(productButchResponse.getProductBatchId());
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
 //    public String addNewProductButch(String authToken, int productID, int freeStock, TestInfo testInfo) throws IOException {
 //        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
 //        Response response = new ApiRestUtils().sendPostParcelLine(productID, freeStock, authToken);

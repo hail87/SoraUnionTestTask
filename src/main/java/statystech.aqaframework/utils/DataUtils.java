@@ -1,23 +1,16 @@
 package statystech.aqaframework.utils;
 
-import com.google.common.io.CharStreams;
 import com.google.common.util.concurrent.SimpleTimeLimiter;
 import com.google.common.util.concurrent.TimeLimiter;
-import com.google.common.util.concurrent.UncheckedTimeoutException;
 import com.lwa.common.crypto.service.impl.ColumnCryptoServiceImpl;
 import io.kubernetes.client.PodLogs;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1APIResource;
 import io.kubernetes.client.openapi.models.V1Pod;
-import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.util.Config;
 import io.kubernetes.client.util.KubeConfig;
-import io.kubernetes.client.util.Streams;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +21,8 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Properties;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class DataUtils {
 
@@ -80,6 +70,15 @@ public class DataUtils {
     public static String getCurrentTimestamp() {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(ts);
+        cal.add(Calendar.HOUR, -4);
+        return sdf.format(cal.getTime());
+    }
+
+    public static String getCurrentDate() {
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.setTime(ts);
         cal.add(Calendar.HOUR, -4);
@@ -243,7 +242,7 @@ public class DataUtils {
         }
     }
 
-    public static String removeFuckingUnicode(String text) {
+    public static String removeUnicode(String text) {
         String result = text;
         if (text.contains("®")) {
             result = text.replace("®", "%");

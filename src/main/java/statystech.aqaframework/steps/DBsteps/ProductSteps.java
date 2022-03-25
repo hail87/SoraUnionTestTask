@@ -7,7 +7,6 @@ import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.TableObjects.ProductTable;
 import statystech.aqaframework.steps.Steps;
-import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.sql.SQLException;
@@ -61,7 +60,7 @@ public class ProductSteps extends Steps {
             throwables.printStackTrace();
             return "There is no " + productName + " at the Product table found";
         }
-        return verifyExpectedResults(DataUtils.removeFuckingUnicode(actual), DataUtils.removeFuckingUnicode(productName));
+        return verifyExpectedResults(DataUtils.removeUnicode(actual), DataUtils.removeUnicode(productName));
     }
 
     private String checkProductAllSysID(OrderItem product) {

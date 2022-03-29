@@ -17,8 +17,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
@@ -299,15 +298,17 @@ public class IrsTestSuite extends TestClass {
                 "2020-07-31",
                 lwaTestContext
         ));
-        assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"The expiry date should be in the future. Please contact support"));
-        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
-                2391,
-                10,
-                200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
-                DataUtils.getCurrentDate(),
-                lwaTestContext
-        ));
+        if (!lwaTestContext.getResponseBody().contains("{\"message_user\":\"The expiry date should be in the future. Please contact support")) {
+            fail("\naddProductBatch with date in the past was passed succesfully, but shouldn't\n");
+        }
+            errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+                    2391,
+                    10,
+                    200,
+                    DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                    DataUtils.getCurrentDate(),
+                    lwaTestContext
+            ));
         assertTrue(lwaTestContext.getResponseBody().contains("product_batch_id"));
     }
 }

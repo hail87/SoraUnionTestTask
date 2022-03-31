@@ -14,15 +14,20 @@ import io.kubernetes.client.util.KubeConfig;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.common.Path;
+import statystech.aqaframework.common.MyPath;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class DataUtils {
 
@@ -32,7 +37,7 @@ public class DataUtils {
         FileInputStream fis;
         Properties prop = new Properties();
         try {
-            fis = new FileInputStream(Path.RESOURCES_PATH.getPath() + propertyFileName);
+            fis = new FileInputStream(MyPath.RESOURCES_PATH.getPath() + propertyFileName);
             prop.load(fis);
         } catch (IOException e) {
             System.err.println("No property file found:" + propertyFileName);
@@ -44,7 +49,7 @@ public class DataUtils {
         FileInputStream fis;
         Properties prop = new Properties();
         try {
-            fis = new FileInputStream(Path.RESOURCES_PATH.getPath() + propertyFileName);
+            fis = new FileInputStream(MyPath.RESOURCES_PATH.getPath() + propertyFileName);
             prop.load(fis);
         } catch (IOException e) {
             System.err.println("No property file found:" + propertyFileName);
@@ -64,7 +69,7 @@ public class DataUtils {
     }
 
     public static void saveTestRailProperty(Properties p) {
-        saveProperty(p, new File(Path.RESOURCES_PATH.getPath() + "test_rail_config.properties"));
+        saveProperty(p, new File(MyPath.RESOURCES_PATH.getPath() + "test_rail_config.properties"));
     }
 
     public static String getCurrentTimestamp() {
@@ -258,6 +263,52 @@ public class DataUtils {
         return result;
     }
 
+    public static void clearFolder(File folder) {
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f: files) {
+                if(f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+    }
+
+    public static void deleteFolder(File folder) {
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f: files) {
+                if(f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+        folder.delete();
+    }
+
+    public static void zipFolder(String sourceDirPath, String zipFilePath) throws IOException {
+        Files.deleteIfExists(Path.of(zipFilePath));
+        Path p = Files.createFile(Paths.get(zipFilePath));
+        try (ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(p))) {
+            Path pp = Paths.get(sourceDirPath);
+            Files.walk(pp)
+                    .filter(path -> !Files.isDirectory(path))
+                    .forEach(path -> {
+                        ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
+                        try {
+                            zs.putNextEntry(zipEntry);
+                            Files.copy(path, zs);
+                            zs.closeEntry();
+                        } catch (IOException e) {
+                            System.err.println(e);
+                        }
+                    });
+        }
+    }
 }
 
 

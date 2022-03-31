@@ -5,6 +5,7 @@ import com.codepine.api.testrail.model.Project;
 import com.codepine.api.testrail.model.Result;
 import com.codepine.api.testrail.model.ResultField;
 import com.codepine.api.testrail.model.Run;
+import io.qameta.allure.ConfigurationBuilder;
 import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -13,8 +14,12 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.common.Path;
+import java.nio.file.Path;
+
+import statystech.aqaframework.common.MyPath;
 import statystech.aqaframework.utils.DataUtils;
+import io.qameta.allure.ReportGenerator;
+import io.qameta.allure.core.Configuration;
 
 import java.io.*;
 import java.util.*;
@@ -142,6 +147,10 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         testRail.results().addForCases(runID, results, customResultFields).execute();
         addAppLogsToTestRun(runID);
         addTestLogsToTestRun(runID);
+        logger.info("generating allure results");
+        generateAllureReport(Path.of("target/allure-report"), Path.of("target/allure-results"));
+        zipAllureReport("target/allure-report", "target/logs/allureReportZip");
+        addAttachmentToTestRun("allureReportZip", runID);
         logger.info("Closing test run #" + runID);
         testRail.runs().close(runID).execute();
     }
@@ -160,7 +169,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
     }
 
     private static void addAttachmentToTestRun(String logName, int runID){
-        String url = Path.TEST_RAIL.getPath() + "index.php?/api/v2/add_attachment_to_run/" + runID;
+        String url = MyPath.TEST_RAIL.getPath() + "index.php?/api/v2/add_attachment_to_run/" + runID;
         Properties properties = DataUtils.getProperty("test_rail_config.properties");
         final String userId = properties.getProperty("testrail_userId").trim();
         final String pwd = properties.getProperty("testrail_pwd").trim();
@@ -192,6 +201,23 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
 //            if(isTestRailAnnotationPresent) {
 //                reportResults();
 //            }
+        }
+    }
+
+    public static void generateAllureReport (final Path outputDirectory, final Path resultsDirectory) {
+        final Configuration configuration = new ConfigurationBuilder().useDefault().build();
+        try {
+            new ReportGenerator(configuration).generate(outputDirectory, resultsDirectory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void zipAllureReport(final String sourceDirPath, final String zipReportPath) {
+        try {
+            DataUtils.zipFolder(sourceDirPath, zipReportPath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

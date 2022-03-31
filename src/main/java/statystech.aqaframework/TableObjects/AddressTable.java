@@ -1,13 +1,8 @@
 package statystech.aqaframework.TableObjects;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.utils.DataUtils;
-
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddressTable extends TableObject{

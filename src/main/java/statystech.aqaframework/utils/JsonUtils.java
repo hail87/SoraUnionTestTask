@@ -13,7 +13,7 @@ import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.TestContext;
-import statystech.aqaframework.common.Path;
+import statystech.aqaframework.common.MyPath;
 import statystech.aqaframework.common.Context.LwaTestContext;
 
 import java.io.*;
@@ -94,7 +94,7 @@ public class JsonUtils {
         try {
             reader = new BufferedReader(
                     new InputStreamReader(
-                            new FileInputStream(Path.JSON_PATH.getPath() + jsonFilename), StandardCharsets.UTF_8));
+                            new FileInputStream(MyPath.JSON_PATH.getPath() + jsonFilename), StandardCharsets.UTF_8));
             jsonString = IOUtils.toString(reader);
             reader.close();
         } catch (IOException e) {
@@ -112,7 +112,7 @@ public class JsonUtils {
 
         try {
             JsonParser parser = new JsonParser();
-            JsonElement jsonElement = parser.parse(new FileReader(Path.JSON_PATH.getPath() + jsonFilename));
+            JsonElement jsonElement = parser.parse(new FileReader(MyPath.JSON_PATH.getPath() + jsonFilename));
             jsonObject = jsonElement.getAsJsonObject();
         } catch (FileNotFoundException e) {
             logger.error(e.toString());

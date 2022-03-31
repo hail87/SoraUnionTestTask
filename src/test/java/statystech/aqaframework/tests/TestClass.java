@@ -9,7 +9,6 @@ import statystech.aqaframework.common.Context.OmsTestContext;
 import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -19,6 +18,7 @@ public abstract class TestClass {
 
     @BeforeAll
     static void createContext() throws IOException, SQLException {
+//        DataUtils.clearFolder(new File("allure-results"));
         DBUtils.cleanDB("clean_all_lwa_test_data.sql");
         Context.initialize();
     }
@@ -52,4 +52,6 @@ public abstract class TestClass {
         }
         return testRailID;
     }
+
+
 }

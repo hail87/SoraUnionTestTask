@@ -194,9 +194,11 @@ public class IrsApiSteps extends Steps {
         Response response = new ApiRestUtils().sendPostAddNewProductBatch(productID, warehouseId, authToken);
         logger.info("Response from API:\n" + response.code());
         if (response.code() != expectedStatusCode) {
+            logger.warn(String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code()));
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
         } else {
             String responseBody = response.body().string();
+            logger.info("\nResponse body : \n" + responseBody);
             testContext.setResponseBody(responseBody);
             ObjectMapper mapper = new ObjectMapper();
             ProductBatchResponse productButchResponse = mapper.readValue(responseBody, ProductBatchResponse.class);

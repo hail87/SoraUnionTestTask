@@ -299,7 +299,7 @@ public class IrsTestSuite extends TestClass {
                 lwaTestContext
         ));
         if (!lwaTestContext.getResponseBody().contains("{\"message_user\":\"The expiry date should be in the future. Please contact support")) {
-            fail("\naddProductBatch with date in the past was passed succesfully, but shouldn't\n");
+            fail("\naddProductBatch with date in the past was passed successfully, but shouldn't\n");
         }
             errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
                     2391,

@@ -16,24 +16,24 @@
         </repository>
     </distributionManagement>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <releases>-->
-<!--                <enabled>false</enabled>-->
-<!--                <updatePolicy>always</updatePolicy>-->
-<!--                <checksumPolicy>warn</checksumPolicy>-->
-<!--            </releases>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--                <updatePolicy>never</updatePolicy>-->
-<!--                <checksumPolicy>fail</checksumPolicy>-->
-<!--            </snapshots>-->
-<!--            <name>StatysTechRepo</name>-->
-<!--            <id>codeartifact</id>-->
-<!--            <url>https://lwa-326726142239.d.codeartifact.us-east-1.amazonaws.com/maven/lwa-shared/</url>-->
-<!--            <layout>default</layout>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <releases>-->
+    <!--                <enabled>false</enabled>-->
+    <!--                <updatePolicy>always</updatePolicy>-->
+    <!--                <checksumPolicy>warn</checksumPolicy>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>true</enabled>-->
+    <!--                <updatePolicy>never</updatePolicy>-->
+    <!--                <checksumPolicy>fail</checksumPolicy>-->
+    <!--            </snapshots>-->
+    <!--            <name>StatysTechRepo</name>-->
+    <!--            <id>codeartifact</id>-->
+    <!--            <url>https://lwa-326726142239.d.codeartifact.us-east-1.amazonaws.com/maven/lwa-shared/</url>-->
+    <!--            <layout>default</layout>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
@@ -42,8 +42,9 @@
         <log4j.version>2.14.1</log4j.version>
         <slf4j.version>2.0.0-alpha1</slf4j.version>
         <tests.skip>true</tests.skip>
-        <allure.version>2.10.0</allure.version>
+        <allure.version>2.17.3</allure.version>
         <awaitility.version>4.1.0</awaitility.version>
+        <aspectj.version>1.8.10</aspectj.version>
     </properties>
 
     <dependencyManagement>
@@ -59,11 +60,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-maven</artifactId>
-            <version>${allure.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.codepine.api</groupId>
             <artifactId>testrail-api-java-client</artifactId>
@@ -97,11 +93,11 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.seleniumhq.selenium</groupId>-->
-<!--            <artifactId>selenium-java</artifactId>-->
-<!--            <version>3.141.59</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.seleniumhq.selenium</groupId>-->
+        <!--            <artifactId>selenium-java</artifactId>-->
+        <!--            <version>3.141.59</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -167,7 +163,22 @@
             <artifactId>crypto</artifactId>
             <version>0.1.386</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-generator</artifactId>
+            <version>${allure.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-plugin-api</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -175,17 +186,37 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>${allure.version}</version>
+                <version>2.11.2</version>
+                <configuration>
+                    <reportVersion>2.8.0</reportVersion>
+                    <propertiesFilePath>/Users/HAiL/IdeaProjects/aqa/src/resources/allure.properties</propertiesFilePath>
+                    <reportDirectory>/Users/HAiL/IdeaProjects/aqa/allure-report</reportDirectory>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>3.0.0-M5</version>
                 <configuration>
+                    <testFailureIgnore>false</testFailureIgnore>
                     <argLine>
                         --illegal-access=permit
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>io.qameta.allure.junit5.AllureJunit5</value>
+                        </property>
+                    </properties>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

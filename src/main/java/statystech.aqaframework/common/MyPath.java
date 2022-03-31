@@ -1,6 +1,6 @@
 package statystech.aqaframework.common;
 
-public enum Path {
+public enum MyPath {
 
     RESOURCES_PATH ("src/resources/"),
     JSON_PATH (RESOURCES_PATH.getPath() + "json/"),
@@ -10,7 +10,7 @@ public enum Path {
 
     private final String path;
 
-    Path(String path) {
+    MyPath(String path) {
         this.path = path;
     }
 

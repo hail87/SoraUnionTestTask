@@ -10,6 +10,7 @@ import statystech.aqaframework.steps.APIsteps.IrsApiSteps;
 import statystech.aqaframework.tests.TestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
+import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
@@ -52,6 +53,7 @@ public class IrsTestSuite extends TestClass {
     }
 
 
+    //https://statystech.atlassian.net/browse/OMS-930
     @TestRailID(id = 95187)
     @Test
     public void wrongUserRole(TestInfo testInfo) throws IOException {
@@ -262,7 +264,8 @@ public class IrsTestSuite extends TestClass {
 
     @TestRailID(id = 131399)
     @Test
-    public void addProductBatchVerifyBatchAlreadyExist(TestInfo testInfo) {
+    public void addProductBatchVerifyBatchAlreadyExist(TestInfo testInfo) throws SQLException, IOException {
+        DBUtils.cleanDB("clean_all_lwa_test_data.sql");
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();

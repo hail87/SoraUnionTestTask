@@ -59,6 +59,7 @@ public class AddParcelTestSuite extends TestClass {
         Context.addTestContext(lwaTestContext);
     }
 
+    //https://statystech.atlassian.net/browse/OMS-954
     @TestRailID(id = 17866)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})

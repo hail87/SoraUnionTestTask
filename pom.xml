@@ -45,6 +45,7 @@
         <allure.version>2.17.3</allure.version>
         <awaitility.version>4.1.0</awaitility.version>
         <aspectj.version>1.8.10</aspectj.version>
+        <selenium.version>4.1.1</selenium.version>
     </properties>
 
     <dependencyManagement>
@@ -178,6 +179,21 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-plugin-api</artifactId>
             <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>${selenium.version}</version>
         </dependency>
     </dependencies>
 

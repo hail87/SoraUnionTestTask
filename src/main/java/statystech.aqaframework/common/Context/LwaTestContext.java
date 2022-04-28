@@ -16,6 +16,7 @@ import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
+import statystech.aqaframework.DataObjects.WebsiteSearch.GetWebSitesResponse;
 import statystech.aqaframework.common.ConnectionDB;
 import statystech.aqaframework.utils.DataUtils;
 import statystech.aqaframework.utils.JsonUtils;
@@ -84,6 +85,7 @@ public class LwaTestContext extends TestContext{
     private JsonNode lastNode;
 
     private WarehouseSearchResponse warehouseSearchResponse;
+    private GetWebSitesResponse getWebsitesResponse;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {

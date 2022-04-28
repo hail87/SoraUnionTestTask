@@ -1,13 +1,19 @@
 package statystech.aqaframework.steps.APIsteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ProductBatch.ProductBatchResponse;
 import statystech.aqaframework.DataObjects.WarehouseSearch.OrdersItem;
 import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
+import statystech.aqaframework.DataObjects.WebsiteSearch.GetWebSitesResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
+import statystech.aqaframework.utils.ApiRestUtils;
+import statystech.aqaframework.utils.DBUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +49,38 @@ public class LwaApiSteps extends Steps {
             delta.removeAll(actualOrderNumbersList);
             return String.format("\nExpected orders at the search response : '%s', found : '%s', orders missed : '%s'",
                     expectedOrderNumbersList, actualOrderNumbersList, delta);
+        }
+        return "";
+    }
+
+    @SneakyThrows
+    public String sendGetWebsitesRequest(int expectedStatusCode, String authToken, LwaTestContext testContext) {
+        Response response = new ApiRestUtils().sendGetWebsites(authToken);
+        logger.info("Response from API:\n" + response.code());
+        if (response.code() != expectedStatusCode) {
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
+        } else {
+            String responseBody = response.body().string();
+            testContext.setResponseBody(responseBody);
+//            ObjectMapper mapper = new ObjectMapper();
+//            GetWebSitesResponse getWebSitesResponse = mapper.readValue(responseBody, GetWebSitesResponse.class);
+//            testContext.setGetWebsitesResponse(getWebSitesResponse);
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String checkWebsitesResponseStructure(LwaTestContext testContext) {
+        return verifyJsonResponseContainsNotNullAttribute("websites.website_id", testContext) +
+                verifyJsonResponseContainsNotNullAttribute("websites.website_name", testContext) +
+                verifyJsonResponseContainsNotNullAttribute("websites.website_currency", testContext);
+    }
+
+    public String checkWebsitesResponse(int userID, LwaTestContext testContext) {
+        ArrayList<String> warehouseNumbers = DBUtils.executeAndReturnStringArray("SELECT websiteID FROM lwa_sandbox.websiteTeam where userID = " + userID);
+        for (String warehouseNumber : warehouseNumbers){
+            if (!testContext.getResponseBody().contains("\"website_id\":" + warehouseNumber))
+                    return "There is no \n'\"website_id\": warehouseNumber'\n line found and the json response";
         }
         return "";
     }

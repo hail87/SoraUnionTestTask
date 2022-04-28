@@ -370,4 +370,46 @@ public class LwaTestSuite extends TestClass {
                 new ArrayList<>(Collections.singletonList(6097147)), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
+
+    @TestRailID(id = 152147)
+    @Test
+    public void getWebSitesValidateUserHavePermissions(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        LwaApiSteps lwaApiSteps = new LwaApiSteps();
+        errorMessage.append(lwaApiSteps.sendGetWebsitesRequest(403, DataUtils.getPropertyValue(
+                "tokens.properties", "WHMuser19_Csr_Csm"), lwaTestContext));
+        lwaApiSteps.verifyActualResultsContains(
+                lwaTestContext.getResponseBody(),
+                "User does not have permission to access the endpoint.");
+    }
+
+    @TestRailID(id = 152148)
+    @Test
+    public void getWebSitesAsBMUser(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        LwaApiSteps lwaApiSteps = new LwaApiSteps();
+        errorMessage.append(lwaApiSteps.sendGetWebsitesRequest(200, DataUtils.getPropertyValue(
+                "tokens.properties", "BM_user_ProductSearchWrongUserRole"), lwaTestContext));
+        errorMessage.append(lwaApiSteps.checkWebsitesResponseStructure( lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 152149)
+    @Test
+    public void getWebSitesAsCsmCsrUser(TestInfo testInfo) {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        LwaApiSteps lwaApiSteps = new LwaApiSteps();
+
+        errorMessage.append(lwaApiSteps.sendGetWebsitesRequest(200, DataUtils.getPropertyValue(
+                "tokens.properties", "CSRuser-1"), lwaTestContext));
+        errorMessage.append(lwaApiSteps.checkWebsitesResponse(-1, lwaTestContext));
+
+        errorMessage.append(lwaApiSteps.sendGetWebsitesRequest(200, DataUtils.getPropertyValue(
+                "tokens.properties", "CSMuser23"), lwaTestContext));
+        errorMessage.append(lwaApiSteps.checkWebsitesResponse(23, lwaTestContext));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
 }

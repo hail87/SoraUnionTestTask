@@ -63,7 +63,7 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
                 "RESTYLANE™",
                 403,
-                DataUtils.getPropertyValue("tokens.properties", "ProductSearchWrongUserRole"),
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_ProductSearchWrongUserRole"),
                 lwaTestContext));
         assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
     }
@@ -131,7 +131,7 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
                 "REST® LIP REFRESH™",
                 400,
-                DataUtils.getPropertyValue("tokens.properties", "CSMuser"),
+                DataUtils.getPropertyValue("tokens.properties", "CSMuser23"),
                 lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         assertTrue(lwaTestContext.getResponseBody().contains("Website is required. Please contact support at"));
@@ -147,7 +147,7 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendGetProductDetailsAndSaveResponseToContext(
                 2392,
                 403,
-                DataUtils.getPropertyValue("tokens.properties", "ProductSearchWrongUserRole"),
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_ProductSearchWrongUserRole"),
                 lwaTestContext));
         assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
     }
@@ -161,7 +161,7 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendGetProductDetailsAndSaveResponseToContext(
                 2392,
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext));
 
         assertTrue(irsApiSteps.verifyGetProductDetailsResponse(2392, lwaTestContext).isEmpty());
@@ -177,21 +177,21 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "R",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext));
         errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("R", lwaTestContext));
 
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "RE",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext));
         errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("RE", lwaTestContext));
 
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "REF",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext));
         errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF", lwaTestContext));
 
@@ -199,7 +199,7 @@ public class IrsTestSuite extends TestClass {
                 "REF",
                 "2391",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext));
         errorMessage.append(irsApiSteps.verifyAllProductsAtTheSearchResponseContainsString("REF", lwaTestContext));
         errorMessage.append(irsApiSteps.verifyResultNotContain("2391", lwaTestContext));
@@ -207,7 +207,7 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendPostPartialProductSearchAndSaveResponseToContext(
                 "PLASMOLIFTING",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext));
         errorMessage.append(irsApiSteps.verifySearchResponseProductEmpty(lwaTestContext));
 
@@ -224,7 +224,7 @@ public class IrsTestSuite extends TestClass {
                 2391,
                 10,
                 403,
-                DataUtils.getPropertyValue("tokens.properties", "ProductSearchWrongUserRole"),
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_ProductSearchWrongUserRole"),
                 lwaTestContext
         ));
         assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"User does not have permission to access the endpoint. Please contact support at "));
@@ -240,7 +240,7 @@ public class IrsTestSuite extends TestClass {
                 -1000,
                 10,
                 400,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext
         ));
         assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"Unknown product ID. Please contact support at"));
@@ -256,7 +256,7 @@ public class IrsTestSuite extends TestClass {
                 2391,
                 -1000,
                 400,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext
         ));
         assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"Unknown warehouse ID. Please contact support at"));
@@ -273,7 +273,7 @@ public class IrsTestSuite extends TestClass {
                 2391,
                 10,
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext
         ));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
@@ -281,7 +281,7 @@ public class IrsTestSuite extends TestClass {
                 2391,
                 10,
                 400,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext
         ));
         assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"The batch number already exists. Please update the existing batch number or contact support at"));
@@ -297,7 +297,7 @@ public class IrsTestSuite extends TestClass {
                 2391,
                 10,
                 400,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 "2020-07-31",
                 lwaTestContext
         ));
@@ -308,7 +308,7 @@ public class IrsTestSuite extends TestClass {
                     2391,
                     10,
                     200,
-                    DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                    DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                     DataUtils.getCurrentDate(),
                     lwaTestContext
             ));

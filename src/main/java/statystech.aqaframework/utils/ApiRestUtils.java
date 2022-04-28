@@ -291,6 +291,23 @@ public class ApiRestUtils {
         return response;
     }
 
+    public okhttp3.Response sendGetWebsites(String token) {
+        okhttp3.Response response = null;
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(DataUtils.getPropertyValue("url.properties", "websitesGet"))
+                    .method("GET", null)
+                    .addHeader("Authorization", token)
+                    .build();
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
     public okhttp3.Response sendPutParcelLine(int parcelLineID, int warehouseBatchInventoryId, String authToken) {
         okhttp3.Response response = null;
         try {

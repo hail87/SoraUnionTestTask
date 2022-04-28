@@ -10,6 +10,10 @@ import statystech.aqaframework.common.MyPath;
 
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DBUtils {
 
@@ -98,6 +102,26 @@ public class DBUtils {
         } catch (SQLException | IOException throwables) {
             logger.error("Empty response from DB");
             return "";
+        }
+    }
+
+    public static ArrayList<String> executeAndReturnStringArray(String fullRequest) {
+        ResultSet rs;
+        try {
+            rs = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().executeQuery(fullRequest);
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            ArrayList<String> list = new ArrayList<>(columnCount);
+            while (rs.next()) {
+                int i = 1;
+                while(i <= columnCount) {
+                    list.add(rs.getString(i++));
+                }
+            }
+            return list;
+        } catch (SQLException | IOException throwables) {
+            logger.error("Empty response from DB");
+            return new ArrayList();
         }
     }
 

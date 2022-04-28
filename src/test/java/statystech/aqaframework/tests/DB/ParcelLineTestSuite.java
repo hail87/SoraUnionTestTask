@@ -147,7 +147,7 @@ public class ParcelLineTestSuite extends TestClass {
 
         logger.info("sendPutRequestAndSaveResponseToContext");
         assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 403,
                 lwaTestContext.getWarehouseBatchInventoryID(),
                 testInfo).isEmpty());
@@ -185,7 +185,7 @@ public class ParcelLineTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         logger.info("------------------------------------Precondition Step 7,8------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser19"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext.getProductID(),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

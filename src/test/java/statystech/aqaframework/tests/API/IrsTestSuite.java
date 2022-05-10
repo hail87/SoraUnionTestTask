@@ -138,6 +138,7 @@ public class IrsTestSuite extends TestClass {
 
     }
 
+    //https://statystech.atlassian.net/browse/OMS-955
     @TestRailID(id = 124928)
     @Test
     public void verifyUserRole(TestInfo testInfo) throws IOException {

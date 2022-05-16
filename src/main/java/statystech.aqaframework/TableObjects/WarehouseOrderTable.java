@@ -36,7 +36,7 @@ public class WarehouseOrderTable extends TableObject {
         return DBUtils.execute(String.format("select * from %s where orderID='%d'", TABLE_NAME, orderID));
     }
 
-    public boolean checkWarehouseOrderStatus(int warehouseOrderId) throws SQLException, IOException {
+    public boolean checkWarehouseOrderStatus(int warehouseOrderId) {
         return "1".equalsIgnoreCase(
                 String.valueOf(DBUtils.executeAndReturnString(String.format(
                         "select warehouseOrderStatusID from %s where warehouseOrderID='%d'", TABLE_NAME, warehouseOrderId))));

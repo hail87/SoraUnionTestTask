@@ -1,0 +1,82 @@
+{
+    "order_id": "6098224",
+    "user_id": "18fba6335d3e48bdd415f54ef6e8c1cb",
+    "order_status": "Confirmed",
+    "replacement_order_id": "0",
+    "seller_id": "7d336e37513a355d39b33703c0dcbd55",
+    "seller_username": "Peakmedical01",
+    "csr_assigned_id": "",
+    "csr_assigned_username": null,
+    "billing_address":
+    {
+        "user_info_id": "648697",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "S****a",
+        "middle_name": "",
+        "last_name": "J****r",
+        "country": "UNITED STATES",
+        "state": "Texas",
+        "city": "Austin",
+        "zip": "78703",
+        "address_line_1": "3407 Glenview Ave",
+        "address_line_2": "",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "shipping_address":
+    {
+        "user_info_id": "648697",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "S****a",
+        "middle_name": "",
+        "last_name": "J****r",
+        "country": "UNITED STATES",
+        "state": "Texas",
+        "city": "Austin",
+        "zip": "78703",
+        "address_line_1": "3407 Glenview Ave",
+        "address_line_2": "",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "order_date": "2021-06-08",
+    "shipped_at": null,
+    "delivered_at": null,
+    "order_items":
+    [
+        {
+            "order_item_id": "1793111",
+            "product_id": "82290",
+            "product_name": "MIRENA® English",
+            "product_quantity": "2",
+            "product_item_price": "399.00",
+            "SKU": "MIRENA® UK pack",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "161",
+                    "ff_center_name": "Iberianium",
+                    "assigned_qty": "2",
+                    "batches":
+                    [
+                        {
+                            "qty": "2",
+                            "number": "TU002KBT",
+                            "ff_center_id": "161"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "website_name": "peakmedicalwholesale.com",
+    "shopper_group_name": "Peak Medical Licensed",
+    "account_number": "331185",
+    "order_currency": "USD",
+    "currency_conversion": "1.00",
+    "shipping_notes": ""
+}

@@ -122,9 +122,9 @@ public class AddParcelTestSuite extends TestClass {
         new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
         int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
         logger.info("------------------------------------Precondition Step 4------------------------------------");
+        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
         errorMessage.append(parcelLineApiSteps.sendPostStartFulfillment(
                 warehouseOrderId,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7")));

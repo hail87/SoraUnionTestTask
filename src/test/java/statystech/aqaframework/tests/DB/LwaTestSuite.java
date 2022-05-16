@@ -391,7 +391,7 @@ public class LwaTestSuite extends TestClass {
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
         errorMessage.append(lwaApiSteps.sendGetWebsitesRequest(200, DataUtils.getPropertyValue(
-                "tokens.properties", "BM_user_ProductSearchWrongUserRole"), lwaTestContext));
+                "tokens.properties", "BM_user_24"), lwaTestContext));
         errorMessage.append(lwaApiSteps.checkWebsitesResponseStructure( lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

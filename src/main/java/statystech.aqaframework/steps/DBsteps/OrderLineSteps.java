@@ -16,6 +16,8 @@ public class OrderLineSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderLineSteps.class);
 
+    private OrderLineTable orderLineTable = new OrderLineTable();
+
     public String checkProductIsAbsent(String productName) {
         try {
             if (checkName(productName).isEmpty()) {
@@ -57,25 +59,25 @@ public class OrderLineSteps extends Steps {
     private String checkName(String productName) throws SQLException {
 
         String actual = productName.contains("®") ?
-                new OrderLineTable().getColumnValueContainsProductName(productName, "productName")
-                : new OrderLineTable().getColumnValueByProductName(productName, "productName");
+                orderLineTable.getColumnValueContainsProductName(productName, "productName")
+                : orderLineTable.getColumnValueByProductName(productName, "productName");
         return verifyExpectedResults(StringEscapeUtils.unescapeJava(actual), productName);
     }
 
     private String checkSKU(OrderItem product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "sku");
+        String actual = orderLineTable.getColumnValueByProductName(product.getProductName(), "sku");
         String expected = product.getSKU();
         return verifyExpectedResults(actual, expected);
     }
 
     private String checkPrice(OrderItem product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "itemPrice");
+        String actual = orderLineTable.getColumnValueByProductName(product.getProductName(), "itemPrice");
         String expected = product.getProductItemPrice();
         return verifyExpectedResults(DataUtils.decrypt(actual), expected);
     }
 
     private String checkQuantity(OrderItem product) throws SQLException {
-        String actual = new OrderLineTable().getColumnValueByProductName(product.getProductName(), "quantity");
+        String actual = orderLineTable.getColumnValueByProductName(product.getProductName(), "quantity");
         String expected = product.getProductQuantity();
         return verifyExpectedResults(DataUtils.decrypt(actual), expected);
     }
@@ -85,8 +87,8 @@ public class OrderLineSteps extends Steps {
             String expected = String.valueOf(Context.getTestContext(LwaTestContext.class).getLastWarehouseOrderID());
             String productName = product.getProductName();
             String actual = productName.contains("®") ?
-                    new OrderLineTable().getColumnValueContainsProductName(productName, "warehouseOrderID")
-                    : new OrderLineTable().getColumnValueByProductName(productName, "warehouseOrderID");
+                    orderLineTable.getColumnValueContainsProductName(productName, "warehouseOrderID")
+                    : orderLineTable.getColumnValueByProductName(productName, "warehouseOrderID");
             return verifyExpectedResults(actual, expected);
         } else {
             logger.warn("There is no warehouseOrderID set at the TestContext yet");
@@ -96,8 +98,17 @@ public class OrderLineSteps extends Steps {
 
     private void addWarehouseOrderID(OrderItem product) throws SQLException {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
-        int warehouseOrderID = Integer.parseInt(new OrderLineTable().getColumnValueByProductName(product.getProductName(), "warehouseOrderID"));
+        int warehouseOrderID = Integer.parseInt(orderLineTable.getColumnValueByProductName(product.getProductName(), "warehouseOrderID"));
         lwaTestContext.addWarehouseOrders(warehouseOrderID, new WarehouseOrderSteps().getWarehouseId(warehouseOrderID));
         Context.updateTestContext(lwaTestContext);
+    }
+
+    public void setOrderLineIDtoContext(int warehouseOrderId, LwaTestContext testContext){
+        try {
+            testContext.setOrderLineID(orderLineTable.getPrimaryID("warehouseOrderID", String.valueOf(warehouseOrderId)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Context.updateTestContext(testContext);
     }
 }

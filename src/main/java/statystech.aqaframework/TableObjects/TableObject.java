@@ -162,6 +162,13 @@ public abstract class TableObject {
         return rs;
     }
 
+    public boolean updateProperRow(String columnName, String columnValue, String columnNameToSearchBy, String valueToSearchBy) {
+        return DBUtils.update(String.format(
+                "UPDATE %s\n" +
+                        "SET %s = %s\n" +
+                        "WHERE %s = %s", TABLE_NAME, columnName, columnValue, columnNameToSearchBy, valueToSearchBy));
+    }
+
     public ResultSet getRowByID(int id) {
         ResultSet rs = DBUtils.execute(String.format(
                 "select * from %s where %sID = %d", TABLE_NAME, TABLE_NAME, id));

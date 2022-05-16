@@ -25,19 +25,36 @@ public class StageOrderSteps extends Steps {
             logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
     }
 
-    public String checkStatusColumn(int rowID) throws SQLException {
-        if (new DBUtils().select("stageOrder", rowID, "status").equalsIgnoreCase("C")) {
-            return "";
-        } else {
-            return "Status at the Status column isn't equal to 'C'";
+    public String checkStatusColumn(int rowID) {
+        try {
+            if (new DBUtils().select("stageOrder", rowID, "status").equalsIgnoreCase("C")) {
+                return "";
+            } else {
+                return "Status at the Status column isn't equal to 'C'";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Method 'checkStatusColumn' has throwed exception";
         }
     }
 
-    public int insertJsonToTableAndContext(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-        String jsonContent = JsonUtils.loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());
+    public int insertJsonToTableAndContext(String jsonFilename, TestInfo testInfo) {
+        String jsonContent = null;
+        try {
+            jsonContent = JsonUtils.loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String encryptedJsonContent = DataUtils.encrypt(jsonContent);
         logger.info("Inserting json to the stageOrder table");
-        int id = new DBUtils().insertJsonToStageOrder(encryptedJsonContent);
+        int id = 0;
+        try {
+            id = new DBUtils().insertJsonToStageOrder(encryptedJsonContent);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new StageOrderSteps().triggerProcessingSandBox();
         return id;
     }

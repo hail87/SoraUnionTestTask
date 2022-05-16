@@ -2,6 +2,8 @@ package statystech.aqaframework.steps.DBsteps;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringEscapeUtils;
 import statystech.aqaframework.TableObjects.WarehouseOrderTable;
@@ -18,6 +20,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class WarehouseOrderSteps extends Steps {
+
+    @Setter
+    @Getter
+    private WarehouseOrderTable warehouseOrderTable = new WarehouseOrderTable();
 
     @SneakyThrows
     public WarehouseOrderSteps() {
@@ -40,7 +46,7 @@ public class WarehouseOrderSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public String checkWarehouseOrderStatusesIsActive() throws SQLException, IOException {
+    public String checkWarehouseOrderStatusesIsActive() {
         StringBuilder errorMessage = new StringBuilder();
         for (Map.Entry<Integer, Integer> entry : Context.getTestContext(LwaTestContext.class).getWarehouseOrders().entrySet()) {
             if (!new WarehouseOrderTable().checkWarehouseOrderStatus(entry.getKey()))
@@ -97,7 +103,13 @@ public class WarehouseOrderSteps extends Steps {
         return Integer.parseInt(new WarehouseOrderTable().getColumnValueByPrimaryID(warehouseOrderId, "warehouseID"));
     }
 
-    public int getWarehouseOrderId(int orderId) throws SQLException {
-        return Integer.parseInt(new WarehouseOrderTable().getColumnValueByColumnValue("warehouseOrderID", "orderID", String.valueOf(orderId)));
+    public int getWarehouseOrderId(int orderId) {
+        int warehouseOrderId = 0;
+        try {
+            warehouseOrderId = Integer.parseInt(new WarehouseOrderTable().getColumnValueByColumnValue("warehouseOrderID", "orderID", String.valueOf(orderId)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouseOrderId;
     }
 }

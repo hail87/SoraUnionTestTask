@@ -63,7 +63,7 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendPostProductSearchAndSaveResponseToContext(
                 "RESTYLANE™",
                 403,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_ProductSearchWrongUserRole"),
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext));
         assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
     }
@@ -148,7 +148,7 @@ public class IrsTestSuite extends TestClass {
         errorMessage.append(irsApiSteps.sendGetProductDetailsAndSaveResponseToContext(
                 2392,
                 403,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_ProductSearchWrongUserRole"),
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext));
         assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
     }
@@ -225,7 +225,7 @@ public class IrsTestSuite extends TestClass {
                 2391,
                 10,
                 403,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_ProductSearchWrongUserRole"),
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext
         ));
         assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"User does not have permission to access the endpoint. Please contact support at "));

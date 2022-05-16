@@ -6,6 +6,8 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import org.apache.commons.lang3.StringUtils;
+import org.jose4j.lang.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
@@ -317,6 +319,26 @@ public class ApiRestUtils {
             RequestBody body = RequestBody.create(mediaType, String.format("{\n    \"warehouse_batch_inventory_id\": %d\n}", warehouseBatchInventoryId));
             Request request = new Request.Builder()
                     .url(DataUtils.getPropertyValue("url.properties", "parcelLinePUT") + parcelLineID)
+                    .method("PUT", body)
+                    .addHeader("Authorization", authToken)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response sendPutOrderLine(int orderLineID, int quantity, String authToken) {
+        okhttp3.Response response = null;
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "{\n    \"quantity\": " + quantity + "\n}");
+            Request request = new Request.Builder()
+                    .url(StringUtils.replace(DataUtils.getPropertyValue("url.properties", "orderLinePUT"), "{order_line_id}", String.valueOf(orderLineID)))
                     .method("PUT", body)
                     .addHeader("Authorization", authToken)
                     .addHeader("Content-Type", "application/json")

@@ -133,9 +133,13 @@ public class OrdersSteps extends Steps {
         return verifyExpectedResults(actual, expected.toString());
     }
 
-    public void setOrderIDtoContext() throws SQLException, IOException {
+    public void setOrderIDtoContext() {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
-        lwaTestContext.setOrderID(ordersTable.getPrimaryID());
+        try {
+            lwaTestContext.setOrderID(ordersTable.getPrimaryID());
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
         Context.updateTestContext(lwaTestContext);
     }
 

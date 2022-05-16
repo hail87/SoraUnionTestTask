@@ -19,12 +19,7 @@ import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchRespon
 import statystech.aqaframework.DataObjects.WebsiteSearch.GetWebSitesResponse;
 import statystech.aqaframework.common.ConnectionDB;
 import statystech.aqaframework.utils.DataUtils;
-import statystech.aqaframework.utils.JsonUtils;
 
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,6 +44,7 @@ public class LwaTestContext extends TestContext{
     private String orderAllSysID;
     private int allSysBuyerID; //orderID in JSON
     private int orderID; //orderID in DB
+    private int orderLineID;
     private LinkedHashMap<Integer, Integer> warehouseOrders; //[warehouseOrderID, warehouseID]
     private int omsShippingAddressID;
     private int omsBillingAddressID;
@@ -163,4 +159,5 @@ public class LwaTestContext extends TestContext{
         LwaTestContext lwaTestContext = (LwaTestContext) object;
         return this.testMethodName.equalsIgnoreCase(lwaTestContext.testMethodName);
     }
+
 }

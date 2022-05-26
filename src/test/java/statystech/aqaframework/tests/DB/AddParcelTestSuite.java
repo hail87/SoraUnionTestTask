@@ -64,7 +64,7 @@ public class AddParcelTestSuite extends TestClass {
     @TestRailID(id = 17866)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
-    public void wrongUserRole(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void wrongUserRole(String jsonFilename, TestInfo testInfo) throws IOException {
 
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -157,7 +157,7 @@ public class AddParcelTestSuite extends TestClass {
     @TestRailID(id = 17871)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria2.json"})
-    public void validateParcelLineIdAssociatedWithAnyParcel(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void validateParcelLineIdAssociatedWithAnyParcel(String jsonFilename, TestInfo testInfo) throws IOException {
 
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -208,7 +208,7 @@ public class AddParcelTestSuite extends TestClass {
     @TestRailID(id = 17867)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria1.json"})
-    public void verifyParcelLinesHasAColdProduct(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void verifyParcelLinesHasAColdProduct(String jsonFilename, TestInfo testInfo) throws IOException {
 
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -256,7 +256,7 @@ public class AddParcelTestSuite extends TestClass {
     @TestRailID(id = 17868)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderProductIsCold6.json"})
-    public void verifyIsColdTrue(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void verifyIsColdTrue(String jsonFilename, TestInfo testInfo) throws IOException {
 
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -305,7 +305,7 @@ public class AddParcelTestSuite extends TestClass {
     @TestRailID(id = 17869)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria4.json"})
-    public void verifyWarehouseOrderStatusIdNotIn7n10(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void verifyWarehouseOrderStatusIdNotIn7n10(String jsonFilename, TestInfo testInfo) throws IOException {
 
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -362,5 +362,3 @@ public class AddParcelTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 }
-
-//git update-index --no-assume-unchanged settings.xml

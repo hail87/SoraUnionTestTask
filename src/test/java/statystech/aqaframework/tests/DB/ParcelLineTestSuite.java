@@ -84,47 +84,6 @@ public class ParcelLineTestSuite extends TestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    // wrong test case! needs to be updated at the TestRail
-//    @TestRailID(id = 16812)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
-//    public void checkParcelLineBatchQuantity(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
-//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//
-//        new OrdersSteps().setOrderIDtoContext();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        int warehouseOrderID = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
-//
-//        ParcelLineApiSteps parcelLineApiSteps = new ParcelLineApiSteps();
-//        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveResponseToContext(
-//                warehouseOrderID,
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                testInfo));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        int productID = new ProductTable().getPrimaryID("productAllSysID", "82290");
-//
-//        errorMessage.append(parcelLineApiSteps.addNewProductButch(
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                productID, 1, testInfo));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        //String productBatchID = new ProductBatchSteps().getProductBatchID(productID); //date to be added
-//        errorMessage.append(new WarehouseBatchInventorySteps().getWarehouseBatchInventoryID(lwaTestContext));
-//
-//        assertTrue(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                200,
-//                lwaTestContext.getWarehouseBatchInventoryID(),
-//                testInfo).isEmpty());
-//        errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(lwaTestContext.getParcelLineResponse().body().string(), "Batch does not have enough inventory"));
-//
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
-
     @TestRailID(id = 16813)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})

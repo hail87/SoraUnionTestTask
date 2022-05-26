@@ -95,7 +95,7 @@ public class LwaTestSuite extends TestClass {
     @TestRailID(id = 2)
     @ParameterizedTest
     @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
-    public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+    public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
@@ -219,7 +219,7 @@ public class LwaTestSuite extends TestClass {
 
     @TestRailID(id = 39704)
     @Test
-    public void getWarehouseOrdersNoCriteria(TestInfo testInfo) throws IOException, SQLException {
+    public void getWarehouseOrdersNoCriteria(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -247,7 +247,7 @@ public class LwaTestSuite extends TestClass {
 
     @TestRailID(id = 39705)
     @Test
-    public void getWarehouseOrdersAllsysOrderId(TestInfo testInfo) throws IOException, SQLException {
+    public void getWarehouseOrdersAllsysOrderId(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -275,7 +275,7 @@ public class LwaTestSuite extends TestClass {
 
     @TestRailID(id = 40873)
     @Test
-    public void getWarehouseOrdersAllsysOrderIdOtherCriteria(TestInfo testInfo) throws IOException, SQLException {
+    public void getWarehouseOrdersAllsysOrderIdOtherCriteria(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -317,7 +317,7 @@ public class LwaTestSuite extends TestClass {
 
     @TestRailID(id = 45425)
     @Test
-    public void getWarehouseOrdersByWarehouseId(TestInfo testInfo) throws IOException, SQLException {
+    public void getWarehouseOrdersByWarehouseId(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
@@ -345,7 +345,7 @@ public class LwaTestSuite extends TestClass {
 
     @TestRailID(id = 45288)
     @Test
-    public void getWarehouseOrdersByDate(TestInfo testInfo) throws IOException, SQLException {
+    public void getWarehouseOrdersByDate(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         StageOrderSteps stageOrderSteps = new StageOrderSteps();

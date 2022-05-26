@@ -19,42 +19,6 @@ public class DBUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
 
-    public int insertJsonToStageOrder(String jsonContent) throws SQLException, IOException {
-        Statement statement = Context.getTestContext(LwaTestContext.class).getConnection().createStatement();
-        int createdId;
-        statement.executeUpdate("INSERT INTO stageOrder " +
-                        "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
-                        "Values ('" + jsonContent + "','N','',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'')",
-                Statement.RETURN_GENERATED_KEYS);
-        //logger.info("SQL request was executed: " + jsonContent);
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                createdId = (int) generatedKeys.getLong(1);
-            } else {
-                throw new SQLException("Creating failed, no ID obtained.");
-            }
-        }
-        return createdId;
-    }
-
-    public int insertJsonToStageProduct(String jsonContent) throws SQLException, IOException {
-        Statement statement = Context.getTestContext(LwaTestContext.class).getConnection().createStatement();
-        int createdId;
-        statement.executeUpdate("INSERT INTO stageProduct " +
-                        "(productData, status, createdDate, createdBy, modifiedDate, modifiedBy, processingComment) " +
-                        "Values ('" + jsonContent + "','N',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'','')",
-                Statement.RETURN_GENERATED_KEYS);
-        //logger.info("SQL request was executed: " + jsonContent);
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                createdId = (int) generatedKeys.getLong(1);
-            } else {
-                throw new SQLException("Creating failed, no ID obtained.");
-            }
-        }
-        return createdId;
-    }
-
     public static ResultSet execute(String fullRequest) {
         ResultSet rs = null;
         try {
@@ -74,8 +38,8 @@ public class DBUtils {
             throwables.printStackTrace();
             logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
         }
-        logger.info(String.format("\nSQL UPDATE : \n'%s' \n was executed - '%b'", fullRequest, i==1));
-        return i==1;
+        logger.info(String.format("\nSQL UPDATE : \n'%s' \n was executed - '%b'", fullRequest, i == 1));
+        return i == 1;
     }
 
     public static ResultSet executeUpdatable(String fullRequest) {
@@ -114,7 +78,7 @@ public class DBUtils {
             ArrayList<String> list = new ArrayList<>(columnCount);
             while (rs.next()) {
                 int i = 1;
-                while(i <= columnCount) {
+                while (i <= columnCount) {
                     list.add(rs.getString(i++));
                 }
             }
@@ -125,21 +89,6 @@ public class DBUtils {
         }
     }
 
-    public String select(String tableName, int rowId, String columnName) throws SQLException {
-        String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + tableName + "ID = " + rowId;
-        ResultSet rs = execute(query);
-        rs.next();
-        String result = rs.getString(columnName);
-        logger.info("\n!!!Query :\n" + query + "\n has been executed with result : " + result);
-        return result;
-    }
-
-    public String select(String tableName, String columnName) throws SQLException {
-        ResultSet rs = getLastRow(tableName);
-        rs.next();
-        return rs.getString(columnName);
-    }
-
     public static String select(String tableName, int columnNumber) throws SQLException {
         ResultSet rs = getLastRow(tableName);
         rs.next();
@@ -148,6 +97,69 @@ public class DBUtils {
 
     private static ResultSet getLastRow(String tableName) {
         return execute(String.format("SELECT * FROM %s ORDER by createdDate DESC LIMIT 1", tableName));
+    }
+
+    public static void cleanDB(String scriptName) throws IOException, SQLException {
+        Connection connection = new ConnectionDB().getCurrentConnection();
+        ScriptRunner sr = new ScriptRunner(connection);
+        Reader reader = new BufferedReader(new FileReader(MyPath.SQL_SCRIPTS_PATH.getPath() + scriptName));
+        sr.runScript(reader);
+        connection.close();
+    }
+
+    public int insertJsonToStageOrder(String jsonContent) throws SQLException, IOException {
+        Statement statement = Context.getTestContext(LwaTestContext.class).getConnection().createStatement();
+        int createdId;
+        statement.executeUpdate("INSERT INTO stageOrder " +
+                        "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
+                        "Values ('" + jsonContent + "','N','',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'')",
+                Statement.RETURN_GENERATED_KEYS);
+        //logger.info("SQL request was executed: " + jsonContent);
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                createdId = (int) generatedKeys.getLong(1);
+            } else {
+                throw new SQLException("Creating failed, no ID obtained.");
+            }
+        }
+        return createdId;
+    }
+
+    public int insertJsonToStageProduct(String jsonContent) throws SQLException, IOException {
+        Statement statement = Context.getTestContext(LwaTestContext.class).getConnection().createStatement();
+        int createdId;
+        statement.executeUpdate("INSERT INTO stageProduct " +
+                        "(productData, status, createdDate, createdBy, modifiedDate, modifiedBy, processingComment) " +
+                        "Values ('" + jsonContent + "','N',CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,'','')",
+                Statement.RETURN_GENERATED_KEYS);
+        //logger.info("SQL request was executed: " + jsonContent);
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                createdId = (int) generatedKeys.getLong(1);
+            } else {
+                throw new SQLException("Creating failed, no ID obtained.");
+            }
+        }
+        return createdId;
+    }
+
+    public String select(String tableName, int rowId, String columnName) throws SQLException {
+        String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + tableName + "ID = " + rowId;
+        ResultSet rs = execute(query);
+        rs.next();
+        String result = rs.getString(columnName);
+        if (result.equalsIgnoreCase("C")) {
+            logger.info("\n!!!Query :\n" + query + "\n has been executed with result : " + result);
+        } else {
+            logger.error("\n!!!Query :\n" + query + "\n has been executed with result : " + result);
+        }
+        return result;
+    }
+
+    public String select(String tableName, String columnName) throws SQLException {
+        ResultSet rs = getLastRow(tableName);
+        rs.next();
+        return rs.getString(columnName);
     }
 
     public boolean closeConnection() throws SQLException, IOException {
@@ -162,14 +174,6 @@ public class DBUtils {
             throwables.printStackTrace();
         }
         return isClosed;
-    }
-
-    public static void cleanDB(String scriptName) throws IOException, SQLException {
-        Connection connection = new ConnectionDB().getCurrentConnection();
-        ScriptRunner sr = new ScriptRunner(connection);
-        Reader reader = new BufferedReader(new FileReader(MyPath.SQL_SCRIPTS_PATH.getPath() + scriptName));
-        sr.runScript(reader);
-        connection.close();
     }
 }
 

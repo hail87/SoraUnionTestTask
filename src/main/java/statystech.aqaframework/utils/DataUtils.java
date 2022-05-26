@@ -158,6 +158,7 @@ public class DataUtils {
         return downloadKubeCtlLog("oms-rules-engine") |
                 downloadKubeCtlLog("oms-services") |
                 downloadKubeCtlLog("oms-website-api") |
+                downloadKubeCtlLog("lwa-write-data") |
                 downloadKubeCtlLog("lwa-etl-orders") |
                 downloadKubeCtlLog("lwa-etl-products");
     }
@@ -165,7 +166,7 @@ public class DataUtils {
     public static boolean downloadKubeCtlLog(String logName) {
         ApiClient client = null;
         String logFilePath = String.format("target/logs/%s.log", logName);
-        boolean result = false;
+        boolean areLogsDownloadedSuccessfully = false;
         try {
             logger.info("getting API client");
             client = Config.fromConfig(KubeConfig.loadKubeConfig(new FileReader(".kube/config")));
@@ -200,16 +201,16 @@ public class DataUtils {
             try (BufferedWriter writter = new BufferedWriter(new FileWriter(logFilePath))) {
                 while (deltaT < 8000 &&
                         (line = timeLimiter.callWithTimeout(bufferedReader::readLine, 2, TimeUnit.SECONDS, false)) != null) {
-                    writter.write(line);
+                    writter.write(line + System.lineSeparator());
                     deltaT = System.currentTimeMillis() - start;
-                    result = true;
+                    areLogsDownloadedSuccessfully = true;
                 }
             } catch (Exception e) {
                 logger.info("\nClosing file '" + logFilePath + "'");
             }
 
         } catch (ApiException e) {
-            //logger.error("\nCan't get logs from kubernetes\n");
+            logger.warn("\nCan't get logs from kubernetes\n");
         } catch (IOException e) {
             logger.error("\nTrouble with streaming logs from the pod\n");
         } finally {
@@ -229,7 +230,7 @@ public class DataUtils {
                 }
             }
         }
-        return result;
+        return areLogsDownloadedSuccessfully;
     }
 
     public static String encrypt(String text) {

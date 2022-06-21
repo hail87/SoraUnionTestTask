@@ -13,7 +13,7 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.ParcelLineApiSteps;
 import statystech.aqaframework.steps.DBsteps.*;
-import statystech.aqaframework.tests.TestClass;
+import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.utils.DataUtils;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
-public class ParcelLineTestSuite extends TestClass {
+public class ParcelLineTestSuite extends ApiTestClass {
 
     private static final Logger logger = LoggerFactory.getLogger(ParcelLineTestSuite.class);
 

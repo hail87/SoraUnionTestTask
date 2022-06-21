@@ -15,11 +15,10 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.OmsApiSteps;
 import statystech.aqaframework.steps.DBsteps.*;
-import statystech.aqaframework.tests.TestClass;
+import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.utils.DBCleaner;
-import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -33,7 +32,7 @@ import static statystech.aqaframework.steps.Steps.verifyExpectedResults;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
-public class SubmitOrderTestSuite extends TestClass {
+public class SubmitOrderTestSuite extends ApiTestClass {
 
     private static final Logger logger = LoggerFactory.getLogger(SubmitOrderTestSuite.class);
 

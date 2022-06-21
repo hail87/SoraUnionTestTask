@@ -6,7 +6,6 @@ import okhttp3.Response;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.ParcelLines.AddProductButchResponse;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
 import statystech.aqaframework.DataObjects.ProductBatch.ProductBatchResponse;
@@ -56,7 +55,7 @@ public class ParcelLineApiSteps extends Steps {
         }
         logger.info("Response from API:\n" + response.code());
         if (response.code() != expectedStatusCode) {
-            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
+            return verifyStatusCode(expectedStatusCode, response);
         } else {
             return "";
         }
@@ -68,7 +67,7 @@ public class ParcelLineApiSteps extends Steps {
         Response response = new ApiRestUtils().sendPostExternalShipmentParcelLine(parcelLineId, trackingNumber, authToken);
         logger.info("Response from API:\n" + response.code());
         if (response.code() != 200) {
-            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+            return verifyStatusCode(200, response);
         } else {
             testContext.setParcelLineResponse(response);
             Context.updateTestContext(testContext);
@@ -82,7 +81,7 @@ public class ParcelLineApiSteps extends Steps {
         Response response = new ApiRestUtils().sendPostAddNewProductBatch(productID, authToken);
         logger.info("Response from API:\n" + response.code());
         if (response.code() != 200) {
-            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+            return verifyStatusCode(200, response);
         } else {
             String parcelLineResponseBody = response.body().string();
             testContext.setParcelLineResponseBody(parcelLineResponseBody);
@@ -107,7 +106,7 @@ public class ParcelLineApiSteps extends Steps {
         String body = Objects.requireNonNull(response.body()).string();
         testContext.setParcelLineResponseBody(body);
         if (responseCode != expectedStatusCode) {
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", body, expectedStatusCode, response.code());
+            return verifyStatusCode(expectedStatusCode, response);
         } else if (expectedStatusCode == 400 || expectedStatusCode == 403) {
             return "";
         } else {
@@ -126,7 +125,7 @@ public class ParcelLineApiSteps extends Steps {
         String body = Objects.requireNonNull(response.body()).string();
         testContext.setParcelLineResponseBody(body);
         if (responseCode != expectedStatusCode) {
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", body, expectedStatusCode, response.code());
+            return verifyStatusCode(expectedStatusCode, response);
         } else if (expectedStatusCode == 400) {
             return "";
         } else {
@@ -143,7 +142,7 @@ public class ParcelLineApiSteps extends Steps {
         Response response = new ApiRestUtils().sendPostExternalShipmentParcelLine(parcelId, trackingNumber, authToken);
         logger.info("Response from API:\n" + response.code());
         if (response.code() != 200) {
-            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+            return verifyStatusCode(200, response);
         } else {
             testContext.setParcelLineResponse(response);
             Context.updateTestContext(testContext);
@@ -155,7 +154,7 @@ public class ParcelLineApiSteps extends Steps {
         Response response = new ApiRestUtils().sendPostStartFulfillmentParcelLine(warehouseOrderId, authToken);
         logger.info("Response from API:\n" + response.code());
         if (response.code() != 200) {
-            return String.format("\nWrong response status code! Expected [%d], but found [%d]", 200, response.code());
+            return verifyStatusCode(200, response);
         } else {
             return "";
         }

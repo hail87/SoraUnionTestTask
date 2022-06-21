@@ -17,6 +17,22 @@ public abstract class Steps {
 
     protected TableObject tableObject;
 
+    public static String verifyExpectedResults(int ar, int er) {
+        String actualResult = String.valueOf(ar);
+        String expectedResult = String.valueOf(er);
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String callingMethod = stackTraceElements[2].getMethodName();
+        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
+        if (actualResult.equalsIgnoreCase(expectedResult)) {
+            logger.info(String.format("\n[%s:%s]: expected '%s' and actual '%s' results are the same\n", callingClass, callingMethod, expectedResult, actualResult));
+            return "";
+        } else {
+            String message = String.format("\n[%s:%s]: expected '%s' and actual '%s' results are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
+            logger.error(message);
+            return message;
+        }
+    }
+
     public String verifyExpectedResults(Map<String, String> actualAndExpected) {
         String expectedResult = actualAndExpected.get("jsonValue");
         String actualResult = actualAndExpected.get("tableValue");
@@ -61,24 +77,8 @@ public abstract class Steps {
         }
     }
 
-    public static String verifyExpectedResults(int ar, int er) {
-        String actualResult = String.valueOf(ar);
-        String expectedResult = String.valueOf(er);
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        String callingMethod = stackTraceElements[2].getMethodName();
-        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
-        if (actualResult.equalsIgnoreCase(expectedResult)) {
-            logger.info(String.format("\n[%s:%s]: expected '%s' and actual '%s' results are the same\n", callingClass, callingMethod, expectedResult, actualResult));
-            return "";
-        } else {
-            String message = String.format("\n[%s:%s]: expected '%s' and actual '%s' results are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
-            logger.error(message);
-            return message;
-        }
-    }
-
-    public String verifyTableIsEmpty(){
-        if (tableObject.getRowsQuantity() != 0){
+    public String verifyTableIsEmpty() {
+        if (tableObject.getRowsQuantity() != 0) {
             return String.format("Table %s is NOT empty, rows quantity: %d", tableObject.getName(), tableObject.getRowsQuantity());
         }
         return "";
@@ -118,7 +118,7 @@ public abstract class Steps {
         if (value.isNull()) {
             return String.format("\nNoda '%s' haven't been found at the json response", attributeStringPath);
         }
-        if (value.intValue() != expectedValue){
+        if (value.intValue() != expectedValue) {
             return String.format("\nExpected value '%d' and Node value '%d' aren't the same", expectedValue, value.intValue());
         }
         logger.info(String.format("\nExpected value '%d' and Node value '%d' are the same", expectedValue, value.intValue()));
@@ -133,7 +133,7 @@ public abstract class Steps {
         if (value.isNull()) {
             return String.format("\nNoda '%s' haven't been found at the json response", attributeStringPath);
         }
-        if (!Objects.equals(value.toString(), expectedValue)){
+        if (!Objects.equals(value.toString(), expectedValue)) {
             return String.format("\nExpected value '%s' and Node value '%s' aren't the same", expectedValue, value);
         }
         logger.info(String.format("\nExpected value '%s' and Node value '%s' are the same", expectedValue, value));
@@ -150,6 +150,10 @@ public abstract class Steps {
         }
         logger.info(String.format("\nNoda '%s' successfully have been found at the json response", attributeStringPath));
         return "";
+    }
+
+    public String verifyStatusCode(int expectedStatusCode, okhttp3.Response response) {
+        return String.format("\nWrong response status code! Expected [%d], but found [%d]\nResponseBody:\n'%s'", expectedStatusCode, response.code(), Objects.requireNonNull(response.body()));
     }
 
 }

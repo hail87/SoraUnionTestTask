@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.IrsApiSteps;
-import statystech.aqaframework.tests.TestClass;
+import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.utils.DBUtils;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
-public class IrsTestSuite extends TestClass {
+public class IrsTestSuite extends ApiTestClass {
 
     private static final Logger logger = LoggerFactory.getLogger(IrsTestSuite.class);
 

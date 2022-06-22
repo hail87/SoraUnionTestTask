@@ -68,15 +68,18 @@ public class OrderExceptionHistorySteps extends Steps {
                 actualType = Integer.parseInt(orderExceptionHistoryTable.getColumnValueByPrimaryID(orderExceptionHistoryID, "orderExceptionTypeID"));
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                logger.error("\nCan't get orderExceptionHistoryID or orderExceptionTypeID\n");
                 return "\nCan't get orderExceptionHistoryID or orderExceptionTypeID\n";
             }
 
             if (expectedType != actualType) {
+                logger.error(String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are NOT the same!", expectedType, actualType));
                 return String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are NOT the same!", expectedType, actualType);
             }
             logger.info(String.format("\nExpected orderExceptionTypeID '%s' and actual '%s' are the same!", expectedType, actualType));
             return "";
         } else {
+            logger.error("\nOrderExceptionHistorySteps: There is no row with orderID : " + lwaTestContext.getApiOrderId());
             return "\nOrderExceptionHistorySteps: There is no row with orderID : " + lwaTestContext.getApiOrderId();
         }
     }

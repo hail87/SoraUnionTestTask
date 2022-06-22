@@ -194,14 +194,14 @@ public class ParcelLineTestSuite extends ApiTestClass {
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        logger.info("------------------------------------Precondition Step 6,7------------------------------------");
+        logger.info("------------------------------------Precondition Step 6,7,8------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendPostCreateParcelAndSaveResponseToContext(
                 warehouseOrderId,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        logger.info("------------------------------------Precondition Step 8------------------------------------");
+        logger.info("------------------------------------Precondition Step 9------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendPostRequestExternalShipmentAndSaveResponseToContext(
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 "AA2182814AA",

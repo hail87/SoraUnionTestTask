@@ -38,7 +38,7 @@ public class LoginPage extends PageObject {
 
     public MainPage clickLogIn() {
         new Button(webDriver, btnLogInLocator).click();
-        logger.info("Login button with locator '" + btnLogInLocator + "' is clicked");
+        logger.info("Login button with locator clicked");
         return new MainPage(webDriver);
     }
 }

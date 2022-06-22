@@ -418,7 +418,7 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, String.format("{\n    \"tracking_number\": \"%s\",\n    \"shipping_rate\": 10,\n    \"shipping_rate_currency\": \"EUR\"\n}", trackingNumber));
+            RequestBody body = RequestBody.create(mediaType, String.format("{\n    \"tracking_number\": \"%s\",\n    \"shipping_rate\": 10,\n    \"shipping_rate_currency\": \"EUR\",\n    \"is_local_pickup\": false\n}", trackingNumber));
             Request request = new Request.Builder()
                     .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/parcels/" + parcelID + "/external-shipment")
                     .method("POST", body)

@@ -14,6 +14,7 @@ public class DropDown extends Element {
     WebElement dropDown;
 
     public DropDown(WebDriver webDriver, By locator) {
+        waitForElementToLoad(locator, webDriver);
         dropDown = webDriver.findElement(locator);
     }
 

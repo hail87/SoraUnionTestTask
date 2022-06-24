@@ -94,4 +94,14 @@ public class UI_SmokeTestSuite extends UiTestClass {
         mainSteps.cancelOrderStatusChoice();
         assertEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition);
     }
+
+    @TestRailID(id = 202584)
+    @Test
+    public void checkDatePickerAndShippedTab(TestInfo testInfo) {
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")));
+        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
+        mainSteps.checkApplyButtonDisabled();
+    }
 }

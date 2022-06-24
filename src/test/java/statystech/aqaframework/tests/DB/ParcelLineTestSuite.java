@@ -167,7 +167,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
     @TestRailID(id = 16810)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
-    public void updateParcelLineParcelStatusIsC(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void updateParcelLineParcelStatusIsC(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
@@ -202,10 +202,11 @@ public class ParcelLineTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 9------------------------------------");
-        errorMessage.append(parcelLineApiSteps.sendPostRequestExternalShipmentAndSaveResponseToContext(
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-                "AA2182814AA",
-                testInfo));
+//        errorMessage.append(parcelLineApiSteps.sendPostRequestExternalShipmentAndSaveResponseToContext(
+//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+//                "AA2182814AA",
+//                testInfo));
+        assertTrue(new ParcelSteps().setParcelStatus("C", lwaTestContext).isEmpty());
 
         logger.info("------------------------------------Step 1------------------------------------");
         parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(

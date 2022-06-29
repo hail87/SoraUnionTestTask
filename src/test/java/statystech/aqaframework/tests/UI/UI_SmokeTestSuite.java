@@ -17,6 +17,7 @@ import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
@@ -102,6 +103,16 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")));
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
-        mainSteps.checkApplyButtonDisabled();
+        mainSteps.getMainPage().clickShippedTab();
+        String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
+        //mainSteps.setDateFrom("06/01/2022");
+        //mainSteps.setDateTo("06/24/2022");
+        mainSteps.getMainPage().selectDayPriorToToday(7);
+        String activeOrdersFiltered = mainSteps.getMainPage().getActiveOrders();
+        String shippedOrdersFiltered= mainSteps.getMainPage().getShippedOrders();
+        assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);
+        assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
+        assertEquals(activeOrdersFiltered, "Active (60)");
+        assertEquals(activeOrdersFiltered, "Shipped (3)");
     }
 }

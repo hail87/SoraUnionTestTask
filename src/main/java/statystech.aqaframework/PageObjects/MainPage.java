@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.elements.Button;
 import statystech.aqaframework.elements.DropDown;
+import statystech.aqaframework.elements.TextField;
 
 public class MainPage extends PageObject {
 
@@ -18,8 +19,14 @@ public class MainPage extends PageObject {
     //By ddWarehousesButton = By.xpath("(//div[@role=\"button\"])[2]");
     By ddOrderStatusButton = By.xpath("(//div[@role=\"button\"])[3]");
     By btnCancelOrderStatusChoice = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[2]/div/div[2]/button");
-    By txtActiveOrders = By.xpath("//button[@id=\"0\"]");
+    By tabActive = By.id("0");//By.xpath("//button[@id=\"0\"]");
+    By tabShipped = By.id("1");
     By btnApply = By.xpath("//button[text()=\"Apply\"]");
+    By dateFrom = By.xpath("(//input[@placeholder = 'mm/dd/yyyy'])[1]");
+    By dateTo = By.xpath("(//input[@placeholder = 'mm/dd/yyyy'])[2]");
+    By btnCalendarFrom = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[1]/div/div/button");
+    By btnCalendarTo = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[2]/div/div/button");
+    By btnTodayDay = By.xpath("//button[contains(@class,\"today\")]");
 
 
     Button applyButton;
@@ -32,6 +39,47 @@ public class MainPage extends PageObject {
             logger.error("This is not the MAIN page");
             throw new IllegalStateException("This is not the MAIN page");
         }
+    }
+
+    public MainPage clickDateFromCalendarButton() {
+        new Button(webDriver, btnCalendarFrom).click();
+        return this;
+    }
+
+    public MainPage clickDateToCalendarButton() {
+        new Button(webDriver, btnCalendarTo).click();
+        return this;
+    }
+
+    public MainPage selectDayPriorToToday(int days) {
+        int todayDate = Integer.parseInt(webDriver.findElement(btnTodayDay).getAttribute("aria-label").substring(4, 5).trim());
+        int diff = todayDate - days;
+        if (diff > 0) {
+            webDriver.findElement(By.xpath("//button[contains(@aria-label, '" + diff + "')]")).click();
+            clickApplyButton();
+        }
+        logger.error("Choose less prior days");
+        return this;
+    }
+
+    public MainPage setDateFrom(String date) {
+        new TextField(webDriver, dateFrom).fillIn(date);
+        return this;
+    }
+
+    public MainPage setDateTo(String date) {
+        webDriver.findElement(dateTo).sendKeys(date);
+        return this;
+    }
+
+    public MainPage clickShippedTab() {
+        new Button(webDriver, tabShipped).click();
+        return this;
+    }
+
+    public MainPage clickActiveTab() {
+        new Button(webDriver, tabActive).click();
+        return this;
     }
 
     public MainPage expandWarehouseDropdown() {
@@ -66,8 +114,8 @@ public class MainPage extends PageObject {
     }
 
     public String getActiveOrders() {
-        waitForElementToLoad(txtActiveOrders, webDriver);
-        String buttonText = webDriver.findElement(txtActiveOrders).getText();
+        waitForElementToLoad(tabActive, webDriver);
+        String buttonText = webDriver.findElement(tabActive).getText();
         int i = 0;
         while (buttonText.length() <= 7 || i <= 3) {
             try {
@@ -75,10 +123,27 @@ public class MainPage extends PageObject {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            buttonText = webDriver.findElement(txtActiveOrders).getText();
+            buttonText = webDriver.findElement(tabActive).getText();
             i++;
         }
         logger.info("Active orders : " + buttonText);
+        return buttonText;
+    }
+
+    public String getShippedOrders() {
+        waitForElementToLoad(tabShipped, webDriver);
+        String buttonText = webDriver.findElement(tabShipped).getText();
+        int i = 0;
+        while (buttonText.length() <= 7 || i <= 3) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            buttonText = webDriver.findElement(tabShipped).getText();
+            i++;
+        }
+        logger.info("Shipped orders : " + buttonText);
         return buttonText;
     }
 
@@ -89,13 +154,13 @@ public class MainPage extends PageObject {
     }
 
     public boolean isApplyButtonEnabled() {
-        if(applyButton == null)
+        if (applyButton == null)
             applyButton = new Button(webDriver, btnApply);
         return applyButton.isEnabled();
     }
 
     public void clickApplyButton() {
-        if(applyButton == null)
+        if (applyButton == null)
             applyButton = new Button(webDriver, btnApply);
         applyButton.click();
     }

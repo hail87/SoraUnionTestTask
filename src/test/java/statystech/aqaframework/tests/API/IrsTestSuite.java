@@ -138,7 +138,6 @@ public class IrsTestSuite extends ApiTestClass {
 
     }
 
-    //https://statystech.atlassian.net/browse/OMS-955
     @TestRailID(id = 124928)
     @Test
     public void verifyUserRole(TestInfo testInfo) throws IOException {
@@ -148,9 +147,9 @@ public class IrsTestSuite extends ApiTestClass {
         errorMessage.append(irsApiSteps.sendGetProductDetailsAndSaveResponseToContext(
                 2392,
                 403,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser20"),
                 lwaTestContext));
-        assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to access the endpoint."));
+        assertTrue(lwaTestContext.getResponseBody().contains("User does not have permission to use API method."));
     }
 
     @TestRailID(id = 124929)

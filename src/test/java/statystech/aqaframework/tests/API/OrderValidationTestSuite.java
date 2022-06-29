@@ -57,14 +57,6 @@ public class OrderValidationTestSuite extends ApiTestClass {
         Context.addTestContext(lwaTestContext);
     }
 
-//    @TestRailID(id = 1111)
-//    @Test
-//    public void encryptDB() throws SQLException {
-//        String s = "";
-//    }
-
-
-    //https://statystech.atlassian.net/browse/OMS-854
     @TestRailID(id = 7803)
     @ParameterizedTest
     @CsvSource({"submitOrder-existedAllSysID.json"})

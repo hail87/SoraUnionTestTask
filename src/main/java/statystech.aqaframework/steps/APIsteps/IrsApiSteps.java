@@ -28,7 +28,7 @@ public class IrsApiSteps extends Steps {
                     expectedStatusCode,
                     statusCode,
                     response.body().string()));
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
         }
 
         String responseString = response.body().string();
@@ -51,7 +51,7 @@ public class IrsApiSteps extends Steps {
                     expectedStatusCode,
                     statusCode,
                     response.body().string()));
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
         }
 
         String responseString = response.body().string();
@@ -74,7 +74,7 @@ public class IrsApiSteps extends Steps {
                     expectedStatusCode,
                     statusCode,
                     response.body().string()));
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
         }
 
         String responseString = response.body().string();
@@ -97,7 +97,7 @@ public class IrsApiSteps extends Steps {
                     expectedStatusCode,
                     statusCode,
                     response.body().string()));
-            return String.format("\n%s\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
         }
 
         String responseString = response.body().string();

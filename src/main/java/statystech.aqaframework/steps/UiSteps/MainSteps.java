@@ -31,6 +31,18 @@ public class MainSteps extends Steps {
         mainPage = new MainPage(webDriver);
     }
 
+    public MainPage setDateFrom(String date){
+        mainPage.setDateFrom(date);
+        mainPage.clickApplyButton();
+        return mainPage;
+    }
+
+    public MainPage setDateTo(String date){
+        mainPage.setDateTo(date);
+        mainPage.clickApplyButton();
+        return mainPage;
+    }
+
     public MainPage chooseWarehouse(String warehouseName) {
         mainPage.expandWarehouseDropdown();
         mainPage.selectWarehouseDropdownOption(warehouseName);

@@ -15,8 +15,8 @@ public class MainPage extends PageObject {
     private final WebDriver webDriver;
     By ddWarehousesButton = By.xpath("//*[@id=\"root\"]/header/div/div[1]/div[2]/div/div/div");
     By ddOptions = By.xpath("//*[@id=\"menu-\"]/div[3]/ul");
-    By ddDestinationsButton = By.xpath("(//div[@role=\"button\"])[1]");
-    //By ddWarehousesButton = By.xpath("(//div[@role=\"button\"])[2]");
+    //By ddWarehousesButton = By.xpath("(//div[@role=\"button\"])[1]");
+    By ddDestinationsButton = By.xpath("(//div[@role=\"button\"])[2]");
     By ddOrderStatusButton = By.xpath("(//div[@role=\"button\"])[3]");
     By btnCancelOrderStatusChoice = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[2]/div/div[2]/button");
     By tabActive = By.id("0");//By.xpath("//button[@id=\"0\"]");

@@ -11,3 +11,4 @@ allure-results/
 .project
 settings.xml
 *CitaTest.java
+*TestContext.java

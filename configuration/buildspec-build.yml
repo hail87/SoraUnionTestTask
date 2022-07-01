@@ -21,6 +21,7 @@ phases:
             #- echo COMMIT_ID=$COMMIT_ID
             #- gradle build
 #            - pip3 install awscli --upgrade --user
+            - echo Generating CODEARTIFACT_TOKEN
             - export CODEARTIFACT_TOKEN=`aws codeartifact get-authorization-token --domain lwa --domain-owner 326726142239 --query authorizationToken --output text --region us-east-1`
             - echo login into Docker
             - echo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD

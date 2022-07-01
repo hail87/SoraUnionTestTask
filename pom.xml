@@ -135,18 +135,18 @@
             <artifactId>client-java</artifactId>
             <version>13.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.lwa</groupId>
-            <artifactId>crypto</artifactId>
-            <version>0.1.386</version>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.lwa</groupId>-->
 <!--            <artifactId>crypto</artifactId>-->
-<!--            <version>0.1.385</version>-->
-<!--&lt;!&ndash;            <scope>system</scope>&ndash;&gt;-->
-<!--            <systemPath>${pom.basedir}/lib/crypto-0.1.385.jar</systemPath>-->
+<!--            <version>0.1.386</version>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>com.lwa</groupId>
+            <artifactId>crypto</artifactId>
+            <version>0.1.385</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/crypto-0.1.385.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>

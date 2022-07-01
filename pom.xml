@@ -16,25 +16,6 @@
         </repository>
     </distributionManagement>
 
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <releases>-->
-    <!--                <enabled>false</enabled>-->
-    <!--                <updatePolicy>always</updatePolicy>-->
-    <!--                <checksumPolicy>warn</checksumPolicy>-->
-    <!--            </releases>-->
-    <!--            <snapshots>-->
-    <!--                <enabled>true</enabled>-->
-    <!--                <updatePolicy>never</updatePolicy>-->
-    <!--                <checksumPolicy>fail</checksumPolicy>-->
-    <!--            </snapshots>-->
-    <!--            <name>StatysTechRepo</name>-->
-    <!--            <id>codeartifact</id>-->
-    <!--            <url>https://lwa-326726142239.d.codeartifact.us-east-1.amazonaws.com/maven/lwa-shared/</url>-->
-    <!--            <layout>default</layout>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
-
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
@@ -94,11 +75,6 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.seleniumhq.selenium</groupId>-->
-        <!--            <artifactId>selenium-java</artifactId>-->
-        <!--            <version>3.141.59</version>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -164,6 +140,13 @@
             <artifactId>crypto</artifactId>
             <version>0.1.386</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.lwa</groupId>-->
+<!--            <artifactId>crypto</artifactId>-->
+<!--            <version>0.1.385</version>-->
+<!--&lt;!&ndash;            <scope>system</scope>&ndash;&gt;-->
+<!--            <systemPath>${pom.basedir}/lib/crypto-0.1.385.jar</systemPath>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>

@@ -96,23 +96,20 @@ public class UI_SmokeTestSuite extends UiTestClass {
         assertEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition);
     }
 
-//    @TestRailID(id = 202584)
-//    @Test
-//    public void checkDatePickerAndShippedTab(TestInfo testInfo) {
-//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-//                DataUtils.getPropertyValue("users.properties", "whmName"),
-//                DataUtils.getPropertyValue("users.properties", "whmPass")));
-//        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
-//        mainSteps.getMainPage().clickShippedTab();
-//        String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
-//        //mainSteps.setDateFrom("06/01/2022");
-//        //mainSteps.setDateTo("06/24/2022");
-//        mainSteps.getMainPage().selectDayPriorToToday(7);
-//        String activeOrdersFiltered = mainSteps.getMainPage().getActiveOrders();
-//        String shippedOrdersFiltered= mainSteps.getMainPage().getShippedOrders();
-//        assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);
-//        assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
-//        assertEquals(activeOrdersFiltered, "Active (60)");
-//        assertEquals(activeOrdersFiltered, "Shipped (3)");
-//    }
+    @TestRailID(id = 202584)
+    @Test
+    public void checkDatePickerAndShippedTab(TestInfo testInfo) {
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")));
+        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
+        mainSteps.getMainPage().clickShippedTab();
+        String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
+        mainSteps.chooseDateFromFirst();
+        mainSteps.chooseDateTo28();
+        String activeOrdersFiltered = mainSteps.getMainPage().getActiveOrders();
+        String shippedOrdersFiltered= mainSteps.getMainPage().getShippedOrders();
+        assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);
+        assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
+    }
 }

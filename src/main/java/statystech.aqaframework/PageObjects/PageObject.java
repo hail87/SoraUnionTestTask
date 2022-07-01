@@ -17,18 +17,23 @@ public abstract class PageObject {
 
     protected WebDriver webDriver;
 
-    protected void waitForElementToLoad(By by, WebDriver webDriver) {
+    protected void waitForElementToLoad(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
-    protected void waitForButtonToBeClickable(By by, WebDriver webDriver) {
+    protected void waitForElementToDisappear(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
+        wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    protected void waitForButtonToBeClickable(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
-    protected void scrollToElement(WebDriver driver, WebElement webElement) throws Exception {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoViewIfNeeded()", webElement);
+    protected void scrollToElement(WebElement webElement) throws Exception {
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoViewIfNeeded()", webElement);
         Thread.sleep(500);
     }
 

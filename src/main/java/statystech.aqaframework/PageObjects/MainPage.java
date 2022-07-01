@@ -23,6 +23,7 @@ public class MainPage extends PageObject {
     By tabShipped = By.id("1");
     By btnApply = By.xpath("//button[text()=\"Apply\"]");
     By dateFrom = By.xpath("(//input[@placeholder = 'mm/dd/yyyy'])[1]");
+    By calendar = By.xpath("(//div[contains(@class, 'MuiCalendarPicker')])[1]");
     By dateTo = By.xpath("(//input[@placeholder = 'mm/dd/yyyy'])[2]");
     By btnCalendarFrom = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[1]/div/div/button");
     By btnCalendarTo = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[2]/div/div/button");
@@ -34,7 +35,7 @@ public class MainPage extends PageObject {
     public MainPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         super.webDriver = webDriver;
-        waitForElementToLoad(ddWarehousesButton, webDriver);
+        waitForElementToLoad(ddWarehousesButton);
         if (!webDriver.findElement(ddWarehousesButton).isDisplayed()) {
             logger.error("This is not the MAIN page");
             throw new IllegalStateException("This is not the MAIN page");
@@ -43,11 +44,18 @@ public class MainPage extends PageObject {
 
     public MainPage clickDateFromCalendarButton() {
         new Button(webDriver, btnCalendarFrom).click();
+        waitForElementToLoad(calendar);
+        return this;
+    }
+
+    public MainPage waitCalendarToDisappear(){
+        waitForElementToDisappear(webDriver.findElement(calendar));
         return this;
     }
 
     public MainPage clickDateToCalendarButton() {
         new Button(webDriver, btnCalendarTo).click();
+        waitForElementToLoad(calendar);
         return this;
     }
 
@@ -64,6 +72,11 @@ public class MainPage extends PageObject {
 
     public MainPage setDateFrom(String date) {
         new TextField(webDriver, dateFrom).fillIn(date);
+        return this;
+    }
+
+    public MainPage chooseDateAtTheCalendar(String date) {
+        webDriver.findElement(calendar).findElement(By.xpath(".//button[contains(@aria-label, '" + date + "')]")).click();
         return this;
     }
 
@@ -114,7 +127,7 @@ public class MainPage extends PageObject {
     }
 
     public String getActiveOrders() {
-        waitForElementToLoad(tabActive, webDriver);
+        waitForElementToLoad(tabActive);
         String buttonText = webDriver.findElement(tabActive).getText();
         int i = 0;
         while (buttonText.length() <= 7 || i <= 3) {
@@ -131,7 +144,7 @@ public class MainPage extends PageObject {
     }
 
     public String getShippedOrders() {
-        waitForElementToLoad(tabShipped, webDriver);
+        waitForElementToLoad(tabShipped);
         String buttonText = webDriver.findElement(tabShipped).getText();
         int i = 0;
         while (buttonText.length() <= 7 || i <= 3) {

@@ -16,6 +16,7 @@ public class LoginPage extends PageObject {
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
+        super.webDriver = webDriver;
 //        if (!"Login".equals(webDriver.getTitle())) {
 //            logger.error("This is not the login page");
 //            throw new IllegalStateException("This is not the login page");
@@ -23,14 +24,14 @@ public class LoginPage extends PageObject {
     }
 
     public LoginPage typeUsername(String username) {
-        waitForElementToLoad(txtUsernameLocator, webDriver);
+        waitForElementToLoad(txtUsernameLocator);
         webDriver.findElement(txtUsernameLocator).sendKeys(username);
         logger.info("Username field with locator '" + btnLogInLocator + "' is filled in");
         return this;
     }
 
     public LoginPage typePassword(String password) {
-        waitForElementToLoad(txtPasswordLocator, webDriver);
+        waitForElementToLoad(txtPasswordLocator);
         webDriver.findElement(txtPasswordLocator).sendKeys(password);
         logger.info("Password field with locator '" + btnLogInLocator + "' is filled in");
         return this;

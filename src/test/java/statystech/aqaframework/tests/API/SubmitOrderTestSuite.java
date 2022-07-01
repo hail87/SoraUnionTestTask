@@ -261,7 +261,6 @@ public class SubmitOrderTestSuite extends ApiTestClass {
 
     }
 
-    //https://statystech.atlassian.net/browse/OMS-855
     @TestRailID(id = 7801)
     @ParameterizedTest
     @ValueSource(strings = {"submitOrder-newBuyer.json"})

@@ -1,13 +1,10 @@
 package statystech.aqaframework.steps.UiSteps;
 
 import lombok.Getter;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
-import statystech.aqaframework.elements.Button;
 import statystech.aqaframework.steps.Steps;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -37,8 +34,23 @@ public class MainSteps extends Steps {
         return mainPage;
     }
 
+    public MainPage chooseDateFromFirst(){
+        mainPage.clickDateFromCalendarButton();
+        mainPage.chooseDateAtTheCalendar(" 1, 2022");
+        mainPage.waitCalendarToDisappear();
+        mainPage.clickApplyButton();
+        return mainPage;
+    }
+
     public MainPage setDateTo(String date){
         mainPage.setDateTo(date);
+        mainPage.clickApplyButton();
+        return mainPage;
+    }
+
+    public MainPage chooseDateTo28(){
+        mainPage.clickDateToCalendarButton();
+        mainPage.chooseDateAtTheCalendar(" 28, 2022");
         mainPage.clickApplyButton();
         return mainPage;
     }

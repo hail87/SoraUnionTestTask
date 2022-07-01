@@ -34,9 +34,6 @@ phases:
             - docker tag "aqa:${COMMIT_ID# }" "326726142239.dkr.ecr.ca-central-1.amazonaws.com/aqa:latest"
     build:
         commands:
-            - echo Generating CODEARTIFACT_TOKEN
-            - export CODEARTIFACT_TOKEN=`aws codeartifact get-authorization-token --domain lwa --domain-owner 326726142239 --query authorizationToken --output text --region us-east-1`
-            - mvn -s settings.xml clean package deploy
             - echo Build started on `date`
             - echo Logging in to Amazon ECR...
             - aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 326726142239.dkr.ecr.ca-central-1.amazonaws.com

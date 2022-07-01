@@ -14,6 +14,7 @@ COPY settings.xml /root/.m2/
 COPY settings.xml /usr/share/maven/ref/
 
 COPY src /aqa/src
+COPY lib /aqa/lib
 COPY pom.xml /aqa/pom.xml
 COPY .kube /aqa/.kube
 COPY docker-startup.sh /aqa/docker-startup.sh

@@ -1,5 +1,6 @@
 package statystech.aqaframework.PageObjects;
 
+import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,14 +29,30 @@ public class MainPage extends PageObject {
     By btnCalendarFrom = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[1]/div/div/button");
     By btnCalendarTo = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[2]/div/div/button");
     By btnTodayDay = By.xpath("//button[contains(@class,\"today\")]");
+    By btnFirstOrderNumber = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p");
+    By btnPrintOrders = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div[1]/p");
+    By btnPutOnHold = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div[3]/p");
+    By btnCancelHold = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div[4]/p");
+    By btnUncheckAll = By.xpath("//*[@id=\"root\"]/div[3]/div/div/p");
+
+    By popupPutOnHold = By.xpath("/html/body/div[2]/div[3]/div/div");
+    By btnCalendarPutOnHold = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div/div[1]/div/div/button");
+    By btnConfirmPutOnHold = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div/div[3]/button[2]");
+
+    By onHoldDate = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p[2]/span");
+    By btnRequestCancellation = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/p[3]/a");
 
 
     Button applyButton;
+
+    @Getter
+    String url;
 
     public MainPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         super.webDriver = webDriver;
         waitForElementToLoad(ddWarehousesButton);
+        url = webDriver.getCurrentUrl();
         if (!webDriver.findElement(ddWarehousesButton).isDisplayed()) {
             logger.error("This is not the MAIN page");
             throw new IllegalStateException("This is not the MAIN page");
@@ -48,7 +65,7 @@ public class MainPage extends PageObject {
         return this;
     }
 
-    public MainPage waitCalendarToDisappear(){
+    public MainPage waitCalendarToDisappear() {
         waitForElementToDisappear(webDriver.findElement(calendar));
         return this;
     }
@@ -176,6 +193,59 @@ public class MainPage extends PageObject {
         if (applyButton == null)
             applyButton = new Button(webDriver, btnApply);
         applyButton.click();
+    }
+
+    public void clickFirstOrderNumber() {
+        new Button(webDriver, btnFirstOrderNumber).click();
+    }
+
+    public void clickPrintOrders() {
+        new Button(webDriver, btnPrintOrders).click();
+    }
+
+    public void clickCancelHold() {
+        waitForElementToLoad(btnCancelHold);
+        new Button(webDriver, btnCancelHold).click();
+    }
+
+    public void clickRequestCancellation() {
+        new Button(webDriver, btnRequestCancellation).click();
+    }
+
+    public void clickPutOnHold() {
+        new Button(webDriver, btnPutOnHold).click();
+        waitForElementToLoad(popupPutOnHold);
+    }
+
+    public void clickUncheckAll() {
+        Button button = new Button(webDriver, btnUncheckAll);
+        button.click();
+        waitForElementToDisappear(button.getElement());
+    }
+
+    public void chooseTodayPutOnHoldCalendar() {
+        new Button(webDriver, btnCalendarPutOnHold).click();
+        waitForElementToLoad(calendar);
+        new Button(webDriver, btnTodayDay).click();
+        waitCalendarToDisappear();
+    }
+
+    public void confirmPutOnHold() {
+        new Button(webDriver, btnConfirmPutOnHold).click();
+    }
+
+    public String getOnHoldDate() {
+        waitForElementToLoad(onHoldDate);
+        WebElement webElement = webDriver.findElement(onHoldDate);
+        if (!webElement.isDisplayed()){
+            return "onHoldDate element is not visible";
+        }
+        return webElement.getText();
+    }
+
+    public String verifyOnHoldDateIsDisappear() {
+        //waitForElementToDisappear(onHoldDate);
+        return verifyElementIsDisappear(onHoldDate);
     }
 
 }

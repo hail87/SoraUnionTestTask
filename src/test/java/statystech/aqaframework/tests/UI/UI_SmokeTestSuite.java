@@ -112,4 +112,17 @@ public class UI_SmokeTestSuite extends UiTestClass {
         assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);
         assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
     }
+
+    @TestRailID(id = 208523)
+    @Test
+    public void printAndPutOnHold(TestInfo testInfo) {
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")));
+        String errorMessage = mainSteps.checkPrintPageAndReturnToMain();
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+        mainSteps.putOnHold();
+        mainSteps.cancelHold();
+        mainSteps.getMainPage().clickUncheckAll();
+    }
 }

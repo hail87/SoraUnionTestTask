@@ -240,6 +240,8 @@ public class SubmitOrderTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
+
+    //https://statystech.atlassian.net/browse/OMS-1126
     @TestRailID(id = 7793)
     @ParameterizedTest
     @CsvSource({"submitOrder-newPaymentMethod.json"})

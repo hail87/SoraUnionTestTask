@@ -19,7 +19,7 @@ public class MainSteps extends Steps {
 
     private MainPage mainPage;
 
-    public MainSteps(MainPage mainPage){
+    public MainSteps(MainPage mainPage) {
         this.mainPage = mainPage;
     }
 
@@ -28,13 +28,13 @@ public class MainSteps extends Steps {
         mainPage = new MainPage(webDriver);
     }
 
-    public MainPage setDateFrom(String date){
+    public MainPage setDateFrom(String date) {
         mainPage.setDateFrom(date);
         mainPage.clickApplyButton();
         return mainPage;
     }
 
-    public MainPage chooseDateFromFirst(){
+    public MainPage chooseDateFromFirst() {
         mainPage.clickDateFromCalendarButton();
         mainPage.chooseDateAtTheCalendar(" 1, 2022");
         mainPage.waitCalendarToDisappear();
@@ -42,13 +42,13 @@ public class MainSteps extends Steps {
         return mainPage;
     }
 
-    public MainPage setDateTo(String date){
+    public MainPage setDateTo(String date) {
         mainPage.setDateTo(date);
         mainPage.clickApplyButton();
         return mainPage;
     }
 
-    public MainPage chooseDateTo28(){
+    public MainPage chooseDateTo28() {
         mainPage.clickDateToCalendarButton();
         mainPage.chooseDateAtTheCalendar(" 28, 2022");
         mainPage.clickApplyButton();
@@ -90,5 +90,27 @@ public class MainSteps extends Steps {
         checkApplyButtonDisabled();
         return mainPage;
     }
+
+    public String checkPrintPageAndReturnToMain() {
+        mainPage.clickFirstOrderNumber();
+        mainPage.clickPrintOrders();
+        mainPage.switchTab(2);
+        String errorMessage = mainPage.waitForTabsSize(2);
+        mainPage.switchTab(1);
+        return errorMessage;
+    }
+
+    public void putOnHold() {
+        mainPage.clickPutOnHold();
+        mainPage.chooseTodayPutOnHoldCalendar();
+        mainPage.confirmPutOnHold();
+        assertFalse(mainPage.getOnHoldDate().equalsIgnoreCase("onHoldDate element is not visible"));
+    }
+
+    public void cancelHold() {
+        mainPage.clickCancelHold();
+        assertTrue(mainPage.verifyOnHoldDateIsDisappear().isEmpty());
+    }
+
 
 }

@@ -29,6 +29,11 @@ public abstract class PageObject {
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
+    protected void waitForElementToBeClickable(By by) {
+        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
+        wait.until(ExpectedConditions.elementToBeClickable(by));
+    }
+
     protected void waitForElementToDisappear(WebElement element) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.invisibilityOf(element));

@@ -204,7 +204,7 @@ public class MainPage extends PageObject {
     }
 
     public void clickCancelHold() {
-        waitForElementToLoad(btnCancelHold);
+        waitForElementToBeClickable(btnCancelHold);
         new Button(webDriver, btnCancelHold).click();
     }
 
@@ -244,7 +244,11 @@ public class MainPage extends PageObject {
     }
 
     public String verifyOnHoldDateIsDisappear() {
-        //waitForElementToDisappear(onHoldDate);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return verifyElementIsDisappear(onHoldDate);
     }
 

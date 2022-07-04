@@ -109,7 +109,8 @@ public class MainSteps extends Steps {
 
     public void cancelHold() {
         mainPage.clickCancelHold();
-        assertTrue(mainPage.verifyOnHoldDateIsDisappear().isEmpty());
+        String errorMessage = mainPage.verifyOnHoldDateIsDisappear();
+        assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
 

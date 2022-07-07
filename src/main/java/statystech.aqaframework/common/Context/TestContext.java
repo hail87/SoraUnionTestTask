@@ -46,7 +46,7 @@ public abstract class TestContext {
         WebDriver driver = null;
         try {
             //driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), new ChromeOptions());
-            driver = new RemoteWebDriver(new URL("http://172.31.114.197:4444/wd/hub"), new ChromeOptions());
+            driver = new RemoteWebDriver(new URL("http://service-selenium-chrome:4444/wd/hub"), new ChromeOptions());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

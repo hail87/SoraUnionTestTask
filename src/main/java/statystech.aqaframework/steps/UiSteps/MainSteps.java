@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
+import statystech.aqaframework.elements.Button;
 import statystech.aqaframework.steps.Steps;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -68,7 +69,7 @@ public class MainSteps extends Steps {
     }
 
     public MainPage chooseOrderStatus(String orderStatus) {
-        mainPage.expandorderStatus();
+        mainPage.expandOrderStatus();
         mainPage.selectDropdownOptionByText(orderStatus);
         return mainPage;
     }
@@ -111,6 +112,21 @@ public class MainSteps extends Steps {
         mainPage.clickCancelHold();
         String errorMessage = mainPage.verifyOnHoldDateIsDisappear();
         assertTrue(errorMessage.isEmpty(), errorMessage);
+    }
+
+    public String search(String text) {
+        mainPage.search(text);
+        mainPage.waitForFirstOrderNumberToLoad();
+        String actualOrderNumber = mainPage.getFirstOrderNumber().substring(1);
+        if (!text.equalsIgnoreCase(actualOrderNumber))
+            return String.format("Actual order number '%s' and expected '%s' isn't the same", actualOrderNumber, text);
+        return "";
+    }
+
+    public MainPage cancelSearch() {
+        mainPage.cancelSearch();
+        mainPage.waitForFirstOrderNumberToLoad();
+        return mainPage;
     }
 
 

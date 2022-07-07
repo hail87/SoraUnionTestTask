@@ -16,22 +16,36 @@ public class Button extends Element {
     @Getter
     WebElement element;
     By locator;
+    WebDriver webDriver;
 
     public Button(WebDriver webDriver, By locator) {
         this.locator = locator;
+        this.webDriver = webDriver;
         setElement(webDriver.findElement(locator));
     }
 
     public void click() {
-        if (!isEnabled()) {
+        if (!isVisible(locator, webDriver)) {
+            logger.error("Button with locator IS NOT displayed: '" + locator + "'");
+        }
+        if (!isEnabled(locator, webDriver)) {
             logger.error("Button with locator IS NOT clickable: '" + locator + "'");
         }
         element.click();
         logger.info("Button with locator clicked: " + locator);
     }
 
+    public String getText() {
+        String buttonText = element.getText();
+        logger.info(("Button with locator '" + locator + "' text is " + buttonText));
+        return buttonText;
+    }
+
+    protected boolean isVisible() {
+        return super.isVisible(locator, webDriver);
+    }
+
     public boolean isEnabled() {
-        logger.info(("Button '" + element.getText() + "' is enabled - " + element.isEnabled()));
-        return element.isEnabled();
+        return super.isEnabled(locator, webDriver);
     }
 }

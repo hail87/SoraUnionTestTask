@@ -57,13 +57,6 @@
             "phone_number_2": "",
             "email": "something@fake.com"
     },
-    "payment_details": {
-        "payment_transaction_id": "ACME-123-9882B94",
-        "payment_token": "AbcDef123Ghi456jkl5265",
-        "payment_method_type": "CC",
-        "payment_method_description": "********5578",
-        "payment_mid": 10
-    },
     "line_items": [
         {
             "product_id": 2295,

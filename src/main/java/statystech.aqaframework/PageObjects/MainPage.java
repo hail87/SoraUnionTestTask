@@ -42,6 +42,9 @@ public class MainPage extends PageObject {
     By onHoldDate = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p[2]/span");
     By btnRequestCancellation = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/p[3]/a");
 
+    By inputSearch = By.xpath("//input[contains(@placeholder, 'Search by order number')]");
+    By btnCancelSearch = By.xpath("//*[@id=\"root\"]/header/div/div[2]/div[1]/div/div/div/div/div[2]/button");
+
 
     Button applyButton;
 
@@ -57,6 +60,16 @@ public class MainPage extends PageObject {
             logger.error("This is not the MAIN page");
             throw new IllegalStateException("This is not the MAIN page");
         }
+    }
+
+    public MainPage search(String text) {
+        new TextField(webDriver, inputSearch).fillInAndSubmit(text);
+        return this;
+    }
+
+    public MainPage cancelSearch() {
+        new Button(webDriver, btnCancelSearch).click();
+        return this;
     }
 
     public MainPage clickDateFromCalendarButton() {
@@ -88,7 +101,7 @@ public class MainPage extends PageObject {
     }
 
     public MainPage setDateFrom(String date) {
-        new TextField(webDriver, dateFrom).fillIn(date);
+        new TextField(webDriver, dateFrom).fillInAndSubmit(date);
         return this;
     }
 
@@ -129,7 +142,7 @@ public class MainPage extends PageObject {
         return this;
     }
 
-    public MainPage expandorderStatus() {
+    public MainPage expandOrderStatus() {
         new Button(webDriver, ddOrderStatusButton).click();
         logger.info("Click order status button");
         return this;
@@ -195,8 +208,16 @@ public class MainPage extends PageObject {
         applyButton.click();
     }
 
+    public void waitForFirstOrderNumberToLoad() {
+        waitForElementToLoad(btnFirstOrderNumber);
+    }
+
     public void clickFirstOrderNumber() {
         new Button(webDriver, btnFirstOrderNumber).click();
+    }
+
+    public String getFirstOrderNumber() {
+        return new Button(webDriver, btnFirstOrderNumber).getText();
     }
 
     public void clickPrintOrders() {

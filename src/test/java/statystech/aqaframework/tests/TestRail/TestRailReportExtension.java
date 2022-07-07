@@ -149,8 +149,8 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
         addTestLogsToTestRun(runID);
         logger.info("generating allure results");
         generateAllureReport(Path.of("target/allure-report"), Path.of("target/allure-results"));
-        zipAllureReport("target/allure-report", "target/logs/allureReportZip");
-        addAttachmentToTestRun("allureReportZip", runID);
+        zipAllureReport("target/allure-report", "target/logs/allure");
+        addAttachmentToTestRun("allure", runID);
         logger.info("Closing test run #" + runID);
         testRail.runs().close(runID).execute();
     }

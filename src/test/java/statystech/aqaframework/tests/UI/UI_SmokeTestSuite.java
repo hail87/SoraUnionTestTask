@@ -125,4 +125,23 @@ public class UI_SmokeTestSuite extends UiTestClass {
         mainSteps.cancelHold();
         mainSteps.getMainPage().clickUncheckAll();
     }
+
+    @TestRailID(id = 208524)
+    @Test
+    public void search(TestInfo testInfo) {
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")));
+        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(mainSteps.search("2149444"));
+
+        assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
+
+        mainSteps.cancelSearch();
+
+        errorMessage.append(mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
+
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
 }

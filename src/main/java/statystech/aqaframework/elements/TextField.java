@@ -1,6 +1,7 @@
 package statystech.aqaframework.elements;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -29,10 +30,10 @@ public class TextField extends Element{
         return element.isEnabled();
     }
 
-    public boolean fillIn(String text){
+    public void fillInAndSubmit(String text){
         element.click();
         element.clear();
         element.sendKeys(text);
-        return element.getText().equalsIgnoreCase(text);
+        element.sendKeys(Keys.ENTER);
     }
 }

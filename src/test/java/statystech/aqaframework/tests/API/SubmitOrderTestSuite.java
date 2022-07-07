@@ -241,27 +241,28 @@ public class SubmitOrderTestSuite extends ApiTestClass {
     }
 
 
+    //OUTDATED
     //https://statystech.atlassian.net/browse/OMS-1126
-    @TestRailID(id = 7793)
-    @ParameterizedTest
-    @CsvSource({"submitOrder-newPaymentMethod.json"})
-    public void submitOrderNewAndExistedPaymentMethod(String jsonFilename, TestInfo testInfo) throws IOException {
-        StringBuilder errorMessage = new StringBuilder();
-
-        OmsApiSteps omsApiSteps = new OmsApiSteps();
-        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        OrdersSteps ordersSteps = new OrdersSteps();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
-        ordersSteps.setPaymentMethodIDtoContext();
-        PaymentMethodSteps paymentMethodSteps = new PaymentMethodSteps();
-        paymentMethodSteps.checkLineCreated(lwaTestContext);
-        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
-        errorMessage.append(paymentMethodSteps.paymentMethodTable.verifyTableRowsQuantityDidNotChange());
-
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-    }
+//    @TestRailID(id = 7793)
+//    @ParameterizedTest
+//    @CsvSource({"submitOrder-newPaymentMethod.json"})
+//    public void submitOrderNewAndExistedPaymentMethod(String jsonFilename, TestInfo testInfo) throws IOException {
+//        StringBuilder errorMessage = new StringBuilder();
+//
+//        OmsApiSteps omsApiSteps = new OmsApiSteps();
+//        errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+//        OrdersSteps ordersSteps = new OrdersSteps();
+//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+//        errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
+//        ordersSteps.setPaymentMethodIDtoContext();
+//        PaymentMethodSteps paymentMethodSteps = new PaymentMethodSteps();
+//        paymentMethodSteps.checkLineCreated(lwaTestContext);
+//        errorMessage.append(omsApiSteps.updateBuyerAccountIdAndSendPOST(testInfo));
+//        errorMessage.append(paymentMethodSteps.paymentMethodTable.verifyTableRowsQuantityDidNotChange());
+//
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//
+//    }
 
     @TestRailID(id = 7801)
     @ParameterizedTest
@@ -305,16 +306,17 @@ public class SubmitOrderTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
-    @TestRailID(id = 7922)
-    @ParameterizedTest
-    @ValueSource(strings = {"submitOrder-nonValidMid.json"})
-    public void submitOrderNonValidMerchantAccount(String jsonFilename, TestInfo testInfo) throws IOException {
-        StringBuilder errorMessage = new StringBuilder();
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
-
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
+    //OUTDATED
+//    @TestRailID(id = 7922)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"submitOrder-nonValidMid.json"})
+//    public void submitOrderNonValidMerchantAccount(String jsonFilename, TestInfo testInfo) throws IOException {
+//        StringBuilder errorMessage = new StringBuilder();
+//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+//        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
+//        errorMessage.append(new OrdersSteps().verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
+//
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 
 }

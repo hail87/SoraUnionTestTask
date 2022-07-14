@@ -54,6 +54,7 @@ public class MainPage extends PageObject {
     public MainPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         super.webDriver = webDriver;
+        waitForJStoLoad();
         waitForElementToLoad(ddWarehousesButton);
         url = webDriver.getCurrentUrl();
         if (!webDriver.findElement(ddWarehousesButton).isDisplayed()) {
@@ -115,16 +116,6 @@ public class MainPage extends PageObject {
         return this;
     }
 
-    public MainPage clickShippedTab() {
-        new Button(webDriver, tabShipped).click();
-        return this;
-    }
-
-    public MainPage clickActiveTab() {
-        new Button(webDriver, tabActive).click();
-        return this;
-    }
-
     public MainPage expandWarehouseDropdown() {
         new Button(webDriver, ddWarehousesButton).click();
         return this;
@@ -154,6 +145,21 @@ public class MainPage extends PageObject {
         logger.info("Option clicked at the Destination DropDown : " + text);
         unfocus();
         return this;
+    }
+
+    public MainPage clickShippedTab() {
+        new Button(webDriver, tabShipped).click();
+        return this;
+    }
+
+    public MainPage clickActiveTab() {
+        new Button(webDriver, tabActive).click();
+        return this;
+    }
+
+    public boolean waitForActiveOrdersToUpdate() {
+        waitForElementToLoad(tabActive);
+        return waitForElementToUpdate(webDriver, tabActive);
     }
 
     public String getActiveOrders() {

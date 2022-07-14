@@ -1,6 +1,7 @@
 package statystech.aqaframework.PageObjects;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -9,20 +10,93 @@ import org.slf4j.LoggerFactory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.Loader;
-import statystech.aqaframework.elements.Element;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public abstract class PageObject {
 
     private static final Logger logger = LoggerFactory.getLogger(MainPage.class);
 
     final int waitForElementDelay = 5;
+    final int waitForJSDelay = 30;
 
     protected WebDriver webDriver;
+
+//    protected void waitForPageToLoad() {
+//        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
+//        wait.until( new Predicate<WebDriver>() {
+//                        public boolean apply(WebDriver driver) {
+//                            return ((JavascriptExecutor)driver).executeScript("return document.readyState").equals("complete");
+//                        }
+//                    }
+//        );
+//    }
+
+    public boolean waitForJStoLoad() {
+
+        WebDriverWait wait = new WebDriverWait(webDriver, waitForJSDelay);
+        JavascriptExecutor js = (JavascriptExecutor)webDriver;
+
+        // wait for jQuery to load
+        ExpectedCondition<Boolean> jQueryLoad = new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                try {
+                    return ((Long)js.executeScript("return jQuery.active") == 0);
+                }
+                catch (Exception e) {
+                    return true;
+                }
+            }
+        };
+
+        // wait for Javascript to load
+        ExpectedCondition<Boolean> jsLoad = new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                return js.executeScript("return document.readyState")
+                        .toString().equals("complete");
+            }
+        };
+
+        return wait.until(jQueryLoad) && wait.until(jsLoad);
+    }
+
+    public boolean waitForElementToUpdate(WebDriver webDriver, By locator) {
+        WebElement element = webDriver.findElement(locator);
+        String baseValue = element.getText();
+        logger.info(("Element with locator '" + locator + "' base value - " + baseValue));
+        int i = 0;
+        while(baseValue.equals(element.getText()) & i<=10){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            i++;
+        }
+        return !baseValue.equals(element.getText());
+
+//        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+//
+//        ExpectedCondition<Boolean> isElementChanged = new ExpectedCondition<Boolean>() {
+//            @Override
+//            public Boolean apply(WebDriver driver) {
+//                try {
+//                    return baseValue.equals(element.getText());
+//                }
+//                catch (Exception e) {
+//                    return true;
+//                }
+//            }
+//        };
+//
+//        return wait.until(isElementChanged);
+    }
 
     protected void waitForElementToLoad(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);

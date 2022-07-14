@@ -59,18 +59,23 @@ public class MainSteps extends Steps {
     public MainPage chooseWarehouse(String warehouseName) {
         mainPage.expandWarehouseDropdown();
         mainPage.selectWarehouseDropdownOption(warehouseName);
+        mainPage.waitForJStoLoad();
         return mainPage;
     }
 
     public MainPage chooseDestination(String destination) {
         mainPage.expandDestination();
         mainPage.selectDropdownOptionByText(destination);
+        clickApplyButton();
+        mainPage.waitForJStoLoad();
         return mainPage;
     }
 
     public MainPage chooseOrderStatus(String orderStatus) {
         mainPage.expandOrderStatus();
         mainPage.selectDropdownOptionByText(orderStatus);
+        clickApplyButton();
+        mainPage.waitForJStoLoad();
         return mainPage;
     }
 
@@ -129,6 +134,11 @@ public class MainSteps extends Steps {
         mainPage.cancelSearch();
         mainPage.waitForFirstOrderNumberToLoad();
         return mainPage;
+    }
+
+    public String getActiveOrdersAfterUpdate() {
+        mainPage.waitForActiveOrdersToUpdate();
+        return mainPage.getActiveOrders();
     }
 
 

@@ -77,6 +77,7 @@ public class MainSteps extends Steps {
     public MainPage cancelOrderStatusChoice() {
         mainPage.clickCancelOrderStatusChoice();
         mainPage.clickApplyButton();
+        logger.info("cancelOrderStatusChoice");
         return mainPage;
     }
 
@@ -89,6 +90,7 @@ public class MainSteps extends Steps {
         assertTrue(mainPage.isApplyButtonEnabled(), "Apply Button is Disabled, but shouldn't be!");
         mainPage.clickApplyButton();
         checkApplyButtonDisabled();
+        logger.info("clickApplyButton\n");
         return mainPage;
     }
 

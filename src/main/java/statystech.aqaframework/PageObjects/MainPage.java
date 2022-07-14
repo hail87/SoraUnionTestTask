@@ -160,7 +160,7 @@ public class MainPage extends PageObject {
         waitForElementToLoad(tabActive);
         String buttonText = webDriver.findElement(tabActive).getText();
         int i = 0;
-        while (buttonText.length() <= 7 || i <= 3) {
+        while (buttonText.length() <= 7 & i <= 3) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -177,7 +177,7 @@ public class MainPage extends PageObject {
         waitForElementToLoad(tabShipped);
         String buttonText = webDriver.findElement(tabShipped).getText();
         int i = 0;
-        while (buttonText.length() <= 7 || i <= 3) {
+        while (buttonText.length() <= 7 & i <= 3) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

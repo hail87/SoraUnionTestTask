@@ -20,9 +20,6 @@ public class OmsSubmitOrderJson{
 	@JsonProperty("shipping")
 	private Shipping shipping;
 
-	@JsonProperty("payment_details")
-	private PaymentDetails paymentDetails;
-
 	@JsonProperty("order_header")
 	private OrderHeader orderHeader;
 
@@ -32,16 +29,4 @@ public class OmsSubmitOrderJson{
 	@JsonProperty("buyer")
 	private Buyer buyer;
 
-//	@Override
-// 	public String toString(){
-//		return
-//			"OmsSubmitOrderJson{" +
-//			"discounts = '" + discounts + '\'' +
-//			",shipping = '" + shipping + '\'' +
-//			",payment_details = '" + paymentDetails + '\'' +
-//			",order_header = '" + orderHeader + '\'' +
-//			",line_items = '" + lineItems + '\'' +
-//			",buyer = '" + buyer + '\'' +
-//			"}";
-//		}
 }

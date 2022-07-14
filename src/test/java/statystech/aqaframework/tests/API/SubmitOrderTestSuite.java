@@ -98,6 +98,7 @@ public class SubmitOrderTestSuite extends ApiTestClass {
         OmsApiSteps omsApiSteps = new OmsApiSteps();
         errorMessage.append(omsApiSteps.sendPostRequestAndSaveResponseToContext(jsonFilename1, testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkApiResponse(lwaTestContext));
 

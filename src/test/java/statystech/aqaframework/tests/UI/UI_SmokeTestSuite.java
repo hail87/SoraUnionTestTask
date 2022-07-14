@@ -107,6 +107,11 @@ public class UI_SmokeTestSuite extends UiTestClass {
         String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
         mainSteps.chooseDateFromFirst();
         mainSteps.chooseDateTo28();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         String activeOrdersFiltered = mainSteps.getMainPage().getActiveOrders();
         String shippedOrdersFiltered= mainSteps.getMainPage().getShippedOrders();
         assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);

@@ -30,6 +30,12 @@ public class TextField extends Element{
         return element.isEnabled();
     }
 
+    public void fillIn(String text){
+        element.click();
+        element.clear();
+        element.sendKeys(text);
+    }
+
     public void fillInAndSubmit(String text){
         element.click();
         element.clear();

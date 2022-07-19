@@ -92,27 +92,28 @@ public class UI_SmokeTestSuite extends UiTestClass {
         assertEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition);
     }
 
-    @TestRailID(id = 202584)
-    @Test
-    public void checkDatePickerAndShippedTab(TestInfo testInfo) {
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
-        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
-        mainSteps.getMainPage().clickShippedTab();
-        String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
-        mainSteps.chooseDateFromFirst();
-        mainSteps.chooseDateTo28();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        String activeOrdersFiltered = mainSteps.getMainPage().getActiveOrders();
-        String shippedOrdersFiltered= mainSteps.getMainPage().getShippedOrders();
-        assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);
-        assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
-    }
+    //need to add precondition with importing "shipped" order
+//    @TestRailID(id = 202584)
+//    @Test
+//    public void checkDatePickerAndShippedTab(TestInfo testInfo) {
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")));
+//        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
+//        mainSteps.getMainPage().clickShippedTab();
+//        String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
+//        mainSteps.chooseDateFromFirst();
+//        mainSteps.chooseDateTo28();
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        String activeOrdersFiltered = mainSteps.getMainPage().getActiveOrders();
+//        String shippedOrdersFiltered = mainSteps.getMainPage().getShippedOrders();
+//        assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);
+//        assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
+//    }
 
     @TestRailID(id = 208523)
     @Test
@@ -146,22 +147,32 @@ public class UI_SmokeTestSuite extends UiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-//    @TestRailID(id = 208524)
+    @TestRailID(id = 208525)
+    @Test
+    public void selectAllUncheckAll(TestInfo testInfo) {
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")));
+        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
+        mainSteps.getMainPage().selectAllNewOrders();
+        mainSteps.getMainPage().clickUncheckAll();
+        mainSteps.getMainPage().selectAllInProgress();
+        mainSteps.getMainPage().clickUncheckAll();
+        mainSteps.clickAndVerifyOrdersOnHold();
+        mainSteps.getMainPage().clickShowOnlyOrdersOnHoldOrAll();
+
+        assertTrue(mainSteps.verifyExpectedResults(mainSteps.getActiveOrdersAfterUpdate(), activeOrdersStartPosition).isEmpty(),
+                mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
+    }
+
+    //problem with orders which cannot be canceled bcs of lack of inventory at the warehouse
+//    @TestRailID(id = 220671)
 //    @Test
-//    public void search(TestInfo testInfo) {
+//    public void requestCancellation(TestInfo testInfo) {
 //        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
 //                DataUtils.getPropertyValue("users.properties", "whmName"),
 //                DataUtils.getPropertyValue("users.properties", "whmPass")));
-//        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
-//        StringBuilder errorMessage = new StringBuilder();
-//        errorMessage.append(mainSteps.search("2149444"));
-//
-//        assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
-//
-//        mainSteps.cancelSearch();
-//
-//        errorMessage.append(mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
-//
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+//        String errorMessage = mainSteps.requestCancellation("Some reason");
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
 //    }
 }

@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
-import statystech.aqaframework.elements.Button;
+import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.steps.Steps;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -141,5 +141,33 @@ public class MainSteps extends Steps {
         return mainPage.getActiveOrders();
     }
 
+    public void clickAndVerifyOrdersOnHold() {
+        mainPage.clickShowOnlyOrdersOnHoldOrAll();
+        mainPage.waitForJStoLoad();
+        mainPage.getOrderCards().stream().forEach(orderCard -> assertTrue(!orderCard.getExpirationDate().isEmpty(), "\nOrder Card has no Expiration date, but should\n"));
+    }
+
+    public String requestCancellation(int orderCardIndex, String reason) {
+        mainPage.clickRequestCancellation(orderCardIndex);
+        mainPage.fillInCancellationReason(reason);
+        mainPage.submitCancellationReason();
+        if (mainPage.getOrderCard(orderCardIndex).isCancellationRequested()) {
+            return "";
+        } else {
+            return "\nFor OrderCard Cancellation is NOT Requested, but should\n";
+        }
+    }
+
+    public String requestCancellation(String reason) {
+        int i = 1;
+        for (OrderCard orderCard : mainPage.getOrderCards()) {
+            if (!orderCard.isCancellationRequested()) {
+                break;
+            } else {
+                i++;
+            }
+        }
+        return requestCancellation(i, reason);
+    }
 
 }

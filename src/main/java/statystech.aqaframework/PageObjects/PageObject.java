@@ -98,22 +98,22 @@ public abstract class PageObject {
 //        return wait.until(isElementChanged);
     }
 
-    protected void waitForElementToLoad(By by) {
+    public void waitForElementToLoad(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
-    protected void waitForElementToBeClickable(By by) {
+    public void waitForElementToBeClickable(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
-    protected void waitForElementToDisappear(WebElement element) {
+    public void waitForElementToDisappear(WebElement element) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
-    protected void waitForElementToDisappear(By xpath) {
+    public void waitForElementToDisappear(By xpath) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.invisibilityOf(webDriver.findElement(xpath)));
     }

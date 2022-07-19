@@ -8,7 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.elements.Button;
 import statystech.aqaframework.elements.DropDown;
+import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.elements.TextField;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainPage extends PageObject {
 
@@ -30,6 +34,10 @@ public class MainPage extends PageObject {
     By btnCalendarTo = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[2]/div/div/button");
     By btnTodayDay = By.xpath("//button[contains(@class,\"today\")]");
     By btnFirstOrderNumber = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p");
+    By btnSelectAllNewOrders = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[1]/p[2]");
+    By btnSelectAllInProgress = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div[1]/p[2]");
+    By btnShowOnlyOrdersOnHold = By.xpath("//*[@id=\"root\"]/div[3]/div/p");
+
     By btnPrintOrders = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div[1]/p");
     By btnPutOnHold = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div[3]/p");
     By btnCancelHold = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div[4]/p");
@@ -40,10 +48,17 @@ public class MainPage extends PageObject {
     By btnConfirmPutOnHold = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div/div[3]/button[2]");
 
     By onHoldDate = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p[2]/span");
-    By btnRequestCancellation = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/p[3]/a");
+
+    @Getter
+    By popupCancelOrderBy = By.xpath("/html/body/div[2]/div[3]/div/div");
+    By popupCancelOrderTxtCancellationReason = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[1]/div/textarea[1]");
+    By popupCancelOrderBtnSubmitRequest = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[2]/button");
 
     By inputSearch = By.xpath("//input[contains(@placeholder, 'Search by order number')]");
     By btnCancelSearch = By.xpath("//*[@id=\"root\"]/header/div/div[2]/div[1]/div/div/div/div/div[2]/button");
+
+    By orderCardsBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div");
+    String orderCardsLctr = "//*[@id=\"root\"]/div[4]/div/div/div[1]/div";
 
 
     Button applyButton;
@@ -235,13 +250,28 @@ public class MainPage extends PageObject {
         new Button(webDriver, btnCancelHold).click();
     }
 
-    public void clickRequestCancellation() {
-        new Button(webDriver, btnRequestCancellation).click();
+    public void clickRequestCancellation(int orderCardIndex) {
+        getOrderCard(orderCardIndex).requestCancellation();
     }
 
     public void clickPutOnHold() {
         new Button(webDriver, btnPutOnHold).click();
         waitForElementToLoad(popupPutOnHold);
+    }
+
+    public void selectAllNewOrders() {
+        new Button(webDriver, btnSelectAllNewOrders).click();
+        waitForElementToLoad(btnUncheckAll);
+    }
+
+    public void selectAllInProgress() {
+        new Button(webDriver, btnSelectAllInProgress).click();
+        waitForElementToLoad(btnUncheckAll);
+    }
+
+    public void clickShowOnlyOrdersOnHoldOrAll() {
+        new Button(webDriver, btnShowOnlyOrdersOnHold).click();
+        waitForJStoLoad();
     }
 
     public void clickUncheckAll() {
@@ -264,7 +294,7 @@ public class MainPage extends PageObject {
     public String getOnHoldDate() {
         waitForElementToLoad(onHoldDate);
         WebElement webElement = webDriver.findElement(onHoldDate);
-        if (!webElement.isDisplayed()){
+        if (!webElement.isDisplayed()) {
             return "onHoldDate element is not visible";
         }
         return webElement.getText();
@@ -277,6 +307,34 @@ public class MainPage extends PageObject {
             e.printStackTrace();
         }
         return verifyElementIsDisappear(onHoldDate);
+    }
+
+    public List<OrderCard> getOrderCards() {
+        int cardsQuantity = webDriver.findElements(orderCardsBy).size() - 1;
+        int startPosition = 2;
+        ArrayList<OrderCard> orderCards = new ArrayList<>();
+        while (cardsQuantity > 0) {
+            orderCards.add(new OrderCard(webDriver, By.xpath(orderCardsLctr + "[" + startPosition + "]")));
+            startPosition++;
+            cardsQuantity--;
+        }
+        return orderCards;
+    }
+
+    public OrderCard getOrderCard(int index) {
+        return getOrderCards().get(index);
+    }
+
+    public void fillInCancellationReason(String reason) {
+        waitForElementToLoad(popupCancelOrderBy);
+        new TextField(webDriver, popupCancelOrderTxtCancellationReason).fillIn(reason);
+    }
+
+    public void submitCancellationReason() {
+        waitForElementToLoad(popupCancelOrderBy);
+        new Button(webDriver, popupCancelOrderBtnSubmitRequest).click();
+        waitForElementToDisappear(popupCancelOrderBy);
+        waitForJStoLoad();
     }
 
 }

@@ -25,6 +25,7 @@ public class Button extends Element {
     }
 
     public void click() {
+        waitForElementToLoad(locator, webDriver);
         if (!isVisible(locator, webDriver)) {
             logger.error("Button with locator IS NOT displayed: '" + locator + "'");
         }

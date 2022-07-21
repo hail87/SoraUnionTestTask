@@ -1,9 +1,7 @@
 package statystech.aqaframework.PageObjects;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +12,9 @@ import org.apache.pdfbox.Loader;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 public abstract class PageObject {
 
@@ -25,16 +24,6 @@ public abstract class PageObject {
     final int waitForJSDelay = 30;
 
     protected WebDriver webDriver;
-
-//    protected void waitForPageToLoad() {
-//        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
-//        wait.until( new Predicate<WebDriver>() {
-//                        public boolean apply(WebDriver driver) {
-//                            return ((JavascriptExecutor)driver).executeScript("return document.readyState").equals("complete");
-//                        }
-//                    }
-//        );
-//    }
 
     public boolean waitForJStoLoad() {
 
@@ -66,7 +55,7 @@ public abstract class PageObject {
         return wait.until(jQueryLoad) && wait.until(jsLoad);
     }
 
-    public boolean waitForElementToUpdate(WebDriver webDriver, By locator) {
+    protected boolean waitForElementToUpdate(WebDriver webDriver, By locator) {
         WebElement element = webDriver.findElement(locator);
         String baseValue = element.getText();
         logger.info(("Element with locator '" + locator + "' base value - " + baseValue));
@@ -98,14 +87,29 @@ public abstract class PageObject {
 //        return wait.until(isElementChanged);
     }
 
-    public void waitForElementToLoad(By by) {
+    protected void waitForElementToLoad(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
-    public void waitForElementToBeClickable(By by) {
+    protected void waitForElementToBeClickable(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.elementToBeClickable(by));
+    }
+
+    protected void waitForElementToBeNotClickable(By by) {
+        Wait<WebDriver> fluentWait = new FluentWait<WebDriver>(webDriver)
+                .withTimeout(Duration.ofSeconds(30L))
+                .pollingEvery(Duration.ofSeconds(5L))
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .withMessage("waiting for the element to became disabled");
+
+        fluentWait.until(new Function<WebDriver, Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return !driver.findElement(by).isEnabled();
+            }
+        });
     }
 
     public void waitForElementToDisappear(WebElement element) {

@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
+import statystech.aqaframework.PageObjects.OrderCardPopUpPage;
 import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.steps.Steps;
 
@@ -75,6 +76,7 @@ public class MainSteps extends Steps {
         mainPage.expandOrderStatus();
         mainPage.selectDropdownOptionByText(orderStatus);
         clickApplyButton();
+        mainPage.waitForActiveOrdersToUpdate();
         mainPage.waitForJStoLoad();
         return mainPage;
     }
@@ -82,6 +84,8 @@ public class MainSteps extends Steps {
     public MainPage cancelOrderStatusChoice() {
         mainPage.clickCancelOrderStatusChoice();
         mainPage.clickApplyButton();
+        mainPage.waitForActiveOrdersToUpdate();
+        mainPage.waitForJStoLoad();
         logger.info("cancelOrderStatusChoice");
         return mainPage;
     }
@@ -168,6 +172,11 @@ public class MainSteps extends Steps {
             }
         }
         return requestCancellation(i, reason);
+    }
+
+    public OrderCardPopUpPage clickOrderCard(int number) {
+        mainPage.getOrderCards().get(number).click();
+        return new OrderCardPopUpPage(webDriver);
     }
 
 }

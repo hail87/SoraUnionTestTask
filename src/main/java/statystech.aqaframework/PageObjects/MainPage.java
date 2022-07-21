@@ -25,6 +25,8 @@ public class MainPage extends PageObject {
     By ddOrderStatusButton = By.xpath("(//div[@role=\"button\"])[3]");
     By btnCancelOrderStatusChoice = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[2]/div/div[2]/button");
     By tabActive = By.id("0");//By.xpath("//button[@id=\"0\"]");
+    By txtActiveNewOrders = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[1]/p[1]/span");
+    By txtActiveInProgressOrders = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div[1]/p[1]/span");
     By tabShipped = By.id("1");
     By btnApply = By.xpath("//button[text()=\"Apply\"]");
     By dateFrom = By.xpath("(//input[@placeholder = 'mm/dd/yyyy'])[1]");
@@ -174,7 +176,7 @@ public class MainPage extends PageObject {
 
     public boolean waitForActiveOrdersToUpdate() {
         waitForElementToLoad(tabActive);
-        return waitForElementToUpdate(webDriver, tabActive);
+        return waitForElementToUpdate(webDriver, orderCardsBy);
     }
 
     public String getActiveOrders() {
@@ -192,6 +194,22 @@ public class MainPage extends PageObject {
         }
         logger.info("Active orders : " + buttonText);
         return buttonText;
+    }
+
+    public Integer getActiveNewOrders() {
+        waitForElementToLoad(tabActive);
+        String buttonText = webDriver.findElement(txtActiveNewOrders).getText();
+        Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+",""));
+        logger.info("Active New orders : " + activeNewOrders);
+        return activeNewOrders;
+    }
+
+    public Integer getActiveInProgressOrders() {
+        waitForElementToLoad(tabActive);
+        String buttonText = webDriver.findElement(txtActiveInProgressOrders).getText();
+        Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+",""));
+        logger.info("Active New orders : " + activeNewOrders);
+        return activeNewOrders;
     }
 
     public String getShippedOrders() {

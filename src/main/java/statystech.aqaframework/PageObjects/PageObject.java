@@ -117,9 +117,14 @@ public abstract class PageObject {
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
+    //not working
     public void waitForElementToDisappear(By xpath) {
-        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
-        wait.until(ExpectedConditions.invisibilityOf(webDriver.findElement(xpath)));
+        try {
+            WebDriverWait wait = new WebDriverWait(webDriver, 5);
+            wait.until(ExpectedConditions.invisibilityOf(webDriver.findElement(xpath)));
+        } catch (NoSuchElementException e) {
+            logger.info("waitForElementToDisappear: Element with locator not found as expected :" + xpath);
+        }
     }
 
     public String verifyElementIsDisappear(By xpath) {

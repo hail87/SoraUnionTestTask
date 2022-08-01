@@ -1,11 +1,15 @@
 package statystech.aqaframework.steps.UiSteps;
 
 import lombok.Getter;
+import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
 import statystech.aqaframework.PageObjects.OrderCardPopUpPage;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.UiTestContext;
+import statystech.aqaframework.elements.Message;
 import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.steps.Steps;
 
@@ -20,6 +24,11 @@ public class MainSteps extends Steps {
     private WebDriver webDriver;
 
     private MainPage mainPage;
+
+    public MainSteps(MainPage mainPage, TestInfo testInfo) {
+        this.mainPage = mainPage;
+        webDriver = Context.getTestContext(testInfo.getTestMethod().get().getName(), UiTestContext.class).getWebDriver();
+    }
 
     public MainSteps(MainPage mainPage) {
         this.mainPage = mainPage;
@@ -177,6 +186,12 @@ public class MainSteps extends Steps {
     public OrderCardPopUpPage clickOrderCard(int number) {
         mainPage.getOrderCards().get(number).click();
         return new OrderCardPopUpPage(webDriver);
+    }
+
+    public void clickResetOrderCardAndConfirm(int number) {
+        OrderCard orderCard = mainPage.getOrderCardsInProgress().get(number);
+        orderCard.clickResetBtn();
+        mainPage.getMessageMoveToNewOrder().confirm();
     }
 
 }

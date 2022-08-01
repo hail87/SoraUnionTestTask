@@ -6,10 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.elements.Button;
-import statystech.aqaframework.elements.DropDown;
-import statystech.aqaframework.elements.OrderCard;
-import statystech.aqaframework.elements.TextField;
+import statystech.aqaframework.elements.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +58,12 @@ public class MainPage extends PageObject {
 
     By orderCardsBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div");
     String orderCardsLctr = "//*[@id=\"root\"]/div[4]/div/div/div[1]/div";
+
+    By orderCardsInProgressBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div");
+    String orderCardsInProgressLctr = "//*[@id=\"root\"]/div[4]/div/div/div[2]/div";
+
+    By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]/div/div");
+
 
 
     Button applyButton;
@@ -208,7 +211,7 @@ public class MainPage extends PageObject {
         waitForElementToLoad(tabActive);
         String buttonText = webDriver.findElement(txtActiveInProgressOrders).getText();
         Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+",""));
-        logger.info("Active New orders : " + activeNewOrders);
+        logger.info("Active New orders In progress: " + activeNewOrders);
         return activeNewOrders;
     }
 
@@ -339,6 +342,18 @@ public class MainPage extends PageObject {
         return orderCards;
     }
 
+    public List<OrderCard> getOrderCardsInProgress() {
+        int cardsQuantity = webDriver.findElements(orderCardsInProgressBy).size() - 1;
+        int startPosition = 2;
+        ArrayList<OrderCard> orderCards = new ArrayList<>();
+        while (cardsQuantity > 0) {
+            orderCards.add(new OrderCard(webDriver, By.xpath(orderCardsInProgressLctr + "[" + startPosition + "]")));
+            startPosition++;
+            cardsQuantity--;
+        }
+        return orderCards;
+    }
+
     public OrderCard getOrderCard(int index) {
         return getOrderCards().get(index);
     }
@@ -353,6 +368,10 @@ public class MainPage extends PageObject {
         new Button(webDriver, popupCancelOrderBtnSubmitRequest).click();
         waitForElementToDisappear(popupCancelOrderBy);
         waitForJStoLoad();
+    }
+
+    public Message getMessageMoveToNewOrder(){
+        return new Message(webDriver, msgMoveToNewOrder);
     }
 
 }

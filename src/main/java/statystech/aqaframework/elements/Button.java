@@ -21,6 +21,7 @@ public class Button extends Element {
     public Button(WebDriver webDriver, By locator) {
         this.locator = locator;
         this.webDriver = webDriver;
+        waitForElementToLoad(locator, webDriver);
         setElement(webDriver.findElement(locator));
     }
 

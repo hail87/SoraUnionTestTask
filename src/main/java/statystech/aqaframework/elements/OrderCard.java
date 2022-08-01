@@ -20,9 +20,11 @@ public class OrderCard extends Element {
     WebDriver webDriver;
 
     //By orderCardsBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div");
+    //By orderCardsInProgressBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div");
     By btnExpirationDate = By.xpath(".//div/div/div/div[2]/div/div/p[2]/span");
     By btnCancellationRequested = By.xpath(".//div/div/div/div[2]/div/p[3]/span");
     By btnRequestCancellation = By.xpath(".//div/div/div/div[2]/div/p[3]/a");
+    By btnReset = By.xpath(".//div/div/div/div[2]/div/div[2]/span");
 
     public OrderCard(WebDriver webDriver, By locator) {
         this.locator = locator;
@@ -40,6 +42,18 @@ public class OrderCard extends Element {
         }
         element.click();
         logger.info("OrderCard with locator clicked: " + locator);
+    }
+
+    public void clickResetBtn() {
+        waitForElementToLoad(btnReset, webDriver);
+        if (!isVisible(locator, webDriver)) {
+            logger.error("OrderCard with locator IS NOT displayed: '" + locator + "'");
+        }
+        if (!isEnabled(locator, webDriver)) {
+            logger.error("OrderCard with locator IS NOT clickable: '" + locator + "'");
+        }
+        element.findElement(btnReset).click();
+        logger.info("Reset button with locator clicked: " + locator);
     }
 
     public String getExpirationDate() {

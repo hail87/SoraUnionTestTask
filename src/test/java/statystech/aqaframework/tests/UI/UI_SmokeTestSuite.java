@@ -10,7 +10,6 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.UiTestContext;
 import statystech.aqaframework.steps.UiSteps.LoginSteps;
 import statystech.aqaframework.steps.UiSteps.MainSteps;
-import statystech.aqaframework.steps.UiSteps.OrderCardPopUpSteps;
 import statystech.aqaframework.steps.UiSteps.OrderFulfillmentSteps;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -184,26 +183,29 @@ public class UI_SmokeTestSuite extends UiTestClass {
 //        assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
-//    @TestRailID(id = 220672)
-//    @Test
-//    public void shipAndResetOrder(TestInfo testInfo) {
-//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-//                DataUtils.getPropertyValue("users.properties", "whmName"),
-//                DataUtils.getPropertyValue("users.properties", "whmPass")));
-//        String errorMessage = "";
-//        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
-//        int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
-//        OrderCardPopUpPage orderCardPopUpPage = mainSteps.clickOrderCard(1);
-//        OrderFulfillmentPage orderFulfillmentPage = orderCardPopUpPage.startOrderFulfillment();
-//        orderCardPopUpPage = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithFirstItemInIt();
-//        orderCardPopUpPage.close();
-//
-//        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
-//        int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
-//
-//        assertEquals(activeNewOrders, activeNewOrdersUpdated + 1);
-//        assertEquals(activeInProgressOrders, activeInProgressOrdersUpdated - 1);
-//
-////        assertTrue(errorMessage.isEmpty(), errorMessage);
-//    }
+    @TestRailID(id = 220672)
+    @Test
+    public void shipAndResetOrder(TestInfo testInfo) {
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
+        int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
+        OrderCardPopUpPage orderCardPopUpPage = mainSteps.clickOrderCard(1);
+        OrderFulfillmentPage orderFulfillmentPage = orderCardPopUpPage.startOrderFulfillment();
+        orderCardPopUpPage = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithFirstItemInIt();
+        orderCardPopUpPage.close();
+
+        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
+        int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
+
+        assertEquals(activeNewOrders, activeNewOrdersUpdated + 1);
+        assertEquals(activeInProgressOrders, activeInProgressOrdersUpdated - 1);
+
+        mainSteps.clickResetOrderCardAndConfirm(1);
+
+        assertEquals(activeNewOrders, mainSteps.getMainPage().getActiveNewOrders());
+
+    }
 }

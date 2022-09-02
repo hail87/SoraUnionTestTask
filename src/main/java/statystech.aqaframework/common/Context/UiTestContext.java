@@ -18,6 +18,4 @@ public class UiTestContext extends TestContext{
 
     private String testMethodName;
 
-
-
 }

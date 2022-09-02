@@ -73,13 +73,13 @@ public class OrderLineSteps extends Steps {
     private String checkPrice(OrderItem product) throws SQLException {
         String actual = orderLineTable.getColumnValueByProductName(product.getProductName(), "itemPrice");
         String expected = product.getProductItemPrice();
-        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
+        return verifyExpectedResults(DataUtils.decryptForSandbox(actual), expected);
     }
 
     private String checkQuantity(OrderItem product) throws SQLException {
         String actual = orderLineTable.getColumnValueByProductName(product.getProductName(), "quantity");
         String expected = product.getProductQuantity();
-        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
+        return verifyExpectedResults(DataUtils.decryptForSandbox(actual), expected);
     }
 
     private String checkWarehouseOrderID(OrderItem product) throws SQLException {

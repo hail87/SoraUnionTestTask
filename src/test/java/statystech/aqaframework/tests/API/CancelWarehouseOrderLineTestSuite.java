@@ -53,7 +53,7 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
         logger.info(String.format(
                 "\nTest № %d has been started : '%s'\n", testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id(), name));
         LwaTestContext lwaTestContext = new LwaTestContext(name);
-        lwaTestContext.getConnection();
+        lwaTestContext.getConnectionSandbox();
         Context.addTestContext(lwaTestContext);
     }
 

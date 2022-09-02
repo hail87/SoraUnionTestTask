@@ -1,5 +1,7 @@
 package statystech.aqaframework.elements;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -11,35 +13,44 @@ public class TextField extends Element{
 
     private static final Logger logger = LoggerFactory.getLogger(TextField.class);
 
-    WebElement element;
+    @Setter
+    @Getter
+    WebElement webElement;
+    @Setter
+    @Getter
     By locator;
+    @Setter
+    @Getter
+    WebDriver webDriver;
 
     public TextField(WebDriver webDriver, By locator){
-        waitForElementToLoad(locator,webDriver);
-        this.locator = locator;
-        element = webDriver.findElement(locator);
+        super(webDriver,locator);
+        setLocator(locator);
+        setWebDriver(webDriver);
+        waitForElementToLoad(locator, webDriver);
+        setWebElement(webDriver.findElement(locator));
     }
 
     public void click() {
-        element.click();
+        webElement.click();
         logger.info("TextField with locator clicked: " + locator);
     }
 
-    public boolean isEnabled() {
-        logger.info(("TextField '" + element.getText() + "' is enabled - " + element.isEnabled()));
-        return element.isEnabled();
+    public boolean isDisabled() {
+        logger.info(("TextField '" + webElement.getText() + "' is enabled - " + webElement.isEnabled()));
+        return webElement.isEnabled();
     }
 
     public void fillIn(String text){
-        element.click();
-        element.clear();
-        element.sendKeys(text);
+        webElement.click();
+        webElement.clear();
+        webElement.sendKeys(text);
     }
 
     public void fillInAndSubmit(String text){
-        element.click();
-        element.clear();
-        element.sendKeys(text);
-        element.sendKeys(Keys.ENTER);
+        webElement.click();
+        webElement.clear();
+        webElement.sendKeys(text);
+        webElement.sendKeys(Keys.ENTER);
     }
 }

@@ -35,10 +35,6 @@ public abstract class ApiTestClass {
         return Context.getTestContext(testInfo.getTestMethod().get().getName(), LwaTestContext.class);
     }
 
-    public UiTestContext getUiTestContext(TestInfo testInfo) {
-        return Context.getTestContext(testInfo.getTestMethod().get().getName(), UiTestContext.class);
-    }
-
     public int getTestRailID(TestInfo testInfo) {
         int testRailID = 0;
         boolean isTestRailAnnotationPresent = testInfo.getTestMethod().isPresent()

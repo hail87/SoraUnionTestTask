@@ -1,0 +1,89 @@
+{
+    "order_id": "9993270",
+    "user_id": "9c525015c2e475e7370db382748d130b",
+    "order_status": "Confirmed",
+    "replacement_order_id": "0",
+    "seller_id": "8e72d8dd4ed63a44fa762eddf22c11ff",
+    "seller_username": "csrukrh",
+    "csr_assigned_id": "92eb7297c1236bfe568f4b5813a1de14",
+    "csr_assigned_username": "ukrcsrl",
+    "billing_address":
+    {
+        "user_info_id": "777987",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "J****l",
+        "middle_name": "",
+        "last_name": "J****s",
+        "country": "UNITED STATES",
+        "state": "Montana",
+        "city": "Stevensville",
+        "zip": "59870",
+        "address_line_1": "611 Park Street",
+        "address_line_2": "",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "shipping_address":
+    {
+        "user_info_id": "777987",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "J****l",
+        "middle_name": "",
+        "last_name": "J****s",
+        "country": "UNITED STATES",
+        "state": "Montana",
+        "city": "Stevensville",
+        "zip": "59870",
+        "address_line_1": "611 Park Street",
+        "address_line_2": "",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "order_date": "2022-08-25",
+    "shipped_at": null,
+    "delivered_at": null,
+    "order_items":
+    [
+        {
+            "order_item_id": "1899064",
+            "product_id": "81509",
+            "product_name": "DYSPORT® 500U Non-English",
+            "product_quantity": "2",
+            "product_item_price": "399.00",
+            "SKU": "Dysport (Reloxin) 500IU1",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "195",
+                    "ff_center_name": "Inventonium",
+                    "assigned_qty": "2",
+                    "batches":
+                    [
+                        {
+                            "qty": "2",
+                            "number": "W02479",
+                            "ff_center_id": "195"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "website_name": "fillersupplies.com",
+    "shopper_group_name": "Filler Supplies Licensed",
+    "account_number": "412955",
+    "order_currency": "USD",
+    "currency_conversion": "1.00",
+    "shipping_notes": "Use DHL only as per customer, thank you\r\nDo NOT use FedEx, Correos, Portugal Post, Asendia, Parcel Force, Zeleris or Czech Post or any other EMS carrier",
+    "order_subtotal": "798.00",
+    "order_total_discount": "0.00",
+    "order_shipping": "0.00",
+    "total_tax": "0.00",
+    "used_credit": "0.00",
+    "used_points": "0.00",
+    "order_total": "798"
+}

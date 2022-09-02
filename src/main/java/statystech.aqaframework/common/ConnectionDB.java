@@ -22,8 +22,13 @@ public class ConnectionDB {
 
     private DBUser user = null;
 
-    public void connectDB() throws IOException, SQLException {
+    public void connectDB() throws SQLException {
         connectDB(new DBUser());
+        logger.info("Data Base connected!");
+    }
+
+    public void connectDB(String propertyFileName) throws SQLException {
+        connectDB(new DBUser(propertyFileName));
         logger.info("Data Base connected!");
     }
 
@@ -37,7 +42,7 @@ public class ConnectionDB {
         }
     }
 
-    public Connection getCurrentConnection() throws SQLException, IOException {
+    public Connection getCurrentConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connectDB();
         }

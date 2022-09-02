@@ -10,10 +10,16 @@ import java.io.IOException;
 @Setter
 public class DBUser {
 
-    public DBUser() throws IOException {
+    public DBUser() {
         this.name = DataUtils.getPropertyValue("DB.properties", "name");
         this.password = DataUtils.getPropertyValue("DB.properties", "pass");
         this.url = DataUtils.getPropertyValue("DB.properties", "url");
+    }
+
+    public DBUser(String propertyFileName) {
+        this.name = DataUtils.getPropertyValue(propertyFileName, "name");
+        this.password = DataUtils.getPropertyValue(propertyFileName, "pass");
+        this.url = DataUtils.getPropertyValue(propertyFileName, "url");
     }
 
     private String name;

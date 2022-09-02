@@ -10,6 +10,7 @@ import statystech.aqaframework.elements.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainPage extends PageObject {
 
@@ -61,9 +62,9 @@ public class MainPage extends PageObject {
 
     By orderCardsInProgressBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div");
     String orderCardsInProgressLctr = "//*[@id=\"root\"]/div[4]/div/div/div[2]/div";
+    By orderCards = By.xpath("//*[@id=\"root\"]/div[4]/div/div//div[contains(@class, 'MuiCardContent-root Order_orderContent')]");
 
     By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]/div/div");
-
 
 
     Button applyButton;
@@ -200,9 +201,10 @@ public class MainPage extends PageObject {
     }
 
     public Integer getActiveNewOrders() {
-        waitForElementToLoad(tabActive);
+        waitForElementToLoad(txtActiveNewOrders);
+        waitForJStoLoad();
         String buttonText = webDriver.findElement(txtActiveNewOrders).getText();
-        Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+",""));
+        Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+", ""));
         logger.info("Active New orders : " + activeNewOrders);
         return activeNewOrders;
     }
@@ -210,7 +212,7 @@ public class MainPage extends PageObject {
     public Integer getActiveInProgressOrders() {
         waitForElementToLoad(tabActive);
         String buttonText = webDriver.findElement(txtActiveInProgressOrders).getText();
-        Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+",""));
+        Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+", ""));
         logger.info("Active New orders In progress: " + activeNewOrders);
         return activeNewOrders;
     }
@@ -241,7 +243,7 @@ public class MainPage extends PageObject {
     public boolean isApplyButtonEnabled() {
         if (applyButton == null)
             applyButton = new Button(webDriver, btnApply);
-        return applyButton.isEnabled();
+        return applyButton.isDisabled();
     }
 
     public void clickApplyButton() {
@@ -272,7 +274,7 @@ public class MainPage extends PageObject {
     }
 
     public void clickRequestCancellation(int orderCardIndex) {
-        getOrderCard(orderCardIndex).requestCancellation();
+        getNewOrderCard(orderCardIndex).requestCancellation();
     }
 
     public void clickPutOnHold() {
@@ -298,7 +300,7 @@ public class MainPage extends PageObject {
     public void clickUncheckAll() {
         Button button = new Button(webDriver, btnUncheckAll);
         button.click();
-        waitForElementToDisappear(button.getElement());
+        waitForElementToDisappear(button.getWebElement());
     }
 
     public void chooseTodayPutOnHoldCalendar() {
@@ -330,7 +332,7 @@ public class MainPage extends PageObject {
         return verifyElementIsDisappear(onHoldDate);
     }
 
-    public List<OrderCard> getOrderCards() {
+    public List<OrderCard> getNewOrderCards() {
         int cardsQuantity = webDriver.findElements(orderCardsBy).size() - 1;
         int startPosition = 2;
         ArrayList<OrderCard> orderCards = new ArrayList<>();
@@ -343,7 +345,16 @@ public class MainPage extends PageObject {
     }
 
     public List<OrderCard> getOrderCardsInProgress() {
+        waitForJStoLoad();
         int cardsQuantity = webDriver.findElements(orderCardsInProgressBy).size() - 1;
+        if (cardsQuantity == 0) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cardsQuantity = webDriver.findElements(orderCardsInProgressBy).size() - 1;
+        }
         int startPosition = 2;
         ArrayList<OrderCard> orderCards = new ArrayList<>();
         while (cardsQuantity > 0) {
@@ -351,11 +362,31 @@ public class MainPage extends PageObject {
             startPosition++;
             cardsQuantity--;
         }
+
+        if (orderCards.size() == 0)
+            return getOrderCardsInProgress();
         return orderCards;
     }
 
-    public OrderCard getOrderCard(int index) {
-        return getOrderCards().get(index);
+    public List<OrderCard> getOrderCards() {
+        waitForJStoLoad();
+        List<WebElement> webElements = webDriver.findElements(orderCards);
+        int cardsQuantity = webElements.size();
+        int i = 30;
+        while (cardsQuantity == 0 && i > 0) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            webElements = webDriver.findElements(orderCards);
+            cardsQuantity = webElements.size();
+        }
+        return webElements.stream().map(p -> new OrderCard(p, webDriver)).collect(Collectors.toList());
+    }
+
+    public OrderCard getNewOrderCard(int index) {
+        return getNewOrderCards().get(index - 1);
     }
 
     public void fillInCancellationReason(String reason) {
@@ -370,7 +401,7 @@ public class MainPage extends PageObject {
         waitForJStoLoad();
     }
 
-    public Message getMessageMoveToNewOrder(){
+    public Message getMessageMoveToNewOrder() {
         return new Message(webDriver, msgMoveToNewOrder);
     }
 

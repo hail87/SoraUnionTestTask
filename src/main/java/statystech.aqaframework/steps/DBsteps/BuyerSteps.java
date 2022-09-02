@@ -2,7 +2,6 @@ package statystech.aqaframework.steps.DBsteps;
 
 
 import statystech.aqaframework.TableObjects.BuyerTable;
-import statystech.aqaframework.TableObjects.ShippingAddressTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
@@ -46,13 +45,13 @@ public class BuyerSteps extends Steps {
     private String checkPhoneNumber(int buyerID) throws SQLException {
         String actual = buyerTable.getColumnValueByPrimaryID(buyerID,"phoneNumber1");
         String expected = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
-        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
+        return verifyExpectedResults(DataUtils.decryptForSandbox(actual), expected);
     }
 
     private String checkPostalCode(int buyerID) throws SQLException {
         String actual = buyerTable.getColumnValueByPrimaryID(buyerID,"postalCode");
         String expected = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonObject("billing_address").get("zip").toString().replace("\"", "");
-        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
+        return verifyExpectedResults(DataUtils.decryptForSandbox(actual), expected);
     }
 
 }

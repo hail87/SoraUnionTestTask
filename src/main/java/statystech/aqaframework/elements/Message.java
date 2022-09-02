@@ -14,8 +14,12 @@ public class Message extends Element {
 
     @Setter
     @Getter
-    WebElement element;
+    WebElement webElement;
+    @Setter
+    @Getter
     By locator;
+    @Setter
+    @Getter
     WebDriver webDriver;
 
     //By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]/div/div");
@@ -24,10 +28,11 @@ public class Message extends Element {
 
 
     public Message(WebDriver webDriver, By locator) {
-        this.locator = locator;
-        this.webDriver = webDriver;
+        super(webDriver,locator);
+        setLocator(locator);
+        setWebDriver(webDriver);
         waitForElementToLoad(locator, webDriver);
-        setElement(webDriver.findElement(locator));
+        setWebElement(webDriver.findElement(locator));
     }
 
     public void confirm() {
@@ -37,7 +42,7 @@ public class Message extends Element {
         if (!isEnabled(locator, webDriver)) {
             logger.error("Button with locator IS NOT clickable: '" + locator + btnConfirm + "'");
         }
-        element.findElement(btnConfirm).click();
+        webElement.findElement(btnConfirm).click();
         logger.info("Button with locator clicked: " + locator + btnConfirm);
         waitForElementToDisappear(btnConfirm, webDriver);
     }
@@ -49,7 +54,7 @@ public class Message extends Element {
         if (!isEnabled(btnCancel, webDriver)) {
             logger.error("Button with locator IS NOT clickable: '" + locator + btnCancel + "'");
         }
-        element.findElement(btnCancel).click();
+        webElement.findElement(btnCancel).click();
         logger.info("Button with locator clicked: " + locator + btnCancel);
         waitForElementToDisappear(btnCancel, webDriver);
     }
@@ -57,11 +62,11 @@ public class Message extends Element {
 //    public String getText() {
 //    }
 
-    protected boolean isVisible() {
+    public boolean isVisible() {
         return super.isVisible(locator, webDriver);
     }
 
-    public boolean isEnabled() {
+    public boolean isDisabled() {
         return super.isEnabled(locator, webDriver);
     }
 }

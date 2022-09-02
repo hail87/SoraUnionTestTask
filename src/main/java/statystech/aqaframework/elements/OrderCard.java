@@ -8,6 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.TestContext;
+import statystech.aqaframework.common.Context.UiTestContext;
 
 public class OrderCard extends Element {
 
@@ -15,21 +18,47 @@ public class OrderCard extends Element {
 
     @Setter
     @Getter
-    WebElement element;
+    WebElement webElement;
+    @Setter
+    @Getter
     By locator;
+    @Setter
+    @Getter
     WebDriver webDriver;
 
     //By orderCardsBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div");
     //By orderCardsInProgressBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div");
+    By index = By.xpath(".//div/div[2]/div/div/p");
     By btnExpirationDate = By.xpath(".//div/div/div/div[2]/div/div/p[2]/span");
     By btnCancellationRequested = By.xpath(".//div/div/div/div[2]/div/p[3]/span");
     By btnRequestCancellation = By.xpath(".//div/div/div/div[2]/div/p[3]/a");
     By btnReset = By.xpath(".//div/div/div/div[2]/div/div[2]/span");
 
     public OrderCard(WebDriver webDriver, By locator) {
-        this.locator = locator;
-        this.webDriver = webDriver;
-        setElement(webDriver.findElement(locator));
+        super(webDriver,locator);
+        setLocator(locator);
+        setWebDriver(webDriver);
+        waitForElementToLoad(locator, webDriver);
+        setWebElement(webDriver.findElement(locator));
+    }
+
+    public OrderCard(WebElement webElement, WebDriver webDriver) {
+        super(webElement);
+        setLocator(By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div"));
+        setWebDriver(webDriver);
+        waitForElementToLoad(locator, webDriver);
+        setWebElement(webElement);
+    }
+
+    public int getIndex() {
+        waitForJStoLoad(webDriver);
+        waitForElementToLoad(locator, webDriver);
+        int i = 0;
+        try {
+            i = Integer.parseInt(webElement.findElement(index).getText().substring(1));
+        } catch (StringIndexOutOfBoundsException e) {
+        }
+        return i;
     }
 
     public void click() {
@@ -40,7 +69,7 @@ public class OrderCard extends Element {
         if (!isEnabled(locator, webDriver)) {
             logger.error("OrderCard with locator IS NOT clickable: '" + locator + "'");
         }
-        element.click();
+        webElement.click();
         logger.info("OrderCard with locator clicked: " + locator);
     }
 
@@ -52,21 +81,21 @@ public class OrderCard extends Element {
         if (!isEnabled(locator, webDriver)) {
             logger.error("OrderCard with locator IS NOT clickable: '" + locator + "'");
         }
-        element.findElement(btnReset).click();
+        webElement.findElement(btnReset).click();
         logger.info("Reset button with locator clicked: " + locator);
     }
 
     public String getExpirationDate() {
         String buttonText = "";
         if (isExpirationDateVisible()) {
-            buttonText = element.findElement(btnExpirationDate).getText();
+            buttonText = webElement.findElement(btnExpirationDate).getText();
             logger.info(("OrderCard with locator '" + locator + "' have expiration date : '" + buttonText + "'"));
         }
         return buttonText;
     }
 
     public boolean isExpirationDateVisible() {
-        Boolean isVisible = element.findElement(btnExpirationDate).isDisplayed();
+        Boolean isVisible = webElement.findElement(btnExpirationDate).isDisplayed();
         if (isVisible) {
             logger.info(("OrderCard with locator '" + locator + "' have expiration date\n"));
         } else {
@@ -78,7 +107,7 @@ public class OrderCard extends Element {
     public boolean isCancellationRequested() {
         Boolean isVisible;
         try {
-            isVisible = element.findElement(btnCancellationRequested).isDisplayed();
+            isVisible = webElement.findElement(btnCancellationRequested).isDisplayed();
         } catch (NoSuchElementException e) {
             isVisible = false;
         }
@@ -94,11 +123,11 @@ public class OrderCard extends Element {
         new Button(webDriver, btnRequestCancellation).click();
     }
 
-    protected boolean isVisible() {
+    public boolean isVisible() {
         return super.isVisible(locator, webDriver);
     }
 
-    public boolean isEnabled() {
+    public boolean isDisabled() {
         return super.isEnabled(locator, webDriver);
     }
 }

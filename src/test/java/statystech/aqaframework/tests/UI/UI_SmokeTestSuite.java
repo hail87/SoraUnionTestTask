@@ -2,20 +2,26 @@ package statystech.aqaframework.tests.UI;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.PageObjects.OrderCardPopUpPage;
+import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
 import statystech.aqaframework.PageObjects.OrderFulfillmentPage;
 import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
 import statystech.aqaframework.steps.UiSteps.LoginSteps;
 import statystech.aqaframework.steps.UiSteps.MainSteps;
+import statystech.aqaframework.steps.UiSteps.OrderCardDetailsPopUpSteps;
 import statystech.aqaframework.steps.UiSteps.OrderFulfillmentSteps;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.UiTestClass;
 import statystech.aqaframework.utils.DataUtils;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -45,13 +51,18 @@ public class UI_SmokeTestSuite extends UiTestClass {
     }
 
     @BeforeEach
-    public void setTestContext(TestInfo testInfo) {
+    public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
         String name = testInfo.getTestMethod().get().getName();
         logger.info(String.format(
                 "\nTest № %d has been started : '%s'\n", testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id(), name));
         UiTestContext uiTestContext = new UiTestContext(name);
         uiTestContext.initializeWebDriver();
         Context.addTestContext(uiTestContext);
+
+        LwaTestContext lwaTestContext = new LwaTestContext(name);
+        lwaTestContext.getConnectionQA();
+        Context.addTestContext(lwaTestContext);
+        logger.info("Contest set\n");
     }
 
     @TestRailID(id = 199752)
@@ -192,10 +203,10 @@ public class UI_SmokeTestSuite extends UiTestClass {
 
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
-        OrderCardPopUpPage orderCardPopUpPage = mainSteps.clickOrderCard(1);
-        OrderFulfillmentPage orderFulfillmentPage = orderCardPopUpPage.startOrderFulfillment();
-        orderCardPopUpPage = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithFirstItemInIt();
-        orderCardPopUpPage.close();
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickNewOrderCard(1);
+        OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
+        orderCardDetailsPopUp = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithFirstItemInIt();
+        orderCardDetailsPopUp.close();
 
         int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
@@ -206,6 +217,61 @@ public class UI_SmokeTestSuite extends UiTestClass {
         mainSteps.clickResetOrderCardAndConfirm(1);
 
         assertEquals(activeNewOrders, mainSteps.getMainPage().getActiveNewOrders());
+    }
 
+    @TestRailID(id = 225149)
+    @Test
+    public void moveInProgressOrderToNew(TestInfo testInfo) {
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
+        int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
+
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCardInProgress(1);
+
+        OrderCardDetailsPopUpSteps orderCardDetailsPopUpSteps = new OrderCardDetailsPopUpSteps(orderCardDetailsPopUp);
+        orderCardDetailsPopUpSteps.moveToNewOrder(true);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
+        int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
+
+        assertEquals(activeNewOrdersUpdated, activeNewOrders + 1);
+        assertEquals(activeInProgressOrdersUpdated, activeInProgressOrders - 1);
+    }
+
+    @TestRailID(id = 225150)
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
+
+        StringBuilder errorMessage = new StringBuilder();
+//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+//        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+//        OrdersSteps ordersSteps = new OrdersSteps();
+//        ordersSteps.setOrderIDtoContext();
+
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(20729);
+        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
+
+        orderFulfillmentSteps.splitAndConfirm(1);
+        orderFulfillmentSteps.createParcel(1,1);
+        orderFulfillmentSteps.deleteFirstParcel();
+        orderFulfillmentSteps.createParcel(1,1);
+        orderFulfillmentSteps.shipParcelExternally(1);
+        errorMessage.append(orderFulfillmentSteps.deleteCompletedParcel());
+
+        assertTrue( errorMessage.isEmpty(), errorMessage.toString());
     }
 }

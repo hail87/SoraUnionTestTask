@@ -97,6 +97,11 @@ public abstract class PageObject {
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
+    protected void waitForWebElementToBeClickable(WebElement webElement) {
+        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
+        wait.until(ExpectedConditions.elementToBeClickable(webElement));
+    }
+
     protected void waitForElementToBeNotClickable(By by) {
         Wait<WebDriver> fluentWait = new FluentWait<WebDriver>(webDriver)
                 .withTimeout(Duration.ofSeconds(30L))

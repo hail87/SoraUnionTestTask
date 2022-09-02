@@ -40,13 +40,13 @@ public class ShippingAddressSteps extends Steps {
     private String checkPhoneNumber(int shippingAddressID) throws SQLException {
         String actual = shippingAddressTable.getColumnValueByPrimaryID(shippingAddressID, "phoneNumber1");
         String expected = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonObject("shipping_address").get("phone_1").toString().replace("\"", "");
-        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
+        return verifyExpectedResults(DataUtils.decryptForSandbox(actual), expected);
     }
 
     private String checkPostalCode(int shippingAddressID) throws SQLException {
         String actual = shippingAddressTable.getColumnValueByPrimaryID(shippingAddressID, "postalCode");
         String expected = Context.getTestContext(LwaTestContext.class).getJsonObject().getAsJsonObject("shipping_address").get("zip").toString().replace("\"", "");
-        return verifyExpectedResults(DataUtils.decrypt(actual), expected);
+        return verifyExpectedResults(DataUtils.decryptForSandbox(actual), expected);
     }
 
     private String checkRegion(int shippingAddressID) throws SQLException {

@@ -6,10 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
-import statystech.aqaframework.PageObjects.OrderCardPopUpPage;
+import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.UiTestContext;
-import statystech.aqaframework.elements.Message;
 import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.steps.Steps;
 
@@ -157,14 +156,14 @@ public class MainSteps extends Steps {
     public void clickAndVerifyOrdersOnHold() {
         mainPage.clickShowOnlyOrdersOnHoldOrAll();
         mainPage.waitForJStoLoad();
-        mainPage.getOrderCards().stream().forEach(orderCard -> assertTrue(!orderCard.getExpirationDate().isEmpty(), "\nOrder Card has no Expiration date, but should\n"));
+        mainPage.getNewOrderCards().stream().forEach(orderCard -> assertTrue(!orderCard.getExpirationDate().isEmpty(), "\nOrder Card has no Expiration date, but should\n"));
     }
 
     public String requestCancellation(int orderCardIndex, String reason) {
         mainPage.clickRequestCancellation(orderCardIndex);
         mainPage.fillInCancellationReason(reason);
         mainPage.submitCancellationReason();
-        if (mainPage.getOrderCard(orderCardIndex).isCancellationRequested()) {
+        if (mainPage.getNewOrderCard(orderCardIndex).isCancellationRequested()) {
             return "";
         } else {
             return "\nFor OrderCard Cancellation is NOT Requested, but should\n";
@@ -173,7 +172,7 @@ public class MainSteps extends Steps {
 
     public String requestCancellation(String reason) {
         int i = 1;
-        for (OrderCard orderCard : mainPage.getOrderCards()) {
+        for (OrderCard orderCard : mainPage.getNewOrderCards()) {
             if (!orderCard.isCancellationRequested()) {
                 break;
             } else {
@@ -183,9 +182,28 @@ public class MainSteps extends Steps {
         return requestCancellation(i, reason);
     }
 
-    public OrderCardPopUpPage clickOrderCard(int number) {
-        mainPage.getOrderCards().get(number).click();
-        return new OrderCardPopUpPage(webDriver);
+    public OrderCardDetailsPopUp clickNewOrderCard(int number) {
+        mainPage.getNewOrderCards().get(number).click();
+        return new OrderCardDetailsPopUp(webDriver);
+    }
+
+    public OrderCardDetailsPopUp clickOrderCardInProgress(int number) {
+        --number;
+        if (number < 0) {
+            logger.error("Card number should be >= 1");
+            return new OrderCardDetailsPopUp(webDriver);
+        }
+
+        mainPage.getOrderCardsInProgress().get(number).click();
+        return new OrderCardDetailsPopUp(webDriver);
+    }
+
+    public OrderCardDetailsPopUp clickOrderCard(int orderNumber) {
+        for (OrderCard orderCard : mainPage.getOrderCards()) {
+            if (orderCard.getIndex() == orderNumber)
+                orderCard.click();
+        }
+        return new OrderCardDetailsPopUp(webDriver);
     }
 
     public void clickResetOrderCardAndConfirm(int number) {

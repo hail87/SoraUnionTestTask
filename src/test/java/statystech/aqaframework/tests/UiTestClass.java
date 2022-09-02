@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
-import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 
@@ -23,10 +22,15 @@ public abstract class UiTestClass {
 
     @AfterEach
     public void cleanTestDataAndCloseConnection(TestInfo testInfo) throws InterruptedException {
-        UiTestContext testContext = getUiTestContext(testInfo);
-        testContext.closeWebDriverConnection();
+        UiTestContext uiTestContext = getUiTestContext(testInfo);
+        uiTestContext.closeWebDriverConnection();
         Thread.sleep(500);
-        Context.deleteTestContext(testContext);
+        Context.deleteTestContext(uiTestContext);
+        try {
+            Context.getTestContext(testInfo, LwaTestContext.class).closeDbConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public UiTestContext getUiTestContext(TestInfo testInfo) {

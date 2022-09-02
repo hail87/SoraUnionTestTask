@@ -83,4 +83,4 @@ delete from lwa_sandbox.address
 where addressID > 0;
 
 delete from lwa_sandbox.buyerAccount
-where buyerAccountID > 0;
+where buyerAccountID NOT in (841, 842) and buyerAccountID > 0;

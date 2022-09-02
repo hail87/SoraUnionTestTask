@@ -178,7 +178,7 @@ public abstract class TableObject {
     public boolean deleteRow(int primaryID) {
         boolean deleted = false;
         try {
-            deleted = Context.getTestContext(LwaTestContext.class).getConnection().createStatement().execute(
+            deleted = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().createStatement().execute(
                     "DELETE FROM " + TABLE_NAME + " WHERE stageOrderID = '" + primaryID + "'");
             logger.info("!!!Row with id [" + primaryID + "] has been deleted!!!");
         } catch (SQLException | IOException throwables) {
@@ -221,7 +221,7 @@ public abstract class TableObject {
         String tableValue = null;
         tableValue = DBUtils.executeAndReturnString(String.format(
                 "select %s from %s where %s.%s = %d", columnName, TABLE_NAME, TABLE_NAME, getFirstColumnName(TABLE_NAME), primaryID));
-        return Map.of("jsonValue", jsonValue, "tableValue", DataUtils.decrypt(tableValue));
+        return Map.of("jsonValue", jsonValue, "tableValue", DataUtils.decryptForSandbox(tableValue));
     }
 
     public Map<String, String> getJsonAndTableValue(int primaryID, String jsonNodeKey1) throws SQLException {
@@ -269,7 +269,7 @@ public abstract class TableObject {
         while (rs.next()) {
             for (String columnName : encryptedColums) {
                 String originalData = rs.getString(columnName);
-                String encryptedData = DataUtils.encrypt(originalData);
+                String encryptedData = DataUtils.encryptForSandbox(originalData);
                 if (encryptedData != null && !encryptedData.isEmpty()) {
                     try {
                         rs.updateString(columnName, encryptedData);

@@ -14,34 +14,47 @@ public class CheckBox extends Element {
 
     @Setter
     @Getter
-    WebElement element;
+    WebElement webElement;
+    @Setter
+    @Getter
     By locator;
+    @Setter
+    @Getter
     WebDriver webDriver;
 
     public CheckBox(WebDriver webDriver, By locator) {
-        this.locator = locator;
-        this.webDriver = webDriver;
-        setElement(webDriver.findElement(locator));
+        super(webDriver, locator);
+        setLocator(locator);
+        setWebDriver(webDriver);
+        setWebElement(webDriver.findElement(locator));
     }
 
     public void check() {
         waitForElementToLoad(locator, webDriver);
         if (!isVisible(locator, webDriver)) {
-            logger.error("Button with locator IS NOT displayed: '" + locator + "'");
+            logger.error("Checkbox with locator IS NOT displayed: '" + locator + "'");
         }
-        element.click();
-        logger.info("Button with locator clicked: " + locator);
+        if (!isChecked())
+            webElement.click();
+        logger.info("Checkbox with locator checked: " + locator);
     }
 
-//    public String getText() {
-//    }
+    public void uncheck() {
+        waitForElementToLoad(locator, webDriver);
+        if (!isVisible(locator, webDriver)) {
+            logger.error("Button with locator IS NOT displayed: '" + locator + "'");
+        }
+        if (isChecked())
+            webElement.click();
+        logger.info("Checkbox with locator unchecked: " + locator);
+    }
 
-    protected boolean isVisible() {
+    public boolean isVisible() {
         return super.isVisible(locator, webDriver);
     }
 
     public boolean isChecked() {
-        logger.info(("Checkbox with locator '" + locator + "' is checked - " + element.isSelected()));
-        return element.isSelected();
+        logger.info(("Checkbox with locator '" + locator + "' is checked - " + webElement.isSelected()));
+        return webElement.findElement(By.xpath(".//../../..")).getText().contains("selected");
     }
 }

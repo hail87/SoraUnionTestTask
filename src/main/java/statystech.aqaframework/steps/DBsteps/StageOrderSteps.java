@@ -4,6 +4,8 @@ import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.TableObjects.StageOrderTable;
+import statystech.aqaframework.common.Context.Context;
+import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.utils.ApiRestUtils;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
@@ -21,6 +23,14 @@ public class StageOrderSteps extends Steps {
         logger.info("Triggering order processing at the SandBox");
         int responseCode = new ApiRestUtils().sendGetRequest(
                 DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTrigger"));
+        if (responseCode != 200)
+            logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
+    }
+
+    public void triggerProcessingQA() {
+        logger.info("Triggering order processing at the SandBox");
+        int responseCode = new ApiRestUtils().sendGetRequest(
+                DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTriggerQA"));
         if (responseCode != 200)
             logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
     }
@@ -45,7 +55,7 @@ public class StageOrderSteps extends Steps {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String encryptedJsonContent = DataUtils.encrypt(jsonContent);
+        String encryptedJsonContent = DataUtils.encryptForSandbox(jsonContent);
         logger.info("Inserting json to the stageOrder table");
         int id = 0;
         try {
@@ -56,6 +66,27 @@ public class StageOrderSteps extends Steps {
             e.printStackTrace();
         }
         new StageOrderSteps().triggerProcessingSandBox();
+        return id;
+    }
+
+    public int insertJsonToQATableAndUiContext(String jsonFilename, TestInfo testInfo) {
+        String jsonContent = null;
+        try {
+            jsonContent = JsonUtils.loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String encryptedJsonContent = DataUtils.encryptForTest(jsonContent);
+        logger.info("Inserting json to the stageOrder table");
+        int id = 0;
+        try {
+            id = new DBUtils().insertJsonToStageOrder(encryptedJsonContent, Context.getTestContext(LwaTestContext.class).getConnectionQA());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        new StageOrderSteps().triggerProcessingQA();
         return id;
     }
 

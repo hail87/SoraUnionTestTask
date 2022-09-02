@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,15 +16,20 @@ public class Button extends Element {
 
     @Setter
     @Getter
-    WebElement element;
+    WebElement webElement;
+    @Setter
+    @Getter
     By locator;
+    @Setter
+    @Getter
     WebDriver webDriver;
 
     public Button(WebDriver webDriver, By locator) {
-        this.locator = locator;
-        this.webDriver = webDriver;
+        super(webDriver,locator);
+        setLocator(locator);
+        setWebDriver(webDriver);
         waitForElementToLoad(locator, webDriver);
-        setElement(webDriver.findElement(locator));
+        setWebElement(webDriver.findElement(locator));
     }
 
     public void click() {
@@ -33,21 +40,23 @@ public class Button extends Element {
         if (!isEnabled(locator, webDriver)) {
             logger.error("Button with locator IS NOT clickable: '" + locator + "'");
         }
-        element.click();
+        waitForElementToBeClickable(webDriver, locator);
+        webElement.click();
         logger.info("Button with locator clicked: " + locator);
     }
 
     public String getText() {
-        String buttonText = element.getText();
+        String buttonText = webElement.getText();
         logger.info(("Button with locator '" + locator + "' text is " + buttonText));
         return buttonText;
     }
 
-    protected boolean isVisible() {
-        return super.isVisible(locator, webDriver);
+    public void waitForElementToBeClickable() {
+        WebDriverWait wait = new WebDriverWait(this.webDriver, waitForElementDelay);
+        wait.until(ExpectedConditions.elementToBeClickable(this.locator));
     }
 
     public boolean isEnabled() {
-        return super.isEnabled(locator, webDriver);
+        return webElement.isEnabled();
     }
 }

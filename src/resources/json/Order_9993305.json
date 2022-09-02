@@ -1,0 +1,113 @@
+{
+    "order_id": "9993305",
+    "user_id": "bfd0cf744c180b08be515db37947e66b",
+    "order_status": "Confirmed",
+    "replacement_order_id": "0",
+    "seller_id": "",
+    "seller_username": null,
+    "csr_assigned_id": "80cf8b4a6e74067d59447f2e30a55592",
+    "csr_assigned_username": "PH-Sales4",
+    "billing_address":
+    {
+        "user_info_id": "768276",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "S****a",
+        "middle_name": "",
+        "last_name": "F****o",
+        "country": "UNITED STATES",
+        "state": "New York",
+        "city": "New York",
+        "zip": "10009",
+        "address_line_1": "380 E 10TH ST",
+        "address_line_2": "2B",
+        "company": "S****o",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "shipping_address":
+    {
+        "user_info_id": "768276",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "S****a",
+        "middle_name": "",
+        "last_name": "F****o",
+        "country": "UNITED STATES",
+        "state": "New York",
+        "city": "New York",
+        "zip": "10009",
+        "address_line_1": "380 E 10TH ST",
+        "address_line_2": "2B",
+        "company": "S****o",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "order_date": "2022-08-25",
+    "shipped_at": null,
+    "delivered_at": null,
+    "order_items":
+    [
+        {
+            "order_item_id": "1899122",
+            "product_id": "87904",
+            "product_name": "RESTYLANE® KYSSE 0.3% LIDOCAINE",
+            "product_quantity": "3",
+            "product_item_price": "179.00",
+            "SKU": "sku_1456437985_1",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "195",
+                    "ff_center_name": "Inventonium",
+                    "assigned_qty": "3",
+                    "batches":
+                    [
+                        {
+                            "qty": "3",
+                            "number": "20231-1",
+                            "ff_center_id": "195"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "order_item_id": "1899123",
+            "product_id": "81471",
+            "product_name": "RESTYLANE® LYFT w/ Lidocaine",
+            "product_quantity": "6",
+            "product_item_price": "175.00",
+            "SKU": "Perlane 1ml with Lidocaine1",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "195",
+                    "ff_center_name": "Inventonium",
+                    "assigned_qty": "6",
+                    "batches":
+                    [
+                        {
+                            "qty": "6",
+                            "number": "19322-1",
+                            "ff_center_id": "195"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "website_name": "medicadepot.com",
+    "shopper_group_name": "Medica Depot Licensed",
+    "account_number": "405797",
+    "order_currency": "USD",
+    "currency_conversion": "1.00",
+    "shipping_notes": "",
+    "order_subtotal": "1587.00",
+    "order_total_discount": "0.00",
+    "order_shipping": "0.00",
+    "total_tax": "0.00",
+    "used_credit": "0.00",
+    "used_points": "0.00",
+    "order_total": "1587"
+}

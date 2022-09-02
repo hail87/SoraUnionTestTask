@@ -1,6 +1,5 @@
 package statystech.aqaframework.steps.DBsteps;
 
-import com.lwa.common.crypto.service.impl.ColumnCryptoServiceImpl;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ public class StageProductSteps extends Steps {
 
     public int insertJsonToTableAndContext(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         String jsonContent = new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
-        String encryptedJsonContent = DataUtils.encrypt(jsonContent);
+        String encryptedJsonContent = DataUtils.encryptForSandbox(jsonContent);
         logger.info("Inserting json to the stageProduct table");
         int id = new DBUtils().insertJsonToStageProduct(encryptedJsonContent);
         triggerProcessingSandBox();
@@ -45,7 +44,7 @@ public class StageProductSteps extends Steps {
 
     public int insertJsonToTable(String jsonFilename) throws IOException, SQLException {
         String jsonContent = JsonUtils.getStringFromJson(jsonFilename);
-        String encryptedJsonContent = DataUtils.encrypt(jsonContent);
+        String encryptedJsonContent = DataUtils.encryptForSandbox(jsonContent);
         logger.info("Inserting json to the stageProduct table");
         int id = new DBUtils().insertJsonToStageProduct(encryptedJsonContent);
         triggerProcessingSandBox();

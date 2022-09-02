@@ -13,6 +13,7 @@ import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.TestContext;
+import statystech.aqaframework.common.Context.UiTestContext;
 import statystech.aqaframework.common.MyPath;
 import statystech.aqaframework.common.Context.LwaTestContext;
 
@@ -69,6 +70,15 @@ public class JsonUtils {
         lwaTestContext.makeOrderFromJson();
         return jsonString;
     }
+
+//    public static String loadObjectToUiContextAndGetString(String jsonFilename, String testMethodName) throws IOException {
+//        loadJsonObjectToUiTestContext(getJsonObject(jsonFilename), testMethodName);
+//        String jsonString = getStringFromJson(jsonFilename);
+//        UiTestContext uiTestContext = Context.getTestContext(testMethodName, UiTestContext.class);
+//        uiTestContext.setJsonString(jsonString);
+//        uiTestContext.makeOrderFromJson();
+//        return jsonString;
+//    }
 
     public String getProductsJsonObjectsAndLoadToContext(String jsonFilename, String testMethodName) throws IOException {
         String jsonString = getStringFromJson(jsonFilename);
@@ -146,6 +156,12 @@ public class JsonUtils {
 
     public static void loadJsonObjectToTestContext(JsonObject jsonObject, String testMethodName){
         TestContext testContext = Context.getTestContext(testMethodName, LwaTestContext.class);
+        testContext.setJsonObject(jsonObject);
+        Context.updateTestContext(testContext);
+    }
+
+    public static void loadJsonObjectToUiTestContext(JsonObject jsonObject, String testMethodName){
+        TestContext testContext = Context.getTestContext(testMethodName, UiTestContext.class);
         testContext.setJsonObject(jsonObject);
         Context.updateTestContext(testContext);
     }

@@ -1,0 +1,89 @@
+{
+    "order_id": "9993284",
+    "user_id": "8e1d1797914e0bb612a5531d24b7357c",
+    "order_status": "Confirmed",
+    "replacement_order_id": "0",
+    "seller_id": "425095a8d121bd8b37b630900dd39e32",
+    "seller_username": "Karen-V-PH",
+    "csr_assigned_id": "425095a8d121bd8b37b630900dd39e32",
+    "csr_assigned_username": "Karen-V-PH",
+    "billing_address":
+    {
+        "user_info_id": "783078",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "C****i",
+        "middle_name": "",
+        "last_name": "G****u",
+        "country": "TAIWAN",
+        "state": "T'ai-pei",
+        "city": "Taipei City",
+        "zip": "108048",
+        "address_line_1": "3F, No 7, Ln 364, Sec 2,",
+        "address_line_2": "Zhonghua Rd, Wanhua Dist,",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "shipping_address":
+    {
+        "user_info_id": "783078",
+        "address_type": "BT",
+        "title": "",
+        "first_name": "C****i",
+        "middle_name": "",
+        "last_name": "G****u",
+        "country": "TAIWAN",
+        "state": "T'ai-pei",
+        "city": "Taipei City",
+        "zip": "108048",
+        "address_line_1": "3F, No 7, Ln 364, Sec 2,",
+        "address_line_2": "Zhonghua Rd, Wanhua Dist,",
+        "company": "",
+        "phone_1": "6472368232",
+        "phone_2": null
+    },
+    "order_date": "2022-08-25",
+    "shipped_at": null,
+    "delivered_at": null,
+    "order_items":
+    [
+        {
+            "order_item_id": "1899092",
+            "product_id": "82359",
+            "product_name": "ELLANSE™ M",
+            "product_quantity": "9",
+            "product_item_price": "287.00",
+            "SKU": "sku_1416331299_1",
+            "ff_centers":
+            [
+                {
+                    "ff_center_id": "195",
+                    "ff_center_name": "Inventonium",
+                    "assigned_qty": "9",
+                    "batches":
+                    [
+                        {
+                            "qty": "9",
+                            "number": "060.05434",
+                            "ff_center_id": "195"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "website_name": "medicadepot.com",
+    "shopper_group_name": "Medica Depot Unlicensed International",
+    "account_number": "416583",
+    "order_currency": "EUR",
+    "currency_conversion": "0.98",
+    "shipping_notes": "",
+    "order_subtotal": "2583.00",
+    "order_total_discount": "342.00",
+    "order_shipping": "0.00",
+    "total_tax": "0.00",
+    "used_credit": "1522.80",
+    "used_points": "0.00",
+    "order_total": "718.2"
+}

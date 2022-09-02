@@ -233,16 +233,31 @@ public class DataUtils {
         return areLogsDownloadedSuccessfully;
     }
 
-    public static String encrypt(String text) {
+    public static String encryptForSandbox(String text) {
         if (text == null || text.isEmpty()) {
             return text;
         }
         return new ColumnCryptoServiceImpl("dev_encryption_passphrase").encrypt(text);
     }
 
-    public static String decrypt(String text) {
+    public static String encryptForTest(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+        return new ColumnCryptoServiceImpl("test_encryption_passphrase").encrypt(text);
+    }
+
+    public static String decryptForSandbox(String text) {
         try {
             return new ColumnCryptoServiceImpl("dev_encryption_passphrase").decrypt(text);
+        } catch (IllegalStateException e) {
+            return "wrong decryption";
+        }
+    }
+
+    public static String decryptForTest(String text) {
+        try {
+            return new ColumnCryptoServiceImpl("test_encryption_passphrase").decrypt(text);
         } catch (IllegalStateException e) {
             return "wrong decryption";
         }

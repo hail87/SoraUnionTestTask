@@ -16,6 +16,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
+//git update-index --assume-unchanged <file>
+//git update-index --no-assume-unchanged <file>
+
 @Getter
 @Setter
 public abstract class TestContext {
@@ -26,7 +29,7 @@ public abstract class TestContext {
     private String jsonString;
     private WebDriver driver;
 
-    public Connection getConnection() throws SQLException, IOException {
+    public Connection getConnectionSandbox() throws SQLException, IOException {
         if (connectionDB == null) {
             connectionDB = new ConnectionDB();
             connectionDB.connectDB();
@@ -34,7 +37,15 @@ public abstract class TestContext {
         return connectionDB.getCurrentConnection();
     }
 
-    public void closeDbConnection() throws SQLException, IOException {
+    public Connection getConnectionQA() throws SQLException, IOException {
+        if (connectionDB == null) {
+            connectionDB = new ConnectionDB();
+            connectionDB.connectDB("QADB.properties");
+        }
+        return connectionDB.getCurrentConnection();
+    }
+
+    public void closeDbConnection() throws SQLException {
         if (connectionDB != null)
             connectionDB.getCurrentConnection().close();
     }
@@ -50,10 +61,11 @@ public abstract class TestContext {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
         driver.get("https://d11h187w8zd0az.cloudfront.net/"); //DEV
-        //driver.get("https://dloqspth835qm.cloudfront.net/"); QA
+        //driver.get("https://dloqspth835qm.cloudfront.net/"); //QA
         driver.manage().window().maximize();
         this.driver = driver;
     }

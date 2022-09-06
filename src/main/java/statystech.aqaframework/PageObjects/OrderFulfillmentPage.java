@@ -21,7 +21,7 @@ public class OrderFulfillmentPage extends PageObject {
     By btnSplit = By.xpath(".//span/button");
     By btnConfirm = By.xpath(".//td[3]/span/span[3]/button[2]");
     By checkbox = By.xpath(".//div/span[1]/input");
-    By ddBatchNumber = By.xpath("//*[@id=\"mui-component-select-batchInventoryId\"]");
+    By ddBatchNumber = By.xpath(".//*[@id=\"mui-component-select-batchInventoryId\"]");
     By ddBatchNumberOptions = By.xpath("//*[@id=\"menu-batchInventoryId\"]/div[3]/ul/li");
     String btnSaveBatchNumber = "]/td[2]/div/div[2]/span/button";
     By productsRows = By.xpath("//*[@id=\"root\"]/div[2]/div/div/div[2]/table/tbody/tr");
@@ -109,7 +109,6 @@ public class OrderFulfillmentPage extends PageObject {
     public void deleteFirstParcelElement() {
         WebElement webElement = getParcelsElements().get(0).findElement(parcelDelete);
         webElement.click();
-        //new Element(webElement).waitForElementToDisappear(webDriver);
     }
 
     public OrderFulfillmentPage hoverProductRowAndClickSplit(int rowNumber) {
@@ -172,6 +171,14 @@ public class OrderFulfillmentPage extends PageObject {
 
     public OrderFulfillmentPage checkProduct(int productNumberAtTheList) {
         new CheckBox(webDriver, By.xpath("(" + checkBox + ")" + "[" + productNumberAtTheList + "]")).check();
+        return this;
+    }
+
+    public OrderFulfillmentPage checkProducts() {
+        List<WebElement> webElements = webDriver.findElements(By.xpath(checkBox));
+        for (WebElement webElement : webElements) {
+            new CheckBox(webDriver, webElement).check();
+        }
         return this;
     }
 

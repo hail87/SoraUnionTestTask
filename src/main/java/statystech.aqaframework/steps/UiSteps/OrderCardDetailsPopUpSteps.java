@@ -13,10 +13,6 @@ public class OrderCardDetailsPopUpSteps extends Steps {
 
     private OrderCardDetailsPopUp orderCardDetailsPopUp;
 
-//    public OrderCardPopUpSteps(OrderCardPopUpPage orderCardPopUpPage) {
-//        this.orderCardPopUpPage = orderCardPopUpPage;
-//    }
-
     public OrderCardDetailsPopUpSteps(OrderCardDetailsPopUp orderCardDetailsPopUp) {
         this.orderCardDetailsPopUp = orderCardDetailsPopUp;
     }

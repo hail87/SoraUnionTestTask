@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.PageObjects.PageObject;
 
 public class CheckBox extends Element {
 
@@ -29,32 +30,62 @@ public class CheckBox extends Element {
         setWebElement(webDriver.findElement(locator));
     }
 
+    public CheckBox(WebDriver webDriver, WebElement webElement) {
+        super(webElement, webDriver);
+        setWebDriver(webDriver);
+        setWebElement(webElement);
+    }
+
     public void check() {
-        waitForElementToLoad(locator, webDriver);
-        if (!isVisible(locator, webDriver)) {
-            logger.error("Checkbox with locator IS NOT displayed: '" + locator + "'");
+        if (locator != null) {
+            waitForElementToLoad(locator, webDriver);
+            if (!isVisible(locator, webDriver)) {
+                logger.error("Checkbox with locator IS NOT displayed: '" + locator + "'");
+            }
+            if (!isChecked())
+                webElement.click();
+            logger.info("Checkbox with locator checked: " + locator);
+        } else {
+            waitForElementToLoad(webElement, webDriver);
+            if (!isVisible(webElement)) {
+                logger.error("Checkbox IS NOT displayed: '" + webElement + "'");
+            }
+            if (!isChecked())
+                webElement.click();
+            logger.info("Checkbox checked: " + webElement);
         }
-        if (!isChecked())
-            webElement.click();
-        logger.info("Checkbox with locator checked: " + locator);
     }
 
     public void uncheck() {
-        waitForElementToLoad(locator, webDriver);
-        if (!isVisible(locator, webDriver)) {
-            logger.error("Button with locator IS NOT displayed: '" + locator + "'");
+        if (locator != null) {
+            waitForElementToLoad(locator, webDriver);
+            if (!isVisible(locator, webDriver)) {
+                logger.error("Button with locator IS NOT displayed: '" + locator + "'");
+            }
+            if (isChecked())
+                webElement.click();
+            logger.info("Checkbox with locator unchecked: " + locator);
+        } else {
+            waitForElementToLoad(webElement, webDriver);
+            if (!isVisible()) {
+                logger.error("Button IS NOT displayed: '" + webElement);
+            }
+            if (isChecked())
+                webElement.click();
+            logger.info("Checkbox unchecked: " + webElement);
         }
-        if (isChecked())
-            webElement.click();
-        logger.info("Checkbox with locator unchecked: " + locator);
     }
 
     public boolean isVisible() {
-        return super.isVisible(locator, webDriver);
+        if (locator != null) {
+            return super.isVisible(locator, webDriver);
+        } else {
+            return super.isVisible(webElement);
+        }
     }
 
     public boolean isChecked() {
-        logger.info(("Checkbox with locator '" + locator + "' is checked - " + webElement.isSelected()));
+        logger.info(("Checkbox checked - " + webElement.isSelected()));
         return webElement.findElement(By.xpath(".//../../..")).getText().contains("selected");
     }
 }

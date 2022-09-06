@@ -23,8 +23,8 @@ public class Message extends Element {
     WebDriver webDriver;
 
     //By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]/div/div");
-    By btnConfirm = By.xpath(".//div[2]/div/div[2]/button[2]");
-    By btnCancel = By.xpath(".//div[2]/div/div[2]/button[1]");
+    By btnConfirm = By.xpath(".//button[2]");
+    By btnCancel = By.xpath(".//button[1]");
 
 
     public Message(WebDriver webDriver, By locator) {
@@ -36,27 +36,29 @@ public class Message extends Element {
     }
 
     public void confirm() {
-        if (!isVisible(btnConfirm, webDriver)) {
+        By btnConfirmAbsolute = By.xpath(locator.toString().substring(9).trim() + btnConfirm.toString().substring(11));
+        if (!isVisible(btnConfirmAbsolute, webDriver)) {
             logger.error("Button with locator IS NOT displayed: '" + locator + btnConfirm + "'");
         }
-        if (!isEnabled(locator, webDriver)) {
+        if (!isEnabled(btnConfirmAbsolute, webDriver)) {
             logger.error("Button with locator IS NOT clickable: '" + locator + btnConfirm + "'");
         }
         webElement.findElement(btnConfirm).click();
         logger.info("Button with locator clicked: " + locator + btnConfirm);
-        waitForElementToDisappear(btnConfirm, webDriver);
+        waitForElementToDisappear(btnConfirmAbsolute, webDriver);
     }
 
     public void cancel() {
-        if (!isVisible(btnCancel, webDriver)) {
+        By btnCancelAbsolute = By.xpath(locator.toString().substring(9).trim() + btnCancel.toString().substring(11));
+        if (!isVisible(btnCancelAbsolute, webDriver)) {
             logger.error("Button with locator IS NOT displayed: '" + locator + btnCancel + "'");
         }
-        if (!isEnabled(btnCancel, webDriver)) {
+        if (!isEnabled(btnCancelAbsolute, webDriver)) {
             logger.error("Button with locator IS NOT clickable: '" + locator + btnCancel + "'");
         }
         webElement.findElement(btnCancel).click();
         logger.info("Button with locator clicked: " + locator + btnCancel);
-        waitForElementToDisappear(btnCancel, webDriver);
+        waitForElementToDisappear(btnCancelAbsolute, webDriver);
     }
 
 //    public String getText() {

@@ -28,22 +28,19 @@ public abstract class PageObject {
     public boolean waitForJStoLoad() {
 
         WebDriverWait wait = new WebDriverWait(webDriver, waitForJSDelay);
-        JavascriptExecutor js = (JavascriptExecutor)webDriver;
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
 
-        // wait for jQuery to load
         ExpectedCondition<Boolean> jQueryLoad = new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver driver) {
                 try {
-                    return ((Long)js.executeScript("return jQuery.active") == 0);
-                }
-                catch (Exception e) {
+                    return ((Long) js.executeScript("return jQuery.active") == 0);
+                } catch (Exception e) {
                     return true;
                 }
             }
         };
 
-        // wait for Javascript to load
         ExpectedCondition<Boolean> jsLoad = new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver driver) {
@@ -60,7 +57,7 @@ public abstract class PageObject {
         String baseValue = element.getText();
         logger.info(("Element with locator '" + locator + "' base value - " + baseValue));
         int i = 0;
-        while(baseValue.equals(element.getText()) & i<=10){
+        while (baseValue.equals(element.getText()) & i <= 10) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -69,22 +66,6 @@ public abstract class PageObject {
             i++;
         }
         return !baseValue.equals(element.getText());
-
-//        WebDriverWait wait = new WebDriverWait(webDriver, 10);
-//
-//        ExpectedCondition<Boolean> isElementChanged = new ExpectedCondition<Boolean>() {
-//            @Override
-//            public Boolean apply(WebDriver driver) {
-//                try {
-//                    return baseValue.equals(element.getText());
-//                }
-//                catch (Exception e) {
-//                    return true;
-//                }
-//            }
-//        };
-//
-//        return wait.until(isElementChanged);
     }
 
     protected void waitForElementToLoad(By by) {
@@ -226,4 +207,24 @@ public abstract class PageObject {
         return output;
     }
 
+    public By getChildLocator(By parent, By child) {
+        return By.xpath(parent.toString().substring(9).trim() + child.toString().substring(11).trim());
+    }
+
+    public static String getXpathPath(WebElement webElement){
+        int n = webElement.findElements(By.xpath("./ancestor::*")).size();
+        String path = "";
+        WebElement current = webElement;
+        for(int i = n; i > 0; i--){
+            String tag = current.getTagName();
+            int lvl = current.findElements(By.xpath("./preceding-sibling::" + tag)).size() + 1;
+            path = String.format("/%s[%d]%s", tag, lvl, path);
+            current = current.findElement(By.xpath("./parent::*"));
+        }
+        return "/" + current.getTagName() + path;
+    }
+
+    public static By getXpath(WebElement webElement){
+        return By.xpath(getXpathPath(webElement));
+    }
 }

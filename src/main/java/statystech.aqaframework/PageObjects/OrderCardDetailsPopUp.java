@@ -16,8 +16,8 @@ public class OrderCardDetailsPopUp extends PageObject{
     private final static By locator = By.xpath("//html/body/div[2]/div[3]");
 
     public OrderCardDetailsPopUp(WebDriver webDriver) {
-        this.webDriver = webDriver;
         super.webDriver = webDriver;
+        this.webDriver = webDriver;
         waitForJStoLoad();
         waitForElementToLoad(txtOrderNumber);
         url = webDriver.getCurrentUrl();
@@ -31,13 +31,13 @@ public class OrderCardDetailsPopUp extends PageObject{
     By btnStartOrderFulfillment = By.xpath("/html/body/div[2]/div[3]/div/div/div[3]/div/div/button");
     By btnClose = By.xpath("/html/body/div[2]/div[3]/div/div/div[1]/div[1]/button");
 
-    By btnOptions = By.xpath("/html/body/div[2]/div[3]/div/div/div[1]/div[2]/div/button");
+    By btnOptions = By.xpath(".//div/div/div[1]/div[2]/div/button");
 
     By optnPutOnHold = By.xpath("/html/body/div[3]/div[3]/ul/li[1]/div[2]");
     By optnMoveToNewOrders = By.xpath("/html/body/div[3]/div[3]/ul/li[2]/div[2]");
-    By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]/div/div");
-    By btnCancelMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div/div[2]/div/div[2]/button[1]");
-    By btnConfirmMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div/div[2]/div/div[2]/button[2]");
+    By msgMoveToNewOrder = By.xpath(".//div/div");
+    By btnCancelMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/button[1]");
+    By btnConfirmMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/button[2]");
     By optnPrintOrderSummary = By.xpath("/html/body/div[3]/div[3]/ul/li[3]/div[2]");
 
     public OrderFulfillmentPage startOrderFulfillment() {
@@ -47,7 +47,7 @@ public class OrderCardDetailsPopUp extends PageObject{
     }
 
     public OrderCardDetailsPopUp clickOptionButton() {
-        new Button(webDriver, btnOptions).click();
+        new Button(webDriver, getChildLocator(locator, btnOptions)).click();
         waitForElementToLoad(optnPutOnHold);
         return this;
     }
@@ -61,7 +61,7 @@ public class OrderCardDetailsPopUp extends PageObject{
 
     public OrderCardDetailsPopUp clickMoveToNew() {
         new Button(webDriver, optnMoveToNewOrders).click();
-        waitForElementToLoad(msgMoveToNewOrder);
+        waitForElementToLoad(getChildLocator(locator, msgMoveToNewOrder));
         return this;
     }
 

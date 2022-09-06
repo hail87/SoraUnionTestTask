@@ -7,10 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
 import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
+import statystech.aqaframework.PageObjects.OrderFulfillmentPage;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.UiTestContext;
 import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.steps.Steps;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -199,11 +202,24 @@ public class MainSteps extends Steps {
     }
 
     public OrderCardDetailsPopUp clickOrderCard(int orderNumber) {
-        for (OrderCard orderCard : mainPage.getOrderCards()) {
-            if (orderCard.getIndex() == orderNumber)
+        List<OrderCard> orderCards = mainPage.getOrderCards();
+        int i = 0;
+        while (i < orderCards.size()) {
+            OrderCard orderCard = orderCards.get(i);
+            if (orderCard.getIndex() == orderNumber){
                 orderCard.click();
+                break;
+            }
+            i++;
         }
         return new OrderCardDetailsPopUp(webDriver);
+    }
+
+    public void createParcelWithAllItems(int orderNumber) {
+        OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
+        OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
+        orderCardDetailsPopUp = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithAllItems();
+        orderCardDetailsPopUp.close();
     }
 
     public void clickResetOrderCardAndConfirm(int number) {

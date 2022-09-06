@@ -50,9 +50,9 @@ public class MainPage extends PageObject {
     By onHoldDate = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p[2]/span");
 
     @Getter
-    By popupCancelOrderBy = By.xpath("/html/body/div[2]/div[3]/div/div");
-    By popupCancelOrderTxtCancellationReason = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[1]/div/textarea[1]");
-    By popupCancelOrderBtnSubmitRequest = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[2]/button");
+    By popupCancelOrderBy = By.xpath("/html/body/div[2]/div[3]");
+    By popupCancelOrderTxtCancellationReason = By.xpath("//textarea[@id=\":re:\"]");
+    By popupCancelOrderBtnSubmitRequest = By.xpath("//button");
 
     By inputSearch = By.xpath("//input[contains(@placeholder, 'Search by order number')]");
     By btnCancelSearch = By.xpath("//*[@id=\"root\"]/header/div/div[2]/div[1]/div/div/div/div/div[2]/button");
@@ -64,7 +64,7 @@ public class MainPage extends PageObject {
     String orderCardsInProgressLctr = "//*[@id=\"root\"]/div[4]/div/div/div[2]/div";
     By orderCards = By.xpath("//*[@id=\"root\"]/div[4]/div/div//div[contains(@class, 'MuiCardContent-root Order_orderContent')]");
 
-    By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]/div/div");
+    By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]");
 
 
     Button applyButton;
@@ -243,7 +243,7 @@ public class MainPage extends PageObject {
     public boolean isApplyButtonEnabled() {
         if (applyButton == null)
             applyButton = new Button(webDriver, btnApply);
-        return applyButton.isDisabled();
+        return applyButton.isEnabled();
     }
 
     public void clickApplyButton() {
@@ -381,6 +381,7 @@ public class MainPage extends PageObject {
             }
             webElements = webDriver.findElements(orderCards);
             cardsQuantity = webElements.size();
+            i++;
         }
         return webElements.stream().map(p -> new OrderCard(p, webDriver)).collect(Collectors.toList());
     }
@@ -391,12 +392,12 @@ public class MainPage extends PageObject {
 
     public void fillInCancellationReason(String reason) {
         waitForElementToLoad(popupCancelOrderBy);
-        new TextField(webDriver, popupCancelOrderTxtCancellationReason).fillIn(reason);
+        new TextField(webDriver, By.xpath(popupCancelOrderBy.toString().substring(9).trim() + popupCancelOrderTxtCancellationReason.toString().substring(10))).fillIn(reason);
     }
 
     public void submitCancellationReason() {
         waitForElementToLoad(popupCancelOrderBy);
-        new Button(webDriver, popupCancelOrderBtnSubmitRequest).click();
+        new Button(webDriver, By.xpath(popupCancelOrderBy.toString().substring(9).trim() + popupCancelOrderBtnSubmitRequest.toString().substring(10))).click();
         waitForElementToDisappear(popupCancelOrderBy);
         waitForJStoLoad();
     }

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.PageObjects.PageObject;
 
 public class Element {
 
@@ -18,16 +19,18 @@ public class Element {
 
     @Getter
     @Setter
-    WebElement webElement;
+    private WebElement webElement;
     @Getter
     @Setter
-    By locator;
+    private By locator;
     @Getter
     @Setter
-    WebDriver webDriver;
+    private WebDriver webDriver;
 
-    public Element(WebElement webElement) {
+    public Element(WebElement webElement, WebDriver webDriver) {
         setWebElement(webElement);
+        setWebDriver(webDriver);
+        waitForElementToLoad(webElement, webDriver);
     }
 
     public Element(WebDriver webDriver, By locator) {
@@ -37,15 +40,45 @@ public class Element {
         setWebElement(webDriver.findElement(locator));
     }
 
-    @Deprecated
+    public String getXpathPath() {
+        return PageObject.getXpathPath(webElement);
+    }
+
+    public By getXpath() {
+        return PageObject.getXpath(webElement);
+    }
+
     protected void waitForElementToLoad(By by, WebDriver webDriver) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
+    protected void waitForElementToLoad(WebElement webElement, WebDriver webDriver) {
+        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
+        wait.until(ExpectedConditions.visibilityOf(webElement));
+    }
+
     public void waitForElementToLoad() {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    protected void scrollToElement(By by, WebDriver webDriver) {
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoViewIfNeeded()", webDriver.findElement(by));
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    protected void scrollToElement(WebElement webElement, WebDriver webDriver) {
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoViewIfNeeded()", webElement);
+//        try {
+//            Thread.sleep(100);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void waitForElementToBeClickable() {
@@ -78,17 +111,23 @@ public class Element {
         }
     }
 
-    @Deprecated
     protected boolean isVisible(By locator, WebDriver webDriver) {
         WebElement element = webDriver.findElement(locator);
         logger.info(("Element with locator '" + locator + "' is visible - " + element.isDisplayed()));
         return element.isDisplayed();
     }
 
+    protected boolean isVisible(WebElement webElement) {
+        logger.info(("Element '" + webElement + "' is visible - " + webElement.isDisplayed()));
+        return webElement.isDisplayed();
+    }
+
     public boolean isVisible() {
-        WebElement element = webDriver.findElement(locator);
-        logger.info(("Element with locator '" + locator + "' is visible - " + element.isDisplayed()));
-        return element.isDisplayed();
+        if (locator != null){
+            return isVisible(locator, webDriver);
+        } else {
+            return isVisible(webElement);
+        }
     }
 
     @Deprecated
@@ -105,6 +144,12 @@ public class Element {
     }
 
     public boolean isDisabled() {
+        WebElement webElement = webDriver.findElement(locator);
+        logger.info(("Element with locator '" + locator + "' is disabled - " + !webElement.isEnabled()));
+        return !webElement.isEnabled();
+    }
+
+    public boolean isDisabled(WebDriver webDriver, By locator) {
         WebElement webElement = webDriver.findElement(locator);
         logger.info(("Element with locator '" + locator + "' is disabled - " + !webElement.isEnabled()));
         return !webElement.isEnabled();
@@ -137,16 +182,15 @@ public class Element {
     public boolean waitForJStoLoad(WebDriver webDriver) {
 
         WebDriverWait wait = new WebDriverWait(webDriver, waitForJSDelay);
-        JavascriptExecutor js = (JavascriptExecutor)webDriver;
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
 
         // wait for jQuery to load
         ExpectedCondition<Boolean> jQueryLoad = new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver driver) {
                 try {
-                    return ((Long)js.executeScript("return jQuery.active") == 0);
-                }
-                catch (Exception e) {
+                    return ((Long) js.executeScript("return jQuery.active") == 0);
+                } catch (Exception e) {
                     return true;
                 }
             }

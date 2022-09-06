@@ -18,6 +18,7 @@ import statystech.aqaframework.steps.UiSteps.OrderFulfillmentSteps;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.UiTestClass;
+import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
@@ -205,7 +206,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickNewOrderCard(1);
         OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
-        orderCardDetailsPopUp = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithFirstItemInIt();
+        orderCardDetailsPopUp = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithFirstItem();
         orderCardDetailsPopUp.close();
 
         int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
@@ -251,7 +252,6 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ValueSource(strings = {"Order_9993305.json"})
     public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
 
-        StringBuilder errorMessage = new StringBuilder();
 //        StageOrderSteps stageOrderSteps = new StageOrderSteps();
 //        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
 //        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
@@ -262,7 +262,8 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(20729);
+        //mainSteps.createParcelWithAllItems(9993305);
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
 
         orderFulfillmentSteps.splitAndConfirm(1);
@@ -270,8 +271,14 @@ public class UI_SmokeTestSuite extends UiTestClass {
         orderFulfillmentSteps.deleteFirstParcel();
         orderFulfillmentSteps.createParcel(1,1);
         orderFulfillmentSteps.shipParcelExternally(1);
-        errorMessage.append(orderFulfillmentSteps.deleteCompletedParcel());
 
-        assertTrue( errorMessage.isEmpty(), errorMessage.toString());
+        String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
+        assertTrue( errorMessage.isEmpty(), errorMessage);
+
+        try {
+            DBUtils.cleanDB("cleanup_order9993305.sql");
+        } catch (IOException | SQLException e) {
+            logger.error("\n!!!DB was NOT cleaned after test execution!!!\n");
+        }
     }
 }

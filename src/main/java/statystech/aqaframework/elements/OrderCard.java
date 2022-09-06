@@ -43,7 +43,7 @@ public class OrderCard extends Element {
     }
 
     public OrderCard(WebElement webElement, WebDriver webDriver) {
-        super(webElement);
+        super(webElement, webDriver);
         setLocator(By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div"));
         setWebDriver(webDriver);
         waitForElementToLoad(locator, webDriver);
@@ -52,6 +52,7 @@ public class OrderCard extends Element {
 
     public int getIndex() {
         waitForJStoLoad(webDriver);
+        scrollToElement(webElement, webDriver);
         waitForElementToLoad(locator, webDriver);
         int i = 0;
         try {

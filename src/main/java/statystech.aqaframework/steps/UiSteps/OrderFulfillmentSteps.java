@@ -1,6 +1,5 @@
 package statystech.aqaframework.steps.UiSteps;
 
-import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
@@ -21,7 +20,7 @@ public class OrderFulfillmentSteps extends Steps {
         this.orderFulfillmentPage = orderFulfillmentPage;
     }
 
-    public OrderCardDetailsPopUp createParcelWithFirstItemInIt() {
+    public OrderCardDetailsPopUp createParcelWithFirstItem() {
         orderFulfillmentPage.checkProduct(1);
         orderFulfillmentPage.clickCreateParcelButton();
         return orderFulfillmentPage.close();
@@ -45,7 +44,7 @@ public class OrderFulfillmentSteps extends Steps {
             updatedProductsQuality = getProductsQuantity();
         }
 
-        if (updatedProductsQuality == productsQuantity){
+        if (updatedProductsQuality == productsQuantity) {
             errorMessage = "\nProducts quantity didn't changed after split";
         }
 
@@ -82,6 +81,29 @@ public class OrderFulfillmentSteps extends Steps {
         return orderFulfillmentPage;
     }
 
+    public OrderCardDetailsPopUp createParcelWithAllItems() {
+        orderFulfillmentPage.checkProducts();
+        selectAndSaveAllBatchNumbers();
+        int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
+        orderFulfillmentPage.clickCreateParcelButton();
+        int updatedParcelQuantity = orderFulfillmentPage.getParcelsElements().size();
+        if (updatedParcelQuantity == parcelQuantity) {
+            logger.error("Parcels quantity didn't changed after creating new one");
+        }
+
+        return orderFulfillmentPage.close();
+    }
+
+    public void selectAndSaveAllBatchNumbers() {
+        int rows = getProductsQuantity();
+        int i = 1;
+        while (i <= rows) {
+            chooseBatchNumberFromDd(i, 1);
+            orderFulfillmentPage.clickSaveBatchNumber(i);
+            i++;
+        }
+    }
+
     public OrderFulfillmentPage deleteFirstParcel() {
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         logger.info("\nParcels on the page : " + parcelQuantity);
@@ -103,7 +125,7 @@ public class OrderFulfillmentSteps extends Steps {
         StringBuilder errorMessage = new StringBuilder();
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         logger.info("\nParcels on the page : " + parcelQuantity);
-        if (!orderFulfillmentPage.clickFirstParcelElement()){
+        if (!orderFulfillmentPage.clickFirstParcelElement()) {
             orderFulfillmentPage.clickFirstParcelElement();
         }
         orderFulfillmentPage.deleteFirstParcelElement();

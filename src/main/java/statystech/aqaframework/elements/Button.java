@@ -59,4 +59,8 @@ public class Button extends Element {
     public boolean isEnabled() {
         return webElement.isEnabled();
     }
+
+    public boolean isDisabled() {
+        return super.isDisabled(webDriver, locator);
+    }
 }

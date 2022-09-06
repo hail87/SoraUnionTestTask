@@ -11,6 +11,8 @@ import statystech.aqaframework.PageObjects.OrderFulfillmentPage;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
+import statystech.aqaframework.steps.DBsteps.OrdersSteps;
+import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 import statystech.aqaframework.steps.UiSteps.LoginSteps;
 import statystech.aqaframework.steps.UiSteps.MainSteps;
 import statystech.aqaframework.steps.UiSteps.OrderCardDetailsPopUpSteps;
@@ -252,17 +254,16 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ValueSource(strings = {"Order_9993305.json"})
     public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
 
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
-//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-//        OrdersSteps ordersSteps = new OrdersSteps();
-//        ordersSteps.setOrderIDtoContext();
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderIDtoContext();
 
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        //mainSteps.createParcelWithAllItems(9993305);
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
 

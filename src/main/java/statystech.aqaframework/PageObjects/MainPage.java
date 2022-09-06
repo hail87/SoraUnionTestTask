@@ -51,8 +51,8 @@ public class MainPage extends PageObject {
 
     @Getter
     By popupCancelOrderBy = By.xpath("/html/body/div[2]/div[3]");
-    By popupCancelOrderTxtCancellationReason = By.xpath("//textarea[@id=\":re:\"]");
-    By popupCancelOrderBtnSubmitRequest = By.xpath("//button");
+    By popupCancelOrderTxtCancellationReason = By.xpath(".//textarea[@name=\"message\"]");
+    By popupCancelOrderBtnSubmitRequest = By.xpath(".//button");
 
     By inputSearch = By.xpath("//input[contains(@placeholder, 'Search by order number')]");
     By btnCancelSearch = By.xpath("//*[@id=\"root\"]/header/div/div[2]/div[1]/div/div/div/div/div[2]/button");
@@ -392,12 +392,12 @@ public class MainPage extends PageObject {
 
     public void fillInCancellationReason(String reason) {
         waitForElementToLoad(popupCancelOrderBy);
-        new TextField(webDriver, By.xpath(popupCancelOrderBy.toString().substring(9).trim() + popupCancelOrderTxtCancellationReason.toString().substring(10))).fillIn(reason);
+        new TextField(webDriver, getChildLocator(popupCancelOrderBy, popupCancelOrderTxtCancellationReason)).fillIn(reason);
     }
 
     public void submitCancellationReason() {
         waitForElementToLoad(popupCancelOrderBy);
-        new Button(webDriver, By.xpath(popupCancelOrderBy.toString().substring(9).trim() + popupCancelOrderBtnSubmitRequest.toString().substring(10))).click();
+        new Button(webDriver, getChildLocator(popupCancelOrderBy, popupCancelOrderBtnSubmitRequest)).click();
         waitForElementToDisappear(popupCancelOrderBy);
         waitForJStoLoad();
     }

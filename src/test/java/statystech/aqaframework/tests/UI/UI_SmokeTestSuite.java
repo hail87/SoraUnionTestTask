@@ -186,16 +186,15 @@ public class UI_SmokeTestSuite extends UiTestClass {
     }
 
     //problem with orders which cannot be canceled bcs of lack of inventory at the warehouse
-    @TestRailID(id = 220671)
-    @Test
-    public void requestCancellation(TestInfo testInfo) {
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
-        String errorMessage = mainSteps.requestCancellation("Some reason");
-        assertTrue(true);
+//    @TestRailID(id = 220671)
+//    @Test
+//    public void requestCancellation(TestInfo testInfo) {
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")));
+//        String errorMessage = mainSteps.requestCancellation("Some reason");
 //        assertTrue(errorMessage.isEmpty(), errorMessage);
-    }
+//    }
 
     @TestRailID(id = 220672)
     @Test

@@ -1,12 +1,13 @@
 {
     "order_header":
     {
-        "website_order_id": "15acme201",
-        "order_date": "2021-06-04",
-        "shipping_total": 33.00,
-        "total": 569.00,
-        "prices_include_tax": false,
-        "currency": "USD"
+        "website_order_id": "sbtest328",
+        "order_date": "2022-09-07",
+        "shipping_total": 2.00,
+        "total": 202.00,
+        "prices_include_tax": true,
+        "currency": "USD",
+        "customer_note": "Please ship using DHL"
     },
     "discounts":
     {
@@ -15,61 +16,49 @@
     "buyer":
     {
         "buyer_ip_address": "192.168.1.1",
-        "buyer_license":
-        {
-            "license_name": "LN90806",
-            "license_expiry_date": "2024-01-31",
-            "title": "",
-            "first_name": "Sam",
-            "middle_name": "",
-            "last_name": "Jones",
-            "state": "FL",
-            "country": "US",
-            "profession": "Dentist",
-            "specialty": ""
-        },
+        "buyer_account_id": 1894,
         "buyer_address":
         {
             "title": "",
-            "first_name": "Sam",
+            "first_name": "Francis",
             "middle_name": "",
-            "last_name": "Jones1",
+            "last_name": "Candiago",
             "company": "",
-            "address_1": "178 Main St N",
+            "address_1": "10 Carmody Lane",
             "address_2": "",
             "city": "Uxbridge",
             "state": "ON",
-            "postcode": "L9P 1C6",
+            "postcode": "L9P1A5",
             "country": "CA",
-            "phone_number_1": "6472368233",
+            "phone_number_1": "6472368232",
             "phone_number_2": "",
-            "email": "something2@gmail.com"
+            "email": "francis@contoso.com"
         }
     },
     "shipping":
     {
         "title": "",
-        "first_name": "Samueliero",
+        "first_name": "Suzzana",
         "middle_name": "",
-        "last_name": "Smithello",
+        "last_name": "McSimmons",
         "company": "",
-        "address_1": "176",
+        "address_1": "176-009-ABC-DEF",
         "address_2": "",
         "city": "Kiev",
         "state": "ON",
-        "postcode": "L9P 1C6",
+        "postcode": "N6E 1L5",
         "country": "CA",
-        "phone_number_1": "6472368239",
+        "phone_number_1": "6472368232",
         "phone_number_2": "",
-        "email": ""
+        "email": "johanna@contoso.com"
     },
     "line_items":
     [
         {
-            "product_id": 2295,
+            "product_id": 2391,
             "quantity": 1,
-            "price": 567.00,
-            "total": 567.00
+            "price": 200.00,
+            "total": 200.00
         }
     ]
 }

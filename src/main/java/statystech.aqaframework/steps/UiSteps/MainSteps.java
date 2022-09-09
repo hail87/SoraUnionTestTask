@@ -220,17 +220,23 @@ public class MainSteps extends Steps {
     }
 
     public boolean waitForNewOrderCardToBeProcessed(int orderNumber) {
+        logger.info("Waiting for order to appear : " + orderNumber);
         OrderCard orderCard = findOrderCard(orderNumber);
         int i = 0;
         while (orderCard == null && i < 30) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             mainPage.refreshPage();
             orderCard = findOrderCard(orderNumber);
             i++;
+        }
+        if (orderCard != null){
+            logger.info("Order found : " + orderNumber);
+        } else {
+            logger.error("Order was NOT found : " + orderNumber);
         }
         return orderCard != null;
     }

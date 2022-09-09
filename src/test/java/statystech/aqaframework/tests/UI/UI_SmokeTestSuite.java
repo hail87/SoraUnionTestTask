@@ -197,28 +197,45 @@ public class UI_SmokeTestSuite extends UiTestClass {
 //    }
 
     @TestRailID(id = 220672)
-    @Test
-    public void shipAndResetOrder(TestInfo testInfo) {
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
+        DBUtils.cleanDB("cleanup_order9993305.sql");
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderIDtoContext();
+
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
+        mainSteps.waitForNewOrderCardToBeProcessed(9993305);
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickNewOrderCard(1);
+
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
         OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
-        orderCardDetailsPopUp = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithFirstItem();
+        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderFulfillmentPage);
+        orderFulfillmentSteps.createParcel(1, 1);
+        orderFulfillmentSteps.closeOrderFulfillmentPage();
         orderCardDetailsPopUp.close();
 
         int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
 
-        assertEquals(activeNewOrders, activeNewOrdersUpdated + 1);
-        assertEquals(activeInProgressOrders, activeInProgressOrdersUpdated - 1);
+        assertEquals(activeNewOrdersUpdated, activeNewOrders - 1,
+                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + activeNewOrdersUpdated);
+        assertEquals(activeInProgressOrdersUpdated, activeInProgressOrders + 1,
+                "\nExpected in progress orders : " + (activeInProgressOrders + 1) + "\nActual in progress orders : " + activeInProgressOrdersUpdated);
 
-        mainSteps.clickResetOrderCardAndConfirm(1);
+        mainSteps.resetOrder(9993305);
 
-        assertEquals(activeNewOrders, mainSteps.getMainPage().getActiveNewOrders());
+        assertEquals(activeNewOrders, mainSteps.getMainPage().getActiveNewOrders(),
+                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + mainSteps.getMainPage().getActiveNewOrders());
+        assertEquals(activeInProgressOrders, mainSteps.getMainPage().getActiveInProgressOrders(),
+                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + mainSteps.getMainPage().getActiveInProgressOrders());
     }
 
     @TestRailID(id = 225149)
@@ -267,18 +284,14 @@ public class UI_SmokeTestSuite extends UiTestClass {
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
 
         orderFulfillmentSteps.splitAndConfirm(1);
-        orderFulfillmentSteps.createParcel(1,1);
+        orderFulfillmentSteps.createParcel(1, 1);
         orderFulfillmentSteps.deleteFirstParcel();
-        orderFulfillmentSteps.createParcel(1,1);
+        orderFulfillmentSteps.createParcel(1, 1);
         orderFulfillmentSteps.shipParcelExternally(1);
 
         String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
-        assertTrue( errorMessage.isEmpty(), errorMessage);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
 
-        try {
-            DBUtils.cleanDB("cleanup_order9993305.sql");
-        } catch (IOException | SQLException e) {
-            logger.error("\n!!!DB was NOT cleaned after test execution!!!\n");
-        }
+        DBUtils.cleanDB("cleanup_order9993305.sql");
     }
 }

@@ -2,6 +2,7 @@ package statystech.aqaframework.steps.UiSteps;
 
 import lombok.Getter;
 import org.junit.jupiter.api.TestInfo;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,17 +203,66 @@ public class MainSteps extends Steps {
     }
 
     public OrderCardDetailsPopUp clickOrderCard(int orderNumber) {
+        OrderCard orderCard = findOrderCard(orderNumber);
+        int i = 0;
+        while (orderCard == null && i < 30) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainPage.refreshPage();
+            orderCard = findOrderCard(orderNumber);
+            i++;
+        }
+        orderCard.click();
+        return new OrderCardDetailsPopUp(webDriver);
+    }
+
+    public boolean waitForNewOrderCardToBeProcessed(int orderNumber) {
+        OrderCard orderCard = findOrderCard(orderNumber);
+        int i = 0;
+        while (orderCard == null && i < 30) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainPage.refreshPage();
+            orderCard = findOrderCard(orderNumber);
+            i++;
+        }
+        return orderCard != null;
+    }
+
+    public OrderCard waitForNewOrderCard(int orderNumber) {
+        OrderCard orderCard = findOrderCard(orderNumber);
+        int i = 0;
+        while (orderCard == null && i < 30) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mainPage.refreshPage();
+            orderCard = findOrderCard(orderNumber);
+            i++;
+        }
+        return orderCard;
+    }
+
+    private OrderCard findOrderCard(int orderNumber) {
         List<OrderCard> orderCards = mainPage.getOrderCards();
         int i = 0;
+        OrderCard orderCard;
         while (i < orderCards.size()) {
-            OrderCard orderCard = orderCards.get(i);
-            if (orderCard.getIndex() == orderNumber){
-                orderCard.click();
-                break;
+            orderCard = orderCards.get(i);
+            if (orderCard.getIndex() == orderNumber) {
+                return orderCard;
             }
             i++;
         }
-        return new OrderCardDetailsPopUp(webDriver);
+        return null;
     }
 
     public void createParcelWithAllItems(int orderNumber) {
@@ -222,8 +272,14 @@ public class MainSteps extends Steps {
         orderCardDetailsPopUp.close();
     }
 
-    public void clickResetOrderCardAndConfirm(int number) {
-        OrderCard orderCard = mainPage.getOrderCardsInProgress().get(number);
+    public void clickResetOrderCardAndConfirm(int orderPosition) {
+        OrderCard orderCard = mainPage.getOrderCardsInProgress().get(orderPosition);
+        orderCard.clickResetBtn();
+        mainPage.getMessageMoveToNewOrder().confirm();
+    }
+
+    public void resetOrder(int orderNumber) {
+        OrderCard orderCard = waitForNewOrderCard(orderNumber);
         orderCard.clickResetBtn();
         mainPage.getMessageMoveToNewOrder().confirm();
     }

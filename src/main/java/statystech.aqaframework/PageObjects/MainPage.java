@@ -201,6 +201,12 @@ public class MainPage extends PageObject {
     }
 
     public Integer getActiveNewOrders() {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        refreshPage();
         waitForElementToLoad(txtActiveNewOrders);
         waitForJStoLoad();
         String buttonText = webDriver.findElement(txtActiveNewOrders).getText();

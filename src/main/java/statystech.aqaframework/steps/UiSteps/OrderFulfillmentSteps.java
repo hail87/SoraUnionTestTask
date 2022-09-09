@@ -20,9 +20,13 @@ public class OrderFulfillmentSteps extends Steps {
         this.orderFulfillmentPage = orderFulfillmentPage;
     }
 
+    @Deprecated
     public OrderCardDetailsPopUp createParcelWithFirstItem() {
-        orderFulfillmentPage.checkProduct(1);
-        orderFulfillmentPage.clickCreateParcelButton();
+        createParcel(1, 1);
+        return orderFulfillmentPage.close();
+    }
+
+    public OrderCardDetailsPopUp closeOrderFulfillmentPage() {
         return orderFulfillmentPage.close();
     }
 

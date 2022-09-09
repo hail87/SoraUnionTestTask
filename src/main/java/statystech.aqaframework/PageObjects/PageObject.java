@@ -73,6 +73,10 @@ public abstract class PageObject {
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
+    public void refreshPage() {
+        webDriver.navigate().refresh();
+    }
+
     protected void waitForElementToBeClickable(By by) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.elementToBeClickable(by));

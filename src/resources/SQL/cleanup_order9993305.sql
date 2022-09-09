@@ -12,6 +12,10 @@ delete FROM lwa_test_enc.orderLine
 where warehouseOrderID = (SELECT warehouseOrderID from lwa_test_enc.warehouseOrder
 where orderID = (SELECT orderID from lwa_test_enc.orders where orderAllSysID = 9993305));
 
+delete FROM lwa_test_enc.parcel
+where warehouseOrderID = (SELECT warehouseOrderID from lwa_test_enc.warehouseOrder
+where orderID = (SELECT orderID from lwa_test_enc.orders where orderAllSysID = 9993305));
+
 delete FROM lwa_test_enc.warehouseOrder
 where orderID = (SELECT orderID from lwa_test_enc.orders where orderAllSysID = 9993305);
 

@@ -60,7 +60,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
     @TestRailID(id = 16811)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
-    public void updateParcelLineNonExistentWarehouseBatchInventoryID(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void updateParcelLineNonExistentWarehouseBatchInventoryID(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
@@ -87,7 +87,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
     @TestRailID(id = 16813)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
-    public void updateParcelLineWrongUserRole(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void updateParcelLineWrongUserRole(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
@@ -126,7 +126,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
     @TestRailID(id = 16869)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})
-    public void warehouseBatchInventoryIdFromDifferentWarehouse(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void warehouseBatchInventoryIdFromDifferentWarehouse(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");

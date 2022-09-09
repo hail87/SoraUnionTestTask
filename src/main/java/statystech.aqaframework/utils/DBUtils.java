@@ -96,12 +96,17 @@ public class DBUtils {
         return execute(String.format("SELECT * FROM %s ORDER by createdDate DESC LIMIT 1", tableName));
     }
 
-    public static void cleanDB(String scriptName) throws IOException, SQLException {
-        Connection connection = new ConnectionDB().getCurrentConnection();
-        ScriptRunner sr = new ScriptRunner(connection);
-        Reader reader = new BufferedReader(new FileReader(MyPath.SQL_SCRIPTS_PATH.getPath() + scriptName));
-        sr.runScript(reader);
-        connection.close();
+    public static void cleanDB(String scriptName) {
+        try {
+            Connection connection = new ConnectionDB().getCurrentConnection();
+            ScriptRunner sr = new ScriptRunner(connection);
+            Reader reader = new BufferedReader(new FileReader(MyPath.SQL_SCRIPTS_PATH.getPath() + scriptName));
+            sr.runScript(reader);
+            connection.close();
+        } catch (SQLException | FileNotFoundException e) {
+            e.printStackTrace();
+            logger.error("\n!!!DB was NOT cleaned after test execution!!!\n");
+        }
     }
 
     public int insertJsonToStageOrder(String jsonContent) throws SQLException, IOException {

@@ -11,12 +11,8 @@ public class DBCleaner {
     private static final Logger logger = LoggerFactory.getLogger(DBCleaner.class);
 
     public static String cleanDBafter7783(String errorMessage){
-        try {
             DBUtils.cleanDB("clean_all_lwa_test_data.sql");
             DBUtils.cleanDB("clean_new_billing_address.sql");
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-        }
         return errorMessage;
     }
 }

@@ -86,6 +86,7 @@ public class CheckBox extends Element {
 
     public boolean isChecked() {
         logger.info(("Checkbox checked - " + webElement.isSelected()));
-        return webElement.findElement(By.xpath(".//../../..")).getText().contains("selected");
+        return webElement.findElement(By.xpath(".//../../..")).getText().contains("selected")
+                || webElement.getAttribute("class").contains("checked");
     }
 }

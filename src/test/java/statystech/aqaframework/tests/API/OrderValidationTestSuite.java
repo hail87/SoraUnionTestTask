@@ -253,11 +253,7 @@ public class OrderValidationTestSuite extends ApiTestClass {
     @ParameterizedTest
     @CsvSource({"OrderValidation-ExternalAddressValidationFailed.json"})
     public void externalAddressValidationFailed(String jsonFilename, TestInfo testInfo) throws IOException {
-        try {
-            DBUtils.cleanDB("clean_new_address_failed.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        DBUtils.cleanDB("clean_new_address_failed.sql");
 
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();
@@ -390,12 +386,8 @@ public class OrderValidationTestSuite extends ApiTestClass {
     @CsvSource({"OrderValidation - newAddressValid.json"})
     public void addressValidatedByExternalService(String jsonFilename, TestInfo testInfo) throws IOException {
 
-        try {
-            //DBUtils.cleanDB("clean_all_lwa_test_data.sql");
-            DBUtils.cleanDB("clean_new_address.sql");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        //DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+        DBUtils.cleanDB("clean_new_address.sql");
 
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();

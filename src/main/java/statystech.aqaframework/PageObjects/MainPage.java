@@ -2,6 +2,7 @@ package statystech.aqaframework.PageObjects;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -44,9 +45,10 @@ public class MainPage extends PageObject {
     By btnCancelHold = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div[4]/p");
     By btnUncheckAll = By.xpath("//*[@id=\"root\"]/div[3]/div/div/p");
 
-    By popupPutOnHold = By.xpath("/html/body/div[2]/div[3]/div/div");
-    By btnCalendarPutOnHold = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div/div[1]/div/div/button");
-    By btnConfirmPutOnHold = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div/div[3]/button[2]");
+    By popupPutOnHold = By.xpath("/html/body/div[2]/div[3]");
+    By btnCalendarPutOnHold = By.xpath(".//div[1]/div/div/button");
+    By btnCancelPutOnHold = By.xpath(".//div[3]/button[1]");
+    By btnConfirmPutOnHold = By.xpath(".//div[3]/button[2]");
 
     By onHoldDate = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p[2]/span");
 
@@ -102,7 +104,10 @@ public class MainPage extends PageObject {
     }
 
     public MainPage waitCalendarToDisappear() {
-        waitForElementToDisappear(webDriver.findElement(calendar));
+        try {
+            waitForElementToDisappear(webDriver.findElement(calendar));
+        } catch (NoSuchElementException ignored) {
+        }
         return this;
     }
 
@@ -304,7 +309,8 @@ public class MainPage extends PageObject {
     }
 
     public void chooseTodayPutOnHoldCalendar() {
-        new Button(webDriver, btnCalendarPutOnHold).click();
+        waitForElementToLoad(popupPutOnHold);
+        new Button(webDriver, getChildLocator(popupPutOnHold, btnCalendarPutOnHold)).click();
         waitForElementToLoad(calendar);
         new Button(webDriver, btnTodayDay).click();
         waitCalendarToDisappear();

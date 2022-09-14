@@ -20,13 +20,29 @@ public abstract class PageObject {
 
     private static final Logger logger = LoggerFactory.getLogger(MainPage.class);
 
-    final int waitForElementDelay = 5;
+    final int waitForElementDelay = 10;
     final int waitForJSDelay = 30;
 
     protected WebDriver webDriver;
 
-    public boolean waitForJStoLoad() {
+    public static String getXpathPath(WebElement webElement) {
+        int n = webElement.findElements(By.xpath("./ancestor::*")).size();
+        String path = "";
+        WebElement current = webElement;
+        for (int i = n; i > 0; i--) {
+            String tag = current.getTagName();
+            int lvl = current.findElements(By.xpath("./preceding-sibling::" + tag)).size() + 1;
+            path = String.format("/%s[%d]%s", tag, lvl, path);
+            current = current.findElement(By.xpath("./parent::*"));
+        }
+        return "/" + current.getTagName() + path;
+    }
 
+    public static By getXpath(WebElement webElement) {
+        return By.xpath(getXpathPath(webElement));
+    }
+
+    public boolean waitForJStoLoad() {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForJSDelay);
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
 
@@ -66,6 +82,15 @@ public abstract class PageObject {
             i++;
         }
         return !baseValue.equals(element.getText());
+    }
+
+    public boolean isTextShownAtThePage(String text) {
+        try {
+            waitForElementToLoad(By.xpath("//*[contains(text(), '" + text + "')]"));
+            return webDriver.findElement(By.xpath("//*[contains(text(), \"" + text + "\")]")).isDisplayed();
+        } catch (NoSuchElementException | ElementNotInteractableException | TimeoutException e) {
+            return false;
+        }
     }
 
     protected void waitForElementToLoad(By by) {
@@ -188,6 +213,14 @@ public abstract class PageObject {
         }
     }
 
+    public void delay(int millisecond) {
+        try {
+            Thread.sleep(millisecond);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String readPDFContent(String appUrl) throws Exception {
 
         URL url = new URL(appUrl);
@@ -213,22 +246,5 @@ public abstract class PageObject {
 
     public By getChildLocator(By parent, By child) {
         return By.xpath(parent.toString().substring(9).trim() + child.toString().substring(11).trim());
-    }
-
-    public static String getXpathPath(WebElement webElement){
-        int n = webElement.findElements(By.xpath("./ancestor::*")).size();
-        String path = "";
-        WebElement current = webElement;
-        for(int i = n; i > 0; i--){
-            String tag = current.getTagName();
-            int lvl = current.findElements(By.xpath("./preceding-sibling::" + tag)).size() + 1;
-            path = String.format("/%s[%d]%s", tag, lvl, path);
-            current = current.findElement(By.xpath("./parent::*"));
-        }
-        return "/" + current.getTagName() + path;
-    }
-
-    public static By getXpath(WebElement webElement){
-        return By.xpath(getXpathPath(webElement));
     }
 }

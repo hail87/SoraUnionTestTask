@@ -211,7 +211,8 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.waitForNewOrderCardToBeProcessed(9993305);
+        mainSteps.searchOrder(9993305);
+        assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
 
@@ -245,7 +246,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
+        int activeNewOrders = mainSteps.getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
 
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCardInProgress(1);
@@ -258,7 +259,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
+        int activeNewOrdersUpdated = mainSteps.getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
 
         assertEquals(activeNewOrdersUpdated, activeNewOrders + 1);

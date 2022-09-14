@@ -27,6 +27,7 @@ public class MainPage extends PageObject {
     By txtActiveInProgressOrders = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div[1]/p[1]/span");
     By tabShipped = By.id("1");
     By btnApply = By.xpath("//button[text()=\"Apply\"]");
+    By btnOk = By.xpath("//button[text()=\"OK\"]");
     By dateFrom = By.xpath("(//input[@placeholder = 'mm/dd/yyyy'])[1]");
     By calendar = By.xpath("(//div[contains(@class, 'MuiCalendarPicker')])[1]");
     By dateTo = By.xpath("(//input[@placeholder = 'mm/dd/yyyy'])[2]");
@@ -66,7 +67,6 @@ public class MainPage extends PageObject {
 
     By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]");
 
-
     Button applyButton;
 
     @Getter
@@ -85,6 +85,7 @@ public class MainPage extends PageObject {
     }
 
     public MainPage search(String text) {
+        waitForJStoLoad();
         new TextField(webDriver, inputSearch).fillInAndSubmit(text);
         return this;
     }
@@ -201,14 +202,7 @@ public class MainPage extends PageObject {
     }
 
     public Integer getActiveNewOrders() {
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        refreshPage();
         waitForElementToLoad(txtActiveNewOrders);
-        waitForJStoLoad();
         String buttonText = webDriver.findElement(txtActiveNewOrders).getText();
         Integer activeNewOrders = Integer.valueOf(buttonText.replaceAll("\\D+", ""));
         logger.info("Active New orders : " + activeNewOrders);
@@ -228,11 +222,7 @@ public class MainPage extends PageObject {
         String buttonText = webDriver.findElement(tabShipped).getText();
         int i = 0;
         while (buttonText.length() <= 7 & i <= 3) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            delay(1000);
             buttonText = webDriver.findElement(tabShipped).getText();
             i++;
         }
@@ -256,6 +246,10 @@ public class MainPage extends PageObject {
         if (applyButton == null)
             applyButton = new Button(webDriver, btnApply);
         applyButton.click();
+    }
+
+    public void clickOkButton() {
+        new Button(webDriver, btnOk).click();
     }
 
     public void waitForFirstOrderNumberToLoad() {

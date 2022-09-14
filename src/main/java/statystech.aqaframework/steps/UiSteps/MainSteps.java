@@ -219,6 +219,34 @@ public class MainSteps extends Steps {
         return new OrderCardDetailsPopUp(webDriver);
     }
 
+    public boolean searchOrder(int orderNumber) {
+        logger.info("Waiting for search order to appear : " + orderNumber);
+
+        int i = 0;
+        boolean orderFound = false;
+        while (!orderFound && i < 60) {
+            if (!mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
+                search(String.valueOf(orderNumber));
+            } else {
+                mainPage.clickOkButton();
+                mainPage.waitForJStoLoad();
+                mainPage.refreshPage();
+                search(String.valueOf(orderNumber));
+            }
+            mainPage.waitForJStoLoad();
+            if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
+                mainPage.clickOkButton();
+                mainPage.waitForJStoLoad();
+                mainPage.refreshPage();
+                mainPage.delay(1000);
+                i++;
+            } else {
+                orderFound = true;
+            }
+        }
+        return waitForNewOrderCardToBeProcessed(orderNumber);
+    }
+
     public boolean waitForNewOrderCardToBeProcessed(int orderNumber) {
         logger.info("Waiting for order to appear : " + orderNumber);
         OrderCard orderCard = findOrderCard(orderNumber);
@@ -233,7 +261,7 @@ public class MainSteps extends Steps {
             orderCard = findOrderCard(orderNumber);
             i++;
         }
-        if (orderCard != null){
+        if (orderCard != null) {
             logger.info("Order found : " + orderNumber);
         } else {
             logger.error("Order was NOT found : " + orderNumber);
@@ -288,6 +316,13 @@ public class MainSteps extends Steps {
         OrderCard orderCard = waitForNewOrderCard(orderNumber);
         orderCard.clickResetBtn();
         mainPage.getMessageMoveToNewOrder().confirm();
+    }
+
+    public Integer getActiveNewOrders() {
+        mainPage.delay(1500);
+        mainPage.refreshPage();
+        mainPage.waitForJStoLoad();
+        return mainPage.getActiveNewOrders();
     }
 
 }

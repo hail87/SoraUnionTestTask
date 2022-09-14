@@ -21,7 +21,7 @@ public class OrderCard extends Element {
     WebElement webElement;
     @Setter
     @Getter
-    By locator;
+    By locator; //needs to be reset by getXpath()
     @Setter
     @Getter
     WebDriver webDriver;
@@ -32,7 +32,7 @@ public class OrderCard extends Element {
     By btnExpirationDate = By.xpath(".//div/div/div/div[2]/div/div/p[2]/span");
     By btnCancellationRequested = By.xpath(".//div/div/div/div[2]/div/p[3]/span");
     By btnRequestCancellation = By.xpath(".//div/div/div/div[2]/div/p[3]/a");
-    By btnReset = By.xpath(".//div/div/div/div[2]/div/div[2]/span");
+    By btnReset = By.xpath(".//div/div[2]/div/div[2]/span");
 
     public OrderCard(WebDriver webDriver, By locator) {
         super(webDriver,locator);

@@ -26,13 +26,9 @@ public class AddressSteps extends Steps {
     public String verifyVerificationStatus(String lastName, String expectedVerificationStatus) {
         String actualVerificationStatus = "";
         int i = 0;
-        while ((actualVerificationStatus == null || actualVerificationStatus.isEmpty()) & i < 10) {
+        while ((actualVerificationStatus == null || actualVerificationStatus.isEmpty()) & i < 30) {
             actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = '" + lastName + "'");
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            delay(1000);
             i++;
         }
         return verifyExpectedResults(actualVerificationStatus, expectedVerificationStatus);

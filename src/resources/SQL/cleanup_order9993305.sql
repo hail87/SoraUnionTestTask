@@ -25,6 +25,9 @@ where orderID = (SELECT orderID from lwa_test_enc.orders where orderAllSysID = 9
 delete from lwa_test_enc.orderItem
 where orderID = (SELECT orderID from lwa_test_enc.orders where orderAllSysID = 9993305);
 
+delete from lwa_test_enc.orderExceptionHistory
+where orderID = (SELECT orderID from lwa_test_enc.orders where orderAllSysID = 9993305);
+
 delete FROM lwa_test_enc.orders
 where orderAllSysID = 9993305;
 

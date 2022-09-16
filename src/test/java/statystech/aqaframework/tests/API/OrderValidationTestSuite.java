@@ -264,16 +264,20 @@ public class OrderValidationTestSuite extends ApiTestClass {
         ordersSteps.setOMSIsPaid(1, lwaTestContext.getApiOrderId());
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(addressTable.verifyNewRowCreated());
+        logger.info("verify Verification Status is set to 'error'");
         errorMessage.append(new AddressSteps().verifyVerificationStatus("EnzM6CUt6M/nn3o0JK5hDg==", "error")); //McSimmons = EnzM6CUt6M/nn3o0JK5hDg==
+        logger.info("verify Order Status is set to 'exception'");
         errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
+        logger.info("verify Row With OrderId Exist");
         errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
+        logger.info("verify Order Exception Type is set to '8'");
         errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 8));
 
+        logger.info("validate Row With OrderId Has Order Status ID set to '19'");
         errorMessage.append(new OrderStatusHistorySteps().validateRowWithOrderIdHasOrderStatusID(lwaTestContext.getApiOrderId(), 19));
-
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 //

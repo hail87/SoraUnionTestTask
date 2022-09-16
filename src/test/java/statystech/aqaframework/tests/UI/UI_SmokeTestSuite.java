@@ -168,14 +168,27 @@ public class UI_SmokeTestSuite extends UiTestClass {
     }
 
     @TestRailID(id = 208525)
-    @Test
-    public void selectAllUncheckAll(TestInfo testInfo) {
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void selectAllUncheckAll(String jsonFilename, TestInfo testInfo) {
+        DBUtils.cleanDB("cleanup_order9993305.sql");
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderIDtoContext();
+
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        mainSteps.searchOrder(9993305);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
         mainSteps.getMainPage().selectAllNewOrders();
         mainSteps.getMainPage().clickUncheckAll();
+
+        mainSteps.shipOrder(9993305);
+
         mainSteps.getMainPage().selectAllInProgress();
         mainSteps.getMainPage().clickUncheckAll();
         mainSteps.clickAndVerifyOrdersOnHold();
@@ -185,16 +198,26 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
     }
 
-    //problem with orders which cannot be canceled bcs of lack of inventory at the warehouse
-//    @TestRailID(id = 220671)
-//    @Test
-//    public void requestCancellation(TestInfo testInfo) {
-//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-//                DataUtils.getPropertyValue("users.properties", "whmName"),
-//                DataUtils.getPropertyValue("users.properties", "whmPass")));
-//        String errorMessage = mainSteps.requestCancellation("Some reason");
-//        assertTrue(errorMessage.isEmpty(), errorMessage);
-//    }
+    @TestRailID(id = 220671)
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void requestCancellation(String jsonFilename, TestInfo testInfo) {
+        DBUtils.cleanDB("cleanup_order9993305.sql");
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderIDtoContext();
+
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        mainSteps.searchOrder(9993305);
+
+        String errorMessage = mainSteps.requestCancellation("Some reason");
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+    }
 
     @TestRailID(id = 220672)
     @ParameterizedTest
@@ -212,16 +235,12 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
         mainSteps.searchOrder(9993305);
+
         assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
 
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
-        OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
-        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderFulfillmentPage);
-        orderFulfillmentSteps.createParcel(1, 1);
-        orderFulfillmentSteps.closeOrderFulfillmentPage();
-        orderCardDetailsPopUp.close();
+        mainSteps.shipOrder(9993305);
 
         int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
@@ -254,11 +273,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         OrderCardDetailsPopUpSteps orderCardDetailsPopUpSteps = new OrderCardDetailsPopUpSteps(orderCardDetailsPopUp);
         orderCardDetailsPopUpSteps.moveToNewOrder(true);
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        mainSteps.getMainPage().delay(2000);
         int activeNewOrdersUpdated = mainSteps.getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
 
@@ -270,7 +285,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
-
+        DBUtils.cleanDB("cleanup_order9993305.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
@@ -281,6 +296,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
+        mainSteps.searchOrder(9993305);
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
 
@@ -295,4 +311,37 @@ public class UI_SmokeTestSuite extends UiTestClass {
 
         DBUtils.cleanDB("cleanup_order9993305.sql");
     }
+
+//    @TestRailID(id = 225151)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void shipParcelExternallyWithAllFieldsFilled(String jsonFilename, TestInfo testInfo) {
+//
+//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+//        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+//        OrdersSteps ordersSteps = new OrdersSteps();
+//        ordersSteps.setOrderIDtoContext();
+//
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        mainSteps.searchOrder(9993305);
+//        mainSteps.shipOrder(9993305);
+//
+//        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+//        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
+//
+//        orderFulfillmentSteps.splitAndConfirm(1);
+//        orderFulfillmentSteps.createParcel(1, 1);
+//        orderFulfillmentSteps.deleteFirstParcel();
+//        orderFulfillmentSteps.createParcel(1, 1);
+//        orderFulfillmentSteps.shipParcelExternally(1);
+//
+//        String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//
+//        DBUtils.cleanDB("cleanup_order9993305.sql");
+//    }
 }

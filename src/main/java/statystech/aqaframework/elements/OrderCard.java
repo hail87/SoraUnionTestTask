@@ -31,7 +31,7 @@ public class OrderCard extends Element {
     By index = By.xpath(".//div/div[2]/div/div/p");
     By btnExpirationDate = By.xpath(".//div/div/div/div[2]/div/div/p[2]/span");
     By btnCancellationRequested = By.xpath(".//div/div/div/div[2]/div/p[3]/span");
-    By btnRequestCancellation = By.xpath(".//div/div/div/div[2]/div/p[3]/a");
+    By btnRequestCancellation = By.xpath(".//div[2]/div/p[3]/a");
     By btnReset = By.xpath(".//div/div[2]/div/div[2]/span");
 
     public OrderCard(WebDriver webDriver, By locator) {
@@ -121,7 +121,7 @@ public class OrderCard extends Element {
     }
 
     public void requestCancellation() {
-        new Button(webDriver, btnRequestCancellation).click();
+        webElement.findElement(btnRequestCancellation).click();
     }
 
     public boolean isVisible() {

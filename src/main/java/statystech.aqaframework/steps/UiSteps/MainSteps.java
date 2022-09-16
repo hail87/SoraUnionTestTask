@@ -33,6 +33,7 @@ public class MainSteps extends Steps {
         webDriver = Context.getTestContext(testInfo.getTestMethod().get().getName(), UiTestContext.class).getWebDriver();
     }
 
+    @Deprecated
     public MainSteps(MainPage mainPage) {
         this.mainPage = mainPage;
     }
@@ -226,13 +227,13 @@ public class MainSteps extends Steps {
 
         int i = 0;
         boolean orderFound = false;
-        while (!orderFound && i < 60) {
-            if (!mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
-                search(String.valueOf(orderNumber));
-            } else {
+        while (!orderFound && i < 30) {
+            if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
                 mainPage.clickOkButton();
                 mainPage.waitForJStoLoad();
                 mainPage.refreshPage();
+                search(String.valueOf(orderNumber));
+            } else {
                 search(String.valueOf(orderNumber));
             }
             mainPage.waitForJStoLoad();
@@ -325,6 +326,15 @@ public class MainSteps extends Steps {
         mainPage.refreshPage();
         mainPage.waitForJStoLoad();
         return mainPage.getActiveNewOrders();
+    }
+
+    public void shipOrder(int orderNumber) {
+        OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
+        OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
+        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderFulfillmentPage);
+        orderFulfillmentSteps.createParcel(1, 1);
+        orderFulfillmentSteps.closeOrderFulfillmentPage();
+        orderCardDetailsPopUp.close();
     }
 
 }

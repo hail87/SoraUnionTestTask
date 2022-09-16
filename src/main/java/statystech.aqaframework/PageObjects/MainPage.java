@@ -36,6 +36,7 @@ public class MainPage extends PageObject {
     By btnCalendarTo = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[2]/div/div/button");
     By btnTodayDay = By.xpath("//button[contains(@class,\"today\")]");
     By btnFirstOrderNumber = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p");
+
     By btnSelectAllNewOrders = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[1]/p[2]");
     By btnSelectAllInProgress = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div[1]/p[2]");
     By btnShowOnlyOrdersOnHold = By.xpath("//*[@id=\"root\"]/div[3]/div/p");
@@ -60,8 +61,8 @@ public class MainPage extends PageObject {
     By inputSearch = By.xpath("//input[contains(@placeholder, 'Search by order number')]");
     By btnCancelSearch = By.xpath("//*[@id=\"root\"]/header/div/div[2]/div[1]/div/div/div/div/div[2]/button");
 
-    By orderCardsBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div");
-    String orderCardsLctr = "//*[@id=\"root\"]/div[4]/div/div/div[1]/div";
+    By orderCardsNewBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div");
+    String orderCardsNewLctr = "//*[@id=\"root\"]/div[4]/div/div/div[1]/div";
 
     By orderCardsInProgressBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div");
     String orderCardsInProgressLctr = "//*[@id=\"root\"]/div[4]/div/div/div[2]/div";
@@ -186,7 +187,7 @@ public class MainPage extends PageObject {
 
     public boolean waitForActiveOrdersToUpdate() {
         waitForElementToLoad(tabActive);
-        return waitForElementToUpdate(webDriver, orderCardsBy);
+        return waitForElementToUpdate(webDriver, orderCardsNewBy);
     }
 
     public String getActiveOrders() {
@@ -258,7 +259,7 @@ public class MainPage extends PageObject {
     }
 
     public void waitForFirstOrderNumberToLoad() {
-        waitForElementToLoad(btnFirstOrderNumber);
+        waitForElementToLoad(orderCards);
     }
 
     public void clickFirstOrderNumber() {
@@ -279,7 +280,7 @@ public class MainPage extends PageObject {
     }
 
     public void clickRequestCancellation(int orderCardIndex) {
-        getNewOrderCard(orderCardIndex).requestCancellation();
+        getOrderCards().get(orderCardIndex-1).requestCancellation();
     }
 
     public void clickPutOnHold() {
@@ -339,11 +340,11 @@ public class MainPage extends PageObject {
     }
 
     public List<OrderCard> getNewOrderCards() {
-        int cardsQuantity = webDriver.findElements(orderCardsBy).size() - 1;
+        int cardsQuantity = webDriver.findElements(orderCardsNewBy).size() - 1;
         int startPosition = 2;
         ArrayList<OrderCard> orderCards = new ArrayList<>();
         while (cardsQuantity > 0) {
-            orderCards.add(new OrderCard(webDriver, By.xpath(orderCardsLctr + "[" + startPosition + "]")));
+            orderCards.add(new OrderCard(webDriver, By.xpath(orderCardsNewLctr + "[" + startPosition + "]")));
             startPosition++;
             cardsQuantity--;
         }
@@ -394,6 +395,10 @@ public class MainPage extends PageObject {
 
     public OrderCard getNewOrderCard(int index) {
         return getNewOrderCards().get(index - 1);
+    }
+
+    public OrderCard getShippedOrderCard(int index) {
+        return getShippedOrderCard(index - 1);
     }
 
     public void fillInCancellationReason(String reason) {

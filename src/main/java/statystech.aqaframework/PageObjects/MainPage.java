@@ -203,11 +203,7 @@ public class MainPage extends PageObject {
         String buttonText = webDriver.findElement(tabActive).getText();
         int i = 0;
         while (buttonText.length() <= 7 & i <= 3) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            delay(1000);
             buttonText = webDriver.findElement(tabActive).getText();
             i++;
         }

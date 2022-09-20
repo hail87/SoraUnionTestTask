@@ -35,16 +35,6 @@ public class MainSteps extends Steps {
         webDriver = Context.getTestContext(testInfo.getTestMethod().get().getName(), UiTestContext.class).getWebDriver();
     }
 
-    @Deprecated
-    public MainSteps(MainPage mainPage) {
-        this.mainPage = mainPage;
-    }
-
-    public MainSteps(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        mainPage = new MainPage(webDriver);
-    }
-
     public MainPage setDateFrom(String date) {
         mainPage.setDateFrom(date);
         mainPage.clickApplyButton();

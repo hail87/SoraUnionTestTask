@@ -72,7 +72,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     public void wareHouseSelection(TestInfo testInfo) {
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String activeOrders = mainSteps.getMainPage().getActiveOrders();
         mainSteps.chooseWarehouse("Iberianium");
         assertNotEquals(activeOrders, mainSteps.getActiveOrdersAfterUpdate());
@@ -85,7 +85,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     public void destinationFilter(TestInfo testInfo) {
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
         mainSteps.checkApplyButtonDisabled();
         mainSteps.chooseDestination("USA");
@@ -99,7 +99,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     public void orderStatusFilter(TestInfo testInfo) {
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
         mainSteps.checkApplyButtonDisabled();
         mainSteps.chooseOrderStatus("Partially shipped");
@@ -116,7 +116,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     public void checkDatePickerAndShippedTab(TestInfo testInfo) {
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
         mainSteps.getMainPage().clickShippedTab();
         String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
@@ -139,7 +139,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     public void printAndPutOnHold(TestInfo testInfo) {
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String errorMessage = mainSteps.checkPrintPageAndReturnToMain();
         assertTrue(errorMessage.isEmpty(), errorMessage);
         mainSteps.putOnHold();
@@ -148,22 +148,21 @@ public class UI_SmokeTestSuite extends UiTestClass {
     }
 
     @TestRailID(id = 208524)
-    @Test
-    public void search(TestInfo testInfo) {
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void search(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrder(jsonFilename, testInfo);
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")));
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
-        StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append(mainSteps.search("2149444"));
-
-        assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
-
+        String errorMessage = "";
+        mainSteps.searchOrder(9993305);
+        errorMessage = mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), "Active (1)");
+        assertTrue(errorMessage.isEmpty(), errorMessage);
         mainSteps.cancelSearch();
-
-        errorMessage.append(mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
-
-        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        errorMessage = mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
     @TestRailID(id = 208525)

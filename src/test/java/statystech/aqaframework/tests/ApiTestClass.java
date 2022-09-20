@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
-import statystech.aqaframework.common.Context.UiTestContext;
 import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.DBUtils;
@@ -19,7 +18,7 @@ public abstract class ApiTestClass {
     @BeforeAll
     static void createContext() throws IOException, SQLException {
 //        DataUtils.clearFolder(new File("allure-results"));
-        DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+        DBUtils.executeSqlScript("clean_all_lwa_test_data.sql");
         Context.initialize();
     }
 

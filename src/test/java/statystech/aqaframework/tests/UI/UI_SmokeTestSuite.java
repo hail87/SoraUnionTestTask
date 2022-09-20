@@ -170,7 +170,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void selectAllUncheckAll(String jsonFilename, TestInfo testInfo) {
-        DBUtils.cleanDB("cleanup_order9993305.sql");
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
@@ -201,7 +201,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void requestCancellation(String jsonFilename, TestInfo testInfo) {
-        DBUtils.cleanDB("cleanup_order9993305.sql");
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
@@ -222,7 +222,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
-        DBUtils.cleanDB("cleanup_order9993305.sql");
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
@@ -258,22 +258,28 @@ public class UI_SmokeTestSuite extends UiTestClass {
     }
 
     @TestRailID(id = 225149)
-    @Test
-    public void moveInProgressOrderToNew(TestInfo testInfo) {
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void moveInProgressOrderToNew(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrder(jsonFilename, testInfo);
+
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        int activeNewOrders = mainSteps.getActiveNewOrders();
+        //mainSteps.clickBottomMessageIfVisible();
+        mainSteps.searchOrder(9993305);
+        mainSteps.shipOrder(9993305);
+
+        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
 
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCardInProgress(1);
 
-        OrderCardDetailsPopUpSteps orderCardDetailsPopUpSteps = new OrderCardDetailsPopUpSteps(orderCardDetailsPopUp);
-        orderCardDetailsPopUpSteps.moveToNewOrder(true);
+        new OrderCardDetailsPopUpSteps(orderCardDetailsPopUp).moveToNewOrder(true);
 
-        mainSteps.getMainPage().delay(2000);
-        int activeNewOrdersUpdated = mainSteps.getActiveNewOrders();
+        mainSteps.delay(2000);
+        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
 
         assertEquals(activeNewOrdersUpdated, activeNewOrders + 1);
@@ -284,12 +290,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
-        DBUtils.cleanDB("cleanup_order9993305.sql");
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
-        OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
+        DBUtils.importOrder(jsonFilename, testInfo);
 
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
@@ -308,7 +309,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
         assertTrue(errorMessage.isEmpty(), errorMessage);
 
-        DBUtils.cleanDB("cleanup_order9993305.sql");
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
     }
 
 //    @TestRailID(id = 225151)
@@ -316,6 +317,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
 //    @ValueSource(strings = {"Order_9993305.json"})
 //    public void shipParcelExternallyWithAllFieldsFilled(String jsonFilename, TestInfo testInfo) {
 //
+//        DBUtils.cleanDB("cleanup_order9993305.sql");
 //        StageOrderSteps stageOrderSteps = new StageOrderSteps();
 //        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
 //        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));

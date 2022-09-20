@@ -16,7 +16,6 @@ import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
-import statystech.aqaframework.utils.JsonUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -253,7 +252,7 @@ public class OrderValidationTestSuite extends ApiTestClass {
     @ParameterizedTest
     @CsvSource({"OrderValidation-ExternalAddressValidationFailed.json"})
     public void externalAddressValidationFailed(String jsonFilename, TestInfo testInfo) throws IOException {
-        DBUtils.cleanDB("clean_new_address_failed.sql");
+        DBUtils.executeSqlScript("clean_new_address_failed.sql");
 
         StringBuilder errorMessage = new StringBuilder();
         AddressTable addressTable = new AddressTable();

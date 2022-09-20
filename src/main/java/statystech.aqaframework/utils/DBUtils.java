@@ -1,5 +1,6 @@
 package statystech.aqaframework.utils;
 
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.ConnectionDB;
@@ -7,10 +8,14 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.MyPath;
+import statystech.aqaframework.steps.DBsteps.OrdersSteps;
+import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DBUtils {
 
@@ -96,7 +101,7 @@ public class DBUtils {
         return execute(String.format("SELECT * FROM %s ORDER by createdDate DESC LIMIT 1", tableName));
     }
 
-    public static void cleanDB(String scriptName) {
+    public static void executeSqlScript(String scriptName) {
         try {
             Connection connection = new ConnectionDB().getCurrentConnection();
             ScriptRunner sr = new ScriptRunner(connection);
@@ -194,6 +199,16 @@ public class DBUtils {
             throwables.printStackTrace();
         }
         return isClosed;
+    }
+
+    public static void importOrder(String jsonFilename, TestInfo testInfo) {
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+        DBUtils.executeSqlScript("updateReseller2Balance.sql");
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderIDtoContext();
     }
 }
 

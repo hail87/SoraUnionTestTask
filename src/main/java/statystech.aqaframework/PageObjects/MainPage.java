@@ -73,6 +73,9 @@ public class MainPage extends PageObject {
     Button applyButton;
 
     @Getter
+    By msgBottomNotificationBy = By.xpath("//*[@id=\"root\"]/div[1]");
+
+    @Getter
     String url;
 
     public MainPage(WebDriver webDriver) {
@@ -86,6 +89,11 @@ public class MainPage extends PageObject {
             throw new IllegalStateException("This is not the MAIN page");
         }
     }
+
+    public WebElement getBottomNotificationElement() {
+        return webDriver.findElement(msgBottomNotificationBy);
+    }
+
 
     public MainPage search(String text) {
         waitForJStoLoad();
@@ -280,7 +288,7 @@ public class MainPage extends PageObject {
     }
 
     public void clickRequestCancellation(int orderCardIndex) {
-        getOrderCards().get(orderCardIndex-1).requestCancellation();
+        getOrderCards().get(orderCardIndex - 1).requestCancellation();
     }
 
     public void clickPutOnHold() {

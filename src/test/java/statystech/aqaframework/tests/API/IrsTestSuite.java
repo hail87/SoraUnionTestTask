@@ -265,7 +265,7 @@ public class IrsTestSuite extends ApiTestClass {
     @TestRailID(id = 131399)
     @Test
     public void addProductBatchVerifyBatchAlreadyExist(TestInfo testInfo) throws SQLException, IOException {
-        DBUtils.cleanDB("clean_all_lwa_test_data.sql");
+        DBUtils.executeSqlScript("clean_all_lwa_test_data.sql");
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();

@@ -2,8 +2,10 @@ package statystech.aqaframework.steps.UiSteps;
 
 import lombok.Getter;
 import org.junit.jupiter.api.TestInfo;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
@@ -321,7 +323,7 @@ public class MainSteps extends Steps {
         mainPage.getMessageMoveToNewOrder().confirm();
     }
 
-    public Integer getActiveNewOrders() {
+    public Integer getActiveNewOrdersAfterRefresh() {
         mainPage.delay(1500);
         mainPage.refreshPage();
         mainPage.waitForJStoLoad();
@@ -335,6 +337,17 @@ public class MainSteps extends Steps {
         orderFulfillmentSteps.createParcel(1, 1);
         orderFulfillmentSteps.closeOrderFulfillmentPage();
         orderCardDetailsPopUp.close();
+    }
+
+    public void clickBottomMessageIfVisible() {
+        mainPage.waitForJStoLoad();
+//        WebDriverWait wait = new WebDriverWait(webDriver, 2);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getMsgBottomNotificationBy()));
+        WebElement webElement = mainPage.getBottomNotificationElement();
+        while (webElement.isDisplayed()) {
+            webElement.click();
+            delay(500);
+        }
     }
 
 }

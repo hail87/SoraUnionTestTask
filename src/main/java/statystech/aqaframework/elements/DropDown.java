@@ -23,7 +23,7 @@ public class DropDown extends Element {
     WebDriver webDriver;
 
     public DropDown(WebDriver webDriver, By locator) {
-        super(webDriver,locator);
+        super(webDriver, locator);
         setLocator(locator);
         setWebDriver(webDriver);
         waitForElementToLoad(locator, webDriver);
@@ -34,5 +34,11 @@ public class DropDown extends Element {
         WebElement webElement = this.webElement.findElement(By.xpath(".//li[text()=\"" + text + "\"]"));
         webElement.click();
         logger.info("Option selected at the DropDown : " + text);
+    }
+
+    public void selectByIndex(int index) {
+        WebElement webElement = this.webElement.findElement(By.xpath("//li[" + index + "]"));
+        webElement.click();
+        logger.info("Option selected at the DropDown : " + index);
     }
 }

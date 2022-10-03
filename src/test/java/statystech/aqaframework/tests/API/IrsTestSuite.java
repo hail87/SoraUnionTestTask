@@ -249,22 +249,21 @@ public class IrsTestSuite extends ApiTestClass {
     @TestRailID(id = 130969)
     @Test
     public void addProductBatchVerifyWrongWarehouseId(TestInfo testInfo) {
-        StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();
-        errorMessage.append(irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
+        irsApiSteps.sendPostAddNewProductBatchAndSaveResponseToContext(
                 2391,
                 -1000,
                 400,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser19_Csr_Csm"),
                 lwaTestContext
-        ));
+        );
         assertTrue(lwaTestContext.getResponseBody().contains("{\"message_user\":\"Unknown warehouse ID. Please contact support at"));
     }
 
     @TestRailID(id = 131399)
     @Test
-    public void addProductBatchVerifyBatchAlreadyExist(TestInfo testInfo) throws SQLException, IOException {
+    public void addProductBatchVerifyBatchAlreadyExist(TestInfo testInfo) {
         DBUtils.executeSqlScript("clean_all_lwa_test_data.sql");
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);

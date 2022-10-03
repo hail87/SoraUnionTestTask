@@ -4,8 +4,6 @@ import lombok.Getter;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.MainPage;
@@ -320,7 +318,7 @@ public class MainSteps extends Steps {
         return mainPage.getActiveNewOrders();
     }
 
-    public void shipOrder(int orderNumber) {
+    public void shipOrderToInProgress(int orderNumber) {
         OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
         OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderFulfillmentPage);
@@ -331,8 +329,6 @@ public class MainSteps extends Steps {
 
     public void clickBottomMessageIfVisible() {
         mainPage.waitForJStoLoad();
-//        WebDriverWait wait = new WebDriverWait(webDriver, 2);
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(mainPage.getMsgBottomNotificationBy()));
         WebElement webElement = mainPage.getBottomNotificationElement();
         while (webElement.isDisplayed()) {
             webElement.click();

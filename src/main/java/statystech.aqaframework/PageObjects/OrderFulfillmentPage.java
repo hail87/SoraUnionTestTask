@@ -28,10 +28,14 @@ public class OrderFulfillmentPage extends PageObject {
     By parcels = By.xpath("//*[@id=\"root\"]/div[2]/div/div/div[1]/div");
     By parcelDelete = By.xpath(".//button");
     By btnShipExternally = By.xpath("//*[@id=\"root\"]/div[2]/div/div/div[2]/div/div[2]/button");
+    By btnPrintPackingSlip = By.xpath("//*[@id=\"root\"]/div[2]/div/div/div[2]/div/div[1]/button");
 
     By popUpShipmentInfo = By.xpath("/html/body/div[2]/div[3]");
     By msgPartiallyShipped = By.xpath("//*[contains(text(), \"Partially Shipped\")]");
     By btnDeleteCompletedParcel = By.xpath("//button[contains(text(), \"Delete\")]");
+
+    By parcelCompleteCheckmark = By.xpath("");
+    By orderStatus = By.xpath("");
 
     public OrderFulfillmentPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -56,6 +60,20 @@ public class OrderFulfillmentPage extends PageObject {
         Element element = new Element(webDriver, msgPartiallyShipped);
         element.waitForElementToLoad();
         return element.isVisible();
+    }
+
+    public boolean isParcelCompleteCheckmarkVisible() {
+        Element element = new Element(webDriver, parcelCompleteCheckmark);
+        element.waitForElementToLoad();
+        return element.isVisible();
+    }
+
+    public Button getBtnPrintPackingSlip() {
+        return new Button(webDriver, btnPrintPackingSlip);
+    }
+
+    public String getOrderStatus() {
+        return new Button(webDriver, orderStatus).getText();
     }
 
     private By getRowProductLocator(int rowNumber) {
@@ -84,14 +102,15 @@ public class OrderFulfillmentPage extends PageObject {
         return webDriver.findElements(parcels);
     }
 
+    public Button getParcelsElement(int index) {
+        waitForJStoLoad();
+        return new Button(webDriver, getProductsElements().get(index-1));
+    }
+
     public boolean clickFirstParcelElement() {
         WebElement webElement = getParcelsElements().get(0);
-        webElement.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new Button(webDriver, webElement).click();
+        delay(1000);
         return webElement.getAttribute("class").contains(" ParcelsList_isActive__");
     }
 
@@ -139,7 +158,9 @@ public class OrderFulfillmentPage extends PageObject {
 
     public OrderFulfillmentPage expandBatchNumberDropDown(int rowNumber) {
         waitForJStoLoad();
-        webDriver.findElement(getRowProductLocator(rowNumber)).findElement(ddBatchNumber).click();
+        WebElement webElement = webDriver.findElement(getRowProductLocator(rowNumber)).findElement(ddBatchNumber);
+        waitForElementToLoad(webElement);
+        webElement.click();
         return this;
     }
 
@@ -157,8 +178,7 @@ public class OrderFulfillmentPage extends PageObject {
     }
 
     public OrderCardDetailsPopUp close() {
-        Button button = new Button(webDriver, btnClose);
-        button.click();
+        new Button(webDriver, btnClose).click();
         waitForElementToDisappear(btnClose);
         waitForJStoLoad();
         return new OrderCardDetailsPopUp(webDriver);

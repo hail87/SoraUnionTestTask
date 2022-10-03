@@ -13,7 +13,7 @@ public class UiTestContext extends TestContext{
     }
 
     public WebDriver getWebDriver(){
-        return super.getDriver();
+        return super.getWebDriver();
     }
 
     private String testMethodName;

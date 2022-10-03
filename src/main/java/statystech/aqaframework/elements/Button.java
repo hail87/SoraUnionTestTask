@@ -32,6 +32,13 @@ public class Button extends Element {
         setWebElement(webDriver.findElement(locator));
     }
 
+    public Button(WebDriver webDriver, WebElement webElement) {
+        super(webElement,webDriver);
+        setWebDriver(webDriver);
+        waitForElementToLoad(webElement, webDriver);
+        setWebElement(webElement);
+    }
+
     public void click() {
         waitForElementToLoad(locator, webDriver);
         if (!isVisible(locator, webDriver)) {

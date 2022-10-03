@@ -205,7 +205,7 @@ public class DBUtils {
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
         DBUtils.executeSqlScript("updateReseller2Balance.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
         OrdersSteps ordersSteps = new OrdersSteps();
         ordersSteps.setOrderIDtoContext();

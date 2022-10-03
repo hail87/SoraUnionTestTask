@@ -155,9 +155,9 @@ public class JsonUtils {
     }
 
     public static void loadJsonObjectToTestContext(JsonObject jsonObject, String testMethodName){
-        TestContext testContext = Context.getTestContext(testMethodName, LwaTestContext.class);
-        testContext.setJsonObject(jsonObject);
-        Context.updateTestContext(testContext);
+        LwaTestContext lwaTestContext = Context.getTestContext(testMethodName, LwaTestContext.class);
+        lwaTestContext.setJsonObject(jsonObject);
+        Context.updateTestContext(lwaTestContext);
     }
 
     public static void loadJsonObjectToUiTestContext(JsonObject jsonObject, String testMethodName){

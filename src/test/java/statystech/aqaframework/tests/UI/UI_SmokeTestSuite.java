@@ -64,7 +64,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnectionQA();
         Context.addTestContext(lwaTestContext);
-        logger.info("Contest set\n");
+        logger.info("Context set\n");
     }
 
     @TestRailID(id = 199752)
@@ -171,7 +171,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     public void selectAllUncheckAll(String jsonFilename, TestInfo testInfo) {
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
         OrdersSteps ordersSteps = new OrdersSteps();
         ordersSteps.setOrderIDtoContext();
@@ -185,7 +185,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         mainSteps.getMainPage().selectAllNewOrders();
         mainSteps.getMainPage().clickUncheckAll();
 
-        mainSteps.shipOrder(9993305);
+        mainSteps.shipOrderToInProgress(9993305);
 
         mainSteps.getMainPage().selectAllInProgress();
         mainSteps.getMainPage().clickUncheckAll();
@@ -196,26 +196,27 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
     }
 
-    @TestRailID(id = 220671)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void requestCancellation(String jsonFilename, TestInfo testInfo) {
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
-        OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
-
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
-        mainSteps.searchOrder(9993305);
-
-        String errorMessage = mainSteps.requestCancellation("Some reason");
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-    }
+//    @TestRailID(id = 220671)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void requestCancellation(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+//        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+//        OrdersSteps ordersSteps = new OrdersSteps();
+//        ordersSteps.setOrderIDtoContext();
+//
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        mainSteps.searchOrder(9993305);
+//
+//        String errorMessage = mainSteps.requestCancellation("Some reason");
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+//    }
 
     @TestRailID(id = 220672)
     @ParameterizedTest
@@ -223,7 +224,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
         OrdersSteps ordersSteps = new OrdersSteps();
         ordersSteps.setOrderIDtoContext();
@@ -238,7 +239,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
 
-        mainSteps.shipOrder(9993305);
+        mainSteps.shipOrderToInProgress(9993305);
 
         int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
@@ -268,7 +269,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
 
         //mainSteps.clickBottomMessageIfVisible();
         mainSteps.searchOrder(9993305);
-        mainSteps.shipOrder(9993305);
+        mainSteps.shipOrderToInProgress(9993305);
 
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
@@ -303,7 +304,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         orderFulfillmentSteps.createParcel(1, 1);
         orderFulfillmentSteps.deleteFirstParcel();
         orderFulfillmentSteps.createParcel(1, 1);
-        orderFulfillmentSteps.shipParcelExternally(1);
+        orderFulfillmentSteps.shipParcelExternallyWithLocalPickup(1);
 
         String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
         assertTrue(errorMessage.isEmpty(), errorMessage);
@@ -311,37 +312,80 @@ public class UI_SmokeTestSuite extends UiTestClass {
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
     }
 
-//    @TestRailID(id = 225151)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"Order_9993305.json"})
-//    public void shipParcelExternallyWithAllFieldsFilled(String jsonFilename, TestInfo testInfo) {
-//
-//        DBUtils.cleanDB("cleanup_order9993305.sql");
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
-//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
-//        OrdersSteps ordersSteps = new OrdersSteps();
-//        ordersSteps.setOrderIDtoContext();
-//
-//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-//                DataUtils.getPropertyValue("users.properties", "whmName"),
-//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-//
-//        mainSteps.searchOrder(9993305);
-//        mainSteps.shipOrder(9993305);
-//
-//        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
-//        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
-//
-//        orderFulfillmentSteps.splitAndConfirm(1);
-//        orderFulfillmentSteps.createParcel(1, 1);
-//        orderFulfillmentSteps.deleteFirstParcel();
-//        orderFulfillmentSteps.createParcel(1, 1);
-//        orderFulfillmentSteps.shipParcelExternally(1);
-//
-//        String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
-//        assertTrue(errorMessage.isEmpty(), errorMessage);
-//
-//        DBUtils.cleanDB("cleanup_order9993305.sql");
-//    }
+    @TestRailID(id = 225151)
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void completelyShipParcelExternally(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrder(jsonFilename, testInfo);
+
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        mainSteps.searchOrder(9993305);
+        mainSteps.shipOrderToInProgress(9993305);
+
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
+
+        orderFulfillmentSteps.createParcel(2, 1);
+        orderFulfillmentSteps.shipParcelExternallyWithAllFieldsFilled(2);
+
+        String errorMessage = "";
+
+        orderCardDetailsPopUp = orderFulfillmentSteps.closeOrderFulfillmentPage();
+
+        errorMessage = orderFulfillmentSteps.verifyExpectedResults(
+                orderCardDetailsPopUp.getOrderStatus(), "Shipped");
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+
+        errorMessage = orderFulfillmentSteps.verifyExpectedResults(
+                orderCardDetailsPopUp.getStartOrderFulfillmentButtonLabel(), "Order fulfillment details");
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+    }
+
+    @TestRailID(id = 225152)
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void printPackingSlip(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrder(jsonFilename, testInfo);
+
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        mainSteps.searchOrder(9993305);
+        //mainSteps.shipOrder(9993305);
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+
+        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
+        orderFulfillmentSteps.createParcel(1, 1);
+        orderFulfillmentSteps.checkPrintPackingSlipEnabled(false);
+        orderFulfillmentSteps.clickParcel(1);
+        orderFulfillmentSteps.checkPrintPackingSlipEnabled(true);
+        String errorMessage = orderFulfillmentSteps. clickPrintPackingSlipButton();
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+    }
+
+    @TestRailID(id = 225153)
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void editTrackingNumberAndMoveToNewOrders(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrder(jsonFilename, testInfo);
+
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        mainSteps.searchOrder(9993305);
+        mainSteps.shipOrderToInProgress(9993305);
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+    }
+
 }

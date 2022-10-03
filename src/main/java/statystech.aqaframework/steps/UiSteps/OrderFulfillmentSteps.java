@@ -125,6 +125,30 @@ public class OrderFulfillmentSteps extends Steps {
         return orderFulfillmentPage;
     }
 
+    public OrderFulfillmentPage clickParcel(int index) {
+        orderFulfillmentPage.getParcelsElement(index).click();
+        return orderFulfillmentPage;
+    }
+
+    public String checkPrintPackingSlipEnabled(boolean enabled) {
+        String errorMessage = "";
+        if (enabled) {
+            if (!orderFulfillmentPage.getBtnPrintPackingSlip().isEnabled())
+            errorMessage = "\nPrint Packing Slip button is disabled, but shouldn't be!\n";
+        } else {
+            if (orderFulfillmentPage.getBtnPrintPackingSlip().isEnabled())
+                errorMessage = "\nPrint Packing Slip button is enabled, but shouldn't be!\n";
+        }
+        return errorMessage;
+    }
+
+    public String clickPrintPackingSlipButton() {
+        orderFulfillmentPage.getBtnPrintPackingSlip().click();
+        orderFulfillmentPage.switchTab(2);
+        String errorMessage = orderFulfillmentPage.waitForTabsSize(2);
+        return errorMessage;
+    }
+
     public String deleteCompletedParcel() {
         StringBuilder errorMessage = new StringBuilder();
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
@@ -150,7 +174,7 @@ public class OrderFulfillmentSteps extends Steps {
         return errorMessage.toString();
     }
 
-    public OrderFulfillmentPage shipParcelExternally(int number) {
+    public OrderFulfillmentPage shipParcelExternallyWithLocalPickup(int number) {
 
         Button btnShipExternally = orderFulfillmentPage.getShipExternallyButton();
         if (btnShipExternally.getWebElement().isEnabled()) {
@@ -165,17 +189,9 @@ public class OrderFulfillmentSteps extends Steps {
 
         ShipmentInformationPopUp shipmentInformationPopUp = orderFulfillmentPage.getPopUpShipmentInfo();
         shipmentInformationPopUp.checkboxCheck();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        delay(3000);
         shipmentInformationPopUp.clickCompleteFulfillment();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        delay(3000);
         if (btnShipExternally.isEnabled()) {
             logger.error("\n Button 'Ship externally' is still enabled, but shouldn't be!\n");
         }
@@ -183,6 +199,40 @@ public class OrderFulfillmentSteps extends Steps {
         if (!orderFulfillmentPage.isPartiallyShippedLabelVisible()) {
             logger.error("\n Label 'Partially Shipped' is not visible, but should be!\n");
         }
+        return orderFulfillmentPage;
+    }
+
+    public OrderFulfillmentPage shipParcelExternallyWithAllFieldsFilled(int number) {
+
+        Button btnShipExternally = orderFulfillmentPage.getShipExternallyButton();
+        if (btnShipExternally.getWebElement().isEnabled()) {
+            logger.error("\n Button 'Ship externally' enabled, but shouldn't be!\n");
+        }
+        orderFulfillmentPage.getParcelsElement(number - 1).click();
+        btnShipExternally.waitForElementToBeClickable();
+        if (!btnShipExternally.getWebElement().isEnabled()) {
+            logger.error("\n Button 'Ship externally' disabled, but shouldn't be!\n");
+        }
+        btnShipExternally.click();
+
+        ShipmentInformationPopUp shipmentInformationPopUp = orderFulfillmentPage.getPopUpShipmentInfo();
+        shipmentInformationPopUp.fillTrackingNumber("123456");
+        shipmentInformationPopUp.chooseShippingAccount(1);
+        shipmentInformationPopUp.fillShippingCost("100");
+        shipmentInformationPopUp.chooseCurrency("USD");
+
+        shipmentInformationPopUp.clickCompleteFulfillment();
+
+        delay(3000);
+
+        if (btnShipExternally.isEnabled()) {
+            logger.error("\n Button 'Ship externally' is still enabled, but shouldn't be!\n");
+        }
+        assertTrue(orderFulfillmentPage.isParcelCompleteCheckmarkVisible(),
+                "\n'Parcel Complete Checkmark' is not visible, but should be!\n");
+        String errorMessage = verifyExpectedResults(orderFulfillmentPage.getOrderStatus(), "Shipped");
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+
         return orderFulfillmentPage;
     }
 

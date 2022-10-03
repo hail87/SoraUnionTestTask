@@ -69,7 +69,7 @@ public class StageOrderSteps extends Steps {
         return id;
     }
 
-    public int insertJsonToQATableAndUiContext(String jsonFilename, TestInfo testInfo) {
+    public int insertJsonToQATableAndLwaContext(String jsonFilename, TestInfo testInfo) {
         String jsonContent = null;
         try {
             jsonContent = JsonUtils.loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());
@@ -81,9 +81,7 @@ public class StageOrderSteps extends Steps {
         int id = 0;
         try {
             id = new DBUtils().insertJsonToStageOrder(encryptedJsonContent, Context.getTestContext(LwaTestContext.class).getConnectionQA());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         new StageOrderSteps().triggerProcessingQA();

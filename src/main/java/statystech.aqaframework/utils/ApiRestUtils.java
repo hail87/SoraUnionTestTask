@@ -394,7 +394,7 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": 6,\n    \"batch_number\": \"FRI19112021\",\n    \"batch_exp_date\": \"2023-06-30\",\n    \"quantity\": " + freeStock + ",\n    \"note\": \"\"\n}");
+            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": 6,\n    \"batch_number\": \"FRI19112021\",\n    \"batch_exp_date\": \"2023-06-30\",\n    \"quantity\": " + freeStock + ",\n    \"warehouseproductprice\": 1,\n    \"note\": \"\"\n}");
             Request request = new Request.Builder()
                     .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/products/" + productID + "/product-batches")
                     .method("POST", body)
@@ -438,7 +438,7 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": 10,\n    \"batch_number\": \"TUI23112021\",\n    \"batch_exp_date\": \"2024-06-30\",\n    \"quantity\": 2,\n    \"note\": \"\"\n}");
+            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": 10,\n    \"batch_number\": \"TUI23112021\",\n    \"batch_exp_date\": \"2024-06-30\",\n    \"quantity\": 2,\n    \"warehouseproductprice\": 1,\n    \"note\": \"\"\n}");
             Request request = new Request.Builder()
                     .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/products/" + productID + "/product-batches")
                     .method("POST", body)
@@ -458,7 +458,7 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": " + warehouseId + ",\n    \"batch_number\": \"TUI23112021\",\n    \"batch_exp_date\": \"2024-06-30\",\n    \"quantity\": 2,\n    \"note\": \"\"\n}");
+            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": " + warehouseId + ",\n    \"batch_number\": \"TUI23112021\",\n    \"batch_exp_date\": \"2024-06-30\",\n    \"quantity\": 2,\n    \"warehouseproductprice\": 1,\n    \"note\": \"\"\n}");
             Request request = new Request.Builder()
                     .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/products/" + productID + "/product-batches")
                     .method("POST", body)
@@ -478,7 +478,7 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": " + warehouseId + ",\n    \"batch_number\": \"TUI23112021\",\n    \"batch_exp_date\": \"" + date + "\",\n    \"quantity\": 2,\n    \"note\": \"\"\n}");
+            RequestBody body = RequestBody.create(mediaType, "{\n    \"warehouse_id\": " + warehouseId + ",\n    \"batch_number\": \"TUI23112021\",\n    \"batch_exp_date\": \"" + date + "\",\n    \"quantity\": 2,\n    \"warehouseproductprice\": 1,\n    \"note\": \"\"\n}");
             Request request = new Request.Builder()
                     .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/products/" + productID + "/product-batches")
                     .method("POST", body)

@@ -31,12 +31,14 @@ public class DropDown extends Element {
     }
 
     public void selectByVisibleText(String text) {
+        webElement.click();
         WebElement webElement = this.webElement.findElement(By.xpath(".//li[text()=\"" + text + "\"]"));
         webElement.click();
         logger.info("Option selected at the DropDown : " + text);
     }
 
     public void selectByIndex(int index) {
+        webElement.click();
         WebElement webElement = this.webElement.findElement(By.xpath("//li[" + index + "]"));
         webElement.click();
         logger.info("Option selected at the DropDown : " + index);

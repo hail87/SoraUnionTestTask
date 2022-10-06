@@ -30,7 +30,7 @@ public class ShipmentInformationPopUp extends Element {
     By txtTrackingNumber = By.xpath("//input[@name=\"trackingNumber\"]");
     By ddShippingAccount = By.xpath("/html/body/div[2]/div[3]/div/div[3]/div[3]/div");
     By txtShippingCost = By.xpath("//input[@name=\"shippingRate\"]");
-    By ddCurrency = By.xpath("//input[@name=\"shippingRateCurrency\"]");
+    By ddCurrency = By.xpath("//input[@name=\"shippingRateCurrency\"]/..");
 
     public ShipmentInformationPopUp(WebDriver webDriver, By locator) {
         super(webDriver, locator);

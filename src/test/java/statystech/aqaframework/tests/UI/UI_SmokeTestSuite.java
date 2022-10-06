@@ -323,12 +323,12 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
         mainSteps.searchOrder(9993305);
-        mainSteps.shipOrderToInProgress(9993305);
 
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
-
-        orderFulfillmentSteps.createParcel(2, 1);
+        for (int i = 1; i <= orderFulfillmentSteps.getProductsQuantity(); i++){
+            orderFulfillmentSteps.createParcel(i, 1);
+        }
         orderFulfillmentSteps.shipParcelExternallyWithAllFieldsFilled(2);
 
         String errorMessage = "";

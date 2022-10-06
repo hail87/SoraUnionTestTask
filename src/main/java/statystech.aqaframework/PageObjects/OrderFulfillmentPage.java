@@ -104,7 +104,7 @@ public class OrderFulfillmentPage extends PageObject {
 
     public Button getParcelsElement(int index) {
         waitForJStoLoad();
-        return new Button(webDriver, getProductsElements().get(index-1));
+        return new Button(webDriver, getParcelsElements().get(index-1));
     }
 
     public boolean clickFirstParcelElement() {

@@ -69,11 +69,10 @@ public class OrderFulfillmentSteps extends Steps {
         orderFulfillmentPage.checkProduct(row);
         chooseBatchNumberFromDd(row, ddOptionPosition);
         orderFulfillmentPage.clickSaveBatchNumber(row);
-
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         orderFulfillmentPage.clickCreateParcelButton();
+        delay(2000);
         int updatedParcelQuantity = orderFulfillmentPage.getParcelsElements().size();
-
         if (updatedParcelQuantity == parcelQuantity) {
             logger.error("Parcels quantity didn't changed after creating new one");
         }
@@ -208,7 +207,8 @@ public class OrderFulfillmentSteps extends Steps {
         if (btnShipExternally.getWebElement().isEnabled()) {
             logger.error("\n Button 'Ship externally' enabled, but shouldn't be!\n");
         }
-        orderFulfillmentPage.getParcelsElement(number - 1).click();
+        delay(1000);
+        orderFulfillmentPage.getParcelsElement(number).click();
         btnShipExternally.waitForElementToBeClickable();
         if (!btnShipExternally.getWebElement().isEnabled()) {
             logger.error("\n Button 'Ship externally' disabled, but shouldn't be!\n");

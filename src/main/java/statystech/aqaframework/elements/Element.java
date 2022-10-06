@@ -91,6 +91,11 @@ public class Element {
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
+    public void waitForElementToBeClickable(WebDriver webDriver,  WebElement webElement) {
+        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
+        wait.until(ExpectedConditions.elementToBeClickable(webElement));
+    }
+
     public void waitForElementToDisappear(By xpath, WebDriver webDriver) {
         try {
             WebDriverWait wait = new WebDriverWait(webDriver, 2);
@@ -135,6 +140,11 @@ public class Element {
         WebElement element = webDriver.findElement(locator);
         logger.info(("Element with locator '" + locator + "' is enabled - " + element.isEnabled()));
         return element.isEnabled();
+    }
+
+    public boolean isEnabled(WebElement webElement) {
+        logger.info(("Element '" + webElement + "' is enabled - " + webElement.isEnabled()));
+        return webElement.isEnabled();
     }
 
     public boolean isRowDisabled() {

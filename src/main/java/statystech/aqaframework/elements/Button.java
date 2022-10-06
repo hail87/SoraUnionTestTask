@@ -25,7 +25,7 @@ public class Button extends Element {
     WebDriver webDriver;
 
     public Button(WebDriver webDriver, By locator) {
-        super(webDriver,locator);
+        super(webDriver, locator);
         setLocator(locator);
         setWebDriver(webDriver);
         waitForElementToLoad(locator, webDriver);
@@ -33,23 +33,36 @@ public class Button extends Element {
     }
 
     public Button(WebDriver webDriver, WebElement webElement) {
-        super(webElement,webDriver);
+        super(webElement, webDriver);
         setWebDriver(webDriver);
         waitForElementToLoad(webElement, webDriver);
         setWebElement(webElement);
     }
 
     public void click() {
-        waitForElementToLoad(locator, webDriver);
-        if (!isVisible(locator, webDriver)) {
-            logger.error("Button with locator IS NOT displayed: '" + locator + "'");
+        if (locator != null) {
+            waitForElementToLoad(locator, webDriver);
+            if (!isVisible(locator, webDriver)) {
+                logger.error("Button with locator IS NOT displayed: '" + locator + "'");
+            }
+            if (!isEnabled(locator, webDriver)) {
+                logger.error("Button with locator IS NOT clickable: '" + locator + "'");
+            }
+            waitForElementToBeClickable(webDriver, locator);
+            webElement.click();
+            logger.info("Button with locator clicked: " + locator);
+        } else {
+            waitForElementToLoad(webElement, webDriver);
+            if (!isVisible(webElement)) {
+                logger.error("Button with locator IS NOT displayed: '" + webElement + "'");
+            }
+            if (!isEnabled(webElement)) {
+                logger.error("Button with locator IS NOT clickable: '" + webElement + "'");
+            }
+            waitForElementToBeClickable(webDriver, webElement);
+            webElement.click();
+            logger.info("Button with locator clicked: " + webElement);
         }
-        if (!isEnabled(locator, webDriver)) {
-            logger.error("Button with locator IS NOT clickable: '" + locator + "'");
-        }
-        waitForElementToBeClickable(webDriver, locator);
-        webElement.click();
-        logger.info("Button with locator clicked: " + locator);
     }
 
     public String getText() {

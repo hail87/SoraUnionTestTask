@@ -162,7 +162,7 @@ public abstract class Steps {
         return String.format("\nWrong response status code! Expected [%d], but found [%d]\nResponseBody:\n'%s'", expectedStatusCode, response.code(), Objects.requireNonNull(response.body()));
     }
 
-    public void delay(int millisecond) {
+    public static void delay(int millisecond) {
         try {
             Thread.sleep(millisecond);
         } catch (InterruptedException e) {

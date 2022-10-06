@@ -3,6 +3,7 @@ package statystech.aqaframework.utils;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.PageObjects.PageObject;
 import statystech.aqaframework.common.ConnectionDB;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import statystech.aqaframework.common.Context.Context;
@@ -10,6 +11,7 @@ import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.MyPath;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
+import statystech.aqaframework.steps.Steps;
 
 import java.io.*;
 import java.sql.*;
@@ -206,10 +208,16 @@ public class DBUtils {
         DBUtils.executeSqlScript("updateReseller2Balance.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
+        String errorMessage = stageOrderSteps.checkStatusColumn(id);
+        int i = 0;
+        while (!errorMessage.isEmpty() & i < 5){
+            Steps.delay(1000);
+            errorMessage = stageOrderSteps.checkStatusColumn(id);
+            i++;
+        }
+        assertTrue(errorMessage.isEmpty(), errorMessage);
         OrdersSteps ordersSteps = new OrdersSteps();
         ordersSteps.setOrderIDtoContext();
-
     }
 }
 

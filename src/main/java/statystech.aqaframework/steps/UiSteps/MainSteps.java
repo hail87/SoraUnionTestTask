@@ -327,6 +327,17 @@ public class MainSteps extends Steps {
         orderCardDetailsPopUp.close();
     }
 
+    public void shipOrderWithAllParcels(int orderNumber) {
+        OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
+        OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
+        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderFulfillmentPage);
+        for (int i = 0; i <= orderFulfillmentSteps.getProductsQuantity(); i++){
+            orderFulfillmentSteps.createParcel(1, 1);
+        }
+        orderFulfillmentSteps.closeOrderFulfillmentPage();
+        orderCardDetailsPopUp.close();
+    }
+
     public void clickBottomMessageIfVisible() {
         mainPage.waitForJStoLoad();
         WebElement webElement = mainPage.getBottomNotificationElement();

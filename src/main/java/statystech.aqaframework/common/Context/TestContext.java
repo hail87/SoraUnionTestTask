@@ -16,8 +16,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
-//git update-index --assume-unchanged <file>
-//git update-index --no-assume-unchanged <file>
+//git update-index --assume-unchanged src/main/java/statystech.aqaframework/common/Context/TestContext.java - не трекать
+//git update-index --no-assume-unchanged src/main/java/statystech.aqaframework/common/Context/TestContext.java - трекать
 
 @Getter
 @Setter
@@ -27,7 +27,8 @@ public abstract class TestContext {
     private String testMethodName;
     private JsonObject jsonObject;
     private String jsonString;
-    private WebDriver driver;
+    @Getter
+    private WebDriver webDriver;
 
     public Connection getConnectionSandbox() throws SQLException, IOException {
         if (connectionDB == null) {
@@ -64,16 +65,17 @@ public abstract class TestContext {
 
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
-        driver.get("https://d11h187w8zd0az.cloudfront.net/"); //DEV
-        //driver.get("https://dloqspth835qm.cloudfront.net/"); //QA
+        //driver.get("https://d11h187w8zd0az.cloudfront.net/"); //DEV
+        driver.get("https://dloqspth835qm.cloudfront.net/"); //QA
         driver.manage().window().maximize();
-        this.driver = driver;
+        this.webDriver = driver;
     }
 
     public void closeWebDriverConnection() {
-        if (driver != null) {
-            driver.close();
-            driver.quit();
+        if (webDriver != null) {
+            webDriver.close();
+            webDriver.quit();
         }
     }
+
 }

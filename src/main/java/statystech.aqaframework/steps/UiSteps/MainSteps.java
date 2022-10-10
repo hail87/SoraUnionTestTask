@@ -160,7 +160,7 @@ public class MainSteps extends Steps {
         mainPage.clickRequestCancellation(orderCardIndex);
         mainPage.fillInCancellationReason(reason);
         mainPage.submitCancellationReason();
-        if (mainPage.getNewOrderCard(orderCardIndex).isCancellationRequested()) {
+        if (mainPage.getOrderCards().get(orderCardIndex-1).isCancellationRequested()) {
             return "";
         } else {
             return "\nFor OrderCard Cancellation is NOT Requested, but should\n";

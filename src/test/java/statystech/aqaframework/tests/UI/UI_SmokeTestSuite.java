@@ -196,45 +196,31 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
     }
 
-//    @TestRailID(id = 220671)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"Order_9993305.json"})
-//    public void requestCancellation(String jsonFilename, TestInfo testInfo) {
-//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-//        int id = stageOrderSteps.insertJsonToQATableAndUiContext(jsonFilename, testInfo);
-//        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
-//        OrdersSteps ordersSteps = new OrdersSteps();
-//        ordersSteps.setOrderIDtoContext();
-//
-//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-//                DataUtils.getPropertyValue("users.properties", "whmName"),
-//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-//
-//        mainSteps.searchOrder(9993305);
-//
-//        String errorMessage = mainSteps.requestCancellation("Some reason");
-//        assertTrue(errorMessage.isEmpty(), errorMessage);
-//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-//    }
-
-    @TestRailID(id = 220672)
+    @TestRailID(id = 220671)
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
-    public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
-        OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
-
+    public void requestCancellation(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrder(jsonFilename, testInfo);
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
         mainSteps.searchOrder(9993305);
+        String errorMessage = mainSteps.requestCancellation("Some reason");
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+    }
 
+    @TestRailID(id = 220672)
+    @ParameterizedTest
+    @ValueSource(strings = {"Order_9993305.json"})
+    public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrder(jsonFilename, testInfo);
+        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+                DataUtils.getPropertyValue("users.properties", "whmName"),
+                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+
+        mainSteps.searchOrder(9993305);
         assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
@@ -267,7 +253,6 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        //mainSteps.clickBottomMessageIfVisible();
         mainSteps.searchOrder(9993305);
         mainSteps.shipOrderToInProgress(9993305);
 

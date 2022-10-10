@@ -39,7 +39,7 @@ public class OrderCardDetailsPopUp extends PageObject{
     By btnCancelMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/button[1]");
     By btnConfirmMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/button[2]");
     By optnPrintOrderSummary = By.xpath("/html/body/div[3]/div[3]/ul/li[3]/div[2]");
-    By orderStatus = By.xpath("");
+    By orderStatus = By.xpath("/html/body/div[2]/div[3]/div/div/div[1]/div[2]/div/span/div/span");
 
     public OrderFulfillmentPage startOrderFulfillment() {
         new Button(webDriver, btnStartOrderFulfillment).click();

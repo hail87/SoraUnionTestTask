@@ -84,17 +84,20 @@ public class OrderFulfillmentSteps extends Steps {
         return orderFulfillmentPage;
     }
 
-    public OrderCardDetailsPopUp createParcelWithAllItems() {
+    public String createParcelWithAllItems() {
+        String errorMessage = "";
         orderFulfillmentPage.checkProducts();
         selectAndSaveAllBatchNumbers();
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         orderFulfillmentPage.clickCreateParcelButton();
+        delay(2000);
         int updatedParcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         if (updatedParcelQuantity == parcelQuantity) {
+            errorMessage = "Parcels quantity didn't changed after creating new one";
             logger.error("Parcels quantity didn't changed after creating new one");
         }
 
-        return orderFulfillmentPage.close();
+        return errorMessage;
     }
 
     public void selectAndSaveAllBatchNumbers() {
@@ -201,7 +204,7 @@ public class OrderFulfillmentSteps extends Steps {
         return orderFulfillmentPage;
     }
 
-    public OrderFulfillmentPage shipParcelExternallyWithAllFieldsFilled(int number) {
+    public String shipParcelExternallyWithAllFieldsFilled(int number) {
 
         Button btnShipExternally = orderFulfillmentPage.getShipExternallyButton();
         if (btnShipExternally.getWebElement().isEnabled()) {
@@ -228,12 +231,15 @@ public class OrderFulfillmentSteps extends Steps {
         if (btnShipExternally.isEnabled()) {
             logger.error("\n Button 'Ship externally' is still enabled, but shouldn't be!\n");
         }
-        assertTrue(orderFulfillmentPage.isParcelCompleteCheckmarkVisible(),
-                "\n'Parcel Complete Checkmark' is not visible, but should be!\n");
-        String errorMessage = verifyExpectedResults(orderFulfillmentPage.getOrderStatus(), "Shipped");
-        assertTrue(errorMessage.isEmpty(), errorMessage);
 
-        return orderFulfillmentPage;
+        StringBuilder errorMessage = new StringBuilder();
+
+        if(!orderFulfillmentPage.isParcelCompleteCheckmarkVisible(number))
+            errorMessage.append("\n'Parcel Complete Checkmark' is not visible, but should be!\n");
+
+        errorMessage.append(verifyExpectedResults(orderFulfillmentPage.getOrderStatus(), "Shipped"));
+
+        return errorMessage.toString();
     }
 
     private OrderFulfillmentPage chooseBatchNumberFromDd(int row, int ddOptionPosition) {

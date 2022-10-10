@@ -1,6 +1,7 @@
 package statystech.aqaframework.PageObjects;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -34,8 +35,8 @@ public class OrderFulfillmentPage extends PageObject {
     By msgPartiallyShipped = By.xpath("//*[contains(text(), \"Partially Shipped\")]");
     By btnDeleteCompletedParcel = By.xpath("//button[contains(text(), \"Delete\")]");
 
-    By parcelCompleteCheckmark = By.xpath("");
-    By orderStatus = By.xpath("");
+    By parcelCompleteCheckmark = By.xpath("//*[@data-testid='CheckCircleIcon']");
+    By orderStatus = By.xpath("//*[@id=\"root\"]/div[2]/header/div/div/div/div[1]/div[1]/span");
 
     public OrderFulfillmentPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -62,10 +63,14 @@ public class OrderFulfillmentPage extends PageObject {
         return element.isVisible();
     }
 
-    public boolean isParcelCompleteCheckmarkVisible() {
-        Element element = new Element(webDriver, parcelCompleteCheckmark);
-        element.waitForElementToLoad();
-        return element.isVisible();
+    public boolean isParcelCompleteCheckmarkVisible(int number) {
+        boolean isVisible = false;
+        try {
+            isVisible = getParcelsElements().get(number-1).findElement(parcelCompleteCheckmark).isDisplayed();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+        return isVisible;
     }
 
     public Button getBtnPrintPackingSlip() {

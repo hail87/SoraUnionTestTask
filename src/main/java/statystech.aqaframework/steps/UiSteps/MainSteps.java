@@ -295,8 +295,7 @@ public class MainSteps extends Steps {
     public void createParcelWithAllItems(int orderNumber) {
         OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
         OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
-        orderCardDetailsPopUp = new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithAllItems();
-        orderCardDetailsPopUp.close();
+        new OrderFulfillmentSteps(orderFulfillmentPage).createParcelWithAllItems();
     }
 
     public void clickResetOrderCardAndConfirm(int orderPosition) {

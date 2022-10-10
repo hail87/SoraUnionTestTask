@@ -326,22 +326,18 @@ public class UI_SmokeTestSuite extends UiTestClass {
 
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
-        for (int i = 1; i <= orderFulfillmentSteps.getProductsQuantity(); i++){
-            orderFulfillmentSteps.createParcel(i, 1);
-        }
-        orderFulfillmentSteps.shipParcelExternallyWithAllFieldsFilled(2);
-
-        String errorMessage = "";
+        orderFulfillmentSteps.createParcelWithAllItems();
+        StringBuilder errorMessage = new StringBuilder(orderFulfillmentSteps.shipParcelExternallyWithAllFieldsFilled(1));
 
         orderCardDetailsPopUp = orderFulfillmentSteps.closeOrderFulfillmentPage();
 
-        errorMessage = orderFulfillmentSteps.verifyExpectedResults(
-                orderCardDetailsPopUp.getOrderStatus(), "Shipped");
-        assertTrue(errorMessage.isEmpty(), errorMessage);
+        errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
+                orderCardDetailsPopUp.getOrderStatus(), "Shipped"));
 
-        errorMessage = orderFulfillmentSteps.verifyExpectedResults(
-                orderCardDetailsPopUp.getStartOrderFulfillmentButtonLabel(), "Order fulfillment details");
-        assertTrue(errorMessage.isEmpty(), errorMessage);
+        errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
+                orderCardDetailsPopUp.getStartOrderFulfillmentButtonLabel(), "Order fulfillment details"));
+
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
 
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
     }
@@ -365,7 +361,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         orderFulfillmentSteps.checkPrintPackingSlipEnabled(false);
         orderFulfillmentSteps.clickParcel(1);
         orderFulfillmentSteps.checkPrintPackingSlipEnabled(true);
-        String errorMessage = orderFulfillmentSteps. clickPrintPackingSlipButton();
+        String errorMessage = orderFulfillmentSteps.clickPrintPackingSlipButton();
         assertTrue(errorMessage.isEmpty(), errorMessage);
 
         DBUtils.executeSqlScript("cleanup_order9993305.sql");

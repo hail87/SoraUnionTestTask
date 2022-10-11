@@ -3,7 +3,6 @@ package statystech.aqaframework.elements;
 import lombok.Getter;
 import lombok.Setter;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -53,7 +52,7 @@ public class ShipmentInformationPopUp extends Element {
     }
 
     public void chooseCurrency(String text) {
-        new DropDown(webDriver, ddCurrency).selectByVisibleText(text);
+        new DropDown(webDriver, ddCurrency).expandAndSelectByVisibleText(text);
     }
 
     public void checkboxCheck() {

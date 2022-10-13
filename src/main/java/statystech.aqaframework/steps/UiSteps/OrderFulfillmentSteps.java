@@ -89,6 +89,7 @@ public class OrderFulfillmentSteps extends Steps {
     public String createParcelWithAllItems() {
         String errorMessage = "";
         orderFulfillmentPage.checkProducts();
+        delay(1000);
         selectAndSaveAllBatchNumbers();
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         orderFulfillmentPage.clickCreateParcelButton();

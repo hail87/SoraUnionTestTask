@@ -14,7 +14,7 @@ import statystech.aqaframework.PageObjects.PageObject;
 public class Element {
 
     private static final Logger logger = LoggerFactory.getLogger(Element.class);
-    final int waitForElementDelay = 10;
+    final int waitForElementDelay = 15;
     final int waitForJSDelay = 30;
 
     @Getter

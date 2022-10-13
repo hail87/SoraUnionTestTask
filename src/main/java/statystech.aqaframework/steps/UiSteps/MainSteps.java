@@ -222,20 +222,13 @@ public class MainSteps extends Steps {
                 mainPage.clickOkButton();
                 mainPage.waitForJStoLoad();
                 mainPage.refreshPage();
-                search(String.valueOf(orderNumber));
-            } else {
-                search(String.valueOf(orderNumber));
-            }
-            mainPage.waitForJStoLoad();
-            if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
-                mainPage.clickOkButton();
-                mainPage.waitForJStoLoad();
-                mainPage.refreshPage();
                 mainPage.delay(1000);
                 i++;
+                orderFound = search(String.valueOf(orderNumber)).isEmpty();
             } else {
-                orderFound = true;
+                orderFound = search(String.valueOf(orderNumber)).isEmpty();
             }
+            mainPage.waitForJStoLoad();
         }
         return waitForNewOrderCardToBeProcessed(orderNumber);
     }
@@ -326,15 +319,21 @@ public class MainSteps extends Steps {
         orderCardDetailsPopUp.close();
     }
 
-    public void shipOrderWithAllParcels(int orderNumber) {
+    public String shipOrderWithAllParcels(int orderNumber) {
         OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
-        OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
-        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderFulfillmentPage);
-        for (int i = 0; i <= orderFulfillmentSteps.getProductsQuantity(); i++){
-            orderFulfillmentSteps.createParcel(1, 1);
-        }
-        orderFulfillmentSteps.closeOrderFulfillmentPage();
-        orderCardDetailsPopUp.close();
+        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
+        orderFulfillmentSteps.createParcelWithAllItems();
+        StringBuilder errorMessage = new StringBuilder(orderFulfillmentSteps.shipParcelExternallyWithAllFieldsFilled(1));
+
+        orderCardDetailsPopUp = orderFulfillmentSteps.closeOrderFulfillmentPage();
+
+        errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
+                orderCardDetailsPopUp.getOrderStatus(), "Shipped"));
+
+        errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
+                orderCardDetailsPopUp.getStartOrderFulfillmentButtonLabel(), "Order fulfillment details"));
+
+        return errorMessage.toString();
     }
 
     public void clickBottomMessageIfVisible() {

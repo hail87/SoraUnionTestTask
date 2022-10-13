@@ -66,7 +66,7 @@ public class OrderFulfillmentPage extends PageObject {
     public boolean isParcelCompleteCheckmarkVisible(int number) {
         boolean isVisible = false;
         try {
-            isVisible = getParcelsElements().get(number-1).findElement(parcelCompleteCheckmark).isDisplayed();
+            isVisible = getParcelsElements().get(number - 1).findElement(parcelCompleteCheckmark).isDisplayed();
         } catch (NoSuchElementException e) {
             e.printStackTrace();
         }
@@ -109,7 +109,7 @@ public class OrderFulfillmentPage extends PageObject {
 
     public Button getParcelsElement(int index) {
         waitForJStoLoad();
-        return new Button(webDriver, getParcelsElements().get(index-1));
+        return new Button(webDriver, getParcelsElements().get(index - 1));
     }
 
     public boolean clickFirstParcelElement() {
@@ -209,12 +209,11 @@ public class OrderFulfillmentPage extends PageObject {
 
     public OrderFulfillmentPage clickSaveBatchNumber(int rowNumber) {
         try {
-            new Button(webDriver, By.xpath(rowProduct1 + rowNumber + btnSaveBatchNumber)).click();
-            waitForJStoLoad();
-        } catch (Exception e) {
             delay(1000);
             new Button(webDriver, By.xpath(rowProduct1 + rowNumber + btnSaveBatchNumber)).click();
             waitForJStoLoad();
+        } catch (Exception e) {
+            logger.warn("No 'save batch number' button found");
         }
         return this;
     }

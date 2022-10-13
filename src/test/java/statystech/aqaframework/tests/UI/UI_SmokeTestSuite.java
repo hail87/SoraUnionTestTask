@@ -308,23 +308,10 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
+        assertTrue(mainSteps.searchOrder(9993305), "\nOrder " + 9993305 + "wasn't found after import\n");
+        String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
 
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
-        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
-        orderFulfillmentSteps.createParcelWithAllItems();
-        StringBuilder errorMessage = new StringBuilder(orderFulfillmentSteps.shipParcelExternallyWithAllFieldsFilled(1));
-
-        orderCardDetailsPopUp = orderFulfillmentSteps.closeOrderFulfillmentPage();
-
-        errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
-                orderCardDetailsPopUp.getOrderStatus(), "Shipped"));
-
-        errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
-                orderCardDetailsPopUp.getStartOrderFulfillmentButtonLabel(), "Order fulfillment details"));
-
-        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-
+        assertTrue(errorMessage.isEmpty(), errorMessage);
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
     }
 
@@ -364,8 +351,9 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
         mainSteps.searchOrder(9993305);
-        mainSteps.shipOrderToInProgress(9993305);
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+        String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+
 
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
     }

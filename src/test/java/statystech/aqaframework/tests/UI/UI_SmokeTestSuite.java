@@ -12,6 +12,7 @@ import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
+import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.steps.UiSteps.LoginSteps;
 import statystech.aqaframework.steps.UiSteps.MainSteps;
 import statystech.aqaframework.steps.UiSteps.OrderCardDetailsPopUpSteps;
@@ -263,7 +264,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
 
         new OrderCardDetailsPopUpSteps(orderCardDetailsPopUp).moveToNewOrder(true);
 
-        mainSteps.delay(2000);
+        Steps.delay(2000);
         int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
 

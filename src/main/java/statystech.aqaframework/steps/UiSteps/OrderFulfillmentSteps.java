@@ -70,9 +70,11 @@ public class OrderFulfillmentSteps extends Steps {
         chooseBatchNumberFromDd(row, ddOptionPosition);
         orderFulfillmentPage.clickSaveBatchNumber(row);
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
+        logger.info("Parcels quantity before creating new parcel : " + parcelQuantity);
         orderFulfillmentPage.clickCreateParcelButton();
         delay(2000);
         int updatedParcelQuantity = orderFulfillmentPage.getParcelsElements().size();
+        logger.info("Parcels quantity after creating new parcel : " + updatedParcelQuantity);
         if (updatedParcelQuantity == parcelQuantity) {
             logger.error("Parcels quantity didn't changed after creating new one");
         }

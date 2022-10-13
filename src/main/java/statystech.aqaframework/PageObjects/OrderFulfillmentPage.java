@@ -212,7 +212,9 @@ public class OrderFulfillmentPage extends PageObject {
             new Button(webDriver, By.xpath(rowProduct1 + rowNumber + btnSaveBatchNumber)).click();
             waitForJStoLoad();
         } catch (Exception e) {
-
+            delay(1000);
+            new Button(webDriver, By.xpath(rowProduct1 + rowNumber + btnSaveBatchNumber)).click();
+            waitForJStoLoad();
         }
         return this;
     }

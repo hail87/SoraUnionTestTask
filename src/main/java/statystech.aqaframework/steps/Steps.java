@@ -69,6 +69,20 @@ public abstract class Steps {
         }
     }
 
+    public String verifyExpectedResultsInt(int actualResult, int expectedResult) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String callingMethod = stackTraceElements[2].getMethodName();
+        String callingClass = Util.getCallingClass().getName().split("\\.")[Util.getCallingClass().getName().split("\\.").length - 1];
+        if (actualResult == expectedResult) {
+            logger.info(String.format("\n[%s:%s]: expectedResult '%s' and actualResult '%s' are the same\n", callingClass, callingMethod, expectedResult, actualResult));
+            return "";
+        } else {
+            String message = String.format("\n[%s:%s]: expectedResult '%s' and actualResult '%s' are NOT the same\n", callingClass, callingMethod, expectedResult, actualResult);
+            logger.error(message);
+            return message;
+        }
+    }
+
     public String verifyActualResultsContains(String actualResult, String expectedResult) {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         String callingMethod = stackTraceElements[2].getMethodName();

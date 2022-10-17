@@ -133,6 +133,7 @@ public class MainSteps extends Steps {
     public String search(String text) {
         mainPage.search(text);
         mainPage.waitForFirstOrderNumberToLoad();
+        delay(500);
         String actualOrderNumber = mainPage.getFirstOrderNumber().substring(1);
         if (!text.equalsIgnoreCase(actualOrderNumber))
             return String.format("Actual order number '%s' and expected '%s' isn't the same", actualOrderNumber, text);
@@ -160,7 +161,7 @@ public class MainSteps extends Steps {
         mainPage.clickRequestCancellation(orderCardIndex);
         mainPage.fillInCancellationReason(reason);
         mainPage.submitCancellationReason();
-        if (mainPage.getOrderCards().get(orderCardIndex-1).isCancellationRequested()) {
+        if (mainPage.getOrderCards().get(orderCardIndex - 1).isCancellationRequested()) {
             return "";
         } else {
             return "\nFor OrderCard Cancellation is NOT Requested, but should\n";
@@ -198,12 +199,8 @@ public class MainSteps extends Steps {
     public OrderCardDetailsPopUp clickOrderCard(int orderNumber) {
         OrderCard orderCard = findOrderCard(orderNumber);
         int i = 0;
-        while (orderCard == null && i < 30) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while (orderCard == null & i < 30) {
+            delay(1000);
             mainPage.refreshPage();
             orderCard = findOrderCard(orderNumber);
             i++;
@@ -212,12 +209,30 @@ public class MainSteps extends Steps {
         return new OrderCardDetailsPopUp(webDriver);
     }
 
+    private boolean closeErrorMessage(String errorMessage) {
+        boolean isShown = mainPage.isTextShownAtThePage(errorMessage);
+        if (isShown) {
+            mainPage.clickOkButton();
+            mainPage.waitForJStoLoad();
+            mainPage.refreshPage();
+        }
+        return isShown;
+    }
+
     public boolean searchOrder(int orderNumber) {
         logger.info("Waiting for search order to appear : " + orderNumber);
-
         int i = 0;
         boolean orderFound = false;
         while (!orderFound && i < 30) {
+            if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
+                mainPage.clickOkButton();
+                mainPage.waitForJStoLoad();
+                mainPage.refreshPage();
+                search(String.valueOf(orderNumber));
+            } else {
+                search(String.valueOf(orderNumber));
+            }
+            mainPage.waitForJStoLoad();
             if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
                 mainPage.clickOkButton();
                 mainPage.waitForJStoLoad();
@@ -226,7 +241,7 @@ public class MainSteps extends Steps {
                 i++;
                 orderFound = search(String.valueOf(orderNumber)).isEmpty();
             } else {
-                orderFound = search(String.valueOf(orderNumber)).isEmpty();
+                orderFound = true;
             }
             mainPage.waitForJStoLoad();
         }
@@ -327,11 +342,13 @@ public class MainSteps extends Steps {
 
         orderCardDetailsPopUp = orderFulfillmentSteps.closeOrderFulfillmentPage();
 
+        delay(1000);
         errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
                 orderCardDetailsPopUp.getOrderStatus(), "Shipped"));
-
         errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
                 orderCardDetailsPopUp.getStartOrderFulfillmentButtonLabel(), "Order fulfillment details"));
+
+        orderCardDetailsPopUp.close();
 
         return errorMessage.toString();
     }

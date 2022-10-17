@@ -18,13 +18,14 @@ public class OrderFulfillmentPage extends PageObject {
     String checkBox = "//*[@id=\"root\"]/div[2]/div/div/div[2]/table/tbody/tr/td[1]/div/span[1]";
     By btnClose = By.xpath("//*[@id=\"root\"]/div[2]/header/div/div/div/div[2]/button[2]");
     String rowProduct1 = "//*[@id=\"root\"]/div[2]/div/div/div[2]/table/tbody/tr[";
-    String rowProduct2 = "]"; ///td[3]";
+    String rowProduct2 = "]";
     By btnSplit = By.xpath(".//span/button");
     By btnConfirm = By.xpath(".//td[3]/span/span[3]/button[2]");
     By checkbox = By.xpath(".//div/span[1]/input");
     By ddBatchNumber = By.xpath(".//*[@id=\"mui-component-select-batchInventoryId\"]");
     By ddBatchNumberOptions = By.xpath("//*[@id=\"menu-batchInventoryId\"]/div[3]/ul/li");
     String btnSaveBatchNumber = "]/td[2]/div/div[2]/span/button";
+    String txtUnit = "]/td[3]/span/span/p";
     By productsRows = By.xpath("//*[@id=\"root\"]/div[2]/div/div/div[2]/table/tbody/tr");
     By parcels = By.xpath("//*[@id=\"root\"]/div[2]/div/div/div[1]/div");
     By parcelDelete = By.xpath(".//button");
@@ -216,5 +217,10 @@ public class OrderFulfillmentPage extends PageObject {
             logger.warn("No 'save batch number' button found");
         }
         return this;
+    }
+
+    public int getUnits(int rowNumber) {
+        waitForJStoLoad();
+        return Integer.parseInt(new TextField(webDriver, By.xpath(rowProduct1 + rowNumber + txtUnit)).getText());
     }
 }

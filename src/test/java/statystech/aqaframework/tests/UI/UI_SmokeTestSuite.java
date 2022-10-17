@@ -10,6 +10,7 @@ import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
+import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 import statystech.aqaframework.steps.Steps;
@@ -111,25 +112,17 @@ public class UI_SmokeTestSuite extends UiTestClass {
         assertEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition);
     }
 
-    //need to add precondition with importing "shipped" order
     @TestRailID(id = 202584)
     @Test
-    public void checkDatePickerAndShippedTab(TestInfo testInfo) {
+    public void checkDatePicker(TestInfo testInfo) {
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
-        mainSteps.getMainPage().clickShippedTab();
-        String shippedOrdersStartPosition = mainSteps.getMainPage().getShippedOrders();
         mainSteps.chooseDateFromFirst();
         mainSteps.chooseDateTo28();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Steps.delay(3000);
         String activeOrdersFiltered = mainSteps.getMainPage().getActiveOrders();
-        String shippedOrdersFiltered = mainSteps.getMainPage().getShippedOrders();
         assertTrue(true);
 //        assertNotEquals(activeOrdersFiltered, activeOrdersStartPosition);
 //        assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
@@ -354,6 +347,16 @@ public class UI_SmokeTestSuite extends UiTestClass {
         String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
         assertTrue(errorMessage.isEmpty(), errorMessage);
 
+        mainSteps.getMainPage().switchToShippedTab();
+        assertEquals("Shipped (1)", mainSteps.getMainPage().getShippedOrders(), "Shipped orders wasn't found");
+
+        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+        assertEquals(orderCardDetailsPopUp.editTrackingNumber("654321"), "654321", "\nTracking number wasn't updated after editing\n");
+        orderCardDetailsPopUp.clickOptionButton();
+        orderCardDetailsPopUp.clickMoveToNew();
+        orderCardDetailsPopUp.clickConfirmMoveToNew();
+
+        assertEquals("Shipped", mainSteps.getMainPage().getShippedOrders(), "\nShipped orders was found, but should not!\n");
 
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
     }

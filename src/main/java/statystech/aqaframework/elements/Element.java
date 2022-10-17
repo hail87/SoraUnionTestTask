@@ -65,20 +65,10 @@ public class Element {
 
     protected void scrollToElement(By by, WebDriver webDriver) {
         ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoViewIfNeeded()", webDriver.findElement(by));
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
 
     protected void scrollToElement(WebElement webElement, WebDriver webDriver) {
         ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoViewIfNeeded()", webElement);
-//        try {
-//            Thread.sleep(100);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public void waitForElementToBeClickable() {

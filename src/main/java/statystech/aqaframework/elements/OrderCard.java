@@ -2,15 +2,9 @@ package statystech.aqaframework.elements;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.common.Context.Context;
-import statystech.aqaframework.common.Context.TestContext;
-import statystech.aqaframework.common.Context.UiTestContext;
 
 public class OrderCard extends Element {
 
@@ -33,6 +27,8 @@ public class OrderCard extends Element {
     By btnCancellationRequested = By.xpath(".//div/div/div/div[2]/div/p[3]/span");
     By btnRequestCancellation = By.xpath(".//div[2]/div/p[3]/a");
     By btnReset = By.xpath(".//div/div[2]/div/div[2]/span");
+    By newOrdersCounter = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div");
+    By shippedOrdersCounter = By.xpath("//*[@id=\"root\"]/div[3]/div/div/div/div[1]");
 
     public OrderCard(WebDriver webDriver, By locator) {
         super(webDriver,locator);
@@ -44,9 +40,14 @@ public class OrderCard extends Element {
 
     public OrderCard(WebElement webElement, WebDriver webDriver) {
         super(webElement, webDriver);
-        setLocator(By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div"));
+        try {
+            setLocator(newOrdersCounter);
+            waitForElementToLoad(locator, webDriver);
+        } catch (TimeoutException e) {
+            setLocator(shippedOrdersCounter);
+            waitForElementToLoad(locator, webDriver);
+        }
         setWebDriver(webDriver);
-        waitForElementToLoad(locator, webDriver);
         setWebElement(webElement);
     }
 

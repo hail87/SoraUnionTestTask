@@ -64,7 +64,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
     public void updateParcelLineNonExistentWarehouseBatchInventoryID(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         new OrdersSteps().setOrderIDtoContext();
@@ -91,7 +91,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
     public void updateParcelLineWrongUserRole(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         new OrdersSteps().setOrderIDtoContext();
@@ -131,7 +131,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
         logger.info("------------------------------------Precondition Step 2------------------------------------");
         new OrdersSteps().setOrderIDtoContext();
@@ -172,7 +172,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");

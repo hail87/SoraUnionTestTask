@@ -66,7 +66,7 @@ public class MainPage extends PageObject {
 
     By orderCardsInProgressBy = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div");
     String orderCardsInProgressLctr = "//*[@id=\"root\"]/div[4]/div/div/div[2]/div";
-    By orderCards = By.xpath("//*[@id=\"root\"]/div[4]/div/div//div[contains(@class, 'MuiCardContent-root Order_orderContent')]");
+    By orderCards = By.xpath("//*[@id=\"root\"]/div//div[contains(@class, 'MuiCardContent-root Order_orderContent')]");
 
     By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]");
 
@@ -183,12 +183,12 @@ public class MainPage extends PageObject {
         return this;
     }
 
-    public MainPage clickShippedTab() {
+    public MainPage switchToShippedTab() {
         new Button(webDriver, tabShipped).click();
         return this;
     }
 
-    public MainPage clickActiveTab() {
+    public MainPage switchToActiveTab() {
         new Button(webDriver, tabActive).click();
         return this;
     }
@@ -200,6 +200,7 @@ public class MainPage extends PageObject {
 
     public String getActiveOrders() {
         waitForElementToLoad(tabActive);
+        waitForJStoLoad();
         String buttonText = webDriver.findElement(tabActive).getText();
         int i = 0;
         while (buttonText.length() <= 7 & i <= 3) {
@@ -229,6 +230,7 @@ public class MainPage extends PageObject {
 
     public String getShippedOrders() {
         waitForElementToLoad(tabShipped);
+        waitForJStoLoad();
         String buttonText = webDriver.findElement(tabShipped).getText();
         int i = 0;
         while (buttonText.length() <= 7 & i <= 3) {
@@ -384,12 +386,8 @@ public class MainPage extends PageObject {
         List<WebElement> webElements = webDriver.findElements(orderCards);
         int cardsQuantity = webElements.size();
         int i = 30;
-        while (cardsQuantity == 0 && i > 0) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while (cardsQuantity == 0 & i > 0) {
+            delay(1000);
             webElements = webDriver.findElements(orderCards);
             cardsQuantity = webElements.size();
             i++;

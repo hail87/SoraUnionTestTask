@@ -67,7 +67,7 @@ public class AddParcelTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");
@@ -113,7 +113,7 @@ public class AddParcelTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");
@@ -160,7 +160,7 @@ public class AddParcelTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");
@@ -211,7 +211,7 @@ public class AddParcelTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");
@@ -259,7 +259,7 @@ public class AddParcelTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");
@@ -308,7 +308,7 @@ public class AddParcelTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
 
         logger.info("------------------------------------Precondition Step 2------------------------------------");

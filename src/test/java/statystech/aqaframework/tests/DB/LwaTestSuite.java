@@ -74,7 +74,7 @@ public class LwaTestSuite extends ApiTestClass {
     public void newOrderProcessing(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
         OrdersSteps ordersSteps = new OrdersSteps();
         ordersSteps.setOrderIDtoContext();
@@ -98,7 +98,7 @@ public class LwaTestSuite extends ApiTestClass {
     public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
+        int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(newOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         OrderLineSteps orderLineSteps = new OrderLineSteps();
         new OrdersSteps().setOrderIDtoContext();
@@ -106,7 +106,7 @@ public class LwaTestSuite extends ApiTestClass {
         errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
 
         errorMessage.append(orderLineSteps.checkProductIsAbsent(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English")));
-        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, testInfo);
+        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
 
         OrderItem product2 = getLwaTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
@@ -123,7 +123,7 @@ public class LwaTestSuite extends ApiTestClass {
     public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
+        int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(newOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
 
         new OrdersSteps().setOrderIDtoContext();
@@ -131,7 +131,7 @@ public class LwaTestSuite extends ApiTestClass {
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
 
-        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, testInfo);
+        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Bulgarium"));
 
@@ -147,7 +147,7 @@ public class LwaTestSuite extends ApiTestClass {
     public void cancelOrder(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int idNew = stageOrderSteps.insertJsonToTableAndContext(newOrderJson, testInfo);
+        int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(newOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
 
         OrdersSteps ordersSteps = new OrdersSteps();
@@ -157,7 +157,7 @@ public class LwaTestSuite extends ApiTestClass {
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderStatusesIsActive());
 
-        int idUpdate = stageOrderSteps.insertJsonToTableAndContext(updateOrderJson, testInfo);
+        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
 
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nickel-28-Ni"));
@@ -225,7 +225,7 @@ public class LwaTestSuite extends ApiTestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
 
         for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
-            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(json.getTitle(), testInfo);
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 
@@ -253,7 +253,7 @@ public class LwaTestSuite extends ApiTestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
 
         for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
-            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(json.getTitle(), testInfo);
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 
@@ -281,7 +281,7 @@ public class LwaTestSuite extends ApiTestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
 
         for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
-            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(json.getTitle(), testInfo);
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 
@@ -323,7 +323,7 @@ public class LwaTestSuite extends ApiTestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
 
         for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
-            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(json.getTitle(), testInfo);
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 
@@ -351,7 +351,7 @@ public class LwaTestSuite extends ApiTestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
 
         for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
-            int idNew = stageOrderSteps.insertJsonToTableAndContext(json.getTitle(), testInfo);
+            int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(json.getTitle(), testInfo);
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 

@@ -29,8 +29,15 @@ public class StageOrderSteps extends Steps {
 
     public void triggerProcessingQA() {
         logger.info("Triggering order processing at the SandBox");
-        int responseCode = new ApiRestUtils().sendGetRequest(
-                DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTriggerQA"));
+        int responseCode = 0;
+        try {
+            responseCode = new ApiRestUtils().sendGetRequest(
+                    DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTriggerQA"));
+        } catch (Exception e) {
+            delay(3000);
+            responseCode = new ApiRestUtils().sendGetRequest(
+                    DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTriggerQA"));
+        }
         if (responseCode != 200)
             logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
     }
@@ -48,7 +55,7 @@ public class StageOrderSteps extends Steps {
         }
     }
 
-    public int insertJsonToTableAndContext(String jsonFilename, TestInfo testInfo) {
+    public int insertJsonToTableAndLwaContext(String jsonFilename, TestInfo testInfo) {
         String jsonContent = null;
         try {
             jsonContent = JsonUtils.loadObjectToContextAndGetString(jsonFilename, testInfo.getTestMethod().get().getName());

@@ -28,6 +28,7 @@ public class Button extends Element {
         super(webDriver, locator);
         setLocator(locator);
         setWebDriver(webDriver);
+        waitForJStoLoad(webDriver);
         waitForElementToLoad(locator, webDriver);
         setWebElement(webDriver.findElement(locator));
     }
@@ -35,6 +36,7 @@ public class Button extends Element {
     public Button(WebDriver webDriver, WebElement webElement) {
         super(webElement, webDriver);
         setWebDriver(webDriver);
+        waitForJStoLoad(webDriver);
         waitForElementToLoad(webElement, webDriver);
         setWebElement(webElement);
     }

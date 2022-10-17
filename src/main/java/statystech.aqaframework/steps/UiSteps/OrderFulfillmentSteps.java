@@ -1,5 +1,7 @@
 package statystech.aqaframework.steps.UiSteps;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
@@ -7,6 +9,10 @@ import statystech.aqaframework.PageObjects.OrderFulfillmentPage;
 import statystech.aqaframework.elements.Button;
 import statystech.aqaframework.elements.ShipmentInformationPopUp;
 import statystech.aqaframework.steps.Steps;
+
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -92,6 +98,7 @@ public class OrderFulfillmentSteps extends Steps {
         delay(1000);
         selectAndSaveAllBatchNumbers();
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
+        delay(2000);
         orderFulfillmentPage.clickCreateParcelButton();
         delay(2000);
         int updatedParcelQuantity = orderFulfillmentPage.getParcelsElements().size();
@@ -107,7 +114,7 @@ public class OrderFulfillmentSteps extends Steps {
         int rows = getProductsQuantity();
         int i = 1;
         while (i <= rows) {
-            chooseBatchNumberFromDd(i, 1);
+            assertTrue(chooseValidBatchNumberFromDd(i), "\nNo batch number with enough items in it was found\n");
             orderFulfillmentPage.clickSaveBatchNumber(i);
             i++;
         }
@@ -139,7 +146,7 @@ public class OrderFulfillmentSteps extends Steps {
         String errorMessage = "";
         if (enabled) {
             if (!orderFulfillmentPage.getBtnPrintPackingSlip().isEnabled())
-            errorMessage = "\nPrint Packing Slip button is disabled, but shouldn't be!\n";
+                errorMessage = "\nPrint Packing Slip button is disabled, but shouldn't be!\n";
         } else {
             if (orderFulfillmentPage.getBtnPrintPackingSlip().isEnabled())
                 errorMessage = "\nPrint Packing Slip button is enabled, but shouldn't be!\n";
@@ -237,7 +244,7 @@ public class OrderFulfillmentSteps extends Steps {
 
         StringBuilder errorMessage = new StringBuilder();
 
-        if(!orderFulfillmentPage.isParcelCompleteCheckmarkVisible(number))
+        if (!orderFulfillmentPage.isParcelCompleteCheckmarkVisible(number))
             errorMessage.append("\n'Parcel Complete Checkmark' is not visible, but should be!\n");
 
         errorMessage.append(verifyExpectedResults(orderFulfillmentPage.getOrderStatus(), "Shipped"));
@@ -249,6 +256,34 @@ public class OrderFulfillmentSteps extends Steps {
         orderFulfillmentPage.expandBatchNumberDropDown(row);
         orderFulfillmentPage.getBatchNumberOptions().get(ddOptionPosition - 1).click();
         return orderFulfillmentPage;
+    }
+
+    private boolean chooseValidBatchNumberFromDd(int row) {
+        boolean isThereAnyBatchNumberWithEnoughtUnits = false;
+        int units = orderFulfillmentPage.getUnits(row);
+        orderFulfillmentPage.expandBatchNumberDropDown(row);
+        List<WebElement> list = orderFulfillmentPage.getBatchNumberOptions();
+        int ddSize = list.size();
+        for (int i = 0; !isThereAnyBatchNumberWithEnoughtUnits & i < ddSize; i++) {
+            WebElement webElement = list.get(i);
+
+            String subString = webElement.findElement(By.xpath(".//p")).getText();
+            Pattern pattern = Pattern.compile("\\d{1,9} unit");
+            Matcher matcher = pattern.matcher(subString);
+            if (matcher.find()) {
+                subString = matcher.group();
+            } else {
+                return isThereAnyBatchNumberWithEnoughtUnits;
+            }
+            subString = subString.replaceAll("\\D", "");
+
+            int batchUnits = Integer.parseInt(subString);
+            if (batchUnits >= units) {
+                webElement.click();
+                isThereAnyBatchNumberWithEnoughtUnits = true;
+            }
+        }
+        return isThereAnyBatchNumberWithEnoughtUnits;
     }
 
 }

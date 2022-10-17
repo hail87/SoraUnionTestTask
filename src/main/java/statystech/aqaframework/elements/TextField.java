@@ -27,6 +27,7 @@ public class TextField extends Element{
         super(webDriver,locator);
         setLocator(locator);
         setWebDriver(webDriver);
+        waitForJStoLoad(webDriver);
         waitForElementToLoad(locator, webDriver);
         setWebElement(webDriver.findElement(locator));
     }
@@ -34,6 +35,12 @@ public class TextField extends Element{
     public void click() {
         webElement.click();
         logger.info("TextField with locator clicked: " + locator);
+    }
+
+    public String getText() {
+        String text = webElement.getText();
+        logger.info(("TextField's with locator '" + locator + "' text is " + text));
+        return text;
     }
 
     public boolean isDisabled() {

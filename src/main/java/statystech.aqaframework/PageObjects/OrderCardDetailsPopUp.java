@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.elements.Button;
+import statystech.aqaframework.elements.TextField;
+
+import static org.junit.Assert.assertTrue;
 
 public class OrderCardDetailsPopUp extends PageObject{
 
@@ -40,6 +43,10 @@ public class OrderCardDetailsPopUp extends PageObject{
     By btnConfirmMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/button[2]");
     By optnPrintOrderSummary = By.xpath("/html/body/div[3]/div[3]/ul/li[3]/div[2]");
     By orderStatus = By.xpath("/html/body/div[2]/div[3]/div/div/div[1]/div[2]/div/span/div/span");
+    By btnEditTrackingNumber = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[2]/div[2]/div/div/div/div/div/div/div/h6/div/div[1]/div/div/button");
+    By txtEditTrackingNumber = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[2]/div[2]/div/div/div/div/div/div/div/h6/div/div[1]/div/div/div[1]/div/div/input");
+    By btnSaveTrackingNumber = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[2]/div[2]/div/div/div/div/div/div/div/h6/div/div[1]/div/div/div[3]/button");
+    By txtTrackingNumber = By.xpath("/html/body/div[2]/div[3]/div/div/div[2]/div/div[2]/div[2]/div/div/div/div/div/div/div/h6/div/div[1]/div/div/a");
 
     public OrderFulfillmentPage startOrderFulfillment() {
         new Button(webDriver, btnStartOrderFulfillment).click();
@@ -91,5 +98,18 @@ public class OrderCardDetailsPopUp extends PageObject{
         waitForElementToDisappear(btnClose);
         waitForJStoLoad();
         return new MainPage(webDriver);
+    }
+
+    public String editTrackingNumber(String text) {
+        new Button(webDriver, btnEditTrackingNumber).click();
+        waitForJStoLoad();
+
+        TextField input = new TextField(webDriver, txtEditTrackingNumber);
+        input.fillIn(text);
+
+        new Button(webDriver, btnSaveTrackingNumber).click();
+        waitForJStoLoad();
+
+        return new TextField(webDriver, txtTrackingNumber).getText();
     }
 }

@@ -30,14 +30,18 @@ public class StageOrderSteps extends Steps {
     public void triggerProcessingQA() {
         logger.info("Triggering order processing at the SandBox");
         int responseCode = 0;
-        try {
-            responseCode = new ApiRestUtils().sendGetRequest(
-                    DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTriggerQA"));
-        } catch (Exception e) {
+        int i = 0;
+        while (responseCode == 0 & i < 3) {
             delay(3000);
-            responseCode = new ApiRestUtils().sendGetRequest(
-                    DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTriggerQA"));
+            try {
+                responseCode = new ApiRestUtils().sendGetRequest(
+                        DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTriggerQA"));
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage());
+            }
+            i++;
         }
+
         if (responseCode != 200)
             logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
     }

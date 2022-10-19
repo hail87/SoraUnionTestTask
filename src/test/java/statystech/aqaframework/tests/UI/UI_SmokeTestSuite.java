@@ -356,9 +356,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         orderCardDetailsPopUp.clickMoveToNew();
         orderCardDetailsPopUp.clickConfirmMoveToNew();
 
-        assertEquals("Shipped", mainSteps.getMainPage().getShippedOrders(), "\nShipped orders was found, but should not!\n");
-
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+        assertEquals("Shipped (1)", mainSteps.getMainPage().getShippedOrders(), "\nShipped orders was found, but should not!\n");
     }
 
 }

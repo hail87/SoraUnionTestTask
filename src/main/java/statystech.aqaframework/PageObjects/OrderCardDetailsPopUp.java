@@ -37,7 +37,7 @@ public class OrderCardDetailsPopUp extends PageObject{
     By btnOptions = By.xpath(".//div/div/div[1]/div[2]/div/button");
 
     By optnPutOnHold = By.xpath("/html/body/div[3]/div[3]/ul/li[1]/div[2]");
-    By optnMoveToNewOrders = By.xpath("/html/body/div[3]/div[3]/ul/li[2]/div[2]");
+    By optnMoveToNewOrders = By.xpath("/html/body/div[3]/div[3]/ul/li[1]/div[2]");
     By msgMoveToNewOrder = By.xpath(".//div/div");
     By btnCancelMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/button[1]");
     By btnConfirmMoveToNewOrder = By.xpath("/html/body/div[3]/div[3]/div/div[2]/div[2]/button[2]");
@@ -110,6 +110,7 @@ public class OrderCardDetailsPopUp extends PageObject{
         new Button(webDriver, btnSaveTrackingNumber).click();
         waitForJStoLoad();
 
+        delay(2000);
         return new TextField(webDriver, txtTrackingNumber).getText();
     }
 }

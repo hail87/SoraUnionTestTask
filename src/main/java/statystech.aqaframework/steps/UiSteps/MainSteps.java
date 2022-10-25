@@ -223,7 +223,7 @@ public class MainSteps extends Steps {
         logger.info("Waiting for search order to appear : " + orderNumber);
         int i = 0;
         boolean orderFound = false;
-        while (!orderFound && i < 30) {
+        while (!orderFound && i < 60) {
             if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
                 mainPage.clickOkButton();
                 mainPage.waitForJStoLoad();

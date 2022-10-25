@@ -42,6 +42,8 @@ public class UI_SmokeTestSuite extends UiTestClass {
     static void clearTestResults() {
         TestRailReportExtension.setResults(null);
         TestRailReportExtension.setResults(new CopyOnWriteArrayList<>());
+        DBUtils.executeSqlScript("updateWarehouseProductFreeStock.sql");
+        DBUtils.executeSqlScript("updateReseller2Balance.sql");
     }
 
     @AfterAll
@@ -318,8 +320,8 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
-        //mainSteps.shipOrder(9993305);
+        assertTrue(mainSteps.searchOrder(9993305), "Order " + 9993305 + " wasn't found!\n");
+
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
 
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());

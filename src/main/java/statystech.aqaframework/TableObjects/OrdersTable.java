@@ -25,7 +25,10 @@ public class OrdersTable extends TableObject {
 
     public int getUserIDValue() {
         return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
-                "select %s from %s where orderAllSysID = '%s'", "userID", TABLE_NAME, Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
+                "select %s from %s where orderAllSysID = '%s'",
+                "userID",
+                TABLE_NAME,
+                Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
     }
 
     public String getOrderStatusName() throws SQLException {

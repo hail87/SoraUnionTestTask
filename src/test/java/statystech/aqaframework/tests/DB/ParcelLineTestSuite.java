@@ -57,7 +57,6 @@ public class ParcelLineTestSuite extends ApiTestClass {
         Context.addTestContext(lwaTestContext);
     }
 
-    //https://statystech.atlassian.net/browse/IRS-204
     @TestRailID(id = 16811)
     @ParameterizedTest
     @ValueSource(strings = {"GetWarehouseOrderNoCriteria3.json"})

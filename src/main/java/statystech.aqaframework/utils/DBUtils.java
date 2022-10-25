@@ -205,12 +205,11 @@ public class DBUtils {
 
     public static void importOrder(String jsonFilename, TestInfo testInfo) {
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
-        DBUtils.executeSqlScript("updateReseller2Balance.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
         String errorMessage = stageOrderSteps.checkStatusColumn(id);
         int i = 0;
-        while (!errorMessage.isEmpty() & i < 5){
+        while (!errorMessage.isEmpty() & i < 60){
             Steps.delay(1000);
             errorMessage = stageOrderSteps.checkStatusColumn(id);
             i++;

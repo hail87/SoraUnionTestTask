@@ -24,11 +24,11 @@ public class AddressSteps extends Steps {
     }
 
     public String verifyVerificationStatus(String lastName, String expectedVerificationStatus) {
-        String actualVerificationStatus = "";
+        String actualVerificationStatus = null;
         int i = 0;
-        while ((actualVerificationStatus == null || actualVerificationStatus.isEmpty()) & i < 30) {
-            actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = '" + lastName + "'");
+        while (actualVerificationStatus == null & i < 60) {
             delay(1000);
+            actualVerificationStatus = DBUtils.executeAndReturnString("select verificationStatus from address where lastName = '" + lastName + "'");
             i++;
         }
         return verifyExpectedResults(actualVerificationStatus, expectedVerificationStatus);

@@ -6,11 +6,13 @@ import statystech.aqaframework.utils.DBUtils;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class UserTable extends TableObject{
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class UserTable extends TableObject {
 
     private final String TABLE_NAME = "user";
 
-    public UserTable(){
+    public UserTable() {
         super.TABLE_NAME = TABLE_NAME;
     }
 

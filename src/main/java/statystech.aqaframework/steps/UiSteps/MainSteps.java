@@ -130,13 +130,13 @@ public class MainSteps extends Steps {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
-    public String search(String text) {
-        mainPage.search(text);
+    public String search(String expectedOrderNumber) {
+        mainPage.search(expectedOrderNumber);
         mainPage.waitForFirstOrderNumberToLoad();
-        delay(500);
         String actualOrderNumber = mainPage.getFirstOrderNumber().substring(1);
-        if (!text.equalsIgnoreCase(actualOrderNumber))
-            return String.format("Actual order number '%s' and expected '%s' isn't the same", actualOrderNumber, text);
+        if (!expectedOrderNumber.equalsIgnoreCase(actualOrderNumber))
+            return String.format("Actual order number '%s' and expected '%s' isn't the same",
+                    actualOrderNumber, expectedOrderNumber);
         return "";
     }
 
@@ -219,46 +219,34 @@ public class MainSteps extends Steps {
         return isShown;
     }
 
-    public boolean searchOrder(int orderNumber) {
+    public boolean searchOrderAfterImport(int orderNumber) {
         logger.info("Waiting for search order to appear : " + orderNumber);
         int i = 0;
         boolean orderFound = false;
-        while (!orderFound && i < 60) {
-            if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
-                mainPage.clickOkButton();
-                mainPage.waitForJStoLoad();
-                mainPage.refreshPage();
-                search(String.valueOf(orderNumber));
-            } else {
-                search(String.valueOf(orderNumber));
-            }
-            mainPage.waitForJStoLoad();
-            if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
-                mainPage.clickOkButton();
-                mainPage.waitForJStoLoad();
-                mainPage.refreshPage();
-                mainPage.delay(1000);
-                i++;
-                orderFound = search(String.valueOf(orderNumber)).isEmpty();
-            } else {
-                orderFound = true;
-            }
+        while (!orderFound & i < 60) {
+            clickErrorMessageAndRefresh();
+            orderFound = search(String.valueOf(orderNumber)).isEmpty();
+            delay(2000);
+            i++;
+        }
+        return orderFound;
+    }
+
+    private void clickErrorMessageAndRefresh() {
+        if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
+            mainPage.clickOkButton();
+            mainPage.refreshPage();
             mainPage.waitForJStoLoad();
         }
-        return waitForNewOrderCardToBeProcessed(orderNumber);
     }
 
     public boolean waitForNewOrderCardToBeProcessed(int orderNumber) {
         logger.info("Waiting for order to appear : " + orderNumber);
         OrderCard orderCard = findOrderCard(orderNumber);
         int i = 0;
-        while (orderCard == null && i < 30) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        while (orderCard == null & i < 30) {
             mainPage.refreshPage();
+            delay(2000);
             orderCard = findOrderCard(orderNumber);
             i++;
         }

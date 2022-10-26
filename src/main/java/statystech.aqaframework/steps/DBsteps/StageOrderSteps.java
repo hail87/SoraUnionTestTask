@@ -55,7 +55,7 @@ public class StageOrderSteps extends Steps {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Method 'checkStatusColumn' has throwed exception";
+            return "Method 'checkStatusColumn' has thrown exception";
         }
     }
 

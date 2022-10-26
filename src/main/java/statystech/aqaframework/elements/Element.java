@@ -11,10 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.PageObjects.PageObject;
 
+import java.time.Duration;
+
 public class Element {
 
     private static final Logger logger = LoggerFactory.getLogger(Element.class);
-    final int waitForElementDelay = 15;
+    final Duration waitForElementDelay = Duration.ofSeconds(15);
+    final Duration waitForElementDisappearDelay = Duration.ofSeconds(2);
     final int waitForJSDelay = 30;
 
     @Getter
@@ -72,24 +75,21 @@ public class Element {
     }
 
     public void waitForElementToBeClickable() {
-        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
-        wait.until(ExpectedConditions.elementToBeClickable(locator));
+        new WebDriverWait(webDriver, waitForElementDelay).until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     public void waitForElementToBeClickable(WebDriver webDriver, By by) {
-        WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
-        wait.until(ExpectedConditions.elementToBeClickable(by));
+        new WebDriverWait(webDriver, waitForElementDelay).until(ExpectedConditions.elementToBeClickable(by));
     }
 
-    public void waitForElementToBeClickable(WebDriver webDriver,  WebElement webElement) {
+    public void waitForElementToBeClickable(WebDriver webDriver, WebElement webElement) {
         WebDriverWait wait = new WebDriverWait(webDriver, waitForElementDelay);
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 
     public void waitForElementToDisappear(By xpath, WebDriver webDriver) {
         try {
-            WebDriverWait wait = new WebDriverWait(webDriver, 2);
-            wait.until(ExpectedConditions.invisibilityOf(webDriver.findElement(xpath)));
+            new WebDriverWait(webDriver, waitForElementDisappearDelay).until(ExpectedConditions.invisibilityOfElementLocated(xpath));
         } catch (NoSuchElementException e) {
             logger.info("waitForElementToDisappear: Element with locator not found as expected :" + xpath);
         }
@@ -106,6 +106,19 @@ public class Element {
         }
     }
 
+    protected void doubleTryClick(WebDriver webDriver, WebElement webElement) {
+        try {
+            webElement.click();
+        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+            logger.warn("\nButton click intercepted: " + webElement + "\nexecuting JS click\n");
+            clickJS(webDriver, webElement);
+        }
+    }
+
+    protected void clickJS(WebDriver webDriver, WebElement webElement) {
+        ((JavascriptExecutor) webDriver).executeScript("arguments[0].click();", webElement);
+    }
+
     protected boolean isVisible(By locator, WebDriver webDriver) {
         WebElement element = webDriver.findElement(locator);
         logger.info(("Element with locator '" + locator + "' is visible - " + element.isDisplayed()));
@@ -118,7 +131,7 @@ public class Element {
     }
 
     public boolean isVisible() {
-        if (locator != null){
+        if (locator != null) {
             return isVisible(locator, webDriver);
         } else {
             return isVisible(webElement);

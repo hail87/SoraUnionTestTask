@@ -265,6 +265,7 @@ public class MainPage extends PageObject {
     }
 
     public void waitForFirstOrderNumberToLoad() {
+        waitForJStoLoad();
         waitForElementToLoad(orderCards);
     }
 
@@ -295,6 +296,7 @@ public class MainPage extends PageObject {
     }
 
     public void selectAllNewOrders() {
+        delay(2000);
         new Button(webDriver, btnSelectAllNewOrders).click();
         waitForElementToLoad(btnUncheckAll);
     }

@@ -10,7 +10,6 @@ import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
-import statystech.aqaframework.elements.OrderCard;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 import statystech.aqaframework.steps.Steps;
@@ -153,7 +152,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
         String errorMessage = "";
-        mainSteps.searchOrder(9993305);
+        mainSteps.searchOrderAfterImport(9993305);
         errorMessage = mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), "Active (1)");
         assertTrue(errorMessage.isEmpty(), errorMessage);
         mainSteps.cancelSearch();
@@ -165,18 +164,12 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void selectAllUncheckAll(String jsonFilename, TestInfo testInfo) {
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), stageOrderSteps.checkStatusColumn(id));
-        OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
-
+        DBUtils.importOrder(jsonFilename, testInfo);
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
+        mainSteps.searchOrderAfterImport(9993305);
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
         mainSteps.getMainPage().selectAllNewOrders();
         mainSteps.getMainPage().clickUncheckAll();
@@ -201,7 +194,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
+        mainSteps.searchOrderAfterImport(9993305);
         String errorMessage = mainSteps.requestCancellation("Some reason");
         assertTrue(errorMessage.isEmpty(), errorMessage);
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
@@ -216,7 +209,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
+        mainSteps.searchOrderAfterImport(9993305);
         assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
         int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
@@ -249,7 +242,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
+        mainSteps.searchOrderAfterImport(9993305);
         mainSteps.shipOrderToInProgress(9993305);
 
         int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
@@ -277,7 +270,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
+        mainSteps.searchOrderAfterImport(9993305);
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
 
@@ -303,7 +296,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        assertTrue(mainSteps.searchOrder(9993305), "\nOrder " + 9993305 + "wasn't found after import\n");
+        assertTrue(mainSteps.searchOrderAfterImport(9993305), "\nOrder " + 9993305 + "wasn't found after import\n");
         String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
 
         assertTrue(errorMessage.isEmpty(), errorMessage);
@@ -320,7 +313,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        assertTrue(mainSteps.searchOrder(9993305), "Order " + 9993305 + " wasn't found!\n");
+        assertTrue(mainSteps.searchOrderAfterImport(9993305), "Order " + 9993305 + " wasn't found!\n");
 
         OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
 
@@ -345,7 +338,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
 
-        mainSteps.searchOrder(9993305);
+        mainSteps.searchOrderAfterImport(9993305);
         String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
         assertTrue(errorMessage.isEmpty(), errorMessage);
 

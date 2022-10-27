@@ -130,8 +130,24 @@ public class MainSteps extends Steps {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
-    public String search(String expectedOrderNumber) {
-        mainPage.search(expectedOrderNumber);
+    public boolean searchOrderAfterImport(int orderNumber) {
+        logger.info("Waiting for search order to appear : " + orderNumber);
+        int i = 0;
+        boolean orderFound = false;
+        while (!orderFound & i < 60) {
+            clickErrorMessageAndRefresh();
+            mainPage.search(String.valueOf(orderNumber));
+            if (clickErrorMessageAndRefresh()) {
+                delay(2000);
+                i++;
+            } else {
+                orderFound = verifyOrderFound(String.valueOf(orderNumber)).isEmpty();
+            }
+        }
+        return orderFound;
+    }
+
+    public String verifyOrderFound(String expectedOrderNumber) {
         mainPage.waitForFirstOrderNumberToLoad();
         String actualOrderNumber = mainPage.getFirstOrderNumber().substring(1);
         if (!expectedOrderNumber.equalsIgnoreCase(actualOrderNumber))
@@ -219,25 +235,16 @@ public class MainSteps extends Steps {
         return isShown;
     }
 
-    public boolean searchOrderAfterImport(int orderNumber) {
-        logger.info("Waiting for search order to appear : " + orderNumber);
-        int i = 0;
-        boolean orderFound = false;
-        while (!orderFound & i < 60) {
-            clickErrorMessageAndRefresh();
-            orderFound = search(String.valueOf(orderNumber)).isEmpty();
-            delay(2000);
-            i++;
-        }
-        return orderFound;
-    }
-
-    private void clickErrorMessageAndRefresh() {
+    private boolean clickErrorMessageAndRefresh() {
+        boolean clicked = false;
+        mainPage.waitForJStoLoad();
         if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
             mainPage.clickOkButton();
             mainPage.refreshPage();
             mainPage.waitForJStoLoad();
+            clicked = true;
         }
+        return clicked;
     }
 
     public boolean waitForNewOrderCardToBeProcessed(int orderNumber) {

@@ -135,9 +135,9 @@ public class MainSteps extends Steps {
         int i = 0;
         boolean orderFound = false;
         while (!orderFound & i < 60) {
-            clickErrorMessageAndRefresh();
+            clickErrorMessageAndRefresh("User does not have permission. Please contact support at");
             mainPage.search(String.valueOf(orderNumber));
-            if (clickErrorMessageAndRefresh()) {
+            if (clickErrorMessageAndRefresh("User does not have permission. Please contact support at")) {
                 delay(2000);
                 i++;
             } else {
@@ -235,10 +235,10 @@ public class MainSteps extends Steps {
         return isShown;
     }
 
-    private boolean clickErrorMessageAndRefresh() {
+    private boolean clickErrorMessageAndRefresh(String text) {
         boolean clicked = false;
         mainPage.waitForJStoLoad();
-        if (mainPage.isTextShownAtThePage("User does not have permission. Please contact support at")) {
+        if (mainPage.isTextShownAtThePage(text)) {
             mainPage.clickOkButton();
             mainPage.refreshPage();
             mainPage.waitForJStoLoad();

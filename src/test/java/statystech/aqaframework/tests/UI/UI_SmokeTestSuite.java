@@ -175,7 +175,6 @@ public class UI_SmokeTestSuite extends UiTestClass {
         mainSteps.getMainPage().clickUncheckAll();
 
         mainSteps.shipOrderToInProgress(9993305);
-
         mainSteps.getMainPage().selectAllInProgress();
         mainSteps.getMainPage().clickUncheckAll();
         mainSteps.clickAndVerifyOrdersOnHold();

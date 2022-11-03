@@ -1,7 +1,6 @@
 package statystech.aqaframework.steps.DBsteps;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -11,7 +10,6 @@ import statystech.aqaframework.TableObjects.WarehouseTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
-import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -104,12 +102,7 @@ public class WarehouseOrderSteps extends Steps {
     }
 
     public int getWarehouseOrderId(int orderId) {
-        int warehouseOrderId = 0;
-        try {
-            warehouseOrderId = Integer.parseInt(new WarehouseOrderTable().getColumnValueByColumnValue("warehouseOrderID", "orderID", String.valueOf(orderId)));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return warehouseOrderId;
+        return Integer.parseInt(new WarehouseOrderTable().getColumnValueByColumnValue(
+                "warehouseOrderID", "orderID", String.valueOf(orderId)));
     }
 }

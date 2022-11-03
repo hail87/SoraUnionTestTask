@@ -101,8 +101,18 @@ public abstract class TableObject {
         return getProperRow(TABLE_NAME, primaryID).getString(columnName);
     }
 
-    public String getColumnValueByColumnValue(String columnNameToGet, String columnNameToSearchIn, String valueToSearchBy) throws SQLException {
-        return getProperRow(columnNameToSearchIn, valueToSearchBy).getString(columnNameToGet);
+    public String getColumnValueByColumnValue(String columnNameToGet, String columnNameToSearchIn, String valueToSearchBy) {
+        String result = "";
+        int i = 0;
+        while (result.isEmpty() & i < 15) {
+            try {
+                result = getProperRow(columnNameToSearchIn, valueToSearchBy).getString(columnNameToGet);
+            } catch (SQLException e) {
+                logger.info(i + ": \nwaiting for the " + columnNameToGet + " to get\n");
+            }
+            i++;
+        }
+        return result;
     }
 
     public String getColumnValueByProductName(String productName, String columnName) throws SQLException {

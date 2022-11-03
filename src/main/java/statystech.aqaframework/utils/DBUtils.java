@@ -3,7 +3,6 @@ package statystech.aqaframework.utils;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.PageObjects.PageObject;
 import statystech.aqaframework.common.ConnectionDB;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import statystech.aqaframework.common.Context.Context;
@@ -203,10 +202,25 @@ public class DBUtils {
         return isClosed;
     }
 
-    public static void importOrder(String jsonFilename, TestInfo testInfo) {
+    public static void importOrderToQA(String jsonFilename, TestInfo testInfo) {
         DBUtils.executeSqlScript("cleanup_order9993305.sql");
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
+        String errorMessage = stageOrderSteps.checkStatusColumn(id);
+        int i = 0;
+        while (!errorMessage.isEmpty() & i < 60){
+            Steps.delay(1000);
+            errorMessage = stageOrderSteps.checkStatusColumn(id);
+            i++;
+        }
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+        OrdersSteps ordersSteps = new OrdersSteps();
+        ordersSteps.setOrderIDtoContext();
+    }
+
+    public static void importOrderToSandbox(String jsonFilename, TestInfo testInfo) {
+        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         String errorMessage = stageOrderSteps.checkStatusColumn(id);
         int i = 0;
         while (!errorMessage.isEmpty() & i < 60){

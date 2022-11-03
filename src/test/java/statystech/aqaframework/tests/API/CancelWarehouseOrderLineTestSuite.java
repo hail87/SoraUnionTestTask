@@ -16,6 +16,7 @@ import statystech.aqaframework.steps.DBsteps.WarehouseOrderSteps;
 import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
+import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
     static void clearTestResults() {
         TestRailReportExtension.setResults(null);
         TestRailReportExtension.setResults(new CopyOnWriteArrayList<>());
+        DBUtils.executeSqlScript("updateWarehouseMIRENAFreeStock.sql");
     }
 
     @AfterAll
@@ -61,16 +63,10 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"CancelWHOrder-C165722.json"})
     public void validateQuantityValueIsNotValid(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
         StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        logger.info("------------------------------------Precondition Step 2------------------------------------");
-        new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-
         int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
         new OrderLineSteps().setOrderLineIDtoContext(warehouseOrderId, lwaTestContext);
 
@@ -81,7 +77,8 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
                 4,
                 lwaTestContext,
                 DataUtils.getPropertyValue("tokens.properties", "BM_user_24")));
-        errorMessage.append(orderLineApiSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(), "The cancelled quantity is missed or incorrect. Please contact support at"));
+        errorMessage.append(orderLineApiSteps.verifyActualResultsContains(
+                lwaTestContext.getResponseBody(), "The cancelled quantity is missed or incorrect. Please contact support at"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }

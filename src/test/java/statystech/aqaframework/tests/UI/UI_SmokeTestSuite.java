@@ -10,8 +10,6 @@ import statystech.aqaframework.PageObjects.OrderCardDetailsPopUp;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
-import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.steps.UiSteps.LoginSteps;
 import statystech.aqaframework.steps.UiSteps.MainSteps;
@@ -146,7 +144,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void search(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
@@ -164,7 +162,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void selectAllUncheckAll(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
@@ -188,7 +186,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void requestCancellation(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
@@ -203,7 +201,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
                 DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
@@ -235,7 +233,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void moveInProgressOrderToNew(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
 
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
@@ -263,7 +261,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
 
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
@@ -289,7 +287,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void completelyShipParcelExternally(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
 
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
@@ -306,7 +304,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void printPackingSlip(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
 
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),
@@ -331,7 +329,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})
     public void editTrackingNumberAndMoveToNewOrders(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrder(jsonFilename, testInfo);
+        DBUtils.importOrderToQA(jsonFilename, testInfo);
 
         MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
                 DataUtils.getPropertyValue("users.properties", "whmName"),

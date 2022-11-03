@@ -218,7 +218,7 @@ public class DBUtils {
         ordersSteps.setOrderIDtoContext();
     }
 
-    public static void importOrderToSandbox(String jsonFilename, TestInfo testInfo) {
+    public static int importOrderToSandbox(String jsonFilename, TestInfo testInfo) {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         String errorMessage = stageOrderSteps.checkStatusColumn(id);
@@ -231,6 +231,7 @@ public class DBUtils {
         assertTrue(errorMessage.isEmpty(), errorMessage);
         OrdersSteps ordersSteps = new OrdersSteps();
         ordersSteps.setOrderIDtoContext();
+        return id;
     }
 }
 

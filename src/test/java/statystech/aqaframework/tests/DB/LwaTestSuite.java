@@ -23,6 +23,7 @@ import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.utils.ApiRestUtils;
+import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -72,12 +73,9 @@ public class LwaTestSuite extends ApiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"order1000100data.json"})
     public void newOrderProcessing(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
         StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
         OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
         errorMessage.append(ordersSteps.checkOrdersTable());
         errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
         errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
@@ -96,12 +94,10 @@ public class LwaTestSuite extends ApiTestClass {
     @ParameterizedTest
     @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
     public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws SQLException {
+        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(newOrderJson, testInfo);
-        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         OrderLineSteps orderLineSteps = new OrderLineSteps();
-        new OrdersSteps().setOrderIDtoContext();
         OrderItem product1 = getLwaTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
         errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
 

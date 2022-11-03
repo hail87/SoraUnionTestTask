@@ -55,6 +55,9 @@ where shopperGroupID > 0;
 delete from lwa_sandbox.warehouseBatchInventory
 where warehouseBatchInventoryID NOT in (8057, 8058, 8059) and warehouseBatchInventoryID > 0;
 
+delete from lwa_sandbox.warehousePriceHistory
+where warehousePriceHistoryID > 0;--warehousePriceHistoryID NOT in (4188, 4189, 4190) and
+
 delete from lwa_sandbox.warehouseInventory
 where warehouseInventoryID NOT in (4188, 4189, 4190) and warehouseInventoryID > 0;
 

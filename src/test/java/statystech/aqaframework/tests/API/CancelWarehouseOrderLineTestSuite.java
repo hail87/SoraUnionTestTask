@@ -161,26 +161,26 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 170490)
-    @ParameterizedTest
-    @ValueSource(strings = {"CancelWHOrder-C170490.json"})
-    public void validateOrderFromLwaWasNotProcessedByOms(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
-        StringBuilder errorMessage = new StringBuilder();
-        logger.info("------------------------------------Precondition Step 3------------------------------------");
-        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
-        int warehouseOrderId = warehouseOrderSteps.getWarehouseOrderId(lwaTestContext.getOrderID());
-        new OrderLineSteps().setOrderLineIDtoContext(warehouseOrderId, lwaTestContext);
-
-        logger.info("------------------------------------Step 1------------------------------------");
-        OrderLineApiSteps orderLineApiSteps = new OrderLineApiSteps();
-        errorMessage.append(orderLineApiSteps.sendPutRequestAndSaveResponseToContext(
-                400,
-                2,
-                lwaTestContext,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24")));
-        errorMessage.append(orderLineApiSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(), "This is not an OMS order. Please contact support at"));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
+//    @TestRailID(id = 170490)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"CancelWHOrder-C170490.json"})
+//    public void validateOrderFromLwaWasNotProcessedByOms(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
+//        StringBuilder errorMessage = new StringBuilder();
+//        logger.info("------------------------------------Precondition Step 3------------------------------------");
+//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+//        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
+//        int warehouseOrderId = warehouseOrderSteps.getWarehouseOrderId(lwaTestContext.getOrderID());
+//        new OrderLineSteps().setOrderLineIDtoContext(warehouseOrderId, lwaTestContext);
+//
+//        logger.info("------------------------------------Step 1------------------------------------");
+//        OrderLineApiSteps orderLineApiSteps = new OrderLineApiSteps();
+//        errorMessage.append(orderLineApiSteps.sendPutRequestAndSaveResponseToContext(
+//                400,
+//                2,
+//                lwaTestContext,
+//                DataUtils.getPropertyValue("tokens.properties", "BM_user_24")));
+//        errorMessage.append(orderLineApiSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(), "This is not an OMS order. Please contact support at"));
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 }

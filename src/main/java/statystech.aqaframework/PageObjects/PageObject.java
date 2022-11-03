@@ -252,4 +252,8 @@ public abstract class PageObject {
     public By getChildLocator(By parent, By child) {
         return By.xpath(parent.toString().substring(9).trim() + child.toString().substring(11).trim());
     }
+
+    public boolean isElementShownAtThePage(By xpath) {
+        return webDriver.findElement(xpath).isDisplayed();
+    }
 }

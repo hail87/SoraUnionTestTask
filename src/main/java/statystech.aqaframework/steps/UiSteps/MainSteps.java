@@ -149,6 +149,7 @@ public class MainSteps extends Steps {
 
     public String verifyOrderFound(String expectedOrderNumber) {
         mainPage.waitForFirstOrderNumberToLoad();
+        assertTrue(mainPage.isOrderCardFound(), "order wasn't found\n");
         String actualOrderNumber = mainPage.getFirstOrderNumber().substring(1);
         if (!expectedOrderNumber.equalsIgnoreCase(actualOrderNumber))
             return String.format("Actual order number '%s' and expected '%s' isn't the same",
@@ -333,10 +334,10 @@ public class MainSteps extends Steps {
         OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
         orderFulfillmentSteps.createParcelWithAllItems();
+        closeErrorMessage("One or more parcel lines have assigned to a parcel already.");
         StringBuilder errorMessage = new StringBuilder(orderFulfillmentSteps.shipParcelExternallyWithAllFieldsFilled(1));
-
+        closeErrorMessage("The unknown error occurred.");
         orderCardDetailsPopUp = orderFulfillmentSteps.closeOrderFulfillmentPage();
-
         delay(1000);
         errorMessage.append(orderFulfillmentSteps.verifyExpectedResults(
                 orderCardDetailsPopUp.getOrderStatus(), "Shipped"));

@@ -110,7 +110,13 @@ public class OrderFulfillmentPage extends PageObject {
 
     public Button getParcelsElement(int index) {
         waitForJStoLoad();
-        return new Button(webDriver, getParcelsElements().get(index - 1));
+        WebElement webElement = null;
+        try {
+            webElement = getParcelsElements().get(index - 1);
+        } catch (IndexOutOfBoundsException e) {
+            logger.error("\nNo parcel elements found at the page\n");
+        }
+        return new Button(webDriver, webElement);
     }
 
     public boolean clickFirstParcelElement() {

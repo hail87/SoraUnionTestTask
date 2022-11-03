@@ -267,6 +267,11 @@ public class MainPage extends PageObject {
     public void waitForFirstOrderNumberToLoad() {
         waitForJStoLoad();
         waitForElementToLoad(orderCards);
+        waitForElementToBeClickable(orderCards);
+    }
+
+    public boolean isOrderCardFound() {
+        return isElementShownAtThePage(orderCards);
     }
 
     public void clickFirstOrderNumber() {

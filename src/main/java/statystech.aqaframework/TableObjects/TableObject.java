@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import groovy.json.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.PageObjects.PageObject;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.Steps;
@@ -110,6 +111,7 @@ public abstract class TableObject {
             } catch (SQLException e) {
                 logger.info(i + ": \nwaiting for the " + columnNameToGet + " to get\n");
             }
+            Steps.delay(1000);
             i++;
         }
         return result;

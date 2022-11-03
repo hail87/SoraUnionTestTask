@@ -53,7 +53,7 @@ delete from lwa_sandbox.shopperGroup
 where shopperGroupID > 0;
 
 delete from lwa_sandbox.warehouseBatchInventory
-where warehouseBatchInventoryID NOT in (8057, 8058, 8059, 175332, 175333) and warehouseBatchInventoryID > 0;
+where warehouseBatchInventoryID NOT in (8057, 8058, 8059, 8060, 8061, 8062) and warehouseBatchInventoryID > 0;
 
 delete from lwa_sandbox.warehousePriceHistory
 where warehousePriceHistoryID > 0;

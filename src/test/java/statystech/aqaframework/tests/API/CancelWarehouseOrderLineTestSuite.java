@@ -87,13 +87,8 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"CancelWHOrder-C165624.json"})
     public void validateUserRole(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
         StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        logger.info("------------------------------------Precondition Step 2------------------------------------");
-        new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
@@ -122,13 +117,8 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"CancelWHOrder-C165625.json"})
     public void validateOrderLineIdNotValid(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
         StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        logger.info("------------------------------------Precondition Step 2------------------------------------");
-        new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
@@ -150,13 +140,8 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"CancelWHOrder-C165644.json"})
     public void validateOrderStatusNotValid(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
         StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        logger.info("------------------------------------Precondition Step 2------------------------------------");
-        new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
@@ -180,13 +165,8 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
     @ParameterizedTest
     @ValueSource(strings = {"CancelWHOrder-C170490.json"})
     public void validateOrderFromLwaWasNotProcessedByOms(String jsonFilename, TestInfo testInfo) {
+        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
         StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        logger.info("------------------------------------Precondition Step 1------------------------------------");
-        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
-        assertTrue(stageOrderSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        logger.info("------------------------------------Precondition Step 2------------------------------------");
-        new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();

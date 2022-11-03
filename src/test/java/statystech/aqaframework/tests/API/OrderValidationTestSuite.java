@@ -227,27 +227,6 @@ public class OrderValidationTestSuite extends ApiTestClass {
 //        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 //    }
 //
-//    @TestRailID(id = 7811)
-//    @ParameterizedTest
-//    @CsvSource({"OrderValidation - VerifyPaymentFailedException.json"})
-//    public void verifyPaymentFailedException(String jsonFilename, TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        errorMessage.append(new OmsApiSteps().sendPostRequestAndSaveResponseToContext(jsonFilename, testInfo));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        OrdersSteps ordersSteps = new OrdersSteps();
-//        errorMessage.append(ordersSteps.verifyOrderStatusName(lwaTestContext.getApiOrderId(), "Exception"));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//
-//        OrderExceptionHistorySteps orderExceptionHistorySteps = new OrderExceptionHistorySteps();
-//        errorMessage.append(orderExceptionHistorySteps.verifyRowWithOrderIdExist(lwaTestContext));
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//        errorMessage.append(orderExceptionHistorySteps.verifyOrderExceptionTypeID(lwaTestContext, 3));
-//
-//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-//    }
-//
     @TestRailID(id = 7812)
     @ParameterizedTest
     @CsvSource({"OrderValidation-ExternalAddressValidationFailed.json"})

@@ -70,6 +70,7 @@ public class CancelWarehouseOrderLineTestSuite extends ApiTestClass {
         new OrdersSteps().setOrderIDtoContext();
         logger.info("------------------------------------Precondition Step 3------------------------------------");
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+
         int warehouseOrderId = new WarehouseOrderSteps().getWarehouseOrderId(lwaTestContext.getOrderID());
         new OrderLineSteps().setOrderLineIDtoContext(warehouseOrderId, lwaTestContext);
 

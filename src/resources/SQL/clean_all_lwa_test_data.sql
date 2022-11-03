@@ -89,4 +89,4 @@ delete from lwa_sandbox.address
 where addressID > 0;
 
 delete from lwa_sandbox.buyerAccount
-where buyerAccountID NOT in (1526, 1528, 1529, 1531, 1894, 7217) and buyerAccountID > 0;
+where buyerAccountID NOT in (1526, 1528, 1529, 1531, 1894) and buyerAccountID > 0;

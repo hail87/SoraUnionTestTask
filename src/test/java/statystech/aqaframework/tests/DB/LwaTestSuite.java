@@ -117,12 +117,9 @@ public class LwaTestSuite extends ApiTestClass {
     @ParameterizedTest
     @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
     public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(newOrderJson, testInfo);
-        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
-
-        new OrdersSteps().setOrderIDtoContext();
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
@@ -141,13 +138,10 @@ public class LwaTestSuite extends ApiTestClass {
     @ParameterizedTest
     @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
     public void cancelOrder(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
         StringBuilder errorMessage = new StringBuilder();
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(newOrderJson, testInfo);
-        assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
-
         OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
         errorMessage.append(ordersSteps.checkOrdersTable());
 
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();

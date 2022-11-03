@@ -53,7 +53,6 @@ public class IrsTestSuite extends ApiTestClass {
     }
 
 
-    //https://statystech.atlassian.net/browse/OMS-930
     @TestRailID(id = 95187)
     @Test
     public void wrongUserRole(TestInfo testInfo) throws IOException {

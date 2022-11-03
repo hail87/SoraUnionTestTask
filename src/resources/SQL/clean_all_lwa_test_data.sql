@@ -59,13 +59,13 @@ delete from lwa_sandbox.warehousePriceHistory
 where warehousePriceHistoryID > 0;--warehousePriceHistoryID NOT in (4188, 4189, 4190) and
 
 delete from lwa_sandbox.warehouseInventory
-where warehouseInventoryID NOT in (4188, 4189, 4190) and warehouseInventoryID > 0;
+where warehouseInventoryID NOT in (4188, 4189, 4190, 105004, 105005) and warehouseInventoryID > 0;
 
 delete from lwa_sandbox.productDescription
 where productDescriptionID > 0;
 
 delete from lwa_sandbox.productBatch
-where productBatchID NOT in (6207, 6208, 6875, 142149) and productBatchID > 0;
+where productBatchID NOT in (6207, 6208, 6875, 142149, 143066, 143067) and productBatchID > 0;
 
 delete from lwa_sandbox.product
 where productID NOT in (2295, 2391, 2392, 2753, 3508, 4606) and productID > 0;

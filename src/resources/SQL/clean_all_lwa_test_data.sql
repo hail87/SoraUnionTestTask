@@ -60,7 +60,7 @@ where warehousePriceHistoryID > 0;
 -- warehousePriceHistoryID NOT in (4188, 4189, 4190) and
 
 delete from lwa_sandbox.warehouseInventory
-where warehouseInventoryID NOT in (4188, 4189, 4190, 105004, 105005) and warehouseInventoryID > 0;
+where warehouseInventoryID NOT in (4188, 4189, 4190, 105004, 105005, 105017) and warehouseInventoryID > 0;
 
 delete from lwa_sandbox.productDescription
 where productDescriptionID > 0;

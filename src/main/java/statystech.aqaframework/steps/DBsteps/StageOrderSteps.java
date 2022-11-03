@@ -21,8 +21,19 @@ public class StageOrderSteps extends Steps {
 
     public void triggerProcessingSandBox() {
         logger.info("Triggering order processing at the SandBox");
-        int responseCode = new ApiRestUtils().sendGetRequest(
-                DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTrigger"));
+        int responseCode = 0;
+        int i = 0;
+        while (responseCode == 0 & i < 3) {
+            delay(3000);
+            try {
+                responseCode = new ApiRestUtils().sendGetRequest(
+                        DataUtils.getPropertyValue("url.properties", "stageOrderProcessingTrigger"));
+            } catch (Exception e) {
+                logger.warn(e.getLocalizedMessage());
+            }
+            i++;
+        }
+
         if (responseCode != 200)
             logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
     }

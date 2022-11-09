@@ -25,8 +25,8 @@ public class OrdersSteps extends Steps {
         errorMessage.append(checkOrderAllSysID());
         errorMessage.append(checkCurrency());
         errorMessage.append(checkCurrencyConversion());
-        errorMessage.append(checkOrderStatusID("1"));
         errorMessage.append(checkOrderStatusName("Confirmed"));
+        errorMessage.append(checkOrderStatusID("1"));
         return errorMessage.toString();
     }
 
@@ -96,6 +96,12 @@ public class OrdersSteps extends Steps {
 
     private String checkOrderStatusName(String expectedStatus) throws SQLException {
         String actual = ordersTable.getOrderStatusName();
+        int i = 0;
+        while (!expectedStatus.equalsIgnoreCase(actual) & i < 15) {
+            delay(1000);
+            actual = ordersTable.getOrderStatusName();
+            i++;
+        }
         return verifyExpectedResults(actual, expectedStatus);
     }
 
@@ -155,8 +161,7 @@ public class OrdersSteps extends Steps {
         int i = 0;
         logger.info("Waiting for orderStatusName");
         String command;
-        while((actualStatus.isEmpty() || actualStatus.equalsIgnoreCase("New Order")) & i < 120)
-        {
+        while ((actualStatus.isEmpty() || actualStatus.equalsIgnoreCase("New Order")) & i < 120) {
             logger.info(String.format("OrderStatusName: '%s'\ni = %d\n", actualStatus, i));
             try {
                 Thread.sleep(3000);
@@ -173,7 +178,7 @@ public class OrdersSteps extends Steps {
 
     public String verifyOMSisPaid(String expectedOMSisPaid, int orderId) {
         String actualOMSisPaid = ordersTable.getOMSisPaid(orderId);
-        if (actualOMSisPaid.isEmpty()){
+        if (actualOMSisPaid.isEmpty()) {
             return "\nCouldn't get OMSisPaid from orders table\n";
         }
         return verifyExpectedResults(actualOMSisPaid, expectedOMSisPaid);

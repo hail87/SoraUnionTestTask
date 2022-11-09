@@ -169,11 +169,17 @@ public class DBUtils {
         return createdId;
     }
 
-    public String select(String tableName, int rowId, String columnName) throws SQLException {
+    public String select(String tableName, int rowId, String columnName) {
         String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + tableName + "ID = " + rowId;
         ResultSet rs = execute(query);
-        rs.next();
-        String result = rs.getString(columnName);
+        String result = null;
+        try {
+            rs.next();
+            result = rs.getString(columnName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        assert result != null;
         if (result.equalsIgnoreCase("C")) {
             logger.info("\n!!!Query :\n" + query + "\n has been executed with result : " + result);
         } else {
@@ -208,7 +214,7 @@ public class DBUtils {
         int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
         String errorMessage = stageOrderSteps.checkStatusColumn(id);
         int i = 0;
-        while (!errorMessage.isEmpty() & i < 60){
+        while (errorMessage.equalsIgnoreCase("N") & i < 60){
             Steps.delay(1000);
             errorMessage = stageOrderSteps.checkStatusColumn(id);
             i++;
@@ -223,7 +229,7 @@ public class DBUtils {
         int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
         String errorMessage = stageOrderSteps.checkStatusColumn(id);
         int i = 0;
-        while (!errorMessage.isEmpty() & i < 60){
+        while (errorMessage.equalsIgnoreCase("N") & i < 60){
             Steps.delay(1000);
             errorMessage = stageOrderSteps.checkStatusColumn(id);
             i++;

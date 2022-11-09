@@ -2,8 +2,11 @@ package statystech.aqaframework.TableObjects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
+import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -11,7 +14,12 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class OrdersTable extends TableObject {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrdersTable.class);
 
     final String TABLE_NAME = "orders";
 
@@ -24,11 +32,16 @@ public class OrdersTable extends TableObject {
     }
 
     public int getUserIDValue() {
-        return Integer.parseInt(DBUtils.executeAndReturnString(String.format(
+        var result = DBUtils.executeAndReturnString(String.format(
                 "select %s from %s where orderAllSysID = '%s'",
                 "userID",
                 TABLE_NAME,
-                Context.getTestContext(LwaTestContext.class).getOrderAllSysID())));
+                Context.getTestContext(LwaTestContext.class).getOrderAllSysID()));
+        if (result == null) {
+            logger.error("\norders.userID is null, but shouldn't be");
+            assertNotNull(result);
+        }
+        return Integer.parseInt(result);
     }
 
     public String getOrderStatusName() throws SQLException {

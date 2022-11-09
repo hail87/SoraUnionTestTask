@@ -6,6 +6,8 @@ import okhttp3.Response;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ParcelLines.BatchNumbers;
+import statystech.aqaframework.DataObjects.ParcelLines.BatchNumbersItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
 import statystech.aqaframework.DataObjects.ProductBatch.ProductBatchResponse;
@@ -36,6 +38,22 @@ public class ParcelLineApiSteps extends Steps {
             testContext.setParcelLineID(parcelLinesItemList.get(0).getParcelLineId());
             testContext.setProductID(parcelLinesItemList.get(0).getProductId());
             testContext.setWarehouseBatchInventoryID(parcelLinesItemList.get(0).getWarehouseBatchInventoryId());
+            Context.updateTestContext(testContext);
+            return "";
+        }
+    }
+
+    public String sendGetRequestAndSaveWarehouseBatchInventoryIdToContext(int parcelLineID, String token, TestInfo testInfo) throws IOException {
+        LwaTestContext testContext = Context.getTestContext(testInfo, LwaTestContext.class);
+        String responseString = new ApiRestUtils().sendGetParcelLine(String.valueOf(parcelLineID), token).body().string();
+        logger.info("Response from API:\n" + responseString);
+        if (!responseString.contains("batch_numbers")) {
+            return String.format("\nWrong response!\nResponseString:\n'%s'\n", responseString);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            BatchNumbers response = mapper.readValue(responseString, BatchNumbers.class);
+            List<BatchNumbersItem> batchNumberItemsList = response.getBatchNumbers();
+            testContext.setWarehouseBatchInventoryID(batchNumberItemsList.get(0).getWarehouseBatchInventoryId());
             Context.updateTestContext(testContext);
             return "";
         }
@@ -105,6 +123,7 @@ public class ParcelLineApiSteps extends Steps {
         logger.info("Response from API:\n" + responseCode);
         String body = Objects.requireNonNull(response.body()).string();
         testContext.setParcelLineResponseBody(body);
+        logger.info("Response body from API:\n" + body);
         if (responseCode != expectedStatusCode) {
             return verifyStatusCode(expectedStatusCode, response);
         } else if (expectedStatusCode == 400 || expectedStatusCode == 403) {

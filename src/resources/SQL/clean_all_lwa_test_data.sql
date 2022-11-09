@@ -66,7 +66,7 @@ delete from lwa_sandbox.productDescription
 where productDescriptionID > 0;
 
 delete from lwa_sandbox.productBatch
-where productBatchID NOT in (6207, 6208, 6875, 142149, 143066, 143067, 143132) and productBatchID > 0;
+where productBatchID NOT in (6207, 6208, 142149, 143066, 143067, 143132) and productBatchID > 0;
 
 delete from lwa_sandbox.product
 where productID NOT in (2295, 2391, 2392, 2753, 3508, 4606, 90577, 90562) and productID > 0;

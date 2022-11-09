@@ -58,16 +58,12 @@ public class StageOrderSteps extends Steps {
     }
 
     public String checkStatusColumn(int rowID) {
-        try {
-            if (new DBUtils().select("stageOrder", rowID, "status").equalsIgnoreCase("C")) {
-                return "";
-            } else {
-                return "Status at the Status column isn't equal to 'C'";
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "Method 'checkStatusColumn' has thrown exception";
-        }
+        return switch (new DBUtils().select("stageOrder", rowID, "status")) {
+            case "C" -> "";
+            case "E" -> "\nOrder fails into exception\n";
+            case "N" -> "\nOrder is still in process\n";
+            default -> "Status at the Status column isn't equal to 'C'";
+        };
     }
 
     public int insertJsonToTableAndLwaContext(String jsonFilename, TestInfo testInfo) {

@@ -282,7 +282,24 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             Request request = new Request.Builder()
-                    .url(DataUtils.getPropertyValue("url.properties", "parcelLineGET") + warehouseOrderID)
+                    .url(DataUtils.getPropertyValue("url.properties", "parcelLineGET") + "?warehouse_order_id=" + warehouseOrderID)
+                    .method("GET", null)
+                    .addHeader("Authorization", token)
+                    .build();
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response sendGetParcelLine(String parcelLineId, String token) {
+        okhttp3.Response response = null;
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(DataUtils.getPropertyValue("url.properties", "parcelLineGET") + "/" + parcelLineId + "/batch-numbers")
                     .method("GET", null)
                     .addHeader("Authorization", token)
                     .build();
@@ -368,7 +385,7 @@ public class ApiRestUtils {
     }
 
     public okhttp3.Response sendPostCreateParcels(List<ParcelLinesItem> parcelLinesItemList, int warehouseOrderId, String authToken) throws IOException {
-        okhttp3.Response response = null;
+        okhttp3.Response response;
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");

@@ -13,7 +13,7 @@ public class UserTableSteps {
 
     private static final Logger logger = LoggerFactory.getLogger(UserTableSteps.class);
 
-    public String checkAllSysUserIDColumn() throws SQLException {
+    public String checkAllSysUserIDColumn() {
         String expectedAllSysUserID = Context.getTestContext(LwaTestContext.class).getJsonObject().get("seller_username").toString();
         //Remove ["] symbol at the beginning and end of the String.
         expectedAllSysUserID = expectedAllSysUserID.substring(1,expectedAllSysUserID.length() -1 );
@@ -23,7 +23,7 @@ public class UserTableSteps {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (actualAllSysUserID.equalsIgnoreCase(expectedAllSysUserID)) {
+        if (expectedAllSysUserID.equalsIgnoreCase(actualAllSysUserID)) {
             logger.info(new Object(){}.getClass().getEnclosingMethod().getName() + "() passed successfully\n + " +
                     "\" orders.orderAllSysID value \nActual: '" +
                                        actualAllSysUserID + "'\nExpected: '" + expectedAllSysUserID + "'");

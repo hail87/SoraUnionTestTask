@@ -90,7 +90,7 @@ delete from lwa_sandbox.accountAddress
 where accountAddressID > 0;
 
 delete from lwa_sandbox.address
-where addressID > 0;
+where addressID NOT in (106230) and addressID > 0;
 
 delete from lwa_sandbox.buyerAccount
-where buyerAccountID NOT in (1526, 1528, 1529, 1531, 1894) and buyerAccountID > 0;
+where buyerAccountID NOT in (1526, 1528, 1529, 1531, 1894, 8558, 8559) and buyerAccountID > 0;

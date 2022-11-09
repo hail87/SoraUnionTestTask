@@ -102,11 +102,11 @@ public class LwaTestSuite extends ApiTestClass {
         OrderItem product1 = getLwaTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
         errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
 
-        errorMessage.append(orderLineSteps.checkProductIsAbsent(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English")));
+        errorMessage.append(orderLineSteps.checkProductIsAbsent(StringEscapeUtils.unescapeJava("BOTOX\\u00ae 100 Units")));
         int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
 
-        OrderItem product2 = getLwaTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("EYLEA\\u00ae 40mg/1ml Non-English"));
+        OrderItem product2 = getLwaTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("BOTOX\\u00ae 100 Units"));
         new WarehouseOrderSteps().setWarehouseOrders();
         errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

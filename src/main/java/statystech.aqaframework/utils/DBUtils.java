@@ -13,8 +13,13 @@ import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
 import statystech.aqaframework.steps.Steps;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -12,6 +12,8 @@ import statystech.aqaframework.utils.DataUtils;
 
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class OrderLineSteps extends Steps {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderLineSteps.class);
@@ -31,6 +33,7 @@ public class OrderLineSteps extends Steps {
     public String checkOrderLineTableAndSetWarehouseOrderID(OrderItem product) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(checkName(product));
+        assertTrue(errorMessage.isEmpty());
         errorMessage.append(checkSKU(product));
         errorMessage.append(checkPrice(product));
         errorMessage.append(checkQuantity(product));
@@ -52,12 +55,22 @@ public class OrderLineSteps extends Steps {
         }
     }
 
-    private String checkName(OrderItem product) throws SQLException {
-        return checkName(product.getProductName());
+    private String checkName(OrderItem product) {
+        String result = "orderLine is empty";
+        int i = 0;
+        while (result.equalsIgnoreCase("orderLine is empty") & i < 30) {
+            try {
+                result = checkName(product.getProductName());
+            } catch (SQLException e) {
+                logger.warn("\nwaiting for orderLine row to appear\n");
+            }
+            delay(1000);
+            i++;
+        }
+        return result;
     }
 
     private String checkName(String productName) throws SQLException {
-
         String actual = productName.contains("®") ?
                 orderLineTable.getColumnValueContainsProductName(productName, "productName")
                 : orderLineTable.getColumnValueByProductName(productName, "productName");
@@ -98,12 +111,23 @@ public class OrderLineSteps extends Steps {
 
     private void addWarehouseOrderID(OrderItem product) throws SQLException {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
-        int warehouseOrderID = Integer.parseInt(orderLineTable.getColumnValueByProductName(product.getProductName(), "warehouseOrderID"));
+        String warehouseOrderId = "warehouseOrder table is empty";
+        int i = 0;
+        while (warehouseOrderId.equalsIgnoreCase("warehouseOrder table is empty") & i < 30) {
+            try {
+                warehouseOrderId = orderLineTable.getColumnValueByProductName(product.getProductName(), "warehouseOrderID");
+            } catch (SQLException e) {
+                logger.warn("\nwaiting for orderLine row to appear\n");
+            }
+            delay(1000);
+            i++;
+        }
+        int warehouseOrderID = Integer.parseInt(warehouseOrderId);
         lwaTestContext.addWarehouseOrders(warehouseOrderID, new WarehouseOrderSteps().getWarehouseId(warehouseOrderID));
         Context.updateTestContext(lwaTestContext);
     }
 
-    public void setOrderLineIDtoContext(int warehouseOrderId, LwaTestContext testContext){
+    public void setOrderLineIDtoContext(int warehouseOrderId, LwaTestContext testContext) {
         try {
             testContext.setOrderLineID(orderLineTable.getPrimaryID("warehouseOrderID", String.valueOf(warehouseOrderId)));
         } catch (SQLException e) {

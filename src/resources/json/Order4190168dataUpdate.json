@@ -71,24 +71,24 @@
             ]
         },
         {
-            "order_item_id": "1763558",
-            "product_id": "88761",
-            "product_name": "EYLEA® 40mg/1ml Non-English",
-            "product_quantity": "5",
-            "product_item_price": "1369.00",
-            "SKU": "sku_1512426276_1",
+            "order_item_id": "1803543",
+            "product_id": "81455",
+            "product_name": "BOTOX® 100 Units",
+            "product_quantity": "1",
+            "product_item_price": "399.00",
+            "SKU": "Botox 100IU1",
             "ff_centers":
             [
                 {
-                    "ff_center_id": "41",
-                    "ff_center_name": "Nitrogen-7-N",
-                    "assigned_qty": "5",
+                    "ff_center_id": "161",
+                    "ff_center_name": "Iberianium",
+                    "assigned_qty": "1",
                     "batches":
                     [
                         {
-                            "qty": "5",
-                            "number": "RAS-19-02",
-                            "ff_center_id": "41"
+                            "qty": "1",
+                            "number": "C6518C3",
+                            "ff_center_id": "161"
                         }
                     ]
                 }

@@ -69,10 +69,11 @@ public class LwaTestSuite extends ApiTestClass {
         Context.addTestContext(lwaTestContext);
     }
 
+    //https://statystech.atlassian.net/browse/LWA-1523
     @TestRailID(id = 1)
     @ParameterizedTest
     @ValueSource(strings = {"order1000100data.json"})
-    public void newOrderProcessing(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
+    public void allSysOrderProcessing(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
         DBUtils.importOrderToSandbox(jsonFilename, testInfo);
         StringBuilder errorMessage = new StringBuilder();
         OrdersSteps ordersSteps = new OrdersSteps();

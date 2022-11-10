@@ -123,15 +123,14 @@ public class LwaTestSuite extends ApiTestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
         WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
 
         int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
-        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Bulgarium"));
-
-        stageOrderSteps.deleteRow(idNew);
-        stageOrderSteps.deleteRow(idUpdate);
-
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Iberianium"));
+//        stageOrderSteps.deleteRow(idNew);
+//        stageOrderSteps.deleteRow(idUpdate);
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

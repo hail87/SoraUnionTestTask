@@ -32,7 +32,7 @@ public class WarehouseOrderTable extends TableObject {
         return rs;
     }
 
-    public ResultSet getOrderLines(int orderID){
+    public ResultSet getWarehouseOrderLines(int orderID){
         return DBUtils.execute(String.format("select * from %s where orderID='%d'", TABLE_NAME, orderID));
     }
 

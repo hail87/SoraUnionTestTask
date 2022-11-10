@@ -44,7 +44,7 @@ public class ProductBatchSteps extends Steps {
         return "";
     }
 
-    public String getProductBatchID(int productID) throws SQLException {
+    public String getProductBatchID(int productID) {
         return new ProductBatchTable().getColumnValueByColumnValue("productBatchID","productID", String.valueOf(productID));
     }
 

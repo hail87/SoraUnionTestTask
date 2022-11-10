@@ -7,7 +7,8 @@
   "seller_username" : "csrsite369",
   "csr_assigned_id" : "8e72d8dd4ed63a44fa762eddf22c11ff",
   "csr_assigned_username" : "csrukrh",
-  "billing_address" : {
+  "billing_address" : 
+  {
     "user_info_id" : "771984",
     "address_type" : "BT",
     "title" : "",
@@ -60,7 +61,7 @@
           "batches" : [
             {
               "qty" : "1",
-              "number" : "C6518C3",
+              "number" : "123456",
               "ff_center_id" : "161"
             }
           ]

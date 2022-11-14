@@ -91,6 +91,7 @@ public class LwaTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //https://statystech.atlassian.net/browse/LWA-1524
     @TestRailID(id = 2)
     @ParameterizedTest
     @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
@@ -114,6 +115,7 @@ public class LwaTestSuite extends ApiTestClass {
         stageOrderSteps.deleteRow(idUpdate);
     }
 
+    //https://statystech.atlassian.net/browse/LWA-1524
     @TestRailID(id = 422)
     @ParameterizedTest
     @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
@@ -150,7 +152,7 @@ public class LwaTestSuite extends ApiTestClass {
         int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
         assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
 
-        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nickel-28-Ni"));
+        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nitrogen-7-N"));
         errorMessage.append(ordersSteps.checkOrderIsCancelled());
 
         stageOrderSteps.deleteRow(idNew);

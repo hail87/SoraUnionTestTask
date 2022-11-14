@@ -25,18 +25,18 @@
     },
     "shipping_address":
     {
-        "user_info_id": "765444",
-        "address_type": "BT",
+        "user_info_id": "772746",
+        "address_type": "ST",
         "title": "",
-        "first_name": "Kayla",
+        "first_name": "G****a",
         "middle_name": "",
-        "last_name": "Smith",
+        "last_name": "G****a",
         "country": "UNITED STATES",
         "state": "Florida",
-        "city": "Tampa",
-        "zip": "43606",
-        "address_line_1": "901 South John Ave.",
-        "address_line_2": "",
+        "city": "Hallandale Beach",
+        "zip": "33009",
+        "address_line_1": "645 W hallandale beach Blvd",
+        "address_line_2": "#1901",
         "company": "",
         "phone_1": "6472368232",
         "phone_2": null
@@ -47,35 +47,34 @@
     "order_items":
     [
         {
-            "order_item_id": "1766865",
-            "product_id": "81509",
-            "product_name": "DYSPORT Non-English",
-            "product_quantity": "6",
-            "product_item_price": "389.00",
-            "SKU": "Dysport (Reloxin) 500IU1",
-            "batches": null,
+            "order_item_id": "1757040",
+            "product_id": "88748",
+            "product_name": "REVOFIL AQUASHINE BTX",
+            "product_quantity": "7",
+            "product_item_price": "56.00",
+            "SKU": "sku_1509398072_1",
             "ff_centers":
             [
                 {
-                    "ff_center_id": "105",
-                    "ff_center_name": "Nickel-28-Ni",
-                    "assigned_qty": "6",
+                    "ff_center_id": "41",
+                    "ff_center_name": "Nitrogen-7-N",
+                    "assigned_qty": "7",
                     "batches":
                     [
                         {
-                            "qty": "6",
-                            "number": "P12475",
-                            "ff_center_id": "105"
+                            "qty": "7",
+                            "number": "RAB-19-02",
+                            "ff_center_id": "41"
                         }
                     ]
                 }
             ]
         }
     ],
-    "website_name": "aestheticsworld.biz",
-    "shopper_group_name": "Aesthetics World Licensed",
-    "account_number": "403731",
+    "website_name": "medicalsparx.com",
+    "shopper_group_name": "MedSpaRX Licensed",
+    "account_number": "406258",
     "order_currency": "USD",
     "currency_conversion": "1.00",
-    "shipping_notes": "Do not send DPD/Hermes Thanks "
+    "shipping_notes": ""
 }

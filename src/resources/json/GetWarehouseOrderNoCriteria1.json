@@ -49,31 +49,7 @@
     "order_items":
     [
         {
-            "order_item_id": "1791408",
-            "product_id": "82280",
-            "product_name": "DEPO-PROVERA®",
-            "product_quantity": "6",
-            "product_item_price": "32.00",
-            "SKU": "DEPO-PROVERA® 150mg_1",
-            "ff_centers":
-            [
-                {
-                    "ff_center_id": "161",
-                    "ff_center_name": "Iberianium",
-                    "assigned_qty": "6",
-                    "batches":
-                    [
-                        {
-                            "qty": "6",
-                            "number": "R85185",
-                            "ff_center_id": "161"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "order_item_id": "1791409",
+            "order_item_id": "1793111",
             "product_id": "82290",
             "product_name": "MIRENA® English",
             "product_quantity": "2",
@@ -89,31 +65,7 @@
                     [
                         {
                             "qty": "2",
-                            "number": "TU02KBT",
-                            "ff_center_id": "161"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "order_item_id": "1791410",
-            "product_id": "89497",
-            "product_name": "SMB® TCu 380A with Safeload",
-            "product_quantity": "1",
-            "product_item_price": "249.00",
-            "SKU": "sku_1565122444_1",
-            "ff_centers":
-            [
-                {
-                    "ff_center_id": "161",
-                    "ff_center_name": "Iberianium",
-                    "assigned_qty": "1",
-                    "batches":
-                    [
-                        {
-                            "qty": "1",
-                            "number": "A0603-2019",
+                            "number": "TU002KBT",
                             "ff_center_id": "161"
                         }
                     ]
@@ -121,9 +73,9 @@
             ]
         }
     ],
-    "website_name": "acemedicalwholesale.com",
-    "shopper_group_name": "Ace Medical Licensed",
-    "account_number": "369397",
+    "website_name": "peakmedicalwholesale.com",
+    "shopper_group_name": "Peak Medical Licensed",
+    "account_number": "331185",
     "order_currency": "USD",
     "currency_conversion": "1.00",
     "shipping_notes": ""

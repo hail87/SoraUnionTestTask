@@ -161,8 +161,8 @@ public class DataUtils {
                 downloadKubeCtlLog("oms-services") |
                 downloadKubeCtlLog("oms-website-api") |
                 downloadKubeCtlLog("lwa-write-data") |
-                downloadKubeCtlLog("lwa-etl-orders") |
-                downloadKubeCtlLog("lwa-etl-products");
+                downloadKubeCtlLog("lwa-etl-orders");
+                //| downloadKubeCtlLog("lwa-etl-products");
     }
 
     public static boolean downloadKubeCtlLog(String logName) {

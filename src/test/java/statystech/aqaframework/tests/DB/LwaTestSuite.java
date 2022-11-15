@@ -19,6 +19,7 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.LwaApiSteps;
 import statystech.aqaframework.steps.DBsteps.*;
+import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
 import statystech.aqaframework.tests.TestRail.TestRailID;
@@ -160,6 +161,8 @@ public class LwaTestSuite extends ApiTestClass {
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
+//todo: there are api endpoints to create products and parent products,
+// we need to refactor this test cases to work through API
 
 //    With the launch of Catalog Management module the processing of the product file from allays has been
 //    discontinued and the corresponding service lwa-ETL-products retired
@@ -219,8 +222,7 @@ public class LwaTestSuite extends ApiTestClass {
         StageOrderSteps stageOrderSteps = new StageOrderSteps();
 
         for (GetWarehouseOrderNoCriteriaEnum json : GetWarehouseOrderNoCriteriaEnum.values()) {
-            int idNew = stageOrderSteps.insertJsonToTableAndLwaContext(json.getTitle(), testInfo);
-            assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
+            DBUtils.importOrderToSandbox(json.getTitle(), testInfo);
         }
 
         ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
@@ -231,6 +233,7 @@ public class LwaTestSuite extends ApiTestClass {
 
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
 
+        Steps.delay(3000);
         errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders(), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 

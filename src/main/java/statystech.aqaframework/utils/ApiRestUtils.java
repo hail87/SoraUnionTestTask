@@ -42,6 +42,7 @@ public class ApiRestUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        logger.info("\nResponse from API: \n" + result);
         return result;
     }
 

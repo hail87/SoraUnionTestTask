@@ -49,34 +49,34 @@
     "order_items":
     [
         {
-            "order_item_id": "1792182",
-            "product_id": "81651",
-            "product_name": "BELOTERO® INTENSE w/ Lidocaine",
-            "product_quantity": "1",
-            "product_item_price": "81.00",
-            "SKU": "belotero_intense_1",
+            "order_item_id": "1757040",
+            "product_id": "88748",
+            "product_name": "REVOFIL AQUASHINE BTX",
+            "product_quantity": "7",
+            "product_item_price": "56.00",
+            "SKU": "sku_1509398072_1",
             "ff_centers":
             [
                 {
-                    "ff_center_id": "121",
-                    "ff_center_name": "Rubidium-37-Rb",
-                    "assigned_qty": "1",
+                    "ff_center_id": "41",
+                    "ff_center_name": "Nitrogen-7-N",
+                    "assigned_qty": "7",
                     "batches":
                     [
                         {
-                            "qty": "1",
-                            "number": "556029/1",
-                            "ff_center_id": "121"
+                            "qty": "7",
+                            "number": "RAB-19-02",
+                            "ff_center_id": "41"
                         }
                     ]
                 }
             ]
         }
     ],
-    "website_name": "euromexde.com",
-    "shopper_group_name": "Euromexde Licensed International",
-    "account_number": "405214",
-    "order_currency": "EUR",
-    "currency_conversion": "0.83",
+    "website_name": "peakmedicalwholesale.com",
+    "shopper_group_name": "Peak Medical Licensed",
+    "account_number": "331185",
+    "order_currency": "USD",
+    "currency_conversion": "1.00",
     "shipping_notes": ""
 }

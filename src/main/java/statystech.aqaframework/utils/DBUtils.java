@@ -10,6 +10,7 @@ import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.MyPath;
 import statystech.aqaframework.steps.DBsteps.OrdersSteps;
 import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
+import statystech.aqaframework.steps.DBsteps.StageProductSteps;
 import statystech.aqaframework.steps.Steps;
 
 import java.io.*;
@@ -242,6 +243,21 @@ public class DBUtils {
         assertTrue(errorMessage.isEmpty(), errorMessage);
         OrdersSteps ordersSteps = new OrdersSteps();
         ordersSteps.setOrderIDtoContext();
+        return id;
+    }
+
+    public static int importProductToSandbox(String jsonFilename, TestInfo testInfo) throws SQLException, IOException {
+        StageProductSteps stageProductSteps = new StageProductSteps();
+        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
+        String errorMessage = stageProductSteps.checkStatusColumn(id);
+        int i = 0;
+        while (errorMessage.equalsIgnoreCase("N") & i < 60){
+            Steps.delay(1000);
+            errorMessage = stageProductSteps.checkStatusColumn(id);
+            i++;
+        }
+        assertTrue(errorMessage.isEmpty(), errorMessage);
+        new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
         return id;
     }
 }

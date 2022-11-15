@@ -25,12 +25,13 @@ public class StageProductSteps extends Steps {
             logger.error(String.format("\nResponse code != 200, actual response code : %d", responseCode));
     }
 
-    public String checkStatusColumn(int rowID) throws SQLException {
-        if (new DBUtils().select("stageProduct", rowID, "status").equalsIgnoreCase("C")) {
-            return "";
-        } else {
-            return "Status at the Status column isn't equal to 'C'";
-        }
+    public String checkStatusColumn(int rowID) {
+        return switch (new DBUtils().select("stageProduct", rowID, "status")) {
+            case "C" -> "";
+            case "E" -> "\nOrder fails into exception\n";
+            case "N" -> "\nOrder is still in process\n";
+            default -> "Status at the Status column isn't equal to 'C'";
+        };
     }
 
     public int insertJsonToTableAndContext(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {

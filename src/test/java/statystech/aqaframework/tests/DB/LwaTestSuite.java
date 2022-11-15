@@ -161,53 +161,55 @@ public class LwaTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 3537)
-    @ParameterizedTest
-    @CsvSource({"p2.json"})
-    public void addProductTest(String jsonFilename, TestInfo testInfo) throws IOException, SQLException {
-        StringBuilder errorMessage = new StringBuilder();
-        StageProductSteps stageProductSteps = new StageProductSteps();
-        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
-        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
+//    With the launch of Catalog Management module the processing of the product file from allays has been
+//    discontinued and the corresponding service lwa-ETL-products retired
+//    @TestRailID(id = 3537)
+//    @ParameterizedTest
+//    @CsvSource({"p2.json"})
+//    public void addProductTest(String jsonFilename, TestInfo testInfo) throws SQLException {
+//
+//        DBUtils.importOrderToSandbox(jsonFilename, testInfo);
+//        StringBuilder errorMessage = new StringBuilder();
+//
+//        for (ItemsItem item : getLwaTestContext(testInfo).getProduct().getItems()) {
+//            errorMessage.append(new ProductSteps().checkProduct(item));
+//            for (BatchesItem batch : item.getBatches())
+//                errorMessage.append(new ProductBatchSteps().checkBatchNumberIsPresent(batch));
+//            errorMessage.append(new ProductDescriptionSteps().checkProductDescription(item));
+//            errorMessage.append(new WarehouseInventorySteps().checkWarehouseInventory(item));
+//        }
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 
-        for (ItemsItem item : getLwaTestContext(testInfo).getProduct().getItems()) {
-            errorMessage.append(new ProductSteps().checkProduct(item));
-            for (BatchesItem batch : item.getBatches())
-                errorMessage.append(new ProductBatchSteps().checkBatchNumberIsPresent(batch));
-            errorMessage.append(new ProductDescriptionSteps().checkProductDescription(item));
-            errorMessage.append(new WarehouseInventorySteps().checkWarehouseInventory(item));
-        }
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
-
-    @TestRailID(id = 3930)
-    @ParameterizedTest
-    @CsvSource({"ProductsSmallSingleN.json, ProductsSmallUpdateSingle.json"})
-    public void updateProduct(String productJson, String updateProductJson, TestInfo testInfo) throws IOException, SQLException {
-        StringBuilder errorMessage = new StringBuilder();
-        StageProductSteps stageProductSteps = new StageProductSteps();
-
-        int id = stageProductSteps.insertJsonToTableAndContext(productJson, testInfo);
-        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-
-        id = stageProductSteps.insertJsonToTableAndContext(updateProductJson, testInfo);
-        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
-        new JsonUtils().getProductJsonObjectAndLoadToContext(updateProductJson, testInfo.getTestMethod().get().getName());
-
-        ProductBatchSteps productBatchSteps = new ProductBatchSteps();
-        ItemsItem item = getLwaTestContext(testInfo).getProduct().getItems().get(0);
-        if (item.getJsonNodeBatches() != null) {
-            item.evaluateBatch(new ObjectMapper());
-            errorMessage.append(productBatchSteps.setProductBatchID(item));
-        }
-        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("994840"));
-        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("995582"));
-        errorMessage.append(new ProductSteps().checkProductUnavailable(item));
-        errorMessage.append(new WarehouseBatchInventorySteps().checkFreeStock(item));
-
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
+    //    With the launch of Catalog Management module the processing of the product file from allays has been
+//    discontinued and the corresponding service lwa-ETL-products retired
+//    @TestRailID(id = 3930)
+//    @ParameterizedTest
+//    @CsvSource({"ProductsSmallSingleN.json, ProductsSmallUpdateSingle.json"})
+//    public void updateProduct(String productJson, String updateProductJson, TestInfo testInfo) throws IOException, SQLException {
+//        StringBuilder errorMessage = new StringBuilder();
+//        StageProductSteps stageProductSteps = new StageProductSteps();
+//
+//        int id = stageProductSteps.insertJsonToTableAndContext(productJson, testInfo);
+//        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+//
+//        id = stageProductSteps.insertJsonToTableAndContext(updateProductJson, testInfo);
+//        assertTrue(stageProductSteps.checkStatusColumn(id).isEmpty(), errorMessage.toString());
+//        new JsonUtils().getProductJsonObjectAndLoadToContext(updateProductJson, testInfo.getTestMethod().get().getName());
+//
+//        ProductBatchSteps productBatchSteps = new ProductBatchSteps();
+//        ItemsItem item = getLwaTestContext(testInfo).getProduct().getItems().get(0);
+//        if (item.getJsonNodeBatches() != null) {
+//            item.evaluateBatch(new ObjectMapper());
+//            errorMessage.append(productBatchSteps.setProductBatchID(item));
+//        }
+//        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("994840"));
+//        errorMessage.append(productBatchSteps.checkProductBatchIsPresent("995582"));
+//        errorMessage.append(new ProductSteps().checkProductUnavailable(item));
+//        errorMessage.append(new WarehouseBatchInventorySteps().checkFreeStock(item));
+//
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 
     @TestRailID(id = 39704)
     @Test

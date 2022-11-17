@@ -270,6 +270,7 @@ public class LwaTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
+    //VAT EE101559081 at buyerAccount.buyerVAT (buyerAccount = account-number at .json)
     @TestRailID(id = 40873)
     @Test
     public void getWarehouseOrdersAllsysOrderIdOtherCriteria(TestInfo testInfo) throws IOException {
@@ -282,15 +283,17 @@ public class LwaTestSuite extends ApiTestClass {
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 
-        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
+        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(
+                Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
         OrdersTable ordersTable = new OrdersTable();
         for (int orderAllSysID : expectedOrderNumbersList) {
             assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
         }
 
+        Steps.delay(3000);
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
-
-        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrders("EU", "ROTW"), lwaTestContext));
+        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(
+                ApiRestUtils.getWarehouseOrders("EU", "ROTW"), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(

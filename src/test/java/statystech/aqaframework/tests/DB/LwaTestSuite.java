@@ -289,7 +289,7 @@ public class LwaTestSuite extends ApiTestClass {
         for (int orderAllSysID : expectedOrderNumbersList) {
             assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
         }
-        Steps.delay(3000);
+        Steps.delay(9000);
 
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
         errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(
@@ -333,10 +333,9 @@ public class LwaTestSuite extends ApiTestClass {
         for (int orderAllSysID : expectedOrderNumbersList) {
             assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
         }
-        Steps.delay(3000);
+        Steps.delay(9000);
 
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
-
         errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(
                 ApiRestUtils.getWarehouseOrdersByWarehouseID(8), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

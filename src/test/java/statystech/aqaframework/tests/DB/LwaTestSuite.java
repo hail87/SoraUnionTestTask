@@ -289,8 +289,8 @@ public class LwaTestSuite extends ApiTestClass {
         for (int orderAllSysID : expectedOrderNumbersList) {
             assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
         }
-
         Steps.delay(3000);
+
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
         errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(
                 ApiRestUtils.getWarehouseOrders("EU", "ROTW"), lwaTestContext));
@@ -327,19 +327,22 @@ public class LwaTestSuite extends ApiTestClass {
             assertTrue(new StageOrderSteps().checkStatusColumn(idNew).isEmpty(), errorMessage.toString());
         }
 
-        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
+        ArrayList<Integer> expectedOrderNumbersList = new ArrayList<>(
+                Arrays.asList(6097147, 6097800, 6095793, 6098207, 6097621));
         OrdersTable ordersTable = new OrdersTable();
         for (int orderAllSysID : expectedOrderNumbersList) {
             assertTrue(ordersTable.checkRowWithValueIsPresent("orderAllSysID", String.valueOf(orderAllSysID)));
         }
+        Steps.delay(3000);
 
         LwaApiSteps lwaApiSteps = new LwaApiSteps();
 
-        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(ApiRestUtils.getWarehouseOrdersByWarehouseID(24), lwaTestContext));
+        errorMessage.append(lwaApiSteps.updateLwaContextWithWarehouseSearchResult(
+                ApiRestUtils.getWarehouseOrdersByWarehouseID(8), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
         errorMessage.append(lwaApiSteps.checkWarehouseSearchResponse(
-                new ArrayList<>(Arrays.asList(6097621, 6095793)), lwaTestContext));
+                new ArrayList<>(Arrays.asList(6097621)), lwaTestContext));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 

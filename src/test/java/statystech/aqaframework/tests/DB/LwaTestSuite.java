@@ -93,74 +93,76 @@ public class LwaTestSuite extends ApiTestClass {
     }
 
     //https://statystech.atlassian.net/browse/LWA-1524
-    @TestRailID(id = 2)
-    @ParameterizedTest
-    @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
-    public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws SQLException {
-        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
-        StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        OrderLineSteps orderLineSteps = new OrderLineSteps();
-        OrderItem product1 = getLwaTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
-        errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
-
-        errorMessage.append(orderLineSteps.checkProductIsAbsent(StringEscapeUtils.unescapeJava("BOTOX\\u00ae 100 Units")));
-        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
-        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
-
-        OrderItem product2 = getLwaTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("BOTOX\\u00ae 100 Units"));
-        new WarehouseOrderSteps().setWarehouseOrders();
-        errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        stageOrderSteps.deleteRow(idNew);
-        stageOrderSteps.deleteRow(idUpdate);
-    }
-
-    //https://statystech.atlassian.net/browse/LWA-1524
-    @TestRailID(id = 422)
-    @ParameterizedTest
-    @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
-    public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
-        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
-        StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
-        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
-
-        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
-        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
-        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Iberianium"));
+//    @TestRailID(id = 2)
+//    @ParameterizedTest
+//    @CsvSource({"Order4190168data.json, Order4190168dataUpdate.json"})
+//    public void orderUpdateAddProduct(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws SQLException {
+//        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
+//        StringBuilder errorMessage = new StringBuilder();
+//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+//        OrderLineSteps orderLineSteps = new OrderLineSteps();
+//        OrderItem product1 = getLwaTestContext(testInfo).getItem("REVOFIL AQUASHINE BTX");
+//        errorMessage.append(orderLineSteps.checkOrderLineTableAndSetWarehouseOrderID(product1));
+//
+//        errorMessage.append(orderLineSteps.checkProductIsAbsent(StringEscapeUtils.unescapeJava("BOTOX\\u00ae 100 Units")));
+//        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
+//        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+//
+//        OrderItem product2 = getLwaTestContext(testInfo).getItem(StringEscapeUtils.unescapeJava("BOTOX\\u00ae 100 Units"));
+//        new WarehouseOrderSteps().setWarehouseOrders();
+//        errorMessage.append(orderLineSteps.checkOrderLineTableWithWarehouseOrderID(product2));
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 //        stageOrderSteps.deleteRow(idNew);
 //        stageOrderSteps.deleteRow(idUpdate);
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
+//    }
 
-    @TestRailID(id = 3523)
-    @ParameterizedTest
-    @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
-    public void cancelOrder(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
-        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
-        StringBuilder errorMessage = new StringBuilder();
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        OrdersSteps ordersSteps = new OrdersSteps();
-        errorMessage.append(ordersSteps.checkOrdersTable());
+    //https://statystech.atlassian.net/browse/LWA-1524
+//    @TestRailID(id = 422)
+//    @ParameterizedTest
+//    @CsvSource({"Order9990002data.json,  Order9990002dataUpdate.json"})
+//    public void orderUpdateProductRemoved(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+//        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
+//        StringBuilder errorMessage = new StringBuilder();
+//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+//        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
+//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderQuantity(2));
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderTable());
+//
+//        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
+//        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Iberianium"));
+////        stageOrderSteps.deleteRow(idNew);
+////        stageOrderSteps.deleteRow(idUpdate);
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 
-        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
-        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderStatusesIsActive());
+//    @TestRailID(id = 3523)
+//    @ParameterizedTest
+//    @CsvSource({"Order1081869.json, Order1081869Cancel.json"})
+//    public void cancelOrder(String newOrderJson, String updateOrderJson, TestInfo testInfo) throws IOException, SQLException {
+//        int idNew = DBUtils.importOrderToSandbox(newOrderJson, testInfo);
+//        StringBuilder errorMessage = new StringBuilder();
+//        StageOrderSteps stageOrderSteps = new StageOrderSteps();
+//        OrdersSteps ordersSteps = new OrdersSteps();
+//        errorMessage.append(ordersSteps.checkOrdersTable());
+//
+//        WarehouseOrderSteps warehouseOrderSteps = new WarehouseOrderSteps();
+//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderStatusesIsActive());
+//
+//        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
+//        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
+//
+//        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nitrogen-7-N"));
+//        errorMessage.append(ordersSteps.checkOrderIsCancelled());
+//
+//        stageOrderSteps.deleteRow(idNew);
+//        stageOrderSteps.deleteRow(idUpdate);
+//
+//        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+//    }
 
-        int idUpdate = stageOrderSteps.insertJsonToTableAndLwaContext(updateOrderJson, testInfo);
-        assertTrue(new StageOrderSteps().checkStatusColumn(idUpdate).isEmpty(), errorMessage.toString());
 
-        errorMessage.append(warehouseOrderSteps.checkWarehouseOrderIsNotActive("Nitrogen-7-N"));
-        errorMessage.append(ordersSteps.checkOrderIsCancelled());
-
-        stageOrderSteps.deleteRow(idNew);
-        stageOrderSteps.deleteRow(idUpdate);
-
-        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-    }
 //todo: there are api endpoints to create products and parent products,
 // we need to refactor this test cases to work through API
 

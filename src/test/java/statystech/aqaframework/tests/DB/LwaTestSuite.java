@@ -70,7 +70,6 @@ public class LwaTestSuite extends ApiTestClass {
         Context.addTestContext(lwaTestContext);
     }
 
-    //https://statystech.atlassian.net/browse/LWA-1523
     @TestRailID(id = 1)
     @ParameterizedTest
     @ValueSource(strings = {"order1000100data.json"})
@@ -79,10 +78,6 @@ public class LwaTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         OrdersSteps ordersSteps = new OrdersSteps();
         errorMessage.append(ordersSteps.checkOrdersTable());
-        //errorMessage.append(new UserTableSteps().checkAllSysUserIDColumn());
-        //errorMessage.append(new ShippingAddressSteps().checkShippingAddressTable());
-        //errorMessage.append(new BuyerSteps().checkBuyerBillingInformation());
-        //errorMessage.append(new ShopperGroupSteps().checkShopperGroupTable());
         for (OrderItem item : getLwaTestContext(testInfo).getOrder().getOrderItems()) {
             errorMessage.append(new ProductSteps().checkProduct(item));
             errorMessage.append(new ProductBatchSteps().checkBatchNumber(item));

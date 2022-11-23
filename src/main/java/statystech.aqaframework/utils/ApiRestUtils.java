@@ -369,7 +369,7 @@ public class ApiRestUtils {
     }
 
     public okhttp3.Response sendPostCreateParcel(int parcelLineID, int warehouseOrderId, String authToken) throws IOException {
-        okhttp3.Response response = null;
+        okhttp3.Response response;
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");

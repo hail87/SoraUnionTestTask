@@ -38,8 +38,13 @@ public class WarehouseBatchInventorySteps extends Steps {
     }
 
     public String getWarehouseBatchInventoryID(LwaTestContext lwaTestContext) {
+        return getWarehouseBatchInventoryID(lwaTestContext, 1);
+    }
+
+    public String getWarehouseBatchInventoryID(LwaTestContext lwaTestContext, int position) {
         int productBatchID = lwaTestContext.getProductBatchId();
-        String warehouseBatchInventoryID = DBUtils.executeAndReturnString(String.format("select warehouseBatchInventoryID from warehouseBatchInventory where productBatchID = '%d'", productBatchID));
+        String warehouseBatchInventoryID = DBUtils.executeAndReturnStringArray(String.format(
+                "select warehouseBatchInventoryID from warehouseBatchInventory where productBatchID = '%d'", productBatchID)).get(position - 1);
         if (warehouseBatchInventoryID.isEmpty()) {
             return String.format("\n [checkFreeStock]: There is no product with productBatchID '%s' found at the WarehouseBatchInventory table", productBatchID);
         }

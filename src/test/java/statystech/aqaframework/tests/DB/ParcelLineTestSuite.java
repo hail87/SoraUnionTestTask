@@ -195,7 +195,7 @@ public class ParcelLineTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
         logger.info("------------------------------------Precondition Step 6------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveWarehouseBatchInventoryIdToContext(
-                warehouseOrderId,
+                lwaTestContext.getParcelLineID(),
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());

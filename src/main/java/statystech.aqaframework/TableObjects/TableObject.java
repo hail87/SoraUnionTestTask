@@ -105,7 +105,7 @@ public abstract class TableObject {
     public String getColumnValueByColumnValue(String columnNameToGet, String columnNameToSearchIn, String valueToSearchBy) {
         String result = "";
         int i = 0;
-        while (result.isEmpty() & i < 15) {
+        while (result.isEmpty() & i < 120) {
             try {
                 result = getProperRow(columnNameToSearchIn, valueToSearchBy).getString(columnNameToGet);
             } catch (SQLException e) {

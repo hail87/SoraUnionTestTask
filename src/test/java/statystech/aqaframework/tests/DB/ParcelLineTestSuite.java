@@ -193,19 +193,27 @@ public class ParcelLineTestSuite extends ApiTestClass {
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
-
-        logger.info("------------------------------------Precondition Step 6,7,8------------------------------------");
+        logger.info("------------------------------------Precondition Step 6------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendGetRequestAndSaveWarehouseBatchInventoryIdToContext(
+                warehouseOrderId,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        logger.info("------------------------------------Precondition Step 7------------------------------------");
+        errorMessage.append(parcelLineApiSteps.sendPutRequestAndSaveResponseToContext(
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                200,
+                lwaTestContext.getWarehouseBatchInventoryID(),
+                testInfo));
+        assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+        logger.info("------------------------------------Precondition Step 8,9------------------------------------");
         errorMessage.append(parcelLineApiSteps.sendPostCreateParcelAndSaveResponseToContext(
                 warehouseOrderId,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 testInfo));
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
 
-        logger.info("------------------------------------Precondition Step 9------------------------------------");
-//        errorMessage.append(parcelLineApiSteps.sendPostRequestExternalShipmentAndSaveResponseToContext(
-//                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-//                "AA2182814AA",
-//                testInfo));
+        logger.info("------------------------------------Precondition Step 10------------------------------------");
         assertTrue(new ParcelSteps().setParcelStatus("C", lwaTestContext).isEmpty());
 
         logger.info("------------------------------------Step 1------------------------------------");

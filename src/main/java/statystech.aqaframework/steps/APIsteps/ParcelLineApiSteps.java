@@ -37,7 +37,7 @@ public class ParcelLineApiSteps extends Steps {
             testContext.setParcelLineItems(parcelLinesItemList);
             testContext.setParcelLineID(parcelLinesItemList.get(0).getParcelLineId());
             testContext.setProductID(parcelLinesItemList.get(0).getProductId());
-            testContext.setWarehouseBatchInventoryID(parcelLinesItemList.get(0).getWarehouseBatchInventoryId());
+            testContext.setWarehouseBatchInventoryID(parcelLinesItemList.get(0).getWarehouseBatchInventoryId()); //usually it's null, to be removed
             Context.updateTestContext(testContext);
             return "";
         }

@@ -7,7 +7,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.apache.commons.lang3.StringUtils;
-import org.jose4j.lang.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
@@ -283,7 +282,7 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             Request request = new Request.Builder()
-                    .url(DataUtils.getPropertyValue("url.properties", "parcelLineGET") + "?warehouse_order_id=" + warehouseOrderID)
+                    .url(DataUtils.getPropertyValue("url.properties", "parcelLine") + "?warehouse_order_id=" + warehouseOrderID)
                     .method("GET", null)
                     .addHeader("Authorization", token)
                     .build();
@@ -300,7 +299,7 @@ public class ApiRestUtils {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             Request request = new Request.Builder()
-                    .url(DataUtils.getPropertyValue("url.properties", "parcelLineGET") + "/" + parcelLineId + "/batch-numbers")
+                    .url(DataUtils.getPropertyValue("url.properties", "parcelLine") + "/" + parcelLineId + "/batch-numbers")
                     .method("GET", null)
                     .addHeader("Authorization", token)
                     .build();
@@ -336,7 +335,7 @@ public class ApiRestUtils {
             MediaType mediaType = MediaType.parse("application/json");
             RequestBody body = RequestBody.create(mediaType, String.format("{\n    \"warehouse_batch_inventory_id\": %d\n}", warehouseBatchInventoryId));
             Request request = new Request.Builder()
-                    .url(DataUtils.getPropertyValue("url.properties", "parcelLinePUT") + parcelLineID)
+                    .url(DataUtils.getPropertyValue("url.properties", "parcelLine") + "/" + parcelLineID)
                     .method("PUT", body)
                     .addHeader("Authorization", authToken)
                     .addHeader("Content-Type", "application/json")

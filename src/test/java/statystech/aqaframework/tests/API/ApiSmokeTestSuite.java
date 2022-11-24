@@ -1,22 +1,17 @@
 package statystech.aqaframework.tests.API;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import groovy.json.StringEscapeUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
-import statystech.aqaframework.DataObjects.ProductJson.BatchesItem;
-import statystech.aqaframework.DataObjects.ProductJson.ItemsItem;
 import statystech.aqaframework.TableObjects.OrdersTable;
-import statystech.aqaframework.TableObjects.ParcelTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.enums.GetWarehouseOrderNoCriteriaEnum;
+import statystech.aqaframework.steps.APIsteps.CatalogManagementSteps;
 import statystech.aqaframework.steps.APIsteps.LwaApiSteps;
 import statystech.aqaframework.steps.APIsteps.ParcelLineApiSteps;
 import statystech.aqaframework.steps.DBsteps.*;
@@ -410,5 +405,18 @@ public class ApiSmokeTestSuite extends ApiTestClass {
         errorMessage.append(parcelLineApiSteps.verifyActualResultsContains(response, "User does not have permission to access the endpoint. Please contact support at"));
 
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 311482)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void addProductByAPI(String jsonFilename, TestInfo testInfo) throws IOException {
+        String errorMessage = "";
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage = new CatalogManagementSteps().addProduct(
+                jsonContent, 200, DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext);
+        //errorMessage = new ProductSteps().checkProduct(lwaTestContext);
+        assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 }

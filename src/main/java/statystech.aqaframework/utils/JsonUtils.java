@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.DataObjects.OmsDto.OmsSubmitOrderJson;
 import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
+import statystech.aqaframework.DataObjects.ProductJson.ProductImport;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.TestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
@@ -80,11 +81,12 @@ public class JsonUtils {
 //        return jsonString;
 //    }
 
-    public String getProductsJsonObjectsAndLoadToContext(String jsonFilename, String testMethodName) throws IOException {
+    public String getProductsObjectsAndLoadToContext(String jsonFilename, LwaTestContext lwaTestContext) throws IOException {
         String jsonString = getStringFromJson(jsonFilename);
         ObjectMapper mapper = new ObjectMapper();
-        List<Product> products = mapper.readValue(jsonString, List.class);
-        Context.getTestContext(testMethodName, LwaTestContext.class).setProductJsonList(products);
+        ProductImport productImport = mapper.readValue(jsonString, ProductImport.class);
+        lwaTestContext.setProductImport(productImport);
+        Context.updateTestContext(lwaTestContext);
         return jsonString;
     }
 

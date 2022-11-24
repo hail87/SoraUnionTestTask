@@ -1,0 +1,13 @@
+{
+    "product_name": "BOTOX 10 Units",
+    "catalog_category": "Botulinum Toxins",
+    "is_licensed": true,
+    "description": "BOTOX 10 Units",
+    "brand_name": "BOTOX",
+    "manufacturer": "Botoxfarm LLC",
+    "hs_code": "23454356546",
+    "is_cold": true,
+    "temperature_details": "-15 C",
+    "is_generic": false,
+    "is_active": true
+}

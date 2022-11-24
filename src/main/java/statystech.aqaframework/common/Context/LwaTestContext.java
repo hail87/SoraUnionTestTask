@@ -15,6 +15,7 @@ import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
 import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
+import statystech.aqaframework.DataObjects.ProductJson.ProductImport;
 import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
 import statystech.aqaframework.DataObjects.WebsiteSearch.GetWebSitesResponse;
 import statystech.aqaframework.common.ConnectionDB;
@@ -40,6 +41,7 @@ public class LwaTestContext extends TestContext{
     private Order order;
     private List<Product> productJsonList;
     private Product product;
+    private ProductImport productImport;
     private int productID;
     private String orderAllSysID;
     private int allSysBuyerID; //orderID in JSON

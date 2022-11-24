@@ -158,9 +158,6 @@ public class LwaTestSuite extends ApiTestClass {
 //    }
 
 
-//todo: there are api endpoints to create products and parent products,
-// we need to refactor this test cases to work through API
-
 //    With the launch of Catalog Management module the processing of the product file from allays has been
 //    discontinued and the corresponding service lwa-ETL-products retired
 //    @TestRailID(id = 3537)

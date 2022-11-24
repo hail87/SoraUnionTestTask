@@ -663,4 +663,25 @@ public class ApiRestUtils {
         }
         return response;
     }
+
+    public okhttp3.Response addProduct(String productJson, String authToken) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, productJson);
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/test/api/v1/cm/products")
+                .method("POST", body)
+                .addHeader("Authorization", authToken)
+                .addHeader("X-Forwarded-For", "192.168.1.1")
+                .addHeader("Content-Type", "application/json")
+                .build();
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
 }

@@ -60,8 +60,11 @@ public class ApiSmokeTestSuite extends ApiTestClass {
     @BeforeEach
     public void setTestContext(TestInfo testInfo) throws SQLException, IOException {
         String name = testInfo.getTestMethod().get().getName();
-        logger.info(String.format(
-                "\nTest № %d has been started : '%s'\n", testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id(), name));
+        TestRailID testRailID = testInfo.getTestMethod().get().getAnnotation(TestRailID.class);
+        if (testRailID != null) {
+            logger.info(String.format(
+                    "\nTest № %d has been started : '%s'\n", testRailID.id(), name));
+        }
         LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnectionSandbox();
         Context.addTestContext(lwaTestContext);

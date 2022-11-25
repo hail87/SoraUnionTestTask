@@ -415,7 +415,7 @@ public class ApiSmokeTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 311482)
+    //@TestRailID(id = 311482)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10Units.json"})
     public void addProductByAPI(String jsonFilename, TestInfo testInfo) throws IOException {

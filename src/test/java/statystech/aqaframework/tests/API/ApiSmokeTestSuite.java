@@ -418,16 +418,17 @@ public class ApiSmokeTestSuite extends ApiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 311482)
+    @TestRailID(id = 311482)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10Units.json"})
     public void addProductByAPI(String jsonFilename, TestInfo testInfo) throws IOException {
-        String errorMessage = "";
+        StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
-        errorMessage = new CatalogManagementSteps().addProduct(
-                jsonContent, 200, DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext);
-        //errorMessage = new ProductSteps().checkProduct(lwaTestContext);
-        assertTrue(errorMessage.isEmpty(), errorMessage);
+        errorMessage.append(new CatalogManagementSteps().addProduct(
+                jsonContent, 200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
+        errorMessage.append(new ProductParentSteps().checkProduct(lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 }

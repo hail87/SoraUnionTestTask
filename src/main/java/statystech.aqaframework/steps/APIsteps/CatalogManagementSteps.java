@@ -36,9 +36,7 @@ public class CatalogManagementSteps extends Steps {
             logger.info("\nProductId: " + productId);
             testContext.setProductID(Integer.parseInt(productId));
             Context.updateTestContext(testContext);
-            return "";
-        } else {
-            return "\nNo productID found at the response, what can means product wasn't added!\n";
         }
+        return "";
     }
 }

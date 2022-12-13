@@ -16,14 +16,14 @@ public abstract class ApiTestClass {
     private static final Logger logger = LoggerFactory.getLogger(ApiTestClass.class);
 
     @BeforeAll
-    static void createContext() throws IOException, SQLException {
+    static void createContext() {
 //        DataUtils.clearFolder(new File("allure-results"));
         DBUtils.executeSqlScript("clean_all_lwa_test_data.sql");
         Context.initialize();
     }
 
     @AfterEach
-    public void cleanTestDataAndCloseConnection(TestInfo testInfo) throws SQLException, IOException, InterruptedException {
+    public void cleanTestDataAndCloseConnection(TestInfo testInfo) throws SQLException, InterruptedException {
         TestContext testContext = Context.getTestContext(testInfo);
         testContext.closeDbConnection();
         Thread.sleep(500);

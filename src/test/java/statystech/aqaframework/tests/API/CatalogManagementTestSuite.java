@@ -64,11 +64,11 @@ public class CatalogManagementTestSuite extends ApiTestClass {
     @TestRailID(id = 319229)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10Units.json"})
-    public void addProductByAPIToProductParent(String jsonFilename, TestInfo testInfo) throws IOException {
+    public void addProductByAPIToProductParentTable(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
-        errorMessage.append(new CatalogManagementSteps().addProduct(
+        errorMessage.append(new CatalogManagementSteps().addProductParent(
                 jsonContent, 200,
                 DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
         errorMessage.append(new ProductParentSteps().checkProduct(lwaTestContext));
@@ -81,23 +81,27 @@ public class CatalogManagementTestSuite extends ApiTestClass {
     public void addProductByAPIToProductTable(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        logger.info("-----------------------Precondition-----------------------");
         String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
-        errorMessage.append(new CatalogManagementSteps().addProduct(
+        errorMessage.append(new CatalogManagementSteps().addProductParent(
                 jsonContent, 200,
                 DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
-        errorMessage.append(new ProductParentSteps().checkProduct(lwaTestContext));
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(new CatalogManagementSteps().addProduct(
+                lwaTestContext.getProductParentID(), 200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
     @TestRailID(id = 319228)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10Units.json"})
-    public void validateUserPermissionsToAddProductByAPI(String jsonFilename, TestInfo testInfo) throws IOException {
+    public void validateUserPermissionsToAddProductParentByAPI(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
         CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
-        errorMessage.append(catalogManagementSteps.addProduct(
+        errorMessage.append(catalogManagementSteps.addProductParent(
                 jsonContent, 403,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"), lwaTestContext));
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
@@ -108,12 +112,12 @@ public class CatalogManagementTestSuite extends ApiTestClass {
     @TestRailID(id = 319230)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10UnitsWithoutName.json"})
-    public void addProductByAPIMandatoryInformationNotProvided(String jsonFilename, TestInfo testInfo) throws IOException {
+    public void addProductParentByAPIMandatoryInformationNotProvided(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
         CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
-        errorMessage.append(catalogManagementSteps.addProduct(
+        errorMessage.append(catalogManagementSteps.addProductParent(
                 jsonContent, 400,
                 DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),

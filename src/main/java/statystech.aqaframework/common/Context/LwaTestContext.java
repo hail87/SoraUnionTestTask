@@ -42,6 +42,7 @@ public class LwaTestContext extends TestContext{
     private List<Product> productJsonList;
     private Product product;
     private ProductImport productImport;
+    private int productParentID;
     private int productID;
     private String orderAllSysID;
     private int allSysBuyerID; //orderID in JSON

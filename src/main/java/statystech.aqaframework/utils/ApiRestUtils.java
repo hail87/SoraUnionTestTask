@@ -664,16 +664,36 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response addProduct(String productJson, String authToken) {
+    public okhttp3.Response addProductParent(String productJson, String authToken) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, productJson);
         Request request = new Request.Builder()
-                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/test/api/v1/cm/products")
+                .url(DataUtils.getPropertyValue("url.properties", "addProductParent"))
                 .method("POST", body)
                 .addHeader("Authorization", authToken)
                 .addHeader("X-Forwarded-For", "192.168.1.1")
+                .addHeader("Content-Type", "application/json")
+                .build();
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response addProduct(int productParentId, String authToken) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n   \"order_header\": {\n      \"country_of_origin\": \"LV\",\n      \"description\": \"\",\n      \"dosage_type\": \"\",\n      \"dosage_value\": \"\",\n      \"manufacturer_product_url\": \"\",\n      \"sku\": \"sku_botox_boland\",\n      \"units_in_the_box\": \"\",\n      \"uom_dimension\": \"mm\",\n      \"uom_weight\": \"g\",\n      \"variant_name\": \"BOTOX 10 Units Poland\",\n      \"is_active\": true\n   }\n}");
+        Request request = new Request.Builder()
+                .url(DataUtils.getPropertyValue("url.properties", "addProductParent") + "/" + productParentId + "/variants")
+                .method("POST", body)
+                .addHeader("Authorization", authToken)
                 .addHeader("Content-Type", "application/json")
                 .build();
         okhttp3.Response response = null;

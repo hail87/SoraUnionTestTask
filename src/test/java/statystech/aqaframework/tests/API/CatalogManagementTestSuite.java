@@ -89,8 +89,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 319228)
-    //https://statystech.atlassian.net/browse/CM-171
+    @TestRailID(id = 319228)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10Units.json"})
     public void validateUserPermissionsToAddProductByAPI(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -101,13 +100,12 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(catalogManagementSteps.addProduct(
                 jsonContent, 403,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"), lwaTestContext));
-        catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-                "User does not have permission to add a new product. Please contact support at");
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "User does not have permission to access the endpoint. Please contact support at"));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 319230)
-    //https://statystech.atlassian.net/browse/CM-171
+    @TestRailID(id = 319230)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10UnitsWithoutName.json"})
     public void addProductByAPIMandatoryInformationNotProvided(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -118,8 +116,8 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(catalogManagementSteps.addProduct(
                 jsonContent, 400,
                 DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
-        catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-                "The mandatory information is not provided. Please contact support at");
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "Invalid request body"));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 }

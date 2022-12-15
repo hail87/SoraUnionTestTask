@@ -187,6 +187,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Steps.delay(1000);
         mainSteps.clickAndVerifyOrdersOnHold();
         mainSteps.getMainPage().clickShowOnlyOrdersOnHoldOrAll();
 

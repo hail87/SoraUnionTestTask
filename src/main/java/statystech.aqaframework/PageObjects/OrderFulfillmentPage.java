@@ -14,7 +14,7 @@ public class OrderFulfillmentPage extends PageObject {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderFulfillmentPage.class);
     private final WebDriver webDriver;
-    By btnCreateParcel = By.xpath("//*[@id=\"root\"]/div[2]/div/div/div[2]/div/button");
+    By btnCreateParcel = By.xpath("//button[text()='Create parcel']");
     String checkBox = "//*[@id=\"root\"]/div[2]/div/div/div[2]/table/tbody/tr/td[1]/div/span[1]";
     By btnClose = By.xpath("//*[@id=\"root\"]/div[2]/header/div/div/div/div[2]/button[2]");
     String rowProduct1 = "//*[@id=\"root\"]/div[2]/div/div/div[2]/table/tbody/tr[";

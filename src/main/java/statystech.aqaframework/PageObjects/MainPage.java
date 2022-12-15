@@ -126,6 +126,10 @@ public class MainPage extends PageObject {
         return this;
     }
 
+    public String getChosenDate() {
+        return new Button(webDriver, By.xpath("//button[contains(@class, 'MuiPickersDay') and contains(@class, 'Mui-selected')]")).getText();
+    }
+
     public MainPage selectDayPriorToToday(int days) {
         int todayDate = Integer.parseInt(webDriver.findElement(btnTodayDay).getAttribute("aria-label").substring(4, 5).trim());
         int diff = todayDate - days;
@@ -319,7 +323,6 @@ public class MainPage extends PageObject {
     public void clickUncheckAll() {
         Button button = new Button(webDriver, btnUncheckAll);
         button.click();
-        waitForElementToDisappear(button.getWebElement());
     }
 
     public void chooseTodayPutOnHoldCalendar() {

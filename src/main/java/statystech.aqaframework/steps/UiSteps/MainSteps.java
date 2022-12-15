@@ -41,6 +41,10 @@ public class MainSteps extends Steps {
 
     public MainPage chooseDateFromFirst() {
         mainPage.clickDateFromCalendarButton();
+        if(mainPage.getChosenDate().equalsIgnoreCase("1")){
+            mainPage.unfocus();
+            return mainPage;
+        }
         mainPage.chooseDateAtTheCalendar(" 1, 2022");
         mainPage.waitCalendarToDisappear();
         mainPage.clickApplyButton();
@@ -55,6 +59,10 @@ public class MainSteps extends Steps {
 
     public MainPage chooseDateTo28() {
         mainPage.clickDateToCalendarButton();
+        if(mainPage.getChosenDate().equalsIgnoreCase("28")){
+            mainPage.unfocus();
+            return mainPage;
+        }
         mainPage.chooseDateAtTheCalendar(" 28, 2022");
         mainPage.clickApplyButton();
         return mainPage;

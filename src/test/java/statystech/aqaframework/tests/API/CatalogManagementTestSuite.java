@@ -172,4 +172,37 @@ public class CatalogManagementTestSuite extends ApiTestClass {
 //                "User does not have permission to access the endpoint. Please contact support at"));
 //        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
 //    }
+
+//    @TestRailID(id = 319233)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"productBotox10Units.json"})
+//    public void addProductToProductTableByBMuser(String jsonFilename, TestInfo testInfo) throws IOException {
+//        StringBuilder errorMessage = new StringBuilder();
+//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+//        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+//        logger.info("-----------------------Precondition-----------------------");
+//        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+//        errorMessage.append(catalogManagementSteps.addProductParent(
+//                jsonContent,
+//                200,
+//                DataUtils.getPropertyValue("tokens.properties", "User24"),
+//                lwaTestContext));
+//        logger.info("-----------------------Step 1-----------------------");
+//        errorMessage.append(catalogManagementSteps.addProduct(
+//                100500,
+//                400,
+//                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+//                lwaTestContext));
+//        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+//                "Unknown product. Please contact support at"));
+//        logger.info("-----------------------Step 2-----------------------");
+//        errorMessage.append(catalogManagementSteps.addProduct(
+//                100500,
+//                400,
+//                DataUtils.getPropertyValue("tokens.properties", "User24"),
+//                lwaTestContext));
+//        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+//                "Unknown product. Please contact support at"));
+//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+//    }
 }

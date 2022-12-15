@@ -171,10 +171,22 @@ public class UI_SmokeTestSuite extends UiTestClass {
         String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
         mainSteps.getMainPage().selectAllNewOrders();
         mainSteps.getMainPage().clickUncheckAll();
-
+        try {
+            mainSteps.getMainPage().clickUncheckAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Steps.delay(1000);
         mainSteps.shipOrderToInProgress(9993305);
+        Steps.delay(1000);
         mainSteps.getMainPage().selectAllInProgress();
+        Steps.delay(1000);
         mainSteps.getMainPage().clickUncheckAll();
+        try {
+            mainSteps.getMainPage().clickUncheckAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mainSteps.clickAndVerifyOrdersOnHold();
         mainSteps.getMainPage().clickShowOnlyOrdersOnHoldOrAll();
 
@@ -182,173 +194,173 @@ public class UI_SmokeTestSuite extends UiTestClass {
                 mainSteps.verifyExpectedResults(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition));
     }
 
-    @TestRailID(id = 220671)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void requestCancellation(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToQA(jsonFilename, testInfo);
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//    @TestRailID(id = 220671)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void requestCancellation(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToQA(jsonFilename, testInfo);
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        mainSteps.searchOrderAfterImport(9993305);
+//        String errorMessage = mainSteps.requestCancellation("Some reason");
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+//    }
 
-        mainSteps.searchOrderAfterImport(9993305);
-        String errorMessage = mainSteps.requestCancellation("Some reason");
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-    }
+//    @TestRailID(id = 220672)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToQA(jsonFilename, testInfo);
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        mainSteps.searchOrderAfterImport(9993305);
+//        assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
+//        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
+//        int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
+//
+//        mainSteps.shipOrderToInProgress(9993305);
+//
+//        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
+//        int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
+//
+//        assertEquals(activeNewOrdersUpdated, activeNewOrders - 1,
+//                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + activeNewOrdersUpdated);
+//        assertEquals(activeInProgressOrdersUpdated, activeInProgressOrders + 1,
+//                "\nExpected in progress orders : " + (activeInProgressOrders + 1) + "\nActual in progress orders : " + activeInProgressOrdersUpdated);
+//
+//        mainSteps.resetOrder(9993305);
+//
+//        assertEquals(activeNewOrders, mainSteps.getMainPage().getActiveNewOrders(),
+//                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + mainSteps.getMainPage().getActiveNewOrders());
+//        assertEquals(activeInProgressOrders, mainSteps.getMainPage().getActiveInProgressOrders(),
+//                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + mainSteps.getMainPage().getActiveInProgressOrders());
+//    }
 
-    @TestRailID(id = 220672)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void shipAndResetOrder(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToQA(jsonFilename, testInfo);
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//    @TestRailID(id = 225149)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void moveInProgressOrderToNew(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToQA(jsonFilename, testInfo);
+//
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        mainSteps.searchOrderAfterImport(9993305);
+//        mainSteps.shipOrderToInProgress(9993305);
+//
+//        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
+//        int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
+//
+//        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCardInProgress(1);
+//
+//        new OrderCardDetailsPopUpSteps(orderCardDetailsPopUp).moveToNewOrder(true);
+//
+//        Steps.delay(2000);
+//        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
+//        int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
+//
+//        assertEquals(activeNewOrdersUpdated, activeNewOrders + 1);
+//        assertEquals(activeInProgressOrdersUpdated, activeInProgressOrders - 1);
+//    }
 
-        mainSteps.searchOrderAfterImport(9993305);
-        assertTrue(mainSteps.getMainPage().getActiveOrders().equalsIgnoreCase("Active (1)"));
-        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
-        int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
+//    @TestRailID(id = 225150)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToQA(jsonFilename, testInfo);
+//
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        mainSteps.searchOrderAfterImport(9993305);
+//        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+//        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
+//
+//        orderFulfillmentSteps.splitAndConfirm(1);
+//        orderFulfillmentSteps.createParcel(1, 1);
+//        orderFulfillmentSteps.deleteFirstParcel();
+//        orderFulfillmentSteps.createParcel(1, 1);
+//        orderFulfillmentSteps.shipParcelExternallyWithLocalPickup(1);
+//
+//        String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//
+//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+//    }
 
-        mainSteps.shipOrderToInProgress(9993305);
+//    @TestRailID(id = 225151)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void completelyShipParcelExternally(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToQA(jsonFilename, testInfo);
+//
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        assertTrue(mainSteps.searchOrderAfterImport(9993305), "\nOrder " + 9993305 + "wasn't found after import\n");
+//        String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
+//
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+//    }
 
-        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
-        int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
+//    @TestRailID(id = 225152)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void printPackingSlip(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToQA(jsonFilename, testInfo);
+//
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        assertTrue(mainSteps.searchOrderAfterImport(9993305), "Order " + 9993305 + " wasn't found!\n");
+//
+//        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+//
+//        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
+//        orderFulfillmentSteps.createParcel(1, 1);
+//        orderFulfillmentSteps.checkPrintPackingSlipEnabled(false);
+//        orderFulfillmentSteps.clickParcel(1);
+//        orderFulfillmentSteps.checkPrintPackingSlipEnabled(true);
+//        String errorMessage = orderFulfillmentSteps.clickPrintPackingSlipButton();
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//
+//        DBUtils.executeSqlScript("cleanup_order9993305.sql");
+//    }
 
-        assertEquals(activeNewOrdersUpdated, activeNewOrders - 1,
-                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + activeNewOrdersUpdated);
-        assertEquals(activeInProgressOrdersUpdated, activeInProgressOrders + 1,
-                "\nExpected in progress orders : " + (activeInProgressOrders + 1) + "\nActual in progress orders : " + activeInProgressOrdersUpdated);
-
-        mainSteps.resetOrder(9993305);
-
-        assertEquals(activeNewOrders, mainSteps.getMainPage().getActiveNewOrders(),
-                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + mainSteps.getMainPage().getActiveNewOrders());
-        assertEquals(activeInProgressOrders, mainSteps.getMainPage().getActiveInProgressOrders(),
-                "\nExpected new orders : " + (activeNewOrders - 1) + "\nActual new orders : " + mainSteps.getMainPage().getActiveInProgressOrders());
-    }
-
-    @TestRailID(id = 225149)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void moveInProgressOrderToNew(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToQA(jsonFilename, testInfo);
-
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
-        mainSteps.searchOrderAfterImport(9993305);
-        mainSteps.shipOrderToInProgress(9993305);
-
-        int activeNewOrders = mainSteps.getMainPage().getActiveNewOrders();
-        int activeInProgressOrders = mainSteps.getMainPage().getActiveInProgressOrders();
-
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCardInProgress(1);
-
-        new OrderCardDetailsPopUpSteps(orderCardDetailsPopUp).moveToNewOrder(true);
-
-        Steps.delay(2000);
-        int activeNewOrdersUpdated = mainSteps.getMainPage().getActiveNewOrders();
-        int activeInProgressOrdersUpdated = mainSteps.getMainPage().getActiveInProgressOrders();
-
-        assertEquals(activeNewOrdersUpdated, activeNewOrders + 1);
-        assertEquals(activeInProgressOrdersUpdated, activeInProgressOrders - 1);
-    }
-
-    @TestRailID(id = 225150)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void splitDeleteShipExternallyParcel(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToQA(jsonFilename, testInfo);
-
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
-        mainSteps.searchOrderAfterImport(9993305);
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
-        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
-
-        orderFulfillmentSteps.splitAndConfirm(1);
-        orderFulfillmentSteps.createParcel(1, 1);
-        orderFulfillmentSteps.deleteFirstParcel();
-        orderFulfillmentSteps.createParcel(1, 1);
-        orderFulfillmentSteps.shipParcelExternallyWithLocalPickup(1);
-
-        String errorMessage = orderFulfillmentSteps.deleteCompletedParcel();
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-    }
-
-    @TestRailID(id = 225151)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void completelyShipParcelExternally(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToQA(jsonFilename, testInfo);
-
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
-        assertTrue(mainSteps.searchOrderAfterImport(9993305), "\nOrder " + 9993305 + "wasn't found after import\n");
-        String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
-
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-    }
-
-    @TestRailID(id = 225152)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void printPackingSlip(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToQA(jsonFilename, testInfo);
-
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
-        assertTrue(mainSteps.searchOrderAfterImport(9993305), "Order " + 9993305 + " wasn't found!\n");
-
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
-
-        OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderCardDetailsPopUp.startOrderFulfillment());
-        orderFulfillmentSteps.createParcel(1, 1);
-        orderFulfillmentSteps.checkPrintPackingSlipEnabled(false);
-        orderFulfillmentSteps.clickParcel(1);
-        orderFulfillmentSteps.checkPrintPackingSlipEnabled(true);
-        String errorMessage = orderFulfillmentSteps.clickPrintPackingSlipButton();
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-    }
-
-    @TestRailID(id = 225153)
-    @ParameterizedTest
-    @ValueSource(strings = {"Order_9993305.json"})
-    public void editTrackingNumberAndMoveToNewOrders(String jsonFilename, TestInfo testInfo) {
-        DBUtils.importOrderToQA(jsonFilename, testInfo);
-
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
-        mainSteps.searchOrderAfterImport(9993305);
-        String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-
-        mainSteps.getMainPage().switchToShippedTab();
-        assertEquals("Shipped (1)", mainSteps.getMainPage().getShippedOrders(), "Shipped orders wasn't found");
-
-        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
-        assertEquals(orderCardDetailsPopUp.editTrackingNumber("654321"), "654321", "\nTracking number wasn't updated after editing\n");
-        orderCardDetailsPopUp.clickOptionButton();
-        orderCardDetailsPopUp.clickMoveToNew();
-        orderCardDetailsPopUp.clickConfirmMoveToNew();
-
-        assertEquals("Shipped (1)", mainSteps.getMainPage().getShippedOrders(), "\nShipped orders was found, but should not!\n");
-    }
+//    @TestRailID(id = 225153)
+//    @ParameterizedTest
+//    @ValueSource(strings = {"Order_9993305.json"})
+//    public void editTrackingNumberAndMoveToNewOrders(String jsonFilename, TestInfo testInfo) {
+//        DBUtils.importOrderToQA(jsonFilename, testInfo);
+//
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//
+//        mainSteps.searchOrderAfterImport(9993305);
+//        String errorMessage = mainSteps.shipOrderWithAllParcels(9993305);
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//
+//        mainSteps.getMainPage().switchToShippedTab();
+//        assertEquals("Shipped (1)", mainSteps.getMainPage().getShippedOrders(), "Shipped orders wasn't found");
+//
+//        OrderCardDetailsPopUp orderCardDetailsPopUp = mainSteps.clickOrderCard(9993305);
+//        assertEquals(orderCardDetailsPopUp.editTrackingNumber("654321"), "654321", "\nTracking number wasn't updated after editing\n");
+//        orderCardDetailsPopUp.clickOptionButton();
+//        orderCardDetailsPopUp.clickMoveToNew();
+//        orderCardDetailsPopUp.clickConfirmMoveToNew();
+//
+//        assertEquals("Shipped (1)", mainSteps.getMainPage().getShippedOrders(), "\nShipped orders was found, but should not!\n");
+//    }
 
 }

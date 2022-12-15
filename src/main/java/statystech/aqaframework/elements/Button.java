@@ -78,6 +78,11 @@ public class Button extends Element {
         wait.until(ExpectedConditions.elementToBeClickable(this.locator));
     }
 
+    public void waitForElementToDissapear() {
+        WebDriverWait wait = new WebDriverWait(this.webDriver, waitForElementDelay);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(this.locator));
+    }
+
     public boolean isEnabled() {
         return webElement.isEnabled();
     }

@@ -175,7 +175,7 @@ public abstract class PageObject {
         return webDriver.findElement(By.xpath("//div[text()=\"" + text + "\"]"));
     }
 
-    protected void unfocus() {
+    public void unfocus() {
         webDriver.findElement(By.xpath("//body")).click();
     }
 

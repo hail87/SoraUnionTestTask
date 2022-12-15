@@ -78,7 +78,7 @@ public class OrderFulfillmentSteps extends Steps {
         int parcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         logger.info("Parcels quantity before creating new parcel : " + parcelQuantity);
         orderFulfillmentPage.clickCreateParcelButton();
-        delay(2000);
+        delay(5000);
         int updatedParcelQuantity = orderFulfillmentPage.getParcelsElements().size();
         logger.info("Parcels quantity after creating new parcel : " + updatedParcelQuantity);
         if (updatedParcelQuantity == parcelQuantity) {

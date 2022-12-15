@@ -72,27 +72,27 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-//    @TestRailID(id = 319232)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"productBotox10Units.json"})
-//    public void addProductByAPIToProductTable(String jsonFilename, TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        logger.info("-----------------------Precondition-----------------------");
-//        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
-//        errorMessage.append(new CatalogManagementSteps().addProductParent(
-//                jsonContent,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "User24"),
-//                lwaTestContext));
-//        logger.info("-----------------------Step 1-----------------------");
-//        errorMessage.append(new CatalogManagementSteps().addProduct(
-//                lwaTestContext.getProductParentID(),
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "User24"),
-//                lwaTestContext));
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 319232)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void addProductByAPIToProductTable(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage.append(new CatalogManagementSteps().addProductParent(
+                jsonContent,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(new CatalogManagementSteps().addProduct(
+                lwaTestContext.getProductParentID(),
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
 
     @TestRailID(id = 319228)
     @ParameterizedTest

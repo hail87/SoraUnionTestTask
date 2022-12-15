@@ -220,7 +220,8 @@ public class IrsApiSteps extends Steps {
         if (response.code() != expectedStatusCode) {
             return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, response.code());
         } else {
-            String responseBody = response.body().string();
+            String responseBody = response.body() == null ? "" : response.body().string();
+            logger.info("\nResponse body:\n" + responseBody);
             testContext.setResponseBody(responseBody);
             ObjectMapper mapper = new ObjectMapper();
             ProductBatchResponse productButchResponse = mapper.readValue(responseBody, ProductBatchResponse.class);

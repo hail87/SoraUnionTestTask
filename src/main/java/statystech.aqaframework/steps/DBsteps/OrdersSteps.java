@@ -143,6 +143,7 @@ public class OrdersSteps extends Steps {
         LwaTestContext lwaTestContext = Context.getTestContext(LwaTestContext.class);
         try {
             lwaTestContext.setOrderID(ordersTable.getPrimaryID());
+            logger.info("\norders.orderID = '" + ordersTable.getPrimaryID() + "'");
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }

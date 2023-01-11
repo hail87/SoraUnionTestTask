@@ -13,6 +13,7 @@ import statystech.aqaframework.steps.DBsteps.ProductParentSteps;
 import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
+import statystech.aqaframework.utils.DBUtils;
 import statystech.aqaframework.utils.DataUtils;
 import statystech.aqaframework.utils.JsonUtils;
 
@@ -68,6 +69,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(new CatalogManagementSteps().addProductParent(
                 jsonContent, 200,
                 DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         errorMessage.append(new ProductParentSteps().checkProduct(lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
@@ -91,6 +93,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "User24"),
                 lwaTestContext));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
@@ -126,27 +129,27 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 327198)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"productBotox10Units.json"})
-//    public void addProductToProductTableByBMuser(String jsonFilename, TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        logger.info("-----------------------Precondition-----------------------");
-//        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
-//        errorMessage.append(new CatalogManagementSteps().addProductParent(
-//                jsonContent,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "User24"),
-//                lwaTestContext));
-//        logger.info("-----------------------Step 1-----------------------");
-//        errorMessage.append(new CatalogManagementSteps().addProduct(
-//                lwaTestContext.getProductParentID(),
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
-//                lwaTestContext));
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 327198)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void addProductToProductTableByBMuser(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage.append(new CatalogManagementSteps().addProductParent(
+                jsonContent,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(new CatalogManagementSteps().addProduct(
+                lwaTestContext.getProductParentID(),
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
 
     //@TestRailID(id = 319231)
 //    @ParameterizedTest

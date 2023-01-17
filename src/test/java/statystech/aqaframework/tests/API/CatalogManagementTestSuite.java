@@ -151,30 +151,30 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-    //@TestRailID(id = 319231)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"productBotox10Units.json"})
-//    public void validateIfUserHasPermissionToAddNewProductVariant(String jsonFilename, TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
-//        logger.info("-----------------------Precondition-----------------------");
-//        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
-//        errorMessage.append(catalogManagementSteps.addProductParent(
-//                jsonContent,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "User24"),
-//                lwaTestContext));
-//        logger.info("-----------------------Step 1-----------------------");
-//        errorMessage.append(catalogManagementSteps.addProduct(
-//                lwaTestContext.getProductParentID(),
-//                403,
-//                DataUtils.getPropertyValue("tokens.properties", "nonWHMuser"),
-//                lwaTestContext));
-//        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-//                "User does not have permission to access the endpoint. Please contact support at"));
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 319231)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void validateIfUserHasPermissionToAddNewProductVariant(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage.append(catalogManagementSteps.addProductParent(
+                jsonContent,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(catalogManagementSteps.addProduct(
+                lwaTestContext.getProductParentID(),
+                403,
+                DataUtils.getPropertyValue("tokens.properties", "nonWHMuser"),
+                lwaTestContext));
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "User does not have permission to access the endpoint. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
 
 //    @TestRailID(id = 319233)
 //    @ParameterizedTest

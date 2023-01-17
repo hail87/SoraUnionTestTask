@@ -45,7 +45,7 @@ public class MainSteps extends Steps {
             mainPage.unfocus();
             return mainPage;
         }
-        mainPage.chooseDateAtTheCalendar(" 1, 2022");
+        mainPage.chooseDateAtTheCalendar(" 1, 2023");
         mainPage.waitCalendarToDisappear();
         mainPage.clickApplyButton();
         return mainPage;
@@ -63,7 +63,7 @@ public class MainSteps extends Steps {
             mainPage.unfocus();
             return mainPage;
         }
-        mainPage.chooseDateAtTheCalendar(" 28, 2022");
+        mainPage.chooseDateAtTheCalendar(" 28, 2023");
         mainPage.clickApplyButton();
         return mainPage;
     }

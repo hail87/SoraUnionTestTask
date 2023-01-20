@@ -712,7 +712,7 @@ public class ApiRestUtils {
 
         RequestBody body = RequestBody.create(mediaType, "{\n    \"product_name\": \"" + productName + "\"\n}");
         Request request = new Request.Builder()
-                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/cm/products/search")
+                .url(DataUtils.getPropertyValue("url.properties", "productSearch"))
                 .method("POST", body)
                 .addHeader("X-Forwarded-For", "192.168.1.1")
                 .addHeader("Authorization", authToken)

@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static statystech.aqaframework.steps.TestRail.TestRailAPI.loadProperties;
 
 @ExtendWith(TestRailReportExtension.class)
@@ -176,36 +176,100 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-//    @TestRailID(id = 319233)
-//    @ParameterizedTest
-//    @ValueSource(strings = {"productBotox10Units.json"})
-//    public void addProductToProductTableByBMuser(String jsonFilename, TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
-//        logger.info("-----------------------Precondition-----------------------");
-//        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
-//        errorMessage.append(catalogManagementSteps.addProductParent(
-//                jsonContent,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "User24"),
-//                lwaTestContext));
-//        logger.info("-----------------------Step 1-----------------------");
-//        errorMessage.append(catalogManagementSteps.addProduct(
-//                100500,
-//                400,
-//                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
-//                lwaTestContext));
-//        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-//                "Unknown product. Please contact support at"));
-//        logger.info("-----------------------Step 2-----------------------");
-//        errorMessage.append(catalogManagementSteps.addProduct(
-//                100500,
-//                400,
-//                DataUtils.getPropertyValue("tokens.properties", "User24"),
-//                lwaTestContext));
-//        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-//                "Unknown product. Please contact support at"));
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 319233)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void addProductVariantWhichIsNotExistAtProductParentTable(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage.append(catalogManagementSteps.addProductParent(
+                jsonContent,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(catalogManagementSteps.addProduct(
+                100500,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "Unknown product. Please contact support at"));
+        logger.info("-----------------------Step 2-----------------------");
+        errorMessage.append(catalogManagementSteps.addProduct(
+                100500,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "Unknown product. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 319233)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void validateProductSearchResults(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+        logger.info("-----------------------Step 1-----------------------");
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10 Units",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
+
+        logger.info("-----------------------Step 2-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage.append(catalogManagementSteps.addProductParent(
+                jsonContent,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10 Units",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(1, lwaTestContext.getProducts().size());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+        logger.info("-----------------------Step 3-----------------------");
+        errorMessage.append(catalogManagementSteps.validateSearchResponseRequiredFields(lwaTestContext));
+
+        logger.info("-----------------------Step 4-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+        logger.info("-----------------------Step 5-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "B",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+        logger.info("-----------------------Step 6-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+    }
 }

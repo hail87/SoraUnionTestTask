@@ -587,7 +587,7 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response searchProduct(String productName, String authToken) {
+    public okhttp3.Response searchProductIRS(String productName, String authToken) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -607,7 +607,7 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response partialSearchProduct(String productName, String authToken) {
+    public okhttp3.Response partialSearchProductIRS(String productName, String authToken) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -627,7 +627,7 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response partialSearchProduct(String productName, String excludedProductIds, String authToken) {
+    public okhttp3.Response partialSearchProductIRS(String productName, String excludedProductIds, String authToken) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -696,6 +696,29 @@ public class ApiRestUtils {
                 .addHeader("Authorization", authToken)
                 .addHeader("Content-Type", "application/json")
                 .build();
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response searchProductCatalogManagement(String productName, String authToken) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"product_name\": \"" + productName + "\"\n}");
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/cm/products/search")
+                .method("POST", body)
+                .addHeader("X-Forwarded-For", "192.168.1.1")
+                .addHeader("Authorization", authToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
         okhttp3.Response response = null;
         try {
             response = client.newCall(request).execute();

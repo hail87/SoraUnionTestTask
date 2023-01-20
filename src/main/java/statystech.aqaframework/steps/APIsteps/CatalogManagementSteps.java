@@ -1,9 +1,10 @@
 package statystech.aqaframework.steps.APIsteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kotlin.text.Regex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.ProductSearchResponse;
+import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.ProductItem;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
@@ -11,8 +12,7 @@ import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.utils.ApiRestUtils;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 public class CatalogManagementSteps extends Steps {
 
@@ -64,5 +64,46 @@ public class CatalogManagementSteps extends Steps {
             Context.updateTestContext(testContext);
         }
         return "";
+    }
+
+    public String searchProduct(String productName, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        okhttp3.Response response = new ApiRestUtils().searchProductCatalogManagement(productName, authToken);
+        int statusCode = response.code();
+        if (statusCode != expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        logger.info("Response from API:\n" + responseString);
+        if (!responseString.contains("product_id")) {
+            logger.info("\nNo products found: " + productName);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            ProductSearchResponse productSearchResponse = mapper.readValue(responseString, ProductSearchResponse.class);
+            List<ProductItem> products = productSearchResponse.getProducts();
+            testContext.setProducts(products);
+            Context.updateTestContext(testContext);
+        }
+        return "";
+    }
+
+    public String validateSearchResponseRequiredFields(LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.product_id", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.product_name", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.brand_name", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.manufacturer", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.is_licensed", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.is_cold", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.hs_code", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.cooling_details", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.variant_count", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("products.is_active", lwaTestContext));
+        return errorMessage.toString();
     }
 }

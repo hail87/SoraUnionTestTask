@@ -55,7 +55,7 @@ public class IrsTestSuite extends ApiTestClass {
 
     @TestRailID(id = 95187)
     @Test
-    public void wrongUserRole(TestInfo testInfo) throws IOException {
+    public void productSearchWrongUserRole(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();
@@ -69,7 +69,7 @@ public class IrsTestSuite extends ApiTestClass {
 
     @TestRailID(id = 95820)
     @Test
-    public void verifyProductUnavailable1(TestInfo testInfo) throws IOException {
+    public void verifyProductUnavailable(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();
@@ -99,7 +99,7 @@ public class IrsTestSuite extends ApiTestClass {
 
     @TestRailID(id = 95822)
     @Test
-    public void verifyIfMethodReturnCorrectResult(TestInfo testInfo) throws IOException {
+    public void verifyIfMethodReturnCorrectSearchResult(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();
@@ -115,7 +115,7 @@ public class IrsTestSuite extends ApiTestClass {
 
     @TestRailID(id = 96313)
     @Test
-    public void verifyIfWebsiteIdIsProvided(TestInfo testInfo) throws IOException {
+    public void productSearchVerifyIfWebsiteIdIsProvided(TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         IrsApiSteps irsApiSteps = new IrsApiSteps();

@@ -3,10 +3,8 @@ package statystech.aqaframework.steps.APIsteps;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import okhttp3.Response;
-import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.ParcelLines.AddProductButchResponse;
 import statystech.aqaframework.DataObjects.ProductBatch.ProductBatchResponse;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
@@ -44,7 +42,7 @@ public class IrsApiSteps extends Steps {
     }
 
     public String sendPostProductSearchAndSaveResponseToContext(String productName, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
-        okhttp3.Response response = new ApiRestUtils().searchProduct(productName, authToken);
+        okhttp3.Response response = new ApiRestUtils().searchProductIRS(productName, authToken);
         int statusCode = response.code();
         if ( statusCode!= expectedStatusCode) {
             logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
@@ -67,7 +65,7 @@ public class IrsApiSteps extends Steps {
     }
 
     public String sendPostPartialProductSearchAndSaveResponseToContext(String partOfProductName, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
-        okhttp3.Response response = new ApiRestUtils().partialSearchProduct(partOfProductName, authToken);
+        okhttp3.Response response = new ApiRestUtils().partialSearchProductIRS(partOfProductName, authToken);
         int statusCode = response.code();
         if ( statusCode!= expectedStatusCode) {
             logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
@@ -90,7 +88,7 @@ public class IrsApiSteps extends Steps {
     }
 
     public String sendPostPartialProductSearchAndSaveResponseToContext(String partOfProductName, String excludedProductIds, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
-        okhttp3.Response response = new ApiRestUtils().partialSearchProduct(partOfProductName, excludedProductIds, authToken);
+        okhttp3.Response response = new ApiRestUtils().partialSearchProductIRS(partOfProductName, excludedProductIds, authToken);
         int statusCode = response.code();
         if ( statusCode!= expectedStatusCode) {
             logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",

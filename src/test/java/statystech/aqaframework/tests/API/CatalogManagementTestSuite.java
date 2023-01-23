@@ -209,7 +209,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-    @TestRailID(id = 319233)
+    @TestRailID(id = 351027)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10Units.json"})
     public void validateProductSearchResults(String jsonFilename, TestInfo testInfo) throws IOException {
@@ -269,7 +269,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "User24"),
                 lwaTestContext));
+        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
     }
 }

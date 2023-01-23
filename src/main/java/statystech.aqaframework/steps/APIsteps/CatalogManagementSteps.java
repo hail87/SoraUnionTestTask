@@ -82,6 +82,8 @@ public class CatalogManagementSteps extends Steps {
         logger.info("Response from API:\n" + responseString);
         if (!responseString.contains("product_id")) {
             logger.info("\nNo products found: " + productName);
+            testContext.setProducts(null);
+            Context.updateTestContext(testContext);
         } else {
             ObjectMapper mapper = new ObjectMapper();
             ProductSearchResponse productSearchResponse = mapper.readValue(responseString, ProductSearchResponse.class);

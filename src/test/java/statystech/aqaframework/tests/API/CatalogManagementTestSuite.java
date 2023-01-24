@@ -10,6 +10,7 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.CatalogManagementSteps;
 import statystech.aqaframework.steps.DBsteps.ProductParentSteps;
+import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;
@@ -218,6 +219,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
         logger.info("-----------------------Step 1-----------------------");
         DBUtils.executeSqlScript("cleanup_productBotox10.sql");
+        Steps.delay(2000);
         errorMessage.append(catalogManagementSteps.searchProduct(
                 "BOTOX 10 Units",
                 200,

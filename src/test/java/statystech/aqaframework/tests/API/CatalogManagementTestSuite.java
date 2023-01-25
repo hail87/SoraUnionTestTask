@@ -219,7 +219,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
         logger.info("-----------------------Step 1-----------------------");
         DBUtils.executeSqlScript("cleanup_productBotox10.sql");
-        Steps.delay(2000);
+        Steps.delay(5000);
         errorMessage.append(catalogManagementSteps.searchProduct(
                 "BOTOX 10 Units",
                 200,
@@ -264,6 +264,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
 
         logger.info("-----------------------Step 6-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(

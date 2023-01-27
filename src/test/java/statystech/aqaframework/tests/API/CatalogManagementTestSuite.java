@@ -70,8 +70,8 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(new CatalogManagementSteps().addProductParent(
                 jsonContent, 200,
                 DataUtils.getPropertyValue("tokens.properties", "User24"), lwaTestContext));
-        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         errorMessage.append(new ProductParentSteps().checkProduct(lwaTestContext));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
@@ -149,6 +149,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
@@ -174,6 +175,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 lwaTestContext));
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User does not have permission to access the endpoint. Please contact support at"));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
@@ -207,6 +209,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 lwaTestContext));
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "Unknown product. Please contact support at"));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 

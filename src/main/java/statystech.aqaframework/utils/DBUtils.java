@@ -115,6 +115,7 @@ public class DBUtils {
             Reader reader = new BufferedReader(new FileReader(MyPath.SQL_SCRIPTS_PATH.getPath() + scriptName));
             logger.info("\nExecuting SQL script: " + scriptName);
             sr.runScript(reader);
+            logger.info("\nExecuting SQL script is finished\n");
         } catch (SQLException | FileNotFoundException e) {
             e.printStackTrace();
             logger.error("\n!!!DB was NOT cleaned after test execution!!!\n");

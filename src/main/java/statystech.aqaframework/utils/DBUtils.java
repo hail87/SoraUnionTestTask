@@ -113,8 +113,8 @@ public class DBUtils {
             Connection connection = new ConnectionDB().getCurrentConnection();
             ScriptRunner sr = new ScriptRunner(connection);
             Reader reader = new BufferedReader(new FileReader(MyPath.SQL_SCRIPTS_PATH.getPath() + scriptName));
+            logger.info("\nExecuting SQL script: " + scriptName);
             sr.runScript(reader);
-            connection.close();
         } catch (SQLException | FileNotFoundException e) {
             e.printStackTrace();
             logger.error("\n!!!DB was NOT cleaned after test execution!!!\n");

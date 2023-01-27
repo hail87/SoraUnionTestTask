@@ -217,9 +217,9 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
-        logger.info("-----------------------Step 1-----------------------");
+        logger.info("-----------------------Precondition-----------------------");
         DBUtils.executeSqlScript("cleanup_productBotox10.sql");
-        Steps.delay(5000);
+        logger.info("-----------------------Step 1-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
                 "BOTOX 10 Units",
                 200,

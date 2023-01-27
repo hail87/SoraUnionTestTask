@@ -219,6 +219,12 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
         logger.info("-----------------------Precondition-----------------------");
         DBUtils.executeSqlScript("cleanup_productBotox10.sql");
+        try {
+            lwaTestContext.closeDbConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         logger.info("-----------------------Step 1-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
                 "BOTOX 10 Units",

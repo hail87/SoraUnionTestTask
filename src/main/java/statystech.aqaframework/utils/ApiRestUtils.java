@@ -727,4 +727,27 @@ public class ApiRestUtils {
         }
         return response;
     }
+
+    public okhttp3.Response searchProductCatalogManagement(String productName, String authToken) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"product_name\": \"" + productName + "\"\n}");
+        Request request = new Request.Builder()
+                .url(DataUtils.getPropertyValue("url.properties", "productSearch"))
+                .method("POST", body)
+                .addHeader("X-Forwarded-For", "192.168.1.1")
+                .addHeader("Authorization", authToken)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
 }

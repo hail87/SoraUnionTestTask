@@ -34,6 +34,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
     static void clearTestResults() {
         TestRailReportExtension.setResults(null);
         TestRailReportExtension.setResults(new CopyOnWriteArrayList<>());
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
     }
 
     @AfterAll

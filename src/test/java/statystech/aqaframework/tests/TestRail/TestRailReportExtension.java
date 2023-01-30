@@ -167,7 +167,7 @@ public class TestRailReportExtension implements TestWatcher, BeforeAllCallback {
             addAttachmentToTestRun("oms-website-api.log", runID);
             addAttachmentToTestRun("lwa-write-data.log", runID);
             addAttachmentToTestRun("lwa-etl-orders.log", runID);
-            addAttachmentToTestRun("lwa-etl-products.log", runID);
+            //addAttachmentToTestRun("lwa-etl-products.log", runID);
         }
     }
 

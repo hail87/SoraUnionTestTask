@@ -17,7 +17,6 @@ public abstract class ApiTestClass {
 
     @BeforeAll
     static void createContext() {
-//        DataUtils.clearFolder(new File("allure-results"));
         DBUtils.executeSqlScript("clean_all_lwa_test_data.sql");
         Context.initialize();
     }

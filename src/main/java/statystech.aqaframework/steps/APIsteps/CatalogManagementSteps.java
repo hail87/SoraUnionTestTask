@@ -67,6 +67,7 @@ public class CatalogManagementSteps extends Steps {
     }
 
     public String searchProduct(String productName, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        logger.info("\nSearching for a product : " + productName);
         okhttp3.Response response = new ApiRestUtils().searchProductCatalogManagement(productName, authToken);
         int statusCode = response.code();
         if (statusCode != expectedStatusCode) {
@@ -95,7 +96,8 @@ public class CatalogManagementSteps extends Steps {
     }
 
     public String searchProductPartially(String productName, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
-        okhttp3.Response response = new ApiRestUtils().searchProductCatalogManagement(productName, authToken);
+        logger.info("\nSearching (partially) for a product : " + productName);
+        okhttp3.Response response = new ApiRestUtils().partialSearchProductCatalogManagement(productName, authToken);
         int statusCode = response.code();
         if (statusCode != expectedStatusCode) {
             logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",

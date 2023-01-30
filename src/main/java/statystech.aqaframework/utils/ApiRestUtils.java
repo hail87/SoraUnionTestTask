@@ -728,7 +728,7 @@ public class ApiRestUtils {
         return response;
     }
 
-    public okhttp3.Response searchProductCatalogManagement(String productName, String authToken) {
+    public okhttp3.Response partialSearchProductCatalogManagement(String productName, String authToken) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");

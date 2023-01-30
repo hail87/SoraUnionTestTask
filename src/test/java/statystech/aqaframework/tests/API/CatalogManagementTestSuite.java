@@ -370,4 +370,52 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User is not authenticated. Please contact support at"));
     }
+
+    @TestRailID(id = 351029)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void validateUserPermissionToPartialSearch(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage.append(catalogManagementSteps.addProductParent(
+                jsonContent,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10 Units",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(1, lwaTestContext.getProducts().size());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+        logger.info("-----------------------Step 2-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10 Units",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(1, lwaTestContext.getProducts().size());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+
+        logger.info("-----------------------Step 3-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10 Units",
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "WHO"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "User is not authenticated. Please contact support at"));
+    }
 }

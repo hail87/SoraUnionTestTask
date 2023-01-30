@@ -733,9 +733,9 @@ public class ApiRestUtils {
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
 
-        RequestBody body = RequestBody.create(mediaType, "{\n    \"product_name\": \"" + productName + "\"\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"product_name\": \"" + productName + "\",\n    \"product_ids\": [],\n    \"max_results\": 10\n}");
         Request request = new Request.Builder()
-                .url(DataUtils.getPropertyValue("url.properties", "productSearch"))
+                .url(DataUtils.getPropertyValue("url.properties", "partialProductSearch"))
                 .method("POST", body)
                 .addHeader("X-Forwarded-For", "192.168.1.1")
                 .addHeader("Authorization", authToken)

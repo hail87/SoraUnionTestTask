@@ -323,52 +323,68 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 "User is not authenticated. Please contact support at"));
     }
 
-    @TestRailID(id = 351029)
+    @TestRailID(id = 351028)
     @ParameterizedTest
     @ValueSource(strings = {"productBotox10Units.json"})
-    public void validateUserPermissionToPartialSearch(String jsonFilename, TestInfo testInfo) throws IOException {
+    public void validateProductSearchResultsBmRole(String jsonFilename, TestInfo testInfo) throws IOException {
         StringBuilder errorMessage = new StringBuilder();
         LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
         CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
-        logger.info("-----------------------Precondition-----------------------");
+
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10 Unitssss",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
+
+        logger.info("-----------------------Step 2-----------------------");
         String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
         errorMessage.append(catalogManagementSteps.addProductParent(
                 jsonContent,
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext));
-
-        logger.info("-----------------------Step 1-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
                 "BOTOX 10 Units",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-        assertEquals(1, lwaTestContext.getProducts().size());
         assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
-
-        logger.info("-----------------------Step 2-----------------------");
-        errorMessage.append(catalogManagementSteps.searchProduct(
-                "BOTOX 10 Units",
-                200,
-                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
-                lwaTestContext));
-        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-        assertEquals(1, lwaTestContext.getProducts().size());
-        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
-
 
         logger.info("-----------------------Step 3-----------------------");
+        errorMessage.append(catalogManagementSteps.validateSearchResponseRequiredFields(lwaTestContext));
+
+        logger.info("-----------------------Step 4-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
-                "BOTOX 10 Units",
-                400,
-                DataUtils.getPropertyValue("tokens.properties", "WHO"),
+                "BOTOX 10",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+        logger.info("-----------------------Step 5-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "B",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
+
+        logger.info("-----------------------Step 6-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
         assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
-        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-                "User is not authenticated. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
     @TestRailID(id = 351029)
@@ -387,7 +403,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 lwaTestContext));
 
         logger.info("-----------------------Step 1-----------------------");
-        errorMessage.append(catalogManagementSteps.searchProduct(
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BOTOX 10 Units",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
@@ -397,7 +413,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
 
         logger.info("-----------------------Step 2-----------------------");
-        errorMessage.append(catalogManagementSteps.searchProduct(
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BOTOX 10 Units",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
@@ -408,7 +424,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
 
 
         logger.info("-----------------------Step 3-----------------------");
-        errorMessage.append(catalogManagementSteps.searchProduct(
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BOTOX 10 Units",
                 400,
                 DataUtils.getPropertyValue("tokens.properties", "WHO"),

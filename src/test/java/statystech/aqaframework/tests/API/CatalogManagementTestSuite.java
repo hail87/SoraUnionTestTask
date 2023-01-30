@@ -10,7 +10,6 @@ import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.CatalogManagementSteps;
 import statystech.aqaframework.steps.DBsteps.ProductParentSteps;
-import statystech.aqaframework.steps.Steps;
 import statystech.aqaframework.tests.ApiTestClass;
 import statystech.aqaframework.tests.TestRail.TestRailID;
 import statystech.aqaframework.tests.TestRail.TestRailReportExtension;

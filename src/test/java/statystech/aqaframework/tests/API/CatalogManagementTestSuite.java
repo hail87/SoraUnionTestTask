@@ -57,6 +57,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         }
         LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnectionSandbox();
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
         Context.addTestContext(lwaTestContext);
     }
 

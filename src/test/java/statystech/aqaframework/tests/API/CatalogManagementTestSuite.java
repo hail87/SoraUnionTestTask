@@ -230,7 +230,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
 
         logger.info("-----------------------Step 1-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
-                "BOTOX 10 Units",
+                "BOTOX 10 Unitssss",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "User24"),
                 lwaTestContext));

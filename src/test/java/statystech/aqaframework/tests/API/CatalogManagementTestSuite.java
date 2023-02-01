@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.ProductItem;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.CatalogManagementSteps;
@@ -433,5 +434,173 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User is not authenticated. Please contact support at"));
+    }
+
+    @TestRailID(id = 351030)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void validateProductPartialSearchResultsBM(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+
+        for (int i = 0; i < 10; i++) {
+            errorMessage.append(catalogManagementSteps.addProductParent(
+                    jsonContent,
+                    200,
+                    DataUtils.getPropertyValue("tokens.properties", "User24"),
+                    lwaTestContext));
+        }
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(10, lwaTestContext.getProducts().size());
+
+
+        logger.info("-----------------------Step 2-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "B",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(10, lwaTestContext.getProducts().size());
+
+        logger.info("-----------------------Step 3-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "BO",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(10, lwaTestContext.getProducts().size());
+
+        logger.info("-----------------------Step 4-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "BOT",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+        assertEquals(10, lwaTestContext.getProducts().size());
+        assertTrue(lwaTestContext.getProducts().get(9).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+        logger.info("-----------------------Step 5-----------------------");
+        int productIdToExclude = lwaTestContext.getProducts().get(0).getProductId();
+        errorMessage.append(catalogManagementSteps.searchProductPartiallyExcludingID(
+                "BOT",
+                productIdToExclude,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertNotEquals(lwaTestContext.getProducts().get(0).getProductId(), productIdToExclude);
+        assertEquals(9, lwaTestContext.getProducts().size());
+
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
+
+        logger.info("-----------------------Step 6-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+        assertEquals(9, lwaTestContext.getProducts().size());
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 360315)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void validateProductPartialSearchResultsWHM(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+
+        for (int i = 0; i < 10; i++) {
+            errorMessage.append(catalogManagementSteps.addProductParent(
+                    jsonContent,
+                    200,
+                    DataUtils.getPropertyValue("tokens.properties", "User24"),
+                    lwaTestContext));
+        }
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+
+        logger.info("-----------------------Step 1-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(10, lwaTestContext.getProducts().size());
+
+
+        logger.info("-----------------------Step 2-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "B",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(10, lwaTestContext.getProducts().size());
+
+        logger.info("-----------------------Step 3-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "BO",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertEquals(10, lwaTestContext.getProducts().size());
+
+        logger.info("-----------------------Step 4-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
+                "BOT",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+        assertEquals(10, lwaTestContext.getProducts().size());
+        assertTrue(lwaTestContext.getProducts().get(9).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+
+        logger.info("-----------------------Step 5-----------------------");
+        int productIdToExclude = lwaTestContext.getProducts().get(0).getProductId();
+        errorMessage.append(catalogManagementSteps.searchProductPartiallyExcludingID(
+                "BOT",
+                productIdToExclude,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertNotEquals(lwaTestContext.getProducts().get(0).getProductId(), productIdToExclude);
+        assertEquals(9, lwaTestContext.getProducts().size());
+
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
+
+        logger.info("-----------------------Step 6-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10",
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
+        assertEquals(9, lwaTestContext.getProducts().size());
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 }

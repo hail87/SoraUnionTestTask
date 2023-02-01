@@ -124,6 +124,35 @@ public class CatalogManagementSteps extends Steps {
         return "";
     }
 
+    public String searchProductPartiallyExcludingID(String productName, int id, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        logger.info("\nSearching (partially) for a product : " + productName);
+        okhttp3.Response response = new ApiRestUtils().partialSearchExcludingIDsProductCatalogManagement(productName, id, authToken);
+        int statusCode = response.code();
+        if (statusCode != expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        logger.info("Response from API:\n" + responseString);
+        if (!responseString.contains("product_id")) {
+            logger.info("\nNo products found: " + productName);
+            testContext.setProducts(null);
+            Context.updateTestContext(testContext);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            ProductSearchResponse productSearchResponse = mapper.readValue(responseString, ProductSearchResponse.class);
+            List<ProductItem> products = productSearchResponse.getProducts();
+            testContext.setProducts(products);
+            Context.updateTestContext(testContext);
+        }
+        return "";
+    }
+
     public String validateSearchResponseRequiredFields(LwaTestContext lwaTestContext) {
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(verifyJsonResponseContainsAttribute("products.product_id", lwaTestContext));

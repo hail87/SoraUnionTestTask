@@ -9,6 +9,6 @@ test-output/
 allure-results/
 .classpath
 .project
-settings-without-override.xml
+settings.xml
 *CitaTest.java
 *TestContext.java

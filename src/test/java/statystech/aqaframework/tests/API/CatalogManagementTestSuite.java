@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.ProductItem;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.CatalogManagementSteps;
@@ -54,7 +53,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         TestRailID testRailID = testInfo.getTestMethod().get().getAnnotation(TestRailID.class);
         if (testRailID != null) {
             logger.info(String.format(
-                    "\nTest № %d has been started : '%s'\n", testRailID.id(), name));
+                    "\n\n\n\nTest № %d has been started : '%s'\n", testRailID.id(), name));
         }
         LwaTestContext lwaTestContext = new LwaTestContext(name);
         lwaTestContext.getConnectionSandbox();

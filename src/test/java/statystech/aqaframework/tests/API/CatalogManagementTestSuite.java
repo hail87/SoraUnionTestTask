@@ -507,8 +507,6 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertNotEquals(lwaTestContext.getProducts().get(0).getProductId(), productIdToExclude);
         assertEquals(9, lwaTestContext.getProducts().size());
 
-        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
-
         logger.info("-----------------------Step 6-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
                 "BOTOX 10",
@@ -516,8 +514,9 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
                 lwaTestContext));
         assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
-        assertEquals(9, lwaTestContext.getProducts().size());
+        assertEquals(10, lwaTestContext.getProducts().size());
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
     }
 
     @TestRailID(id = 360315)
@@ -544,7 +543,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertEquals(10, lwaTestContext.getProducts().size());
@@ -554,7 +553,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "B",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertEquals(10, lwaTestContext.getProducts().size());
@@ -563,7 +562,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BO",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertEquals(10, lwaTestContext.getProducts().size());
@@ -572,7 +571,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BOT",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
@@ -585,22 +584,21 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 "BOT",
                 productIdToExclude,
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertNotEquals(lwaTestContext.getProducts().get(0).getProductId(), productIdToExclude);
         assertEquals(9, lwaTestContext.getProducts().size());
 
-        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
-
         logger.info("-----------------------Step 6-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
                 "BOTOX 10",
                 200,
-                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),
                 lwaTestContext));
         assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
-        assertEquals(9, lwaTestContext.getProducts().size());
+        assertEquals(10, lwaTestContext.getProducts().size());
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        DBUtils.executeSqlScript("cleanup_productBotox10.sql");
     }
 }

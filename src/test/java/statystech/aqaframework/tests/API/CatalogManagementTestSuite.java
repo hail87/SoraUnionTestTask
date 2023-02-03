@@ -530,7 +530,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         logger.info("-----------------------Precondition-----------------------");
         String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 11; i++) {
             errorMessage.append(catalogManagementSteps.addProductParent(
                     jsonContent,
                     200,
@@ -592,7 +592,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 "\nThere is more then 10 products at the result, but should NOT be\n");
 
         logger.info("-----------------------Step 6-----------------------");
-        errorMessage.append(catalogManagementSteps.searchProduct(
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BOTOX 10",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "WHMuser7"),

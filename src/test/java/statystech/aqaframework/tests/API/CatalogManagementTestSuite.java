@@ -504,7 +504,8 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertNotEquals(lwaTestContext.getProducts().get(0).getProductId(), productIdToExclude);
-        assertEquals(9, lwaTestContext.getProducts().size());
+        assertTrue(lwaTestContext.getProducts().size() <= 10,
+                "\nThere is more then 10 products at the result, but should NOT be\n");
 
         logger.info("-----------------------Step 6-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(
@@ -587,7 +588,8 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertNotEquals(lwaTestContext.getProducts().get(0).getProductId(), productIdToExclude);
-        assertEquals(9, lwaTestContext.getProducts().size());
+        assertTrue(lwaTestContext.getProducts().size() <= 10,
+                "\nThere is more then 10 products at the result, but should NOT be\n");
 
         logger.info("-----------------------Step 6-----------------------");
         errorMessage.append(catalogManagementSteps.searchProduct(

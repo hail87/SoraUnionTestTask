@@ -124,9 +124,9 @@ public class CatalogManagementSteps extends Steps {
         return "";
     }
 
-    public String searchProductPartiallyExcludingID(String productName, int id, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+    public String searchProductPartiallyExcludingID(String productName, int idToExclude, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
         logger.info("\nSearching (partially) for a product : " + productName);
-        okhttp3.Response response = new ApiRestUtils().partialSearchExcludingIDsProductCatalogManagement(productName, id, authToken);
+        okhttp3.Response response = new ApiRestUtils().partialSearchExcludingIDsProductCatalogManagement(productName, idToExclude, authToken);
         int statusCode = response.code();
         if (statusCode != expectedStatusCode) {
             logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",

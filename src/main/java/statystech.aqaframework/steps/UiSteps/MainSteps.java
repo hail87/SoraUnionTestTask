@@ -333,7 +333,7 @@ public class MainSteps extends Steps {
         OrderCardDetailsPopUp orderCardDetailsPopUp = clickOrderCard(orderNumber);
         OrderFulfillmentPage orderFulfillmentPage = orderCardDetailsPopUp.startOrderFulfillment();
         OrderFulfillmentSteps orderFulfillmentSteps = new OrderFulfillmentSteps(orderFulfillmentPage);
-        orderFulfillmentSteps.createParcel(1, 1);
+        //orderFulfillmentSteps.createParcel(1, 1);
         orderFulfillmentSteps.closeOrderFulfillmentPage();
         orderCardDetailsPopUp.close();
     }

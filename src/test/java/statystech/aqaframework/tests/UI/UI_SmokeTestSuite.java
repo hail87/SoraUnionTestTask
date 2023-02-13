@@ -158,6 +158,8 @@ public class UI_SmokeTestSuite extends UiTestClass {
         assertTrue(errorMessage.isEmpty(), errorMessage);
     }
 
+
+    //https://statystech.atlassian.net/browse/LWA-1672
     @TestRailID(id = 208525)
     @ParameterizedTest
     @ValueSource(strings = {"Order_9993305.json"})

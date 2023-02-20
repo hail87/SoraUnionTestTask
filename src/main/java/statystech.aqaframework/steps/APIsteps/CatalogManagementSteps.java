@@ -3,8 +3,10 @@ package statystech.aqaframework.steps.APIsteps;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.GetVariantsResponse;
 import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.ProductSearchResponse;
 import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.ProductItem;
+import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.Variant;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
@@ -124,6 +126,35 @@ public class CatalogManagementSteps extends Steps {
         return "";
     }
 
+    public String getVariants(int productParentID, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        logger.info("\nSearching variants for productParent ID : " + productParentID);
+        okhttp3.Response response = new ApiRestUtils().getVariantsCatalogManagement(productParentID, authToken);
+        int statusCode = response.code();
+        if (statusCode != expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        logger.info("Response from API:\n" + responseString);
+        if (!responseString.contains("variant_id")) {
+            logger.info("\nNo variants found for productParent ID : " + productParentID);
+            testContext.setVariants(null);
+            Context.updateTestContext(testContext);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            GetVariantsResponse getVariantsResponse = mapper.readValue(responseString, GetVariantsResponse.class);
+            List<Variant> variants = getVariantsResponse.getVariants();
+            testContext.setVariants(variants);
+            Context.updateTestContext(testContext);
+        }
+        return "";
+    }
+
     public String searchProductPartiallyExcludingID(String productName, int idToExclude, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
         logger.info("\nSearching (partially) for a product : " + productName);
         okhttp3.Response response = new ApiRestUtils().partialSearchExcludingIDsProductCatalogManagement(productName, idToExclude, authToken);
@@ -165,6 +196,16 @@ public class CatalogManagementSteps extends Steps {
         errorMessage.append(verifyJsonResponseContainsAttribute("products.cooling_details", lwaTestContext));
         errorMessage.append(verifyJsonResponseContainsAttribute("products.variant_count", lwaTestContext));
         errorMessage.append(verifyJsonResponseContainsAttribute("products.is_active", lwaTestContext));
+        return errorMessage.toString();
+    }
+
+    public String validateGetVariantsResponseRequiredFields(LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(verifyJsonResponseContainsAttribute("items.variant_id", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("items.variantName", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("items.sku", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("items.is_active", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("items.is_brand", lwaTestContext));
         return errorMessage.toString();
     }
 }

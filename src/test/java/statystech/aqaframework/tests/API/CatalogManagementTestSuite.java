@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import statystech.aqaframework.TableObjects.ProductParentTable;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.steps.APIsteps.CatalogManagementSteps;
@@ -321,6 +322,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User is not authenticated. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
     @TestRailID(id = 351028)
@@ -429,10 +431,10 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 400,
                 DataUtils.getPropertyValue("tokens.properties", "WHO"),
                 lwaTestContext));
-        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User is not authenticated. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
     @TestRailID(id = 351030)
@@ -601,5 +603,67 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertEquals(10, lwaTestContext.getProducts().size());
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         DBUtils.executeSqlScript("cleanup_productBotox10.sql");
+    }
+
+    @TestRailID(id = 351032)
+    @ParameterizedTest
+    @ValueSource(strings = {"productBotox10Units.json"})
+    public void validateGetVariantsResultsBmRole(String jsonFilename, TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        CatalogManagementSteps catalogManagementSteps = new CatalogManagementSteps();
+
+        logger.info("-----------------------Precondition-----------------------");
+        String jsonContent = new JsonUtils().getProductsObjectsAndLoadToContext(jsonFilename, lwaTestContext);
+        errorMessage.append(new CatalogManagementSteps().addProductParent(
+                jsonContent,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        errorMessage.append(new CatalogManagementSteps().addProduct(
+                lwaTestContext.getProductParentID(),
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "User24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+
+        logger.info("-----------------------Step 1-----------------------");
+        logger.info("\ngetting list of variants\n");
+        errorMessage.append(catalogManagementSteps.getVariants(
+                lwaTestContext.getProductParentID(),
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+
+        assertFalse(lwaTestContext.getVariants().isEmpty(), "\nResponse empty, but should NOT be!!!\n");
+
+        logger.info("-----------------------Step 2-----------------------");
+        logger.info("\nvalidating variant's schema\n");
+        errorMessage.append(catalogManagementSteps.validateGetVariantsResponseRequiredFields(lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+
+        logger.info("-----------------------Step 3-----------------------");
+        logger.info("\nverifying non-existent variants error message\n");
+        errorMessage.append(catalogManagementSteps.getVariants(
+                373737,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "Unknown product ID. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+
+        logger.info("-----------------------Step 4-----------------------");
+        logger.info("\nverifying inactive variants isn't shown at the response\n");
+        new ProductParentTable().setIsActive(0, lwaTestContext.getProductParentID());
+        errorMessage.append(catalogManagementSteps.getVariants(
+                lwaTestContext.getProductParentID(),
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),
+                lwaTestContext));
+        assertFalse(lwaTestContext.getVariants().isEmpty(), "\nResponse empty, but should NOT be!!!\n");
+
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 }

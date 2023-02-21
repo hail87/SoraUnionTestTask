@@ -510,7 +510,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 "\nThere is more then 10 products at the result, but should NOT be\n");
 
         logger.info("-----------------------Step 6-----------------------");
-        errorMessage.append(catalogManagementSteps.searchProduct(
+        errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BOTOX 10",
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "BM_user_24"),

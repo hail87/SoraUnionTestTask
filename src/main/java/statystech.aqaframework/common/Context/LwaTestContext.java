@@ -18,6 +18,7 @@ import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.Product
 import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.Variant;
 import statystech.aqaframework.DataObjects.ProductJson.Product;
 import statystech.aqaframework.DataObjects.ProductJson.ProductImport;
+import statystech.aqaframework.DataObjects.ResellerPortal.Reseller;
 import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
 import statystech.aqaframework.DataObjects.WebsiteSearch.GetWebSitesResponse;
 import statystech.aqaframework.common.ConnectionDB;
@@ -83,6 +84,8 @@ public class LwaTestContext extends TestContext{
     private int parcelID;
 
     private SearchProductResponse searchProductResponse;
+
+    private Reseller[] resellersListResponse;
 
     private String responseBody;
     private JsonNode lastNode;

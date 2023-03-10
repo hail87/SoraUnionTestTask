@@ -801,9 +801,31 @@ public class ApiRestUtils {
     public okhttp3.Response getResellersList(String authToken) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
-        MediaType mediaType = MediaType.parse("text/plain");
         Request request = new Request.Builder()
                 .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/rp/resellers")
+                .method("GET", null)
+                .addHeader("authority", "fs6wjwxd00.execute-api.us-east-1.amazonaws.com")
+                .addHeader("accept", "application/json, text/plain, /")
+                .addHeader("accept-language", "en-GB,en-US;q=0.9,en;q=0.8")
+                .addHeader("Authorization", authToken)
+                .addHeader("origin", DataUtils.getPropertyValue("url.properties", "DevEnv"))
+                .addHeader("referer", DataUtils.getPropertyValue("url.properties", "DevEnv"))
+                .build();
+
+        okhttp3.Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public okhttp3.Response getResellerInformation(int resellersID, String authToken) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("https://fs6wjwxd00.execute-api.us-east-1.amazonaws.com/dev/api/v1/rp/resellers/" + resellersID)
                 .method("GET", null)
                 .addHeader("authority", "fs6wjwxd00.execute-api.us-east-1.amazonaws.com")
                 .addHeader("accept", "application/json, text/plain, /")

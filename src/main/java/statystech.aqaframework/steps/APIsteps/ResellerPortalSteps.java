@@ -38,4 +38,37 @@ public class ResellerPortalSteps extends Steps {
         }
         return "";
     }
+
+    public String getResellerInformation(int resellerID, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        okhttp3.Response response = new ApiRestUtils().getResellerInformation(resellerID, authToken);
+        int statusCode = response.code();
+        if (statusCode != expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        logger.info("Response from API:\n" + responseString);
+//        if (responseString.contains("email")) {
+//            ObjectMapper mapper = new ObjectMapper();
+//            Reseller[] resellersListResponse = mapper.readValue(responseString, Reseller[].class);
+//            logger.info("\nResellers found: " + resellersListResponse.length);
+//            testContext.setResellersListResponse(resellersListResponse);
+//            Context.updateTestContext(testContext);
+//        }
+        return "";
+    }
+
+    public String validateGetResellersInformationRequiredFields(LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(verifyJsonResponseContainsAttribute("email", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("phone", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("account_balance", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("currency", lwaTestContext));
+        return errorMessage.toString();
+    }
 }

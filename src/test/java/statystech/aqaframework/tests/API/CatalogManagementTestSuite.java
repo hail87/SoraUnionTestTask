@@ -321,7 +321,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-                "User is not authenticated. Please contact support at"));
+                "The unknown error occurred. Please contact support at"));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
@@ -425,15 +425,17 @@ public class CatalogManagementTestSuite extends ApiTestClass {
         assertTrue(lwaTestContext.getProducts().get(0).getProductName().equalsIgnoreCase("BOTOX 10 Units"));
 
 
+        //https://statystech.atlassian.net/browse/LWA-1707
         logger.info("-----------------------Step 3-----------------------");
         errorMessage.append(catalogManagementSteps.searchProductPartially(
                 "BOTOX 10 Units",
                 400,
                 DataUtils.getPropertyValue("tokens.properties", "WHO"),
                 lwaTestContext));
-        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
+        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!\n");
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User is not authenticated. Please contact support at"));
+
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
@@ -759,7 +761,7 @@ public class CatalogManagementTestSuite extends ApiTestClass {
                 DataUtils.getPropertyValue("tokens.properties", "WHO"),
                 lwaTestContext));
         errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-                "User is not authenticated. Please contact support at"));
+                "The unknown error occurred. Please contact support at"));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 }

@@ -117,7 +117,7 @@ public class MainSteps extends Steps {
     public String checkPrintPageAndReturnToMain() {
         mainPage.waitForJStoLoad();
         mainPage.delay(1000);
-        mainPage.clickFirstOrderNumber();
+        mainPage.clickAnyFirstOrderNumber();
         mainPage.clickPrintOrders();
         mainPage.switchTab(2);
         String errorMessage = mainPage.waitForTabsSize(2);

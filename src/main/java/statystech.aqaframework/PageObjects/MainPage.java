@@ -35,6 +35,7 @@ public class MainPage extends PageObject {
     By btnCalendarTo = By.xpath("//*[@id=\"root\"]/div[1]/div[2]/div/div[3]/div/div[2]/div/div/button");
     By btnTodayDay = By.xpath("//button[contains(@class,\"today\")]");
     By btnFirstOrderNumber = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div/p");
+    By btnsOrderNumbers = By.xpath("//p[contains(@class,\"Order_orderNumber\")]");
 
     By btnSelectAllNewOrders = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[1]/div[1]/p[2]");
     By btnSelectAllInProgress = By.xpath("//*[@id=\"root\"]/div[4]/div/div/div[2]/div[1]/p[2]");
@@ -279,6 +280,10 @@ public class MainPage extends PageObject {
 
     public void clickFirstOrderNumber() {
         new Button(webDriver, btnFirstOrderNumber).click();
+    }
+
+    public void clickAnyFirstOrderNumber() {
+        new Button(webDriver, webDriver.findElements(btnsOrderNumbers).get(0)).click();
     }
 
     public String getFirstOrderNumber() {

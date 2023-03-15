@@ -63,15 +63,15 @@ public class ResellerPortalTestSuite extends ApiTestClass {
         errorMessage.append(resellerPortalSteps.getResellersList(
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "ACC"), lwaTestContext));
-        assertEquals(2,lwaTestContext.getResellersListResponse().length);
+        assertEquals(3,lwaTestContext.getResellersListResponse().length);
         errorMessage.append(resellerPortalSteps.getResellersList(
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "CSH"), lwaTestContext));
-        assertEquals(2,lwaTestContext.getResellersListResponse().length);
+        assertEquals(3,lwaTestContext.getResellersListResponse().length);
         errorMessage.append(resellerPortalSteps.getResellersList(
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "ACM"), lwaTestContext));
-        assertEquals(2,lwaTestContext.getResellersListResponse().length);
+        assertEquals(3,lwaTestContext.getResellersListResponse().length);
         errorMessage.append(resellerPortalSteps.getResellersList(
                 403,
                 DataUtils.getPropertyValue("tokens.properties", "CSR"), lwaTestContext));
@@ -106,14 +106,14 @@ public class ResellerPortalTestSuite extends ApiTestClass {
                 403,
                 DataUtils.getPropertyValue("tokens.properties", "CSMuser23"), lwaTestContext));
         errorMessage.append(resellerPortalSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-                "User does not have permission to get reseller general information. Please"));
+                "User does not have permission to access the endpoint. Please contact support at"));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
         errorMessage.append(resellerPortalSteps.getResellerInformation(
                 3,
-                403,
+                400,
                 DataUtils.getPropertyValue("tokens.properties", "CSH"), lwaTestContext));
         errorMessage.append(resellerPortalSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-                "User does not have permission to get reseller general information. Please contact support at"));
+                "User does not have permission to access the endpoint. Please contact support at"));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 

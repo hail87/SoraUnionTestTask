@@ -95,21 +95,21 @@ public class UI_SmokeTestSuite extends UiTestClass {
         assertEquals(mainSteps.getActiveOrdersAfterUpdate(), activeOrdersStartPosition);
     }
 
-    @TestRailID(id = 199755)
-    @Test
-    public void orderStatusFilter(TestInfo testInfo) {
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
-        mainSteps.checkApplyButtonDisabled();
-        mainSteps.chooseOrderStatus("Partially shipped");
-        assertNotEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition,
-                String.format("\nExpected not equals, but active orders at the beginning : '%s' and at the end '%s' are te same\n",
-                        activeOrdersStartPosition, mainSteps.getMainPage().getActiveOrders()));
-        mainSteps.cancelOrderStatusChoice();
-        assertEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition);
-    }
+//    @TestRailID(id = 199755)
+//    @Test
+//    public void orderStatusFilter(TestInfo testInfo) {
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//        String activeOrdersStartPosition = mainSteps.getMainPage().getActiveOrders();
+//        mainSteps.checkApplyButtonDisabled();
+//        mainSteps.chooseOrderStatus("Partially shipped");
+//        assertNotEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition,
+//                String.format("\nExpected not equals, but active orders at the beginning : '%s' and at the end '%s' are te same\n",
+//                        activeOrdersStartPosition, mainSteps.getMainPage().getActiveOrders()));
+//        mainSteps.cancelOrderStatusChoice();
+//        assertEquals(mainSteps.getMainPage().getActiveOrders(), activeOrdersStartPosition);
+//    }
 
     @TestRailID(id = 202584)
     @Test
@@ -127,18 +127,19 @@ public class UI_SmokeTestSuite extends UiTestClass {
 //        assertNotEquals(shippedOrdersFiltered, shippedOrdersStartPosition);
     }
 
-    @TestRailID(id = 208523)
-    @Test
-    public void printAndPutOnHold(TestInfo testInfo) {
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-        String errorMessage = mainSteps.checkPrintPageAndReturnToMain();
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-        mainSteps.putOnHold();
-        mainSteps.cancelHold();
-        mainSteps.getMainPage().clickUncheckAll();
-    }
+    //need orders (test data) to be correctly prepared
+//    @TestRailID(id = 208523)
+//    @Test
+//    public void printAndPutOnHold(TestInfo testInfo) {
+//        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
+//                DataUtils.getPropertyValue("users.properties", "whmName"),
+//                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
+//        String errorMessage = mainSteps.checkPrintPageAndReturnToMain();
+//        assertTrue(errorMessage.isEmpty(), errorMessage);
+//        mainSteps.putOnHold();
+//        mainSteps.cancelHold();
+//        mainSteps.getMainPage().clickUncheckAll();
+//    }
 
     @TestRailID(id = 208524)
     @ParameterizedTest

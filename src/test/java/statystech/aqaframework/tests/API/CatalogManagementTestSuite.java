@@ -313,16 +313,16 @@ public class CatalogManagementTestSuite extends ApiTestClass {
 
 
         //get 200 instead of 400, need other token or investigation
-//        logger.info("-----------------------Step 3-----------------------");
-//        errorMessage.append(catalogManagementSteps.searchProduct(
-//                "BOTOX 10 Units",
-//                400,
-//                DataUtils.getPropertyValue("tokens.properties", "WHO"),
-//                lwaTestContext));
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-//        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!");
-//        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
-//                "The unknown error occurred. Please contact support at"));
+        logger.info("-----------------------Step 3-----------------------");
+        errorMessage.append(catalogManagementSteps.searchProduct(
+                "BOTOX 10 Units",
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "WHO"),
+                lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        assertNull(lwaTestContext.getProducts(), "\nResponse is NOT empty, but should be!\n");
+        errorMessage.append(catalogManagementSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "The unknown error occurred. Please contact support at"));
 
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }

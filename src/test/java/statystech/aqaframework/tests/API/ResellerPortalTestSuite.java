@@ -101,19 +101,63 @@ public class ResellerPortalTestSuite extends ApiTestClass {
                 200,
                 DataUtils.getPropertyValue("tokens.properties", "ACC"), lwaTestContext));
         errorMessage.append(resellerPortalSteps.validateGetResellersInformationRequiredFields(lwaTestContext));
-        errorMessage.append(new ResellerPortalSteps().getResellerInformation(
+        errorMessage.append(resellerPortalSteps.getResellerInformation(
                 3,
                 403,
                 DataUtils.getPropertyValue("tokens.properties", "CSMuser23"), lwaTestContext));
         errorMessage.append(resellerPortalSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User does not have permission to get reseller general information. Please"));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-        errorMessage.append(new ResellerPortalSteps().getResellerInformation(
+        errorMessage.append(resellerPortalSteps.getResellerInformation(
                 3,
                 403,
                 DataUtils.getPropertyValue("tokens.properties", "CSH"), lwaTestContext));
         errorMessage.append(resellerPortalSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
                 "User does not have permission to get reseller general information. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 367929)
+    @Test
+    public void getWebsiteInfoValidateUserRole(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ResellerPortalSteps resellerPortalSteps = new ResellerPortalSteps();
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                1,
+                400,
+                DataUtils.getPropertyValue("tokens.properties", "CSMuser23"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.verifyActualResultsContains(lwaTestContext.getResponseBody(),
+                "User does not have permission to use API method. Please contact support at"));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                3,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "ACC"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
+
+    @TestRailID(id = 367933)
+    @Test
+    public void getWebsiteInfoValidateNonExistingWebsite(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ResellerPortalSteps resellerPortalSteps = new ResellerPortalSteps();
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                7,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "RES"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                1,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "ACM"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                1,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "ACC"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 }

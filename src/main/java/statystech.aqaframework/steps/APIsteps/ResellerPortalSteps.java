@@ -52,6 +52,32 @@ public class ResellerPortalSteps extends Steps {
 
         String responseString = response.body().string();
         testContext.setResponseBody(responseString);
+        Context.updateTestContext(testContext);
+        logger.info("Response from API:\n" + responseString);
+//        if (responseString.contains("email")) {
+//            ObjectMapper mapper = new ObjectMapper();
+//            Reseller[] resellersListResponse = mapper.readValue(responseString, Reseller[].class);
+//            logger.info("\nResellers found: " + resellersListResponse.length);
+//            testContext.setResellersListResponse(resellersListResponse);
+//            Context.updateTestContext(testContext);
+//        }
+        return "";
+    }
+
+    public String getWebsiteInformation(int websiteID, int expectedStatusCode, String authToken, LwaTestContext testContext) throws IOException {
+        okhttp3.Response response = new ApiRestUtils().getWebsiteInformation(websiteID, authToken);
+        int statusCode = response.code();
+        if (statusCode != expectedStatusCode) {
+            logger.error(String.format("\nWrong response status code! Expected [%d], but found [%d]\nBody : [%s]",
+                    expectedStatusCode,
+                    statusCode,
+                    response.body().string()));
+            return String.format("\nWrong response status code! Expected [%d], but found [%d]", expectedStatusCode, statusCode);
+        }
+
+        String responseString = response.body().string();
+        testContext.setResponseBody(responseString);
+        Context.updateTestContext(testContext);
         logger.info("Response from API:\n" + responseString);
 //        if (responseString.contains("email")) {
 //            ObjectMapper mapper = new ObjectMapper();
@@ -69,6 +95,20 @@ public class ResellerPortalSteps extends Steps {
         errorMessage.append(verifyJsonResponseContainsAttribute("phone", lwaTestContext));
         errorMessage.append(verifyJsonResponseContainsAttribute("account_balance", lwaTestContext));
         errorMessage.append(verifyJsonResponseContainsAttribute("currency", lwaTestContext));
+        return errorMessage.toString();
+    }
+
+    public String validateGetWebsitesInformationRequiredFields(LwaTestContext lwaTestContext) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append(verifyJsonResponseContainsAttribute("website_name", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("api_key", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("ip_range", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("region_id", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("region_name", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("statys_payment", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("max_discount_cap", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("refund_threshold", lwaTestContext));
+        errorMessage.append(verifyJsonResponseContainsAttribute("revenue", lwaTestContext));
         return errorMessage.toString();
     }
 }

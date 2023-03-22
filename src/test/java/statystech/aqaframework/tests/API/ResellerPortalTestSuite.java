@@ -138,44 +138,44 @@ public class ResellerPortalTestSuite extends ApiTestClass {
         assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
     }
 
-//    @TestRailID(id = 367933)
-//    @Test
-//    public void getWebsiteInfoValidateExistingWebsite(TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        ResellerPortalSteps resellerPortalSteps = new ResellerPortalSteps();
-//        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
-//                7,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "RES"), lwaTestContext));
-//        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
-//        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
-//                1,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "ACM"), lwaTestContext));
-//        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
-//        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
-//                1,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "ACC"), lwaTestContext));
-//        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-//    }
+    @TestRailID(id = 367933)
+    @Test
+    public void getWebsiteInfoValidateExistingWebsite(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ResellerPortalSteps resellerPortalSteps = new ResellerPortalSteps();
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                7,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "RES"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                1,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "ACM"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                1,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "ACC"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
 
-//    @TestRailID(id = 367930)
-//    @Test
-//    public void getWebsiteInfoValidateMandatoryParameters(TestInfo testInfo) throws IOException {
-//        StringBuilder errorMessage = new StringBuilder();
-//        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
-//        ResellerPortalSteps resellerPortalSteps = new ResellerPortalSteps();
-//        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
-//                7,
-//                200,
-//                DataUtils.getPropertyValue("tokens.properties", "RES"), lwaTestContext));
-//        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
-//        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
-//    }
-//
+    @TestRailID(id = 367930)
+    @Test
+    public void getWebsiteInfoValidateMandatoryParameters(TestInfo testInfo) throws IOException {
+        StringBuilder errorMessage = new StringBuilder();
+        LwaTestContext lwaTestContext = getLwaTestContext(testInfo);
+        ResellerPortalSteps resellerPortalSteps = new ResellerPortalSteps();
+        errorMessage.append(resellerPortalSteps.getWebsiteInformation(
+                7,
+                200,
+                DataUtils.getPropertyValue("tokens.properties", "RES"), lwaTestContext));
+        errorMessage.append(resellerPortalSteps.validateGetWebsitesInformationRequiredFields(lwaTestContext));
+        assertTrue(errorMessage.toString().isEmpty(), errorMessage.toString());
+    }
+
 //    @TestRailID(id = 367931)
 //    @Test
 //    public void getWebsiteInfoValidateNonExistingWebsite(TestInfo testInfo) throws IOException {

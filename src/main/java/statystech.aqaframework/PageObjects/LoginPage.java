@@ -13,6 +13,7 @@ public class LoginPage extends PageObject {
     By txtUsernameLocator = By.xpath("//input[@name=\"username\"]");
     By txtPasswordLocator = By.xpath("//input[@name=\"password\"]");
     By btnLogInLocator = By.xpath("//button[@type=\"submit\"]");
+    By msgErrorMessage = By.xpath("//button[@type=\"submit\"]");
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;

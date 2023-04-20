@@ -22,7 +22,6 @@ public class Message extends Element {
     @Getter
     WebDriver webDriver;
 
-    //By msgMoveToNewOrder = By.xpath("/html/body/div[2]/div[3]/div/div");
     By btnConfirm = By.xpath(".//button[2]");
     By btnCancel = By.xpath(".//button[1]");
 

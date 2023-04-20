@@ -1,5 +1,6 @@
 package statystech.aqaframework.tests.UI;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -37,17 +38,17 @@ public class UI_SmokeTestSuite extends UiTestClass {
 
     @Test
     public void loginWrongCreds(TestInfo testInfo) {
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
+        LoginSteps loginSteps = new LoginSteps(testInfo);
+        loginSteps.login(
+                DataUtils.getPropertyValue("users.properties", "nameWrong"),
+                DataUtils.getPropertyValue("users.properties", "pass"));
+        Assert.assertTrue("\nError message is NOT shown, but should\n", loginSteps.verifyErrorMessageIsShown());
     }
 
     @Test
     public void loginEmptyCreds(TestInfo testInfo) {
-        MainSteps mainSteps = new MainSteps(new LoginSteps(testInfo).login(
-                DataUtils.getPropertyValue("users.properties", "whmName"),
-                DataUtils.getPropertyValue("users.properties", "whmPass")), testInfo);
-
+        LoginSteps loginSteps = new LoginSteps(testInfo);
+        loginSteps.login("", "");
+        Assert.assertTrue("\nError message is NOT shown, but should\n", loginSteps.verifyErrorMessageIsShown());
     }
 }

@@ -10,5 +10,4 @@ allure-results/
 .classpath
 .project
 settings.xml
-*CitaTest.java
 *TestContext.java

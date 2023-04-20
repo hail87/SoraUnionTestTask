@@ -52,6 +52,7 @@ public class Button extends Element {
             }
             waitForElementToBeClickable(webDriver, locator);
             logger.info("Button with locator clicked: " + locator);
+            webDriver.findElement(locator).click();
         } else {
             waitForElementToLoad(webElement, webDriver);
             if (!isVisible(webElement)) {
@@ -61,7 +62,7 @@ public class Button extends Element {
                 logger.error("Button with locator IS NOT clickable: '" + webElement + "'");
             }
             waitForElementToBeClickable(webDriver, webElement);
-            doubleTryClick(webDriver, webElement);
+            webElement.click();
             logger.info("Button with locator clicked: " + webElement);
         }
     }

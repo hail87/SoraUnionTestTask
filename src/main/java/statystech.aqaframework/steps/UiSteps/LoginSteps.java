@@ -28,7 +28,17 @@ public class LoginSteps extends Steps {
         loginPage.typePassword(pass);
         logger.info("Log in");
         this.loginPage = loginPage;
-        return loginPage.clickLogIn();
+        loginPage.clickLogIn();
+        return new MainPage(webDriver);
+    }
+
+    public void loginNegative(String name, String pass) {
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.typeUsername(name);
+        loginPage.typePassword(pass);
+        logger.info("Log in");
+        this.loginPage = loginPage;
+        loginPage.clickLogIn();
     }
 
     public boolean verifyErrorMessageIsShown() {

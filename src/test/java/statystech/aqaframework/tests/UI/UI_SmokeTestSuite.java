@@ -39,7 +39,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @Test
     public void loginWrongCreds(TestInfo testInfo) {
         LoginSteps loginSteps = new LoginSteps(testInfo);
-        loginSteps.login(
+        loginSteps.loginNegative(
                 DataUtils.getPropertyValue("users.properties", "nameWrong"),
                 DataUtils.getPropertyValue("users.properties", "pass"));
         Assert.assertTrue("\nError message is NOT shown, but should\n", loginSteps.verifyErrorMessageIsShown());
@@ -48,7 +48,7 @@ public class UI_SmokeTestSuite extends UiTestClass {
     @Test
     public void loginEmptyCreds(TestInfo testInfo) {
         LoginSteps loginSteps = new LoginSteps(testInfo);
-        loginSteps.login("", "");
+        loginSteps.loginNegative("", "");
         Assert.assertTrue("\nError message is NOT shown, but should\n", loginSteps.verifyErrorMessageIsShown());
     }
 }

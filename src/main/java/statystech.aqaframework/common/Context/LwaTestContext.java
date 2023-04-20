@@ -1,32 +1,14 @@
 package statystech.aqaframework.common.Context;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 
 import lombok.Getter;
 import lombok.Setter;
-import statystech.aqaframework.DataObjects.IrsDto.SearchProductResponse;
-import statystech.aqaframework.DataObjects.OmsDto.OmsSubmitOrderJson;
-import statystech.aqaframework.DataObjects.OmsDto.Response;
-import statystech.aqaframework.DataObjects.OrderJackson.Order;
-import statystech.aqaframework.DataObjects.OrderJackson.OrderItem;
-import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesItem;
-import statystech.aqaframework.DataObjects.ParcelLines.ParcelLinesResponse;
-import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.ProductItem;
-import statystech.aqaframework.DataObjects.ProductJson.CatalogManagement.Variant;
-import statystech.aqaframework.DataObjects.ProductJson.Product;
-import statystech.aqaframework.DataObjects.ProductJson.ProductImport;
-import statystech.aqaframework.DataObjects.ResellerPortal.Reseller;
-import statystech.aqaframework.DataObjects.WarehouseSearch.WarehouseSearchResponse;
-import statystech.aqaframework.DataObjects.WebsiteSearch.GetWebSitesResponse;
 import statystech.aqaframework.common.ConnectionDB;
-import statystech.aqaframework.utils.DataUtils;
 
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 @Getter
 @Setter
@@ -41,12 +23,7 @@ public class LwaTestContext extends TestContext{
     private String testMethodName;
     private JsonObject jsonObject;
     private String jsonString;
-    private Order order;
-    private List<Product> productJsonList;
-    private Product product;
-    private List<ProductItem> products;
-    private List<Variant> variants;
-    private ProductImport productImport;
+
     private int productParentID;
     private int productID;
     private String orderAllSysID;
@@ -61,8 +38,7 @@ public class LwaTestContext extends TestContext{
     private int apiOrderId;
     private int apiBuyerAccountId;
     private String apiOrderStatusCd;
-    private Response response;
-    private OmsSubmitOrderJson omsSubmitOrderJson;
+
     private int paymentMethodID;
     private int orderExceptionHistoryID;
     private int accountAddressID;
@@ -76,22 +52,13 @@ public class LwaTestContext extends TestContext{
 
     private okhttp3.Response parcelLineResponse;
     private String parcelLineResponseBody;
-    private ParcelLinesResponse parcelLineResponseObject;
     private int parcelLineID;
     private int warehouseBatchInventoryID;
-    private List<ParcelLinesItem> parcelLineItems;
     private int productBatchId;
     private int parcelID;
 
-    private SearchProductResponse searchProductResponse;
-
-    private Reseller[] resellersListResponse;
-
     private String responseBody;
     private JsonNode lastNode;
-
-    private WarehouseSearchResponse warehouseSearchResponse;
-    private GetWebSitesResponse getWebsitesResponse;
 
     public int getLastWarehouseOrderID() throws SQLException {
         if (warehouseOrders == null || warehouseOrders.size() == 0) {
@@ -105,50 +72,6 @@ public class LwaTestContext extends TestContext{
         boolean isAlreadyThere = this.warehouseOrders.entrySet().stream().anyMatch(e -> e.getKey().equals(warehouseOrderID));
         if (!isAlreadyThere)
             this.warehouseOrders.put(warehouseOrderID, warehouseID);
-    }
-
-    public void makeOrderFromJson() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Order order = mapper.readValue(DataUtils.convertUnicodeToAscii(jsonString), Order.class);
-        setOrder(order);
-    }
-
-    public Order getOrder() {
-        if (order == null) {
-            try {
-                makeOrderFromJson();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        }
-        return order;
-    }
-
-    public OrderItem getItem(String name) {
-        return order.getOrderItems().stream().filter(p -> p.getProductName().equalsIgnoreCase(name)).findFirst().get();
-    }
-
-    public void makeProductsDtoFromJson() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        List<Product> products = mapper.readValue(jsonString, List.class);
-        setProductJsonList(products);
-    }
-
-    public void setSubmitOrderObjectsFromJson() throws JsonProcessingException {
-        if(jsonString == null || jsonString.isEmpty()){
-            setJsonString(jsonObject.toString());
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        OmsSubmitOrderJson omsSubmitOrderJson = mapper.readValue(DataUtils.convertUnicodeToAscii(jsonString), OmsSubmitOrderJson.class);
-        setOmsSubmitOrderJson(omsSubmitOrderJson);
-    }
-
-    public void updateBuyerAccountID(){
-        omsSubmitOrderJson.getBuyer().setBuyerAccountId(apiBuyerAccountId);
-    }
-
-    public void updateBuyerIpAddress(String ip){
-        omsSubmitOrderJson.getBuyer().setBuyerIpAddress(ip);
     }
 
     @Override

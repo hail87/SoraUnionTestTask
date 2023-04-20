@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
-import statystech.aqaframework.tests.TestRail.TestRailID;
 
 
 public abstract class UiTestClass {
@@ -35,19 +34,5 @@ public abstract class UiTestClass {
 
     public UiTestContext getUiTestContext(TestInfo testInfo) {
         return Context.getTestContext(testInfo.getTestMethod().get().getName(), UiTestContext.class);
-    }
-
-    public int getTestRailID(TestInfo testInfo) {
-        int testRailID = 0;
-        boolean isTestRailAnnotationPresent = testInfo.getTestMethod().isPresent()
-                && testInfo.getTestMethod().get().isAnnotationPresent(TestRailID.class);
-        if (isTestRailAnnotationPresent) {
-            testRailID = testInfo.getTestMethod().get().getAnnotation(TestRailID.class).id();
-            logger.info("testRailID: " + testRailID);
-        }
-        if (testRailID == 0) {
-            logger.warn("testRailID not found");
-        }
-        return testRailID;
     }
 }

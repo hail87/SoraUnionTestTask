@@ -2,7 +2,7 @@ package statystech.aqaframework.DataObjects;
 
 import lombok.Getter;
 import lombok.Setter;
-import statystech.aqaframework.utils.DataUtils;
+
 
 import java.io.IOException;
 
@@ -11,15 +11,15 @@ import java.io.IOException;
 public class DBUser {
 
     public DBUser() {
-        this.name = DataUtils.getPropertyValue("DB.properties", "name");
-        this.password = DataUtils.getPropertyValue("DB.properties", "pass");
-        this.url = DataUtils.getPropertyValue("DB.properties", "url");
+        this.name = "";
+        this.password = "";
+        this.url = "";
     }
 
     public DBUser(String propertyFileName) {
-        this.name = DataUtils.getPropertyValue(propertyFileName, "name");
-        this.password = DataUtils.getPropertyValue(propertyFileName, "pass");
-        this.url = DataUtils.getPropertyValue(propertyFileName, "url");
+        this.name = "";
+        this.password = "";
+        this.url = "";
     }
 
     private String name;

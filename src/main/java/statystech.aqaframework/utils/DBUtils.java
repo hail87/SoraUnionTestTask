@@ -8,19 +8,11 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import statystech.aqaframework.common.Context.Context;
 import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.MyPath;
-import statystech.aqaframework.steps.DBsteps.OrdersSteps;
-import statystech.aqaframework.steps.DBsteps.StageOrderSteps;
-import statystech.aqaframework.steps.DBsteps.StageProductSteps;
 import statystech.aqaframework.steps.Steps;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -213,53 +205,6 @@ public class DBUtils {
             throwables.printStackTrace();
         }
         return isClosed;
-    }
-
-    public static void importOrderToQA(String jsonFilename, TestInfo testInfo) {
-        DBUtils.executeSqlScript("cleanup_order9993305.sql");
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToQATableAndLwaContext(jsonFilename, testInfo);
-        String errorMessage = stageOrderSteps.checkStatusColumn(id);
-        int i = 0;
-        while (errorMessage.equalsIgnoreCase("N") & i < 60){
-            Steps.delay(1000);
-            errorMessage = stageOrderSteps.checkStatusColumn(id);
-            i++;
-        }
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-        OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
-    }
-
-    public static int importOrderToSandbox(String jsonFilename, TestInfo testInfo) {
-        StageOrderSteps stageOrderSteps = new StageOrderSteps();
-        int id = stageOrderSteps.insertJsonToTableAndLwaContext(jsonFilename, testInfo);
-        String errorMessage = stageOrderSteps.checkStatusColumn(id);
-        int i = 0;
-        while (errorMessage.equalsIgnoreCase("N") & i < 60){
-            Steps.delay(1000);
-            errorMessage = stageOrderSteps.checkStatusColumn(id);
-            i++;
-        }
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-        OrdersSteps ordersSteps = new OrdersSteps();
-        ordersSteps.setOrderIDtoContext();
-        return id;
-    }
-
-    public static int importProductToSandbox(String jsonFilename, TestInfo testInfo) throws SQLException, IOException {
-        StageProductSteps stageProductSteps = new StageProductSteps();
-        int id = stageProductSteps.insertJsonToTableAndContext(jsonFilename, testInfo);
-        String errorMessage = stageProductSteps.checkStatusColumn(id);
-        int i = 0;
-        while (errorMessage.equalsIgnoreCase("N") & i < 60){
-            Steps.delay(1000);
-            errorMessage = stageProductSteps.checkStatusColumn(id);
-            i++;
-        }
-        assertTrue(errorMessage.isEmpty(), errorMessage);
-        new JsonUtils().getProductJsonObjectAndLoadToContext(jsonFilename, testInfo.getTestMethod().get().getName());
-        return id;
     }
 }
 

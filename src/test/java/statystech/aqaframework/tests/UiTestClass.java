@@ -6,13 +6,12 @@ import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.Context.Context;
-import statystech.aqaframework.common.Context.LwaTestContext;
 import statystech.aqaframework.common.Context.UiTestContext;
 
 
 public abstract class UiTestClass {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiTestClass.class);
+    private static final Logger logger = LoggerFactory.getLogger(UiTestClass.class);
 
     @BeforeAll
     static void createContext() {
@@ -26,7 +25,7 @@ public abstract class UiTestClass {
         Thread.sleep(500);
         Context.deleteTestContext(uiTestContext);
         try {
-            Context.getTestContext(testInfo, LwaTestContext.class).closeDbConnection();
+            Context.getTestContext(testInfo, UiTestContext.class).closeDbConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }

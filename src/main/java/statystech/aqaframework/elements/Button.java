@@ -51,7 +51,6 @@ public class Button extends Element {
                 logger.error("Button with locator IS NOT clickable: '" + locator + "'");
             }
             waitForElementToBeClickable(webDriver, locator);
-            doubleTryClick(webDriver, webElement);
             logger.info("Button with locator clicked: " + locator);
         } else {
             waitForElementToLoad(webElement, webDriver);

@@ -18,4 +18,23 @@ public class UiTestContext extends TestContext{
 
     private String testMethodName;
 
+    @Override
+    public int hashCode() {
+        return getTestMethodName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object == null || object.getClass() != getClass()) {
+            return false;
+        }
+
+        MainTestContext mainTestContext = (MainTestContext) object;
+        return this.testMethodName.equalsIgnoreCase(mainTestContext.getTestMethodName());
+    }
+
 }

@@ -1,14 +1,12 @@
 package statystech.aqaframework.utils;
 
-import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import statystech.aqaframework.common.ConnectionDB;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import statystech.aqaframework.common.Context.Context;
-import statystech.aqaframework.common.Context.LwaTestContext;
+import statystech.aqaframework.common.Context.MainTestContext;
 import statystech.aqaframework.common.MyPath;
-import statystech.aqaframework.steps.Steps;
 
 import java.io.*;
 import java.sql.*;
@@ -23,7 +21,7 @@ public class DBUtils {
     public static ResultSet execute(String fullRequest) {
         ResultSet rs = null;
         try {
-            rs = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().createStatement().executeQuery(fullRequest);
+            rs = Context.getTestContext(MainTestContext.class).getConnectionSandbox().createStatement().executeQuery(fullRequest);
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
             logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
@@ -34,7 +32,7 @@ public class DBUtils {
     public static boolean update(String fullRequest) {
         int i = 0;
         try {
-            i = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().createStatement().executeUpdate(fullRequest);
+            i = Context.getTestContext(MainTestContext.class).getConnectionSandbox().createStatement().executeUpdate(fullRequest);
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
             logger.error("!!!Query:\n" + fullRequest + "\nhasn't been executed!!!");
@@ -46,7 +44,7 @@ public class DBUtils {
     public static ResultSet executeUpdatable(String fullRequest) {
         ResultSet rs = null;
         try {
-            PreparedStatement prepStmt = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().prepareStatement(
+            PreparedStatement prepStmt = Context.getTestContext(MainTestContext.class).getConnectionSandbox().prepareStatement(
                     fullRequest,
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
@@ -61,7 +59,7 @@ public class DBUtils {
     public static String executeAndReturnString(String fullRequest) {
         ResultSet rs;
         try {
-            rs = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().createStatement().executeQuery(fullRequest);
+            rs = Context.getTestContext(MainTestContext.class).getConnectionSandbox().createStatement().executeQuery(fullRequest);
             rs.next();
             return rs.getString(1);
         } catch (SQLException | IOException throwables) {
@@ -73,7 +71,7 @@ public class DBUtils {
     public static ArrayList<String> executeAndReturnStringArray(String fullRequest) {
         ResultSet rs;
         try {
-            rs = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().createStatement().executeQuery(fullRequest);
+            rs = Context.getTestContext(MainTestContext.class).getConnectionSandbox().createStatement().executeQuery(fullRequest);
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             ArrayList<String> list = new ArrayList<>(columnCount);
@@ -115,7 +113,7 @@ public class DBUtils {
     }
 
     public int insertJsonToStageOrder(String jsonContent) throws SQLException, IOException {
-        Statement statement = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().createStatement();
+        Statement statement = Context.getTestContext(MainTestContext.class).getConnectionSandbox().createStatement();
         int createdId;
         statement.executeUpdate("INSERT INTO stageOrder " +
                         "(orderData, status, processingComment, createdDate, createdBy, modifiedDate, modifiedBy) " +
@@ -151,7 +149,7 @@ public class DBUtils {
     }
 
     public int insertJsonToStageProduct(String jsonContent) throws SQLException, IOException {
-        Statement statement = Context.getTestContext(LwaTestContext.class).getConnectionSandbox().createStatement();
+        Statement statement = Context.getTestContext(MainTestContext.class).getConnectionSandbox().createStatement();
         int createdId;
         statement.executeUpdate("INSERT INTO stageProduct " +
                         "(productData, status, createdDate, createdBy, modifiedDate, modifiedBy, processingComment) " +
@@ -195,7 +193,7 @@ public class DBUtils {
 
     public boolean closeConnection() throws SQLException, IOException {
         boolean isClosed = false;
-        Connection connection = Context.getTestContext(LwaTestContext.class).getConnectionSandbox();
+        Connection connection = Context.getTestContext(MainTestContext.class).getConnectionSandbox();
         try {
             connection.close();
             isClosed = connection.isClosed();

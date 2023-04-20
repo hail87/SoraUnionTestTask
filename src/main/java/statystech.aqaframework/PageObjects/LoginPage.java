@@ -10,17 +10,13 @@ public class LoginPage extends PageObject {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginPage.class);
     private final WebDriver webDriver;
-    By txtUsernameLocator = By.xpath("//input[@name=\"userName\"]");
+    By txtUsernameLocator = By.xpath("//input[@name=\"username\"]");
     By txtPasswordLocator = By.xpath("//input[@name=\"password\"]");
     By btnLogInLocator = By.xpath("//button[@type=\"submit\"]");
 
     public LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         super.webDriver = webDriver;
-//        if (!"Login".equals(webDriver.getTitle())) {
-//            logger.error("This is not the login page");
-//            throw new IllegalStateException("This is not the login page");
-//        }
     }
 
     public LoginPage typeUsername(String username) {

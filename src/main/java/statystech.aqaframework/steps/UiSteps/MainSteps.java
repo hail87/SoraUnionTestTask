@@ -1,6 +1,7 @@
 package statystech.aqaframework.steps.UiSteps;
 
 import lombok.Getter;
+import org.junit.Assert;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;

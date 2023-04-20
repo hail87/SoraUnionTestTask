@@ -61,9 +61,6 @@ public class Context {
 
     public static void updateTestContext(TestContext testContext) {
         TestContext oldTestContext = null;
-        if (testContext instanceof LwaTestContext) {
-            oldTestContext = getTestContext(testContext.getTestMethodName(), LwaTestContext.class);
-        }
         if (testContext instanceof UiTestContext) {
             oldTestContext = getTestContext(testContext.getTestMethodName(), UiTestContext.class);
         }
